@@ -6,25 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bar"
+            android:id="@+id/bottomBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            app:navigationIcon="@drawable/ic_menu_24" />
+            android:backgroundTint="@color/colorPrimary"
+            android:theme="@style/Widget.MaterialComponents.BottomAppBar"
+            app:navigationIcon="@drawable/ic_menu" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_anchor="@id/bar" />
+            app:layout_anchor="@id/bottomBar" />
 
-    </android.support.design.widget.CoordinatorLayout>
-
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
