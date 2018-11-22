@@ -1,4 +1,4 @@
-package pleon.com.buyt;
+package com.pleon.buyt;
 
 import android.content.Context;
 import androidx.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("pleon.com.buyt", appContext.getPackageName());
+        assertEquals("com.pleon.buyt", appContext.getPackageName());
     }
 }

@@ -1,4 +1,4 @@
-package pleon.com.buyt;
+package com.pleon.buyt;
 
 import org.junit.Test;
 
