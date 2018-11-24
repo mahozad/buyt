@@ -21,11 +21,23 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    /* The AndroidX version of support library 'com.android.support:appcompat-v7'.
+     * Support libraries provide capabilities of newer android versions to older devices and also
+     * some of them provide new features on their own. They are separated into several libraries so
+     * you don't have to add ONE big library (and include unwanted libs) and make your apk huge.
+     * The following library for example adds support for ActionBar, AppCompatActivity and
+     * some other for devices down to api v7. */
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2' // TODO: update this
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.0.0'
+    /* The AndroidX version of 'com.android.support:design'
+     * Another support library that adds support for material components such as NavigationDrawer,
+     * SnackBar, FAB and Tab for older android versions. */
     implementation 'com.google.android.material:material:1.0.0'
+    /* library to show tap targets */
     implementation 'com.getkeepsafe.taptargetview:taptargetview:1.12.0'
+    /* // another tap target library
+    implementation 'uk.co.samuelwall:material-tap-target-prompt:2.14.0' */
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
