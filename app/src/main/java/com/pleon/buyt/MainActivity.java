@@ -43,6 +43,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // save the application form and temp data to survive config changes and force-kills
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // save any permanent data that you have not saved yet
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_bottom_home, menu);
         return true;
