@@ -11,7 +11,7 @@
         android:layout_height="match_parent">
 
         <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottomBar"
+            android:id="@+id/bottom_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -23,7 +23,13 @@
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_anchor="@id/bottomBar" />
+            app:fabSize="normal"
+            app:layout_anchor="@id/bottom_bar" />
+
+        <!-- if your widget doesn't have for example any text, you can provide a fake text to
+             preview in android studio by using the tools prefix:
+             <TextView tools:text="fake text" />
+        -->
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
