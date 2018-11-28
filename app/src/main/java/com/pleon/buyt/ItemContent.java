@@ -18,12 +18,12 @@ public class ItemContent {
 
     private static final int COUNT = 250;
 
-    static {
+    /*static {
         // Add some sample items.
         for (int i = 1; i <= COUNT; i++) {
             addItem(new Item(String.valueOf(i), LocalDateTime.now().toString(), "225 toman"));
         }
-    }
+    }*/
 
     private static void addItem(Item item) {
         ITEMS.add(item);

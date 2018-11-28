@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.pleon.buyt.ItemAdapter.ItemHolder;
 import com.pleon.buyt.ItemContent.Item;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.List;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 /**
  * A fragment representing a list of Items.
@@ -26,6 +28,7 @@ public class ItemListFragment extends Fragment {
     // TODO: Customize parameters
     private OnListFragmentInteractionListener mListener;
     private RecyclerView mItemRecyclerView;
+    private Adapter<ItemHolder> adapter;
 
     private List<Item> items;
 
@@ -36,7 +39,6 @@ public class ItemListFragment extends Fragment {
     public ItemListFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static ItemListFragment newInstance(int columnCount) {
         ItemListFragment fragment = new ItemListFragment();
@@ -66,8 +68,15 @@ public class ItemListFragment extends Fragment {
         mItemRecyclerView = (RecyclerView) view;
         Context context = view.getContext();
         mItemRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        mItemRecyclerView.setAdapter(new ItemAdapter(ItemContent.ITEMS, mListener));
+        adapter = new ItemAdapter(ItemContent.ITEMS, mListener);
+        mItemRecyclerView.setAdapter(adapter);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged(); // TODO: change this. Has performance problem
     }
 
     @Override
