@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomappbar.BottomAppBar;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pleon.buyt.ItemListFragment.OnListFragmentInteractionListener;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,12 +41,6 @@ public class MainActivity extends AppCompatActivity implements OnListFragmentInt
         setSupportActionBar(bottomAppBar);
         Log.d(TAG, "bottom app bar created");
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(button->{
-            Intent intent = new Intent(this, AddItemActivity.class);
-            startActivity(intent);
-        });
-
         // FragmentManager of an activity is responsible for calling
         // the lifecycle methods of the fragments in its list.
         FragmentManager fragMgr = getSupportFragmentManager();
@@ -76,15 +70,24 @@ public class MainActivity extends AppCompatActivity implements OnListFragmentInt
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        // save any permanent data that you have not saved yet
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_bottom_home, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_add) {
+            Intent intent = new Intent(this, AddItemActivity.class);
+            startActivity(intent);
+        }
+        return true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // save any permanent data that you have not saved yet
     }
 
     @Override

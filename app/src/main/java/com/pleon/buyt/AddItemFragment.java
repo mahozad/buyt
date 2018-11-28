@@ -11,7 +11,6 @@ import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
 
-
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
