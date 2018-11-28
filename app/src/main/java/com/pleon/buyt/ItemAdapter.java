@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.pleon.buyt.ItemContent.Item;
-import com.pleon.buyt.ItemFragment.OnListFragmentInteractionListener;
+import com.pleon.buyt.ItemListFragment.OnListFragmentInteractionListener;
 
 import java.util.List;
 

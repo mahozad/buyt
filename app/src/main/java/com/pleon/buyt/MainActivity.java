@@ -6,7 +6,7 @@ import android.view.Menu;
 
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomappbar.BottomAppBar;
-import com.pleon.buyt.ItemFragment.OnListFragmentInteractionListener;
+import com.pleon.buyt.ItemListFragment.OnListFragmentInteractionListener;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements OnListFragmentInt
         // so first we check if the fragment we want does not exist, then we create it
         if (itemsFragment == null) {
             fragMgr.beginTransaction()
-                    .add(R.id.container_fragment_item, new ItemFragment())
+                    .add(R.id.container_fragment_item, new ItemListFragment())
                     .commit();
         }
 
