@@ -4,11 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    tools:layout_editor_absoluteY="25dp">
+
+    <FrameLayout
+        android:id="@+id/container_fragment_chart"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            tools:text="placeholder for chart" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/container_fragment_item"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/container_fragment_chart">
+
+    </FrameLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="124dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottom_bar"
@@ -17,7 +50,7 @@
             android:layout_gravity="bottom"
             android:backgroundTint="@color/colorPrimary"
             android:theme="@style/Widget.MaterialComponents.BottomAppBar"
-            app:navigationIcon="@drawable/ic_menu" />
+            app:navigationIcon="@drawable/ic_menu"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
@@ -25,11 +58,6 @@
             android:layout_height="wrap_content"
             app:fabSize="normal"
             app:layout_anchor="@id/bottom_bar" />
-
-        <!-- if your widget doesn't have for example any text, you can provide a fake text to
-             preview in android studio by using the tools prefix:
-             <TextView tools:text="fake text" />
-        -->
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
