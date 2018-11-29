@@ -35,6 +35,8 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.room:room-runtime:2.1.0-alpha02'
+    annotationProcessor 'androidx.room:room-compiler:2.1.0-alpha02'
     /* The AndroidX version of 'com.android.support:design'
      * Another support library that adds support for material components such as NavigationDrawer,
      * SnackBar, FAB and Tab for older android versions. */
