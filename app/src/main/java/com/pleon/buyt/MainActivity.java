@@ -19,6 +19,8 @@ import static com.getkeepsafe.taptargetview.TapTarget.forView;
 public class MainActivity extends AppCompatActivity implements OnListFragmentInteractionListener {
 
     // TODO: implement the app with Flutter
+    // TODO: Show a prompt (or an emoji or whatever) when there is no items in the home screen
+    //    to do this, add a new View to the layout and play with its setVisibility as appropriate
     // TODO: Add android.support.annotation to the app
     // TODO: for item prices user can enter a inexact value (range)
     // TODO: for every new version of the app display a what's new page on first app open
