@@ -9,13 +9,12 @@ import android.view.ViewGroup;
 import com.pleon.buyt.ItemAdapter.ItemHolder;
 import com.pleon.buyt.ItemContent.Item;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
+
+import static com.pleon.buyt.ItemContent.ITEMS;
 
 /**
  * A fragment representing a list of Items.
@@ -25,12 +24,11 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
  */
 public class ItemListFragment extends Fragment {
 
-    // TODO: Customize parameters
     private OnListFragmentInteractionListener mListener;
     private RecyclerView mItemRecyclerView;
     private Adapter<ItemHolder> adapter;
 
-    private List<Item> items;
+    private int itemListSize;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -51,11 +49,6 @@ public class ItemListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        items = new ArrayList<>();
-        if (getArguments() != null) {
-            // mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
     // Unlike Activities, in a Fragment you inflate the fragment's view in onCreateView() method.
@@ -68,15 +61,27 @@ public class ItemListFragment extends Fragment {
         mItemRecyclerView = (RecyclerView) view;
         Context context = view.getContext();
         mItemRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        adapter = new ItemAdapter(ItemContent.ITEMS, mListener);
+        adapter = new ItemAdapter(ITEMS, mListener);
         mItemRecyclerView.setAdapter(adapter);
         return view;
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        // store the current size of the items in the list
+        itemListSize = ITEMS.size();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        adapter.notifyDataSetChanged(); // TODO: change this. Has performance problem
+        // Check if size of the items has changed (a new item is added). This is to ensure that
+        // the user has not entered to the "Add Activity" and then immediately pressed back button
+        // which causes the notifyItemInserted() method to throw exception
+        if (itemListSize != ITEMS.size()) {
+            adapter.notifyItemInserted(ITEMS.size() - 1);
+        }
     }
 
     @Override
