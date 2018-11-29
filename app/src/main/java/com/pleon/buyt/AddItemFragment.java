@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.pleon.buyt.ItemContent.Item;
+
 import androidx.fragment.app.Fragment;
 
 /**
@@ -51,7 +53,6 @@ public class AddItemFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 //        if (getArguments() != null) {
 //            mParam1 = getArguments().getString(ARG_PARAM1);
 //            mParam2 = getArguments().getString(ARG_PARAM2);
@@ -69,8 +70,8 @@ public class AddItemFragment extends Fragment {
         addButton = view.findViewById(R.id.button_add);
 
         addButton.setOnClickListener(button -> {
-            ItemContent.Item item = new ItemContent.Item("1", nameField.getText().toString(), priceField.getText().toString());
-            ItemContent.ITEMS.add(item);
+            Item item = new Item("1", nameField.getText().toString(), priceField.getText().toString());
+            ItemContent.addItem(item);
             getActivity().finish();
         });
 
