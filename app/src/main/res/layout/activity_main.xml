@@ -56,8 +56,11 @@
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:src="@drawable/ic_buyt"
             app:fabSize="normal"
-            app:layout_anchor="@id/bottom_bar" />
+            app:layout_anchor="@id/bottom_bar"
+            app:maxImageSize="48dp" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

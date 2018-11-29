@@ -57,11 +57,11 @@ public class MainActivity extends AppCompatActivity implements OnListFragmentInt
 
         // show tap target for FAB
         new TapTargetSequence(this).targets(
-                forView(findViewById(R.id.fab), "Gonna")
+                forView(findViewById(R.id.fab), "Tap here when you're ready")
                         .outerCircleColor(R.color.colorAccent)
                         .targetCircleColor(android.R.color.background_light)
                         .transparentTarget(true)
-                        .textColor(android.R.color.holo_green_light))
+                        .textColor(R.color.colorPrimaryDark))
                 .start();
     }
 
