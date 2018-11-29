@@ -46,12 +46,12 @@ public class MainActivity extends AppCompatActivity implements OnListFragmentInt
         // FragmentManager of an activity is responsible for calling
         // the lifecycle methods of the fragments in its list.
         FragmentManager fragMgr = getSupportFragmentManager();
-        Fragment itemsFragment = fragMgr.findFragmentById(R.id.container_fragment_item);
+        Fragment itemsFragment = fragMgr.findFragmentById(R.id.container_fragment_items);
         // fragMgr saves the list of fragments when activity is destroyed and then retrieves them
         // so first we check if the fragment we want does not exist, then we create it
         if (itemsFragment == null) {
             fragMgr.beginTransaction()
-                    .add(R.id.container_fragment_item, new ItemListFragment())
+                    .add(R.id.container_fragment_items, new ItemListFragment())
                     .commit();
         }
 
