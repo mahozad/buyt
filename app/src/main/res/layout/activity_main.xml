@@ -50,7 +50,7 @@
             android:layout_gravity="bottom"
             android:backgroundTint="@color/colorPrimary"
             android:theme="@style/Widget.MaterialComponents.BottomAppBar"
-            app:navigationIcon="@drawable/ic_menu"/>
+            app:navigationIcon="@drawable/ic_nav_menu" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
