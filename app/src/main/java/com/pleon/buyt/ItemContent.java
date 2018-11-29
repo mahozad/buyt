@@ -1,6 +1,5 @@
 package com.pleon.buyt;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,23 +13,14 @@ public class ItemContent {
     /**
      * A map of sample (dummy) items, by ID.
      */
-    public static final Map<String, Item> ITEM_MAP = new HashMap<>();
+    private static final Map<String, Item> ITEM_MAP = new HashMap<>();
 
-    private static final int COUNT = 250;
-
-    /*static {
-        // Add some sample items.
-        for (int i = 1; i <= COUNT; i++) {
-            addItem(new Item(String.valueOf(i), LocalDateTime.now().toString(), "225 toman"));
-        }
-    }*/
-
-    private static void addItem(Item item) {
+    public static void addItem(Item item) {
         ITEMS.add(item);
         ITEM_MAP.put(item.id, item);
     }
 
-    private static Item getItem(String id) {
+    public static Item getItem(String id) {
         for (Item item : ITEMS) {
             if (item.id.equals(id)) {
                 return item;
