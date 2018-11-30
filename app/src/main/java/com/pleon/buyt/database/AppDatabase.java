@@ -11,6 +11,7 @@ import androidx.room.RoomDatabase;
 @Database(entities = ItemContent.Item.class, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
+    private static final String DATABASE_NAME = "buyt-database";
     private static AppDatabase INSTANCE;
 
     public abstract ItemDao itemModel();
@@ -18,8 +19,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public static AppDatabase getDatabase(Context context) {
         if (INSTANCE == null) {
             context = context.getApplicationContext();
-            String databaseName = "buyt-database";
-            INSTANCE = Room.databaseBuilder(context, AppDatabase.class, databaseName).build();
+            INSTANCE = Room.databaseBuilder(context, AppDatabase.class, DATABASE_NAME).build();
         }
         return INSTANCE;
     }
