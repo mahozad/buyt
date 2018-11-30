@@ -16,7 +16,7 @@ import static androidx.room.OnConflictStrategy.IGNORE;
 public interface ItemDao {
 
     @Query("SELECT * FROM Item")
-    List<Item> getAllItem();
+    List<Item> getAllItems();
 
     @Query("SELECT * FROM Item WHERE id= :id")
     Item getItemById(int id);
