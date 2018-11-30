@@ -8,7 +8,6 @@ import android.view.MenuItem;
 
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomappbar.BottomAppBar;
-import com.pleon.buyt.ItemListFragment.OnListFragmentInteractionListener;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -16,7 +15,7 @@ import androidx.fragment.app.FragmentManager;
 
 import static com.getkeepsafe.taptargetview.TapTarget.forView;
 
-public class MainActivity extends AppCompatActivity implements OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements ItemListFragment.Callable {
 
     // TODO: implement the app with Flutter
     // TODO: Show a prompt (or an emoji or whatever) when there is no items in the home screen

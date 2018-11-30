@@ -17,12 +17,23 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link Callable}
  * interface.
  */
 public class ItemListFragment extends Fragment {
 
-    private OnListFragmentInteractionListener mListener;
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     */
+    public interface Callable {
+        // TODO: Update argument type and name
+        void onListFragmentInteraction(Item item);
+    }
+
+    private Callable mHostActivity;
     private RecyclerView mItemRecyclerView;
     private Adapter<ItemHolder> adapter;
     private int itemListCurrentSize;
@@ -57,7 +68,7 @@ public class ItemListFragment extends Fragment {
         mItemRecyclerView = (RecyclerView) view;
         Context context = view.getContext();
         mItemRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        adapter = new ItemAdapter(mListener, getActivity().getApplicationContext());
+        adapter = new ItemAdapter(mHostActivity, getActivity().getApplicationContext());
         mItemRecyclerView.setAdapter(adapter);
         return view;
     }
@@ -83,28 +94,16 @@ public class ItemListFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
+        if (context instanceof Callable) {
+            mHostActivity = (Callable) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+            throw new RuntimeException(context.toString() + " must implement Callable");
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     */
-    public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(Item item);
+        mHostActivity = null;
     }
 }

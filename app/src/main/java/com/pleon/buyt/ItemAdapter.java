@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.pleon.buyt.ItemContent.Item;
-import com.pleon.buyt.ItemListFragment.OnListFragmentInteractionListener;
 import com.pleon.buyt.database.AppDatabase;
 
 import java.util.ArrayList;
@@ -18,17 +17,16 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 /**
  * {@link Adapter} that can display a {@link Item} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
+ * specified {@link ItemListFragment.Callable}.
  */
 public class ItemAdapter extends Adapter<ItemAdapter.ItemHolder> {
 
     public static List<Item> mItems = new ArrayList<>();
-    private final OnListFragmentInteractionListener mListener;
+    private final ItemListFragment.Callable mListener;
 
-    public ItemAdapter(/*List<Item> items,*/ OnListFragmentInteractionListener listener, Context context) {
-//        mItems = items;
+    public ItemAdapter(ItemListFragment.Callable listener, Context context) {
         new Thread(() -> {
-            mItems = AppDatabase.getDatabase(context).itemModel().getAllItem();
+            mItems = AppDatabase.getDatabase(context).itemModel().getAllItems();
             notifyDataSetChanged();
         }).start();
         mListener = listener;
