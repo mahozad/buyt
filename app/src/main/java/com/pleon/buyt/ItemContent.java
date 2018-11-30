@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 // this is just a holder class to store list of items
 public class ItemContent {
 
@@ -13,16 +16,16 @@ public class ItemContent {
     /**
      * A map of sample (dummy) items, by ID.
      */
-    private static final Map<String, Item> ITEM_MAP = new HashMap<>();
+    private static final Map<Integer, Item> ITEM_MAP = new HashMap<>();
 
     public static void addItem(Item item) {
         ITEMS.add(item);
         ITEM_MAP.put(item.id, item);
     }
 
-    public static Item getItem(String id) {
+    public static Item getItem(int id) {
         for (Item item : ITEMS) {
-            if (item.id.equals(id)) {
+            if (item.id == id) {
                 return item;
             }
         }
@@ -32,24 +35,17 @@ public class ItemContent {
     /**
      * An item to buy.
      */
+    @Entity
     public static class Item {
 
-        public final String id;
+        @PrimaryKey(autoGenerate = true)
+        public int id;
         public final String name;
         public final String price;
 
-        public Item(String id, String name, String price) {
-            this.id = id;
+        public Item(String name, String price) {
             this.name = name;
             this.price = price;
-        }
-
-        @Override
-        public String toString() {
-            return "Item{" +
-                    "name='" + name + '\'' +
-                    ", price='" + price + '\'' +
-                    '}';
         }
     }
 }

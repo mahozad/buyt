@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.pleon.buyt.ItemContent.Item;
+import com.pleon.buyt.database.AppDatabase;
 
 import androidx.fragment.app.Fragment;
 
@@ -70,11 +71,14 @@ public class AddItemFragment extends Fragment {
         addButton = view.findViewById(R.id.button_add);
 
         addButton.setOnClickListener(button -> {
-            Item item = new Item("1", nameField.getText().toString(), priceField.getText().toString());
+            Item item = new Item(nameField.getText().toString(), priceField.getText().toString());
             ItemContent.addItem(item);
-            getActivity().finish();
+            new Thread(() -> {
+                AppDatabase.getDatabase(getActivity()).itemModel().insertItems(item);
+                ItemAdapter.mItems.add(item);
+                getActivity().finish();
+            }).start();
         });
-
         return view;
     }
 

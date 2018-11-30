@@ -1,5 +1,6 @@
 package com.pleon.buyt;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,7 +8,9 @@ import android.widget.TextView;
 
 import com.pleon.buyt.ItemContent.Item;
 import com.pleon.buyt.ItemListFragment.OnListFragmentInteractionListener;
+import com.pleon.buyt.database.AppDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView.Adapter;
@@ -19,11 +22,15 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder;
  */
 public class ItemAdapter extends Adapter<ItemAdapter.ItemHolder> {
 
-    private final List<Item> mItems;
+    public static List<Item> mItems = new ArrayList<>();
     private final OnListFragmentInteractionListener mListener;
 
-    public ItemAdapter(List<Item> items, OnListFragmentInteractionListener listener) {
-        mItems = items;
+    public ItemAdapter(/*List<Item> items,*/ OnListFragmentInteractionListener listener, Context context) {
+//        mItems = items;
+        new Thread(() -> {
+            mItems = AppDatabase.getDatabase(context).itemModel().getAllItem();
+            notifyDataSetChanged();
+        }).start();
         mListener = listener;
     }
 
@@ -37,18 +44,15 @@ public class ItemAdapter extends Adapter<ItemAdapter.ItemHolder> {
     @Override
     public void onBindViewHolder(final ItemHolder holder, int position) {
         holder.mItem = mItems.get(position);
-        holder.mIdTextView.setText(mItems.get(position).id);
+        holder.mIdTextView.setText(mItems.get(position).id + "");
         holder.mNameTextView.setText(mItems.get(position).name);
         holder.mPriceTextView.setText(mItems.get(position).price);
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mListener != null) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
-                }
+        holder.mView.setOnClickListener(v -> {
+            if (mListener != null) {
+                // Notify the active callbacks interface (the activity, if the
+                // fragment is attached to one) that an item has been selected.
+                mListener.onListFragmentInteraction(holder.mItem);
             }
         });
     }
@@ -73,11 +77,6 @@ public class ItemAdapter extends Adapter<ItemAdapter.ItemHolder> {
             mIdTextView = view.findViewById(R.id.item_number);
             mNameTextView = view.findViewById(R.id.item_name);
             mPriceTextView = view.findViewById(R.id.item_price);
-        }
-
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mNameTextView.getText() + "'";
         }
     }
 }

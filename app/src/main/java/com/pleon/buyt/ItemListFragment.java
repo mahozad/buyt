@@ -14,8 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 
-import static com.pleon.buyt.ItemContent.ITEMS;
-
 /**
  * A fragment representing a list of Items.
  * <p/>
@@ -27,8 +25,7 @@ public class ItemListFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
     private RecyclerView mItemRecyclerView;
     private Adapter<ItemHolder> adapter;
-
-    private int itemListSize;
+    private int itemListCurrentSize;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -37,7 +34,6 @@ public class ItemListFragment extends Fragment {
     public ItemListFragment() {
     }
 
-    @SuppressWarnings("unused")
     public static ItemListFragment newInstance(int columnCount) {
         ItemListFragment fragment = new ItemListFragment();
         Bundle args = new Bundle();
@@ -61,7 +57,7 @@ public class ItemListFragment extends Fragment {
         mItemRecyclerView = (RecyclerView) view;
         Context context = view.getContext();
         mItemRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        adapter = new ItemAdapter(ITEMS, mListener);
+        adapter = new ItemAdapter(mListener, getActivity().getApplicationContext());
         mItemRecyclerView.setAdapter(adapter);
         return view;
     }
@@ -70,7 +66,7 @@ public class ItemListFragment extends Fragment {
     public void onPause() {
         super.onPause();
         // store the current size of the items in the list
-        itemListSize = ITEMS.size();
+        itemListCurrentSize = adapter.getItemCount();
     }
 
     @Override
@@ -79,8 +75,8 @@ public class ItemListFragment extends Fragment {
         // Check if size of the items has changed (a new item is added). This is to ensure that
         // the user has not entered to the "Add Activity" and then immediately pressed back button
         // which causes the notifyItemInserted() method to throw exception
-        if (itemListSize != ITEMS.size()) {
-            adapter.notifyItemInserted(ITEMS.size() - 1);
+        if (itemListCurrentSize != adapter.getItemCount()) {
+            adapter.notifyItemInserted(adapter.getItemCount() - 1);
         }
     }
 
