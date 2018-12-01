@@ -45,11 +45,11 @@ public class ItemListFragment extends Fragment {
     public ItemListFragment() {
     }
 
-    public static ItemListFragment newInstance(int columnCount) {
+    public static ItemListFragment newInstance() {
         ItemListFragment fragment = new ItemListFragment();
-        Bundle args = new Bundle();
-        // args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
+//        Bundle args = new Bundle();
+//        args.putInt(ARG_COLUMN_COUNT, columnCount);
+//        fragment.setArguments(args);
         return fragment;
     }
 

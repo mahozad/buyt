@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
         // so first we check if the fragment we want does not exist, then we create it
         if (itemsFragment == null) {
             fragMgr.beginTransaction()
-                    .add(R.id.container_fragment_items, new ItemListFragment())
+                    .add(R.id.container_fragment_items, ItemListFragment.newInstance())
                     .commit();
         }
 
