@@ -18,8 +18,9 @@
         </activity>
         <activity
             android:name=".AddItemActivity"
-            android:parentActivityName=".MainActivity">
-        </activity>
+            android:parentActivityName=".MainActivity"></activity>
     </application>
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 </manifest>

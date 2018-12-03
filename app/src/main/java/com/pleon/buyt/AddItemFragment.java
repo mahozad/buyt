@@ -74,8 +74,9 @@ public class AddItemFragment extends Fragment {
             Item item = new Item(nameField.getText().toString(), priceField.getText().toString());
             ItemContent.addItem(item);
             new Thread(() -> {
-                AppDatabase.getDatabase(getActivity()).itemModel().insertItems(item);
-                ItemAdapter.mItems.add(item);
+                long itemId = AppDatabase.getDatabase(getActivity()).itemDao().insertItems(item);
+                item.id = itemId;
+                ItemAdapter.mItemsCart.add(item);
                 getActivity().finish();
             }).start();
         });

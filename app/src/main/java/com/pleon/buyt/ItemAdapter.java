@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.pleon.buyt.ItemContent.Item;
@@ -21,15 +22,15 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder;
  */
 public class ItemAdapter extends Adapter<ItemAdapter.ItemHolder> {
 
-    public static List<Item> mItems = new ArrayList<>();
+    public static List<Item> mItemsCart = new ArrayList<>();
     private final ItemListFragment.Callable mListener;
 
     public ItemAdapter(ItemListFragment.Callable listener, Context context) {
+        mListener = listener;
         new Thread(() -> {
-            mItems = AppDatabase.getDatabase(context).itemModel().getAllItems();
+            mItemsCart = AppDatabase.getDatabase(context).itemDao().getAllItems();
             notifyDataSetChanged();
         }).start();
-        mListener = listener;
     }
 
     @Override
@@ -41,12 +42,11 @@ public class ItemAdapter extends Adapter<ItemAdapter.ItemHolder> {
 
     @Override
     public void onBindViewHolder(final ItemHolder holder, int position) {
-        holder.mItem = mItems.get(position);
-        holder.mIdTextView.setText(mItems.get(position).id + "");
-        holder.mNameTextView.setText(mItems.get(position).name);
-        holder.mPriceTextView.setText(mItems.get(position).price);
+        holder.mItem = mItemsCart.get(position);
+        holder.mNameTextView.setText(mItemsCart.get(position).name);
+        holder.mPriceTextView.setText(mItemsCart.get(position).price);
 
-        holder.mView.setOnClickListener(v -> {
+        holder.mCheckbox.setOnClickListener(v -> {
             if (mListener != null) {
                 // Notify the active callbacks interface (the activity, if the
                 // fragment is attached to one) that an item has been selected.
@@ -57,14 +57,14 @@ public class ItemAdapter extends Adapter<ItemAdapter.ItemHolder> {
 
     @Override
     public int getItemCount() {
-        return mItems.size();
+        return mItemsCart.size();
     }
 
     // Adapter (and RecyclerView) works with ViewHolders instead of direct Views.
     public class ItemHolder extends ViewHolder {
 
         public final View mView; // the view (row layout) for the item
-        public final TextView mIdTextView;
+        public final CheckBox mCheckbox;
         public final TextView mNameTextView;
         public final TextView mPriceTextView;
         public Item mItem; // the item object itself
@@ -72,7 +72,7 @@ public class ItemAdapter extends Adapter<ItemAdapter.ItemHolder> {
         public ItemHolder(View view) {
             super(view);
             mView = view;
-            mIdTextView = view.findViewById(R.id.item_number);
+            mCheckbox = view.findViewById(R.id.checkBox);
             mNameTextView = view.findViewById(R.id.item_name);
             mPriceTextView = view.findViewById(R.id.item_price);
         }

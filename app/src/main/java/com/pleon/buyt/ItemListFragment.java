@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 
 import com.pleon.buyt.ItemAdapter.ItemHolder;
 import com.pleon.buyt.ItemContent.Item;
@@ -51,6 +52,14 @@ public class ItemListFragment extends Fragment {
 //        args.putInt(ARG_COLUMN_COUNT, columnCount);
 //        fragment.setArguments(args);
         return fragment;
+    }
+
+    public void enableCheckboxes() {
+        for (int i = 0; i < mItemRecyclerView.getChildCount(); i++) {
+            View view = mItemRecyclerView.getLayoutManager().findViewByPosition(i);
+            CheckBox checkbox = view.findViewById(R.id.checkBox);
+            checkbox.setEnabled(true);
+        }
     }
 
     @Override
