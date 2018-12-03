@@ -22,14 +22,14 @@ public interface ItemDao {
     Item getItemById(int id);
 
     @Query("SELECT count(*) FROM Item")
-    int getItemCount();
+    long getItemCount();
 
     @Insert(onConflict = IGNORE)
-    void insertItems(Item... item);
+    long insertItems(Item item);
 
     @Update
-    void updateItems(Item... item);
+    void updateItems(Item... items);
 
     @Delete
-    void deleteItems(Item... item);
+    void deleteItems(Item... items);
 }
