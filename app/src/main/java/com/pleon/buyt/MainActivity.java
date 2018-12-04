@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
     // TODO: for item prices user can enter a inexact value (range)
     // TODO: for every new version of the app display a what's new page on first app open
     // TODO: convert the app architecture to MVVM
+    // TODO: use loaders to get data from database?
     // My solution: to have both the top and bottom app bars create the activity with top app bar
     // and add a fragment that includes the bottom app bar in it in this activity
     // If you want to use the standard libraries instead of the support, make these changes:
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
     private static final String TAG = "MainActivity";
     private FloatingActionButton fab;
     private Location location;
+    private AsyncTask<Void, Void, Void> locationTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,6 +144,13 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        locationTask.cancel(true);
+        AppDatabase.destroyInstance();
+    }
+
+    @Override
     public void onListFragmentInteraction(ItemContent.Item item) {
         // an item checkbox was clicked
         new Thread(() -> {
@@ -156,5 +166,32 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
             item.bought = true;
             AppDatabase.getDatabase(this).itemDao().updateItems(item);
         }).start();
+    }
+
+    class DatabaseTask extends AsyncTask<String, Integer, String> {
+
+        // Runs in a background thread. Cannot touch the UI
+        @Override
+        protected String doInBackground(String... strings) {
+            publishProgress();
+            return "Finished";
+        }
+
+        // Runs on the UI (main) thread. Invoked by publishProgress() in the above method
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            // Update the UI
+        }
+
+        // Runs on the UI (main) thread. Invoked after doInBackground() is finished getting its result
+        @Override
+        protected void onPostExecute(String s) {
+
+        }
+
+        /*@Override
+        protected void onCancelled() {
+            super.onCancelled();
+        }*/
     }
 }
