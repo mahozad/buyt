@@ -2,9 +2,10 @@ package com.pleon.buyt.database;
 
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity
+@Entity(indices = @Index({"latitude", "longitude"}))
 public class Shop {
 
     @PrimaryKey(autoGenerate = true)
