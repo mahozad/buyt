@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    tools:layout_editor_absoluteY="25dp">
+    tools:context=".MainActivity">
 
     <FrameLayout
         android:id="@+id/container_fragment_chart"
@@ -48,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:backgroundTint="@color/colorPrimary"
+            android:backgroundTint="#000000"
             android:theme="@style/Widget.MaterialComponents.BottomAppBar"
             app:navigationIcon="@drawable/ic_nav_menu" />
 
@@ -56,7 +55,6 @@
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimaryDark"
             android:src="@drawable/ic_buyt"
             app:fabSize="normal"
             app:layout_anchor="@id/bottom_bar"
