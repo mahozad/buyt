@@ -48,7 +48,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:backgroundTint="#000000"
-            android:theme="@style/Widget.MaterialComponents.BottomAppBar"
             app:navigationIcon="@drawable/ic_nav_menu" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
