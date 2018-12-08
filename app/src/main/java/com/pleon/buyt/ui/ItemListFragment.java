@@ -75,7 +75,7 @@ public class ItemListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
 
         mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        mMainViewModel.getAll().observe(this, adapter::setItems);
+        mMainViewModel.getAll().observe(this, items -> adapter.setItems(items));
 
         // the root and only element in this fragment is a RecyclerView
         mItemRecyclerView = (RecyclerView) view;
