@@ -1,0 +1,16 @@
+<!--
+    if application runs in debug mode, content of this file will be integrated
+    to the main manifest file (in src/main). Here we've defined name of our custom
+    Application class (.BuytApplication) which sets up Stetho tool so we can inspect
+    app database, network, layouts and so on with Google chrome in: [chrome://inspect].
+    In Iran, use VPN due to sanctions.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.pleon.buyt">
+
+    <application
+        android:name=".BuytApplication"
+        tools:replace="android:name" />
+
+</manifest>
