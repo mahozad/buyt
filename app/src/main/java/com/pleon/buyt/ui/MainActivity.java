@@ -1,6 +1,5 @@
 package com.pleon.buyt.ui;
 
-import android.Manifest;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -27,6 +26,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.location.LocationManager.GPS_PROVIDER;
 import static com.getkeepsafe.taptargetview.TapTarget.forView;
 
@@ -50,6 +51,11 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
     // • to get the fragment manager, call getFragmentManager() instead of getSupportFragment...
 
     private static final String TAG = "MainActivity";
+
+    /**
+     * Id to identify a location permission request.
+     */
+    private static final int REQUEST_LOCATION = 1;
 
     private FloatingActionButton fab;
     private BottomAppBar mBottomAppBar;
@@ -82,14 +88,21 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
                     .add(R.id.container_fragment_items, ItemListFragment.newInstance())
                     .commit();
         }
-        //
-        //
-        //
 
-        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(v -> {
+
+            // Check if the location permission is already available.
+            if (ActivityCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) == PERMISSION_GRANTED) {
+                // Location permissions is already available, go on
+                // ...
+            } else {
+                // Location permission has not been granted.
+                requestCameraPermission();
+            }
+
+
             LocationManager locationMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
             if (!locationMgr.isProviderEnabled(GPS_PROVIDER)) {
                 // GPS is off on the device
@@ -131,6 +144,49 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
                         .textColor(R.color.colorPrimaryDark))
                 .start();
     }
+
+
+
+
+
+    /**
+     * Requests the Camera permission.
+     * If the permission has been denied previously, a the user will be prompted
+     * to grant the permission, otherwise it is requested directly.
+     */
+    private void requestCameraPermission() {
+        // When the user responds to your app's permission request, the system invokes your app's onRequestPermissionsResult() method
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, ACCESS_FINE_LOCATION)) {
+            // TODO: here show a dialog or ... and provide the rationale to the user and then
+            // when he clicks OK execute the following statement to request the permission:
+            // you don't want to overwhelm the user with too much explanation
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+        } else {
+            // Location permission has not been granted yet. Request it directly.
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the contacts-related task you need to do.
+                } else {
+                    // permission denied, boo! Disable the functionality that depends on this permission.
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
