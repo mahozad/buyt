@@ -1,4 +1,4 @@
-package com.pleon.buyt;
+package com.pleon.buyt.ui;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,10 +7,9 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.pleon.buyt.ItemContent.Item;
-import com.pleon.buyt.database.AppDatabase;
+import com.pleon.buyt.R;
+import com.pleon.buyt.model.Item;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView.Adapter;
@@ -20,31 +19,33 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder;
  * {@link Adapter} that can display a {@link Item} and makes a call to the
  * specified {@link ItemListFragment.Callable}.
  */
-public class ItemAdapter extends Adapter<ItemAdapter.ItemHolder> {
+public class ItemListAdapter extends Adapter<ItemListAdapter.ItemHolder> {
 
-    public static List<Item> mItemsCart = new ArrayList<>();
+    private List<Item> mItems; // updated automatically by setItems() method
     private final ItemListFragment.Callable mListener;
 
-    public ItemAdapter(ItemListFragment.Callable listener, Context context) {
+    public ItemListAdapter(ItemListFragment.Callable listener, Context context) {
         mListener = listener;
-        new Thread(() -> {
-            mItemsCart = AppDatabase.getDatabase(context).itemDao().getAllItems();
-            notifyDataSetChanged();
-        }).start();
     }
 
     @Override
     public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item, parent, false);
-        return new ItemHolder(view);
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_list_row, parent, false);
+        return new ItemHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(final ItemHolder holder, int position) {
-        holder.mItem = mItemsCart.get(position);
-        holder.mNameTextView.setText(mItemsCart.get(position).name);
-        holder.mPriceTextView.setText(mItemsCart.get(position).price);
+        if (mItems != null) {
+
+            holder.mItem = mItems.get(position);
+            holder.mNameTextView.setText(mItems.get(position).getName());
+            holder.mPriceTextView.setText(mItems.get(position).getPrice());
+        } else {
+            // Covers the case of data not being ready yet.
+            // set a placeholder or something
+        }
 
         holder.mCheckbox.setOnClickListener(v -> {
             if (mListener != null) {
@@ -55,19 +56,27 @@ public class ItemAdapter extends Adapter<ItemAdapter.ItemHolder> {
         });
     }
 
+    public void setItems(List<Item> items) {
+        mItems = items;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
-        return mItemsCart.size();
+        if (mItems == null) {
+            return 0;
+        }
+        return mItems.size();
     }
 
     // Adapter (and RecyclerView) works with ViewHolders instead of direct Views.
     public class ItemHolder extends ViewHolder {
 
-        public final View mView; // the view (row layout) for the item
+        public final View mView; // the view (row layout) for the item_list_row
         public final CheckBox mCheckbox;
         public final TextView mNameTextView;
         public final TextView mPriceTextView;
-        public Item mItem; // the item object itself
+        public Item mItem; // the item_list_row object itself
 
         public ItemHolder(View view) {
             super(view);

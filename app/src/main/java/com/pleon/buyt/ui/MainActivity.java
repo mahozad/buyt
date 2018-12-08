@@ -1,39 +1,44 @@
-package com.pleon.buyt;
+package com.pleon.buyt.ui;
 
 import android.Manifest;
-import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.pleon.buyt.R;
 import com.pleon.buyt.database.AppDatabase;
-import com.pleon.buyt.database.Coordinates;
-import com.pleon.buyt.database.Purchase;
-import com.pleon.buyt.database.Shop;
+import com.pleon.buyt.model.Item;
+import com.pleon.buyt.viewmodel.MainViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
 
 import static android.location.LocationManager.GPS_PROVIDER;
 import static com.getkeepsafe.taptargetview.TapTarget.forView;
 
-public class MainActivity extends AppCompatActivity implements ItemListFragment.Callable {
+public class MainActivity extends AppCompatActivity implements ItemListFragment.Callable, AddItemFragment.OnFragmentInteractionListener {
 
+    // TODO: add the functionality to export and import all app data
+    // TODO: Try to first provide an MVP (minimally viable product) version of the app
     // TODO: implement the app with Flutter
     // TODO: Show a prompt (or an emoji or whatever) when there is no items in the home screen
     //    to do this, add a new View to the layout and play with its setVisibility as appropriate
     // TODO: Add android.support.annotation to the app
-    // TODO: for item prices user can enter a inexact value (range)
+    // TODO: for item_list_row prices user can enter a inexact value (range)
     // TODO: for every new version of the app display a what's new page on first app open
     // TODO: convert the app architecture to MVVM
     // TODO: use loaders to get data from database?
@@ -45,18 +50,26 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
     // • to get the fragment manager, call getFragmentManager() instead of getSupportFragment...
 
     private static final String TAG = "MainActivity";
+
     private FloatingActionButton fab;
+    private BottomAppBar mBottomAppBar;
     private Location location;
     private AsyncTask<Void, Void, Void> locationTask;
+    private MainViewModel mMainViewModel;
+
+//    UI controllers such as activities and fragments are primarily intended to display UI data,
+//    react to user actions, or handle operating system communication, such as permission requests.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BottomAppBar bottomAppBar = findViewById(R.id.bottom_bar);
-        setSupportActionBar(bottomAppBar);
+        mBottomAppBar = findViewById(R.id.bottom_bar);
+        setSupportActionBar(mBottomAppBar);
         Log.d(TAG, "bottom app bar created");
+
+        mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
         // FragmentManager of an activity is responsible for calling
         // the lifecycle methods of the fragments in its list.
@@ -85,8 +98,11 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
                 @Override
                 public void onLocationChanged(Location location) {
                     Log.e(TAG, location.toString());
-                    locationMgr.removeUpdates(this); // stop the app from using GPS
                     MainActivity.this.location = location;
+                    locationMgr.removeUpdates(this); // stop the app from using GPS
+//                    if (location.distanceTo(/* one of existent stores */) < 5) {
+//                        // the store is saved already
+//                    }
                     ItemListFragment itemsFragment = (ItemListFragment) fragMgr.findFragmentById(R.id.container_fragment_items);
                     itemsFragment.enableCheckboxes();
                 }
@@ -131,8 +147,21 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_add) {
-            Intent intent = new Intent(this, AddItemActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(this, AddItemActivity.class);
+//            startActivity(intent);
+
+            Fragment newFragment = AddItemFragment.newInstance();
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.container_fragment_items, newFragment)
+                    .addToBackStack(null).commit();
+
+            mBottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
+            fab.setImageResource(R.drawable.ic_done);
+
+            View chartView = findViewById(R.id.container_fragment_chart);
+            chartView.setVisibility(View.GONE); // TODO: maybe replacing the fragment is a better practice
+
         }
         return true;
     }
@@ -151,47 +180,13 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
     }
 
     @Override
-    public void onListFragmentInteraction(ItemContent.Item item) {
-        // an item checkbox was clicked
-        new Thread(() -> {
-            Coordinates coordinates = new Coordinates(location.getLatitude(),location.getLongitude());
-            Shop shop = new Shop(coordinates,"Hasan","Baghali");
-            long storeId = AppDatabase.getDatabase(this).shopDao().insertStore(shop);
-
-            Purchase purchase = new Purchase(storeId, "alan");
-            long purchaseId = AppDatabase.getDatabase(this).purchaseDao().insertPurchase(purchase);
-
-            item.category = "Grocery";
-            item.purchaseId = purchaseId;
-            item.bought = true;
-            AppDatabase.getDatabase(this).itemDao().updateItems(item);
-        }).start();
+    public void onListFragmentInteraction(Item item) {
+        Log.i(TAG, "Item with id ***" + item.getId() + "*** was clicked");
+        mMainViewModel.buy(item);
     }
 
-    class DatabaseTask extends AsyncTask<String, Integer, String> {
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
-        // Runs in a background thread. Cannot touch the UI
-        @Override
-        protected String doInBackground(String... strings) {
-            publishProgress();
-            return "Finished";
-        }
-
-        // Runs on the UI (main) thread. Invoked by publishProgress() in the above method
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            // Update the UI
-        }
-
-        // Runs on the UI (main) thread. Invoked after doInBackground() is finished getting its result
-        @Override
-        protected void onPostExecute(String s) {
-
-        }
-
-        /*@Override
-        protected void onCancelled() {
-            super.onCancelled();
-        }*/
     }
 }

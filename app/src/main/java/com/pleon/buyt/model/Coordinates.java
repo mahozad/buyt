@@ -1,4 +1,4 @@
-package com.pleon.buyt.database;
+package com.pleon.buyt.model;
 
 public class Coordinates {
 

@@ -1,4 +1,4 @@
-package com.pleon.buyt;
+package com.pleon.buyt.ui;
 
 import android.content.Context;
 import android.net.Uri;
@@ -9,10 +9,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.pleon.buyt.ItemContent.Item;
-import com.pleon.buyt.database.AppDatabase;
+import com.pleon.buyt.R;
+import com.pleon.buyt.model.Item;
+import com.pleon.buyt.viewmodel.MainViewModel;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +31,7 @@ public class AddItemFragment extends Fragment {
     private EditText nameField;
     private EditText priceField;
     private Button addButton;
+    private MainViewModel mMainViewModel;
 
     public AddItemFragment() {
         // Required empty public constructor
@@ -42,7 +45,7 @@ public class AddItemFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment AddItemFragment.
      */
-    public static AddItemFragment newInstance(String param1, String param2) {
+    public static AddItemFragment newInstance() {
         AddItemFragment fragment = new AddItemFragment();
 //        Bundle args = new Bundle();
 //        args.putString(ARG_PARAM1, param1);
@@ -61,24 +64,19 @@ public class AddItemFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_item, container, false);
 
         nameField = view.findViewById(R.id.name);
         priceField = view.findViewById(R.id.price);
         addButton = view.findViewById(R.id.button_add);
+        mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
         addButton.setOnClickListener(button -> {
-            Item item = new Item(nameField.getText().toString(), priceField.getText().toString());
-            ItemContent.addItem(item);
-            new Thread(() -> {
-                long itemId = AppDatabase.getDatabase(getActivity()).itemDao().insertItems(item);
-                item.id = itemId;
-                ItemAdapter.mItemsCart.add(item);
-                getActivity().finish();
-            }).start();
+            Item item = new Item(nameField.getText().toString(), priceField.getText().toString(), 0, "");
+            mMainViewModel.insertItem(item);
+//            getActivity().finish();
         });
         return view;
     }

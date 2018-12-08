@@ -42,6 +42,15 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.room:room-runtime:2.1.0-alpha02'
     annotationProcessor 'androidx.room:room-compiler:2.1.0-alpha02'
+//    implementation 'com.google.dagger:dagger:2.19' // dagger core dependency injection
+//    annotationProcessor 'com.google.dagger:dagger-compiler:2.19' // required by dagger
+//    implementation 'com.google.dagger:dagger-android-support:2.19' // dagger support for android objects (e.g. fragments)
+//    annotationProcessor 'com.google.dagger:dagger-android-processor:2.19' // required bt dagger-android-support
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0' // ViewModel and LiveData
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.0.0'
+    /*required by the ViewModel and LiveData*/
+    /* for inspecting the database and network in Chrome. In Iran, use VPN due to sanctions.*/
+    debugImplementation 'com.facebook.stetho:stetho:1.5.0'
     /* The AndroidX version of 'com.android.support:design'
      * Another support library that adds support for material components such as NavigationDrawer,
      * SnackBar, FAB and Tab for older android versions. */
@@ -51,10 +60,7 @@ dependencies {
     /* // another tap target library
     implementation 'uk.co.samuelwall:material-tap-target-prompt:2.14.0' */
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.0'
+    androidTestImplementation 'androidx.room:room-testing:2.0.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.0.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
-
-    /* library that lets to see the SQLite databases */
-//    debugImplementation 'im.dino:dbinspector:3.4.1'
-
 }

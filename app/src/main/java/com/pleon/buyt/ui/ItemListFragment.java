@@ -1,4 +1,4 @@
-package com.pleon.buyt;
+package com.pleon.buyt.ui;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -7,13 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 
-import com.pleon.buyt.ItemAdapter.ItemHolder;
-import com.pleon.buyt.ItemContent.Item;
+import com.pleon.buyt.R;
+import com.pleon.buyt.model.Item;
+import com.pleon.buyt.viewmodel.MainViewModel;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 /**
  * A fragment representing a list of Items.
@@ -36,7 +36,8 @@ public class ItemListFragment extends Fragment {
 
     private Callable mHostActivity;
     private RecyclerView mItemRecyclerView;
-    private Adapter<ItemHolder> adapter;
+    private ItemListAdapter adapter;
+    private MainViewModel mMainViewModel;
     private int itemListCurrentSize;
 
     /**
@@ -73,11 +74,12 @@ public class ItemListFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
 
+        mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mMainViewModel.getAll().observe(this, adapter::setItems);
+
         // the root and only element in this fragment is a RecyclerView
         mItemRecyclerView = (RecyclerView) view;
-        Context context = view.getContext();
-        mItemRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        adapter = new ItemAdapter(mHostActivity, getActivity().getApplicationContext());
+        adapter = new ItemListAdapter(mHostActivity, getActivity().getApplicationContext());
         mItemRecyclerView.setAdapter(adapter);
         return view;
     }
@@ -92,7 +94,7 @@ public class ItemListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        // Check if size of the items has changed (a new item is added). This is to ensure that
+        // Check if size of the items has changed (a new item_list_row is added). This is to ensure that
         // the user has not entered to the "Add Activity" and then immediately pressed back button
         // which causes the notifyItemInserted() method to throw exception
         if (itemListCurrentSize != adapter.getItemCount()) {
