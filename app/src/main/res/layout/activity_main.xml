@@ -42,14 +42,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottom_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:backgroundTint="#000000"
-            app:navigationIcon="@drawable/ic_nav_menu" />
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
@@ -58,6 +50,16 @@
             app:fabSize="normal"
             app:layout_anchor="@id/bottom_bar"
             app:maxImageSize="48dp" />
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottom_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:backgroundTint="#000000"
+            app:fabAlignmentMode="center"
+            app:hideOnScroll="true"
+            app:navigationIcon="@drawable/ic_nav_menu" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -13,6 +13,7 @@ import android.view.View;
 
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pleon.buyt.R;
 import com.pleon.buyt.database.AppDatabase;
@@ -203,21 +204,24 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_add) {
-//            Intent intent = new Intent(this, AddItemActivity.class);
-//            startActivity(intent);
-
             Fragment newFragment = AddItemFragment.newInstance();
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.container_fragment_items, newFragment)
-                    .addToBackStack(null).commit();
+            transaction.replace(R.id.container_fragment_items, newFragment).addToBackStack(null).commit();
 
             mBottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
             fab.setImageResource(R.drawable.ic_done);
+            mBottomAppBar.setNavigationIcon(null); // causes the fab animation to not run
+            mBottomAppBar.replaceMenu(R.menu.menu_add_item);
 
             View chartView = findViewById(R.id.container_fragment_chart);
             chartView.setVisibility(View.GONE); // TODO: maybe replacing the fragment is a better practice
 
+
+        } else if (item.getItemId() == android.R.id.home) { /* If you use setSupportActionBar() to set up the BottomAppBar
+             you can handle the navigation menu click by checking if the menu item id is android.R.id.home. */
+            BottomSheetDialogFragment bottomDrawerFragment = BottomDrawerFragment.newInstance();
+            bottomDrawerFragment.show(getSupportFragmentManager(), "alaki");
         }
         return true;
     }
