@@ -31,7 +31,7 @@ public class ItemListFragment extends Fragment {
      */
     public interface Callable {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(Item item);
+        void onItemCheckboxClicked(Item item);
     }
 
     private Callable mHostActivity;

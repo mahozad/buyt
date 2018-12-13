@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.pleon.buyt.R;
 import com.pleon.buyt.model.Item;
+import com.pleon.buyt.ui.ItemListAdapter.ItemHolder;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder;
  * {@link Adapter} that can display a {@link Item} and makes a call to the
  * specified {@link ItemListFragment.Callable}.
  */
-public class ItemListAdapter extends Adapter<ItemListAdapter.ItemHolder> {
+public class ItemListAdapter extends Adapter<ItemHolder> {
 
     private List<Item> mItems; // updated automatically by setItems() method
     private final ItemListFragment.Callable mListener;
@@ -51,7 +52,7 @@ public class ItemListAdapter extends Adapter<ItemListAdapter.ItemHolder> {
             if (mListener != null) {
                 // Notify the active callbacks interface (the activity, if the
                 // fragment is attached to one) that an item has been selected.
-                mListener.onListFragmentInteraction(holder.mItem);
+                mListener.onItemCheckboxClicked(holder.mItem);
             }
         });
     }
