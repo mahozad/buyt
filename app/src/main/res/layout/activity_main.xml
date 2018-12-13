@@ -9,18 +9,16 @@
     <FrameLayout
         android:id="@+id/container_fragment_chart"
         android:layout_width="match_parent"
-        android:layout_height="140dp"
+        android:layout_height="200dp"
         android:background="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
+        <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            tools:text="placeholder for chart" />
-
+            android:layout_height="200dp"
+            android:id="@+id/graph" />
     </FrameLayout>
 
     <FrameLayout

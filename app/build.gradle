@@ -59,6 +59,7 @@ dependencies {
     implementation 'com.getkeepsafe.taptargetview:taptargetview:1.12.0'
     /* // another tap target library
     implementation 'uk.co.samuelwall:material-tap-target-prompt:2.14.0' */
+    implementation 'com.jjoe64:graphview:4.2.2' // graph library
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.room:room-testing:2.0.0'
     androidTestImplementation 'androidx.test.ext:junit:1.0.0'
