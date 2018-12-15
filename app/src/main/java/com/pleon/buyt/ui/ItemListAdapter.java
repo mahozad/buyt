@@ -48,6 +48,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
             // set a placeholder or something
         }
 
+        // which callback method is the best for setting these listeners? (e.g. onCreate or...)
         holder.mCheckbox.setOnClickListener(v -> {
             if (mListener != null) {
                 // Notify the active callbacks interface (the activity, if the
