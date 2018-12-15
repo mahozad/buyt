@@ -1,6 +1,7 @@
 package com.pleon.buyt.viewmodel;
 
 import android.app.Application;
+import android.location.Location;
 import android.os.AsyncTask;
 
 import com.pleon.buyt.database.repository.MainRepository;
@@ -9,6 +10,7 @@ import com.pleon.buyt.model.Item;
 import com.pleon.buyt.model.Purchase;
 import com.pleon.buyt.model.Store;
 
+import java.util.Date;
 import java.util.List;
 
 import androidx.lifecycle.AndroidViewModel;
@@ -39,31 +41,15 @@ public class MainViewModel extends AndroidViewModel {
         return mAllItems;
     }
 
-    public void insertItem(Item item) {
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                mRepository.insertItem(item);
-                return null;
-            }
-        }.execute();
+    public LiveData<List<Store>> findNearStores(Coordinates origin, double maxDistance) {
+        return mRepository.findNearStores(origin, maxDistance);
     }
 
-    public void buy(Item item) {
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                Coordinates coordinates = new Coordinates(/*location.getLatitude()*/12, /*location.getLongitude()*/34);
-                Store store = new Store(coordinates, "Hasan", "Baghali");
-                long storeId = mRepository.insertStore(store);
+    public void insertItem(Item item) {
+        mRepository.insertItem(item);
+    }
 
-                Purchase purchase = new Purchase(storeId, "alan");
-                long purchaseId = mRepository.insertPurchase(purchase);
-
-                item.setPurchaseId(purchaseId);
-                mRepository.updateItem(item);
-                return null;
-            }
-        }.execute();
+    public void buy(Item item, Store store) {
+        mRepository.buy(item, store);
     }
 }

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "eba894fbd241b26967b66048c0982742",
+    "identityHash": "ae871e9882cd618a36e74ccc1794e005",
     "entities": [
       {
         "tableName": "Item",
@@ -62,7 +62,7 @@
       },
       {
         "tableName": "Store",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `category` TEXT, `latitude` REAL, `longitude` REAL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `category` TEXT, `latitude` REAL, `longitude` REAL, `cosLat` REAL, `sinLat` REAL, `cosLng` REAL, `sinLng` REAL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -93,6 +93,30 @@
             "columnName": "longitude",
             "affinity": "REAL",
             "notNull": false
+          },
+          {
+            "fieldPath": "location.cosLat",
+            "columnName": "cosLat",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "location.sinLat",
+            "columnName": "sinLat",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "location.cosLng",
+            "columnName": "cosLng",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "location.sinLng",
+            "columnName": "sinLng",
+            "affinity": "REAL",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -116,7 +140,7 @@
       },
       {
         "tableName": "Purchase",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `storeId` INTEGER NOT NULL, `date` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `storeId` INTEGER NOT NULL, `date` INTEGER)",
         "fields": [
           {
             "fieldPath": "id",
@@ -133,7 +157,7 @@
           {
             "fieldPath": "date",
             "columnName": "date",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": false
           }
         ],
@@ -150,7 +174,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"eba894fbd241b26967b66048c0982742\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"ae871e9882cd618a36e74ccc1794e005\")"
     ]
   }
 }
