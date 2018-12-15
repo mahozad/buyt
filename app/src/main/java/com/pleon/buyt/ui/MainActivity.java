@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
     private Location location;
     private AsyncTask<Void, Void, Void> locationTask;
     private MainViewModel mMainViewModel;
-    private LocationManager locationMgr;
 
 //    UI controllers such as activities and fragments are primarily intended to display UI data,
 //    react to user actions, or handle operating system communication, such as permission requests.
@@ -143,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
     }
 
     private void findLocation() {
-        locationMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
+        LocationManager locationMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
         /* you must check whether you have dangerous permission every time */
         if (ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
             requestLocationPermission();
@@ -167,7 +166,8 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
 
         @Override
         public void onLocationChanged(Location location) {
-            locationMgr.removeUpdates(this); // stop the app from using GPS
+            // stop using GPS
+            ((LocationManager) getSystemService(LOCATION_SERVICE)).removeUpdates(this);
             onLocationFound(location);
         }
 
