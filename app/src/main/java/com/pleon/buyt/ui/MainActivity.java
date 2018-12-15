@@ -20,7 +20,9 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.pleon.buyt.R;
 import com.pleon.buyt.database.AppDatabase;
+import com.pleon.buyt.model.Coordinates;
 import com.pleon.buyt.model.Item;
+import com.pleon.buyt.model.Store;
 import com.pleon.buyt.viewmodel.MainViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,16 +37,21 @@ import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.location.LocationManager.GPS_PROVIDER;
 import static com.getkeepsafe.taptargetview.TapTarget.forView;
+import static java.lang.Math.cos;
 
 public class MainActivity extends AppCompatActivity implements ItemListFragment.Callable, AddItemFragment.OnFragmentInteractionListener {
 
-    // TODO: add the functionality to export and import all app data
+    // TODO: What is Spherical Law of Cosines? (for locations)
+    // TODO: Add the functionality to export and import all app data
     // TODO: Try to first provide an MVP (minimally viable product) version of the app
-    // TODO: implement the app with Flutter
-    // TODO: Show a prompt (or an emoji or whatever) when there is no items in the home screen
-    //    to do this, add a new View to the layout and play with its setVisibility as appropriate
+    // TODO: Implement the app with Flutter
+    // TODO: enable the user to change the radius that app uses to find near stores
+    // TODO: add ability to remove all app data
+    /* TODO: Show a prompt (or an emoji or whatever) when there is no items in the home screen
+        to do this, add a new View to the layout and play with its setVisibility as appropriate
+    */
     // TODO: Add android.support.annotation to the app
-    // TODO: for item_list_row prices user can enter a inexact value (range)
+    // TODO: for item_list_row prices user can enter an inexact value (range)
     // TODO: for every new version of the app display a what's new page on first app open
     // TODO: convert the app architecture to MVVM
     // TODO: use loaders to get data from database?
@@ -65,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
     // • to get the fragment manager, call getFragmentManager() instead of getSupportFragment...
 
     private static final String TAG = "MainActivity";
+    private static final double NEAR_STORES_DISTANCE = cos(0.1 / 6371); // This is 100m (6371km is the radius of the Earth)
 
     /**
      * Id to identify a location permission request.
@@ -100,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
         if (itemsFragment == null) {
             fragMgr.beginTransaction()
                     .add(R.id.container_fragment_items, ItemListFragment.newInstance())
-                    .commit();
+                    .commit(); // TODO: commit vs commitNow?
         }
 
 
@@ -205,7 +213,6 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
         }
     }
 
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -261,8 +268,20 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
 
     @Override
     public void onItemCheckboxClicked(Item item) {
-        Log.i(TAG, "Item with id ***" + item.getId() + "*** was clicked");
-        mMainViewModel.buy(item);
+        Coordinates originCoordinates = new Coordinates(location);
+        mMainViewModel.findNearStores(originCoordinates, NEAR_STORES_DISTANCE).observe(this,
+                nearStores -> {
+                    if (nearStores.size() == 0) {
+                        Store store = new Store(new Coordinates(location), "Hasan", "baghali");
+                        mMainViewModel.buy(item, store);
+                    } else if (nearStores.size() == 1) {
+                        mMainViewModel.buy(item, nearStores.get(0));
+                    } else {
+                        // TODO: show a dialog to choose from stores
+
+                    }
+                }
+        );
     }
 
     @Override
