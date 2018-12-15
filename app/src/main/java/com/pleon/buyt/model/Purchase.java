@@ -1,5 +1,7 @@
 package com.pleon.buyt.model;
 
+import java.util.Date;
+
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
@@ -13,9 +15,9 @@ public class Purchase {
     @ForeignKey(entity = Store.class, parentColumns = "id", childColumns = "storeId")
     private long storeId;
 
-    private String date;
+    private Date date;
 
-    public Purchase(long storeId, String date) {
+    public Purchase(long storeId, Date date) {
         this.storeId = storeId;
         this.date = date;
     }
@@ -36,11 +38,11 @@ public class Purchase {
         this.storeId = storeId;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 }
