@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
     // • to get the fragment manager, call getFragmentManager() instead of getSupportFragment...
 
     private static final String TAG = "MainActivity";
-    private static final double NEAR_STORES_DISTANCE = cos(0.1 / 6371); // This is 100m (6371km is the radius of the Earth)
+    private static final double NEAR_STORES_DISTANCE = cos(0.1 / 6371); // == 100m (6371km is the radius of the Earth)
 
     /**
      * Id to identify a location permission request.
@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
     private Location location;
     private AsyncTask<Void, Void, Void> locationTask;
     private MainViewModel mMainViewModel;
+    private LocationManager locationMgr;
 
 //    UI controllers such as activities and fragments are primarily intended to display UI data,
 //    react to user actions, or handle operating system communication, such as permission requests.
@@ -127,14 +128,7 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
 
 
         fab = findViewById(R.id.fab);
-        fab.setOnClickListener(v -> {
-            if (ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) == PERMISSION_GRANTED) {
-                findLocation();
-            } else {
-                requestLocationPermission();
-            }
-        });
-
+        fab.setOnClickListener(v -> findLocation());
 
         //
         //
@@ -149,37 +143,48 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
     }
 
     private void findLocation() {
-        LocationManager locationMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
-        if (!locationMgr.isProviderEnabled(GPS_PROVIDER)) {
-            // GPS is off on the device
+        locationMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
+        /* you must check whether you have dangerous permission every time */
+        if (ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
+            requestLocationPermission();
+        } else if (!locationMgr.isProviderEnabled(GPS_PROVIDER)) {
+            // TODO: GPS is off on the device; handle it
+        } else {
+            GpsListener gpsListener = new GpsListener();
+            locationMgr.requestLocationUpdates(GPS_PROVIDER, 0, 0, gpsListener);
         }
-        locationMgr.requestLocationUpdates(GPS_PROVIDER, 0, 0, new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                Log.d(TAG, location.toString());
-                MainActivity.this.location = location;
-                locationMgr.removeUpdates(this); // stop the app from using GPS
-//                    if (location.distanceTo(/* one of existent stores */) < 5) {
-//                        // the store is saved already
-//                    }
-                ItemListFragment itemsFragment = (ItemListFragment) getSupportFragmentManager().findFragmentById(R.id.container_fragment_items);
-                itemsFragment.enableCheckboxes();
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-                // TODO: handle gps disabled
-            }
-        });
     }
+
+    private void onLocationFound(Location location) {
+        Log.d(TAG, location.toString());
+        MainActivity.this.location = location;
+        ItemListFragment itemsFragment = (ItemListFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.container_fragment_items);
+        itemsFragment.enableCheckboxes();
+    }
+
+    private class GpsListener implements LocationListener {
+
+        @Override
+        public void onLocationChanged(Location location) {
+            locationMgr.removeUpdates(this); // stop the app from using GPS
+            onLocationFound(location);
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+            // TODO: handle gps disabled
+        }
+    }
+
 
     /**
      * Requests the Camera permission.
@@ -272,6 +277,7 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
         mMainViewModel.findNearStores(originCoordinates, NEAR_STORES_DISTANCE).observe(this,
                 nearStores -> {
                     if (nearStores.size() == 0) {
+                        // TODO: show a dialog to create the new store
                         Store store = new Store(new Coordinates(location), "Hasan", "baghali");
                         mMainViewModel.buy(item, store);
                     } else if (nearStores.size() == 1) {
