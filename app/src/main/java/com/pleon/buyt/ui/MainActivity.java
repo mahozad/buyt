@@ -39,17 +39,18 @@ import static android.location.LocationManager.GPS_PROVIDER;
 import static com.getkeepsafe.taptargetview.TapTarget.forView;
 import static java.lang.Math.cos;
 
-public class MainActivity extends AppCompatActivity implements ItemListFragment.Callable, AddItemFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements
+        ItemListFragment.Callable, AddItemFragment.OnFragmentInteractionListener {
 
+    // TODO: enable the user to disable location rationale dialog and always enters stores manually
     // TODO: What is Spherical Law of Cosines? (for locations)
     // TODO: Add the functionality to export and import all app data
     // TODO: Try to first provide an MVP (minimally viable product) version of the app
     // TODO: Implement the app with Flutter
+    // TODO: make viewing stores on map a premium feature
+    // TODO: maybe instead of a fragment, I can use full-screen dialog for adding new Item?
     // TODO: enable the user to change the radius that app uses to find near stores
     // TODO: add ability to remove all app data
-    /* TODO: Show a prompt (or an emoji or whatever) when there is no items in the home screen
-        to do this, add a new View to the layout and play with its setVisibility as appropriate
-    */
     // TODO: Add android.support.annotation to the app
     // TODO: for item_list_row prices user can enter an inexact value (range)
     // TODO: for every new version of the app display a what's new page on first app open
@@ -58,6 +59,11 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
     // TODO: Add ability (an icon) for each item to mark it as high priority
     // TODO: ability to add details (description) for each item
     // TODO: show a small progress bar of how much has been spent if user has set a limit on spends
+    /* FIXME: What happens if two stores are near each other and only one of them is saved in the app.
+       now if user has bought something from the other store, it is saved for the persisted store */
+    /* TODO: Show a prompt (or an emoji or whatever) when there is no items in the home screen
+        to do this, add a new View to the layout and play with its setVisibility as appropriate
+    */
     /* TODO: Do you have multiple tables in your database and find yourself copying the same Insert,
        Update and Delete methods? DAOs support inheritance, so create a BaseDao<T> class, and define
        your generic @Insert,... there. Have each DAO extend the BaseDao and add methods specific to each of them.
@@ -127,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
 
 
         fab = findViewById(R.id.fab);
-        fab.setOnClickListener(v -> findLocation());
+        fab.setOnClickListener(f -> findLocation());
 
         //
         //
@@ -192,11 +198,10 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
      * to grant the permission, otherwise it is requested directly.
      */
     private void requestLocationPermission() {
-        // When the user responds to your app's permission request, the system invokes your app's onRequestPermissionsResult() method
+        // When the user responds to the app's permission request, the system invokes app's onRequestPermissionsResult() method
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, ACCESS_FINE_LOCATION)) {
-            // TODO: here show a dialog or ... and provide the rationale to the user (you don't want to overwhelm the user with too much explanation) and then
-            // call ActivityCompat.requestPermissions(MainActivity.this, new String[]{ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
-            // after the dialog dismiss; you can detect dismissal by overriding DialogFragment.onCancel()
+            RationaleDialogFragment rationaleDialog = new RationaleDialogFragment();
+            rationaleDialog.show(getSupportFragmentManager(), "RATIONALE_DIALOG");
         } else {
             // Location permission has not been granted yet. Request it directly.
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
@@ -212,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements ItemListFragment.
                     findLocation();
                 } else {
                     // permission denied, boo! Disable the functionality that depends on this permission.
-                } // no need of break; here
+                } // break; not needed here
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
