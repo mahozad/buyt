@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements
      */
     private static final int REQUEST_LOCATION_PERMISSION = 1;
 
-    private FloatingActionButton fab;
+    private FloatingActionButton mFab;
     private BottomAppBar mBottomAppBar;
     private Location location;
     private AsyncTask<Void, Void, Void> locationTask;
@@ -132,8 +132,8 @@ public class MainActivity extends AppCompatActivity implements
         graph.addSeries(series);
 
 
-        fab = findViewById(R.id.fab);
-        fab.setOnClickListener(f -> findLocation());
+        mFab = findViewById(R.id.fab);
+        mFab.setOnClickListener(fab -> findLocation());
 
         //
         //
@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements
         // When the user responds to the app's permission request, the system invokes app's onRequestPermissionsResult() method
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, ACCESS_FINE_LOCATION)) {
             RationaleDialogFragment rationaleDialog = new RationaleDialogFragment();
-            rationaleDialog.show(getSupportFragmentManager(), "RATIONALE_DIALOG");
+            rationaleDialog.show(getSupportFragmentManager(), "LOCATION_RATIONALE_DIALOG");
         } else {
             // Location permission has not been granted yet. Request it directly.
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
@@ -245,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements
                 transaction.replace(R.id.container_fragment_items, newFragment).addToBackStack(null).commit();
 
                 mBottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
-                fab.setImageResource(R.drawable.ic_done);
+                mFab.setImageResource(R.drawable.ic_done);
                 mBottomAppBar.setNavigationIcon(null); // causes the fab animation to not run
                 mBottomAppBar.replaceMenu(R.menu.menu_add_item);
 
