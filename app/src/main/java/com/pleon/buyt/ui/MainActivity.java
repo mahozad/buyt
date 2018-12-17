@@ -54,19 +54,19 @@ public class MainActivity extends AppCompatActivity implements
     // TODO: Add android.support.annotation to the app
     // TODO: for item_list_row prices user can enter an inexact value (range)
     // TODO: for every new version of the app display a what's new page on first app open
-    // TODO: convert the app architecture to MVVM
+    // DONE: convert the app architecture to MVVM
     // TODO: use loaders to get data from database?
     // TODO: Add ability (an icon) for each item to mark it as high priority
     // TODO: ability to add details (description) for each item
     // TODO: show a small progress bar of how much has been spent if user has set a limit on spends
     /* FIXME: What happens if two stores are near each other and only one of them is saved in the app.
-       now if user has bought something from the other store, it is saved for the persisted store */
+       ~ now if user has bought something from the other store, it is saved for the persisted store */
     /* TODO: Show a prompt (or an emoji or whatever) when there is no items in the home screen
-        to do this, add a new View to the layout and play with its setVisibility as appropriate
+       ~ to do this, add a new View to the layout and play with its setVisibility as appropriate
     */
     /* TODO: Do you have multiple tables in your database and find yourself copying the same Insert,
-       Update and Delete methods? DAOs support inheritance, so create a BaseDao<T> class, and define
-       your generic @Insert,... there. Have each DAO extend the BaseDao and add methods specific to each of them.
+       ~ Update and Delete methods? DAOs support inheritance, so create a BaseDao<T> class, and define
+       ~ your generic @Insert,... there. Have each DAO extend the BaseDao and add methods specific to each of them.
     */
 
     // If want to replace a fragment as the whole activity pass android.R.id.content to fragment manager
