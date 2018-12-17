@@ -1,58 +1,73 @@
 package com.pleon.buyt.database.repository;
 
-import android.app.Application;
+import android.content.Context;
 import android.os.AsyncTask;
 
 import com.pleon.buyt.database.AppDatabase;
 import com.pleon.buyt.database.dao.StoreDao;
 import com.pleon.buyt.model.Store;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 public class StoreRepository {
 
-    private MutableLiveData<Long> mInsertedStoreId = new MutableLiveData<>();
-    private StoreDao mStoreDao;
-//    private LiveData<List<Store>> mAllStores;
+    private static volatile StoreRepository sInstance;
+    private static StoreDao mStoreDao;
+    private MutableLiveData<Store> mLatestCreatedStore = new MutableLiveData<>();
 
-    public StoreRepository(Application application) {
-        mStoreDao = AppDatabase.getDatabase(application).storeDao();
-//        mAllStores = mStoreDao.getAll();
+    private StoreRepository() {
     }
 
-    // this does not need to be run in separate thread because it returns LiveData
-//    public LiveData<List<Store>> getAll() {
-//        return mAllStores;
-//    }
-
-    public MutableLiveData<Long> insert(Store store) {
-        new InsertAsyncTask(mStoreDao, this).execute(store);
-        return mInsertedStoreId;
+    public static StoreRepository getInstance(Context appContext) {
+        if (sInstance == null) {
+            synchronized (StoreRepository.class) {
+                if (sInstance == null) {
+                    sInstance = new StoreRepository();
+                    mStoreDao = AppDatabase.getDatabase(appContext).storeDao();
+                }
+            }
+        }
+        return sInstance;
     }
 
-    private void setInsertedStoreId(long id) {
-        mInsertedStoreId.postValue(id);
+    public void insert(Store store, boolean publishRequired) {
+        new InsertAsyncTask(mStoreDao, this, publishRequired).execute(store);
     }
 
-    private static class InsertAsyncTask extends AsyncTask<Store, Void, Long> {
+    public LiveData<Store> getLatestCreatedStore() {
+        return mLatestCreatedStore;
+    }
+
+    private void setLatestCreatedStore(Store store) {
+        mLatestCreatedStore.setValue(store);
+    }
+
+    private static class InsertAsyncTask extends AsyncTask<Store, Void, Store> {
 
         private StoreDao mAsyncTaskDao;
         private StoreRepository delegate;
+        private boolean publishRequired;
 
-        InsertAsyncTask(StoreDao dao, StoreRepository repository) {
-            mAsyncTaskDao = dao;
-            delegate = repository;
+        InsertAsyncTask(StoreDao mAsyncTaskDao, StoreRepository delegate, boolean publishRequired) {
+            this.mAsyncTaskDao = mAsyncTaskDao;
+            this.delegate = delegate;
+            this.publishRequired = publishRequired;
         }
 
         @Override
-        protected Long doInBackground(Store... params) {
+        protected Store doInBackground(Store... stores) {
             // returns id of the new inserted store
-            return mAsyncTaskDao.insert(params[0]);
+            long storeId = mAsyncTaskDao.insert(stores[0]);
+            stores[0].setId(storeId);
+            return stores[0];
         }
 
         @Override
-        protected void onPostExecute(Long id) {
-            delegate.setInsertedStoreId(id);
+        protected void onPostExecute(Store store) {
+            if (publishRequired) {
+                delegate.setLatestCreatedStore(store);
+            }
         }
     }
 }

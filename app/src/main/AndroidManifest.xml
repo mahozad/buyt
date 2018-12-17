@@ -26,6 +26,7 @@
         <activity
             android:name=".ui.AddItemActivity"
             android:parentActivityName=".ui.MainActivity" />
+        <activity android:name=".ui.CreateStoreActivity"></activity>
     </application>
 
 </manifest>

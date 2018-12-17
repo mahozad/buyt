@@ -1,6 +1,7 @@
 package com.pleon.buyt.ui;
 
 import android.content.Context;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,11 +10,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.pleon.buyt.R;
+import com.pleon.buyt.model.Coordinates;
 import com.pleon.buyt.model.Store;
 import com.pleon.buyt.viewmodel.StoreViewModel;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 /**
@@ -26,10 +27,7 @@ import androidx.lifecycle.ViewModelProviders;
  */
 public class CreateStoreFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static Location sStoreLocation;
 
     private Button mAddButton;
 
@@ -39,12 +37,13 @@ public class CreateStoreFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static CreateStoreFragment newInstance() {
+    public static CreateStoreFragment newInstance(Location storeLocation) {
+        Bundle args = new Bundle();
+        args.putParcelable("LOCATION", storeLocation);
+
         CreateStoreFragment fragment = new CreateStoreFragment();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-//        fragment.setArguments(args);
+        fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -52,21 +51,24 @@ public class CreateStoreFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
+            sStoreLocation = getArguments().getParcelable("LOCATION");
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_store, container, false);
+
         mAddButton = view.findViewById(R.id.addStoreButton);
         mAddButton.setOnClickListener(button -> {
-            EditText name = view.findViewById(R.id.storeName);
-            EditText category = view.findViewById(R.id.storeCategory);
-            Store store = new Store(null, name.getText().toString(), category.getText().toString());
-            // get the same ViewModel as the containing activity
-            ViewModelProviders.of((FragmentActivity) mListener).get(StoreViewModel.class).setCreatedStore(store);
+            String name = ((EditText) view.findViewById(R.id.storeName)).getText().toString();
+            String category = ((EditText) view.findViewById(R.id.storeCategory)).getText().toString();
+            Coordinates coordinates = new Coordinates(sStoreLocation);
+
+            Store store = new Store(coordinates, name, category);
+
+            ViewModelProviders.of(this).get(StoreViewModel.class).insertForObserver(store);
+            getActivity().finish();
         });
         return view;
     }

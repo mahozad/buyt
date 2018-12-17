@@ -1,5 +1,6 @@
 package com.pleon.buyt.ui;
 
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -9,7 +10,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomappbar.BottomAppBar;
@@ -23,7 +23,6 @@ import com.pleon.buyt.database.AppDatabase;
 import com.pleon.buyt.model.Coordinates;
 import com.pleon.buyt.model.Item;
 import com.pleon.buyt.viewmodel.MainViewModel;
-import com.pleon.buyt.viewmodel.StoreViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -243,6 +242,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.container_fragment_items, addItemFragment)
+                        /*.setCustomAnimations()*/
                         .addToBackStack(null).commit();
 
                 mBottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
@@ -250,8 +250,8 @@ public class MainActivity extends AppCompatActivity implements
                 mBottomAppBar.setNavigationIcon(null); // causes the fab animation to not run
                 mBottomAppBar.replaceMenu(R.menu.menu_add_item);
 
-                View chartView = findViewById(R.id.container_fragment_chart);
-                chartView.setVisibility(View.GONE); // TODO: maybe replacing the fragment is a better practice
+//                View chartView = findViewById(R.id.container_fragment_chart);
+//                chartView.setVisibility(View.GONE); // TODO: maybe replacing the fragment is a better practice
                 break;
             case android.R.id.home: /* If you use setSupportActionBar() to set up the BottomAppBar
              you can handle the navigation menu click by checking if the menu item id is android.R.id.home. */
@@ -277,13 +277,12 @@ public class MainActivity extends AppCompatActivity implements
         mMainViewModel.findNearStores(originCoordinates, NEAR_STORES_DISTANCE).observe(this,
                 nearStores -> {
                     if (nearStores.size() == 0) {
-                        ViewModelProviders.of(this).get(StoreViewModel.class)
-                                .getCreatedStore()
+                        ViewModelProviders.of(this).get(MainViewModel.class)
+                                .getLatestCreatedStore()
                                 .observe(this, store -> mMainViewModel.buy(item, store));
-                        Fragment createStoreFragment = CreateStoreFragment.newInstance();
-                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.container_fragment_items, createStoreFragment)
-                                .addToBackStack(null).commit();
+                        Intent intent = new Intent(this, CreateStoreActivity.class);
+                        intent.putExtra("LOCATION", location);
+                        startActivity(intent);
                     } else if (nearStores.size() == 1) {
                         mMainViewModel.buy(item, nearStores.get(0));
                     } else {
