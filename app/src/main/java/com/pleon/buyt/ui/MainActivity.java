@@ -22,8 +22,8 @@ import com.pleon.buyt.R;
 import com.pleon.buyt.database.AppDatabase;
 import com.pleon.buyt.model.Coordinates;
 import com.pleon.buyt.model.Item;
-import com.pleon.buyt.model.Store;
 import com.pleon.buyt.viewmodel.MainViewModel;
+import com.pleon.buyt.viewmodel.StoreViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -40,7 +40,8 @@ import static com.getkeepsafe.taptargetview.TapTarget.forView;
 import static java.lang.Math.cos;
 
 public class MainActivity extends AppCompatActivity implements
-        ItemListFragment.Callable, AddItemFragment.OnFragmentInteractionListener {
+        ItemListFragment.Callable, AddItemFragment.OnFragmentInteractionListener,
+        CreateStoreFragment.OnFragmentInteractionListener {
 
     // TODO: enable the user to disable location rationale dialog and always enters stores manually
     // TODO: What is Spherical Law of Cosines? (for locations)
@@ -105,8 +106,7 @@ public class MainActivity extends AppCompatActivity implements
 
         mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
-        // FragmentManager of an activity is responsible for calling
-        // the lifecycle methods of the fragments in its list.
+        // FragmentManager of an activity is responsible for calling the lifecycle methods of the fragments in its list.
         FragmentManager fragMgr = getSupportFragmentManager();
         Fragment itemsFragment = fragMgr.findFragmentById(R.id.container_fragment_items);
         // fragMgr saves the list of fragments when activity is destroyed and then retrieves them
@@ -239,10 +239,11 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add:
-                Fragment newFragment = AddItemFragment.newInstance();
+                Fragment addItemFragment = AddItemFragment.newInstance();
 
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.container_fragment_items, newFragment).addToBackStack(null).commit();
+                transaction.replace(R.id.container_fragment_items, addItemFragment)
+                        .addToBackStack(null).commit();
 
                 mBottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
                 mFab.setImageResource(R.drawable.ic_done);
@@ -264,12 +265,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        // save any permanent data that you have not saved yet
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
 //        locationTask.cancel(true);
@@ -282,14 +277,17 @@ public class MainActivity extends AppCompatActivity implements
         mMainViewModel.findNearStores(originCoordinates, NEAR_STORES_DISTANCE).observe(this,
                 nearStores -> {
                     if (nearStores.size() == 0) {
-                        // TODO: show a dialog to create the new store
-                        Store store = new Store(new Coordinates(location), "Hasan", "baghali");
-                        mMainViewModel.buy(item, store);
+                        ViewModelProviders.of(this).get(StoreViewModel.class)
+                                .getCreatedStore()
+                                .observe(this, store -> mMainViewModel.buy(item, store));
+                        Fragment createStoreFragment = CreateStoreFragment.newInstance();
+                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.container_fragment_items, createStoreFragment)
+                                .addToBackStack(null).commit();
                     } else if (nearStores.size() == 1) {
                         mMainViewModel.buy(item, nearStores.get(0));
                     } else {
                         // TODO: show a dialog to choose from stores
-
                     }
                 }
         );
@@ -297,6 +295,11 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void onStoreCreated(long storeId) {
 
     }
 }

@@ -2,29 +2,26 @@ package com.pleon.buyt.viewmodel;
 
 import android.app.Application;
 
-import com.pleon.buyt.database.repository.StoreRepository;
 import com.pleon.buyt.model.Store;
 
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 public class StoreViewModel extends AndroidViewModel {
 
-    private StoreRepository mRepository;
-
-//    private LiveData<List<Store>> mAllStores;
+    private MutableLiveData<Store> createdStore;
 
     public StoreViewModel(Application application) {
         super(application);
-        mRepository = new StoreRepository(application);
-//        mAllStores = mRepository.getAll();
+        createdStore = new MutableLiveData<>();
     }
 
-//    public LiveData<List<Store>> getAll() {
-//        return mAllStores;
-//    }
+    public LiveData<Store> getCreatedStore() {
+        return createdStore;
+    }
 
-    public MutableLiveData<Long> insert(Store store) {
-        return mRepository.insert(store);
+    public void setCreatedStore(Store store) {
+        createdStore.setValue(store);
     }
 }
