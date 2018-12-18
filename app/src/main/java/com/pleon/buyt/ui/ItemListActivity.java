@@ -22,7 +22,7 @@ import com.pleon.buyt.R;
 import com.pleon.buyt.database.AppDatabase;
 import com.pleon.buyt.model.Coordinates;
 import com.pleon.buyt.model.Item;
-import com.pleon.buyt.viewmodel.MainViewModel;
+import com.pleon.buyt.viewmodel.ItemListViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -38,27 +38,29 @@ import static android.location.LocationManager.GPS_PROVIDER;
 import static com.getkeepsafe.taptargetview.TapTarget.forView;
 import static java.lang.Math.cos;
 
-public class MainActivity extends AppCompatActivity implements
+public class ItemListActivity extends AppCompatActivity implements
         ItemListFragment.Callable, AddItemFragment.OnFragmentInteractionListener,
         CreateStoreFragment.OnFragmentInteractionListener {
 
-    // TODO: enable the user to disable location rationale dialog and always enters stores manually
+    // FIXME: Correct all names and ids according to best practices
+    // TODO: Use butter knife to declare activity views and view handlers
+    // TODO: Enable the user to disable location rationale dialog and always enters stores manually
     // TODO: What is Spherical Law of Cosines? (for locations)
     // TODO: Add the functionality to export and import all app data
     // TODO: Try to first provide an MVP (minimally viable product) version of the app
     // TODO: Implement the app with Flutter
-    // TODO: make viewing stores on map a premium feature
-    // TODO: maybe instead of a fragment, I can use full-screen dialog for adding new Item?
-    // TODO: enable the user to change the radius that app uses to find near stores
-    // TODO: add ability to remove all app data
+    // TODO: Make viewing stores on map a premium feature
+    // TODO: Maybe instead of a fragment, I can use full-screen dialog for adding new Item?
+    // TODO: Enable the user to change the radius that app uses to find near stores
+    // TODO: Add ability to remove all app data
     // TODO: Add android.support.annotation to the app
-    // TODO: for item_list_row prices user can enter an inexact value (range)
-    // TODO: for every new version of the app display a what's new page on first app open
-    // DONE: convert the app architecture to MVVM
-    // TODO: use loaders to get data from database?
+    // TODO: For item_list_row prices user can enter an inexact value (range)
+    // TODO: For every new version of the app display a what's new page on first app open
+    // DONE: Convert the app architecture to MVVM
+    // TODO: Use loaders to get data from database?
     // TODO: Add ability (an icon) for each item to mark it as high priority
-    // TODO: ability to add details (description) for each item
-    // TODO: show a small progress bar of how much has been spent if user has set a limit on spends
+    // TODO: Ability to add details (description) for each item
+    // TODO: Show a small progress bar of how much has been spent if user has set a limit on spends
     /* FIXME: What happens if two stores are near each other and only one of them is saved in the app.
        ~ now if user has bought something from the other store, it is saved for the persisted store */
     /* TODO: Show a prompt (or an emoji or whatever) when there is no items in the home screen
@@ -77,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements
     // • make your fragments subclass "android.app.fragment" instead of the support one
     // • to get the fragment manager, call getFragmentManager() instead of getSupportFragment...
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "ItemListActivity";
     private static final double NEAR_STORES_DISTANCE = cos(0.1 / 6371); // == 100m (6371km is the radius of the Earth)
 
     /**
@@ -89,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements
     private BottomAppBar mBottomAppBar;
     private Location location;
     private AsyncTask<Void, Void, Void> locationTask;
-    private MainViewModel mMainViewModel;
+    private ItemListViewModel mItemListViewModel;
 
 //    UI controllers such as activities and fragments are primarily intended to display UI data,
 //    react to user actions, or handle operating system communication, such as permission requests.
@@ -97,13 +99,13 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_item_list);
 
         mBottomAppBar = findViewById(R.id.bottom_bar);
         setSupportActionBar(mBottomAppBar);
         Log.d(TAG, "bottom app bar created");
 
-        mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mItemListViewModel = ViewModelProviders.of(this).get(ItemListViewModel.class);
 
         // FragmentManager of an activity is responsible for calling the lifecycle methods of the fragments in its list.
         FragmentManager fragMgr = getSupportFragmentManager();
@@ -161,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private void onLocationFound(Location location) {
         Log.d(TAG, location.toString());
-        MainActivity.this.location = location;
+        ItemListActivity.this.location = location;
         ItemListFragment itemsFragment = (ItemListFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.container_fragment_items);
         itemsFragment.enableCheckboxes();
@@ -203,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements
             rationaleDialog.show(getSupportFragmentManager(), "LOCATION_RATIONALE_DIALOG");
         } else {
             // Location permission has not been granted yet. Request it directly.
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
+            ActivityCompat.requestPermissions(ItemListActivity.this, new String[]{ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
         }
     }
 
@@ -274,17 +276,17 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onItemCheckboxClicked(Item item) {
         Coordinates originCoordinates = new Coordinates(location);
-        mMainViewModel.findNearStores(originCoordinates, NEAR_STORES_DISTANCE).observe(this,
+        mItemListViewModel.findNearStores(originCoordinates, NEAR_STORES_DISTANCE).observe(this,
                 nearStores -> {
                     if (nearStores.size() == 0) {
-                        ViewModelProviders.of(this).get(MainViewModel.class)
+                        ViewModelProviders.of(this).get(ItemListViewModel.class)
                                 .getLatestCreatedStore()
-                                .observe(this, store -> mMainViewModel.buy(item, store));
+                                .observe(this, store -> mItemListViewModel.buy(item, store));
                         Intent intent = new Intent(this, CreateStoreActivity.class);
                         intent.putExtra("LOCATION", location);
                         startActivity(intent);
                     } else if (nearStores.size() == 1) {
-                        mMainViewModel.buy(item, nearStores.get(0));
+                        mItemListViewModel.buy(item, nearStores.get(0));
                     } else {
                         // TODO: show a dialog to choose from stores
                     }

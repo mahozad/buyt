@@ -39,7 +39,6 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
     @Override
     public void onBindViewHolder(final ItemHolder holder, int position) {
         if (mItems != null) {
-
             holder.mItem = mItems.get(position);
             holder.mNameTextView.setText(mItems.get(position).getName());
             holder.mPriceTextView.setText(mItems.get(position).getPrice());

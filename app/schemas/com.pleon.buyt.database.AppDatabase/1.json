@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "ae871e9882cd618a36e74ccc1794e005",
+    "identityHash": "7edc8161abb2856f39e0387df3bdaaa6",
     "entities": [
       {
         "tableName": "Item",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `purchaseId` INTEGER NOT NULL, `name` TEXT, `price` TEXT, `volume` REAL NOT NULL, `bought` INTEGER NOT NULL, `category` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `purchaseId` INTEGER NOT NULL, `name` TEXT, `price` TEXT, `volume` REAL NOT NULL, `bought` INTEGER NOT NULL, `category` TEXT, `highPriority` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -49,6 +49,12 @@
             "columnName": "category",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "highPriority",
+            "columnName": "highPriority",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -174,7 +180,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"ae871e9882cd618a36e74ccc1794e005\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"7edc8161abb2856f39e0387df3bdaaa6\")"
     ]
   }
 }

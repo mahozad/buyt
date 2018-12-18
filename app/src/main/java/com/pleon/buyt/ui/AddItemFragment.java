@@ -11,7 +11,7 @@ import android.widget.EditText;
 
 import com.pleon.buyt.R;
 import com.pleon.buyt.model.Item;
-import com.pleon.buyt.viewmodel.MainViewModel;
+import com.pleon.buyt.viewmodel.ItemListViewModel;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -46,7 +46,7 @@ public class AddItemFragment extends Fragment {
     private EditText nameField;
     private EditText priceField;
     private Button addButton;
-    private MainViewModel mMainViewModel;
+    private ItemListViewModel mItemListViewModel;
 
     public AddItemFragment() {
         // Required empty public constructor
@@ -86,11 +86,11 @@ public class AddItemFragment extends Fragment {
         nameField = view.findViewById(R.id.name);
         priceField = view.findViewById(R.id.price);
         addButton = view.findViewById(R.id.button_add);
-        mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mItemListViewModel = ViewModelProviders.of(this).get(ItemListViewModel.class);
 
         addButton.setOnClickListener(button -> {
             Item item = new Item(nameField.getText().toString(), priceField.getText().toString(), 0, "");
-            mMainViewModel.insertItem(item);
+            mItemListViewModel.insertItem(item);
 //            getActivity().finish();
         });
         return view;

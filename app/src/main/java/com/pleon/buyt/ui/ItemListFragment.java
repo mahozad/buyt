@@ -9,7 +9,7 @@ import android.widget.CheckBox;
 
 import com.pleon.buyt.R;
 import com.pleon.buyt.model.Item;
-import com.pleon.buyt.viewmodel.MainViewModel;
+import com.pleon.buyt.viewmodel.ItemListViewModel;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -37,7 +37,7 @@ public class ItemListFragment extends Fragment {
     private Callable mHostActivity;
     private RecyclerView mItemRecyclerView;
     private ItemListAdapter adapter;
-    private MainViewModel mMainViewModel;
+    private ItemListViewModel mItemListViewModel;
     private int itemListCurrentSize;
 
     /**
@@ -74,8 +74,8 @@ public class ItemListFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
 
-        mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        mMainViewModel.getAll().observe(this, items -> adapter.setItems(items));
+        mItemListViewModel = ViewModelProviders.of(this).get(ItemListViewModel.class);
+        mItemListViewModel.getAll().observe(this, items -> adapter.setItems(items));
 
         // the root and only element in this fragment is a RecyclerView
         mItemRecyclerView = (RecyclerView) view;
