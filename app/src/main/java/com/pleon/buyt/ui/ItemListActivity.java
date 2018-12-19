@@ -42,6 +42,12 @@ public class ItemListActivity extends AppCompatActivity implements
         ItemListFragment.Callable, AddItemFragment.OnFragmentInteractionListener,
         CreateStoreFragment.OnFragmentInteractionListener {
 
+    // TODO: Convert the main screen layout to ConstraintLayout and animate it (it seems possible with the help of guidelines)
+    // TODO: Collapse the chart a little in main screen when scrolling down (with coordinatorLayout)
+    // TODO: extract margins and dimensions into xml files
+    // TODO: Add ability to select a date to see its costs
+    // TODO: Dark material colors: https://stackoverflow.com/q/36915508
+    // TODO: for the item list to only one item be expanded see https://stackoverflow.com/q/27203817/8583692
     // FIXME: Correct all names and ids according to best practices
     // TODO: Use butter knife to declare activity views and view handlers
     // TODO: Enable the user to disable location rationale dialog and always enters stores manually
@@ -257,6 +263,9 @@ public class ItemListActivity extends AppCompatActivity implements
                 break;
             case android.R.id.home: /* If you use setSupportActionBar() to set up the BottomAppBar
              you can handle the navigation menu click by checking if the menu item id is android.R.id.home. */
+
+                // to change its theme to dark or light, we need to set "bottomSheetDialogTheme"
+                // item to "@style/Theme.MaterialComponents.BottomSheetDialog" in application theme
                 BottomSheetDialogFragment bottomDrawerFragment = BottomDrawerFragment.newInstance();
                 bottomDrawerFragment.show(getSupportFragmentManager(), "alaki");
                 break;
