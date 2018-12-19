@@ -1,64 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.ItemListActivity">
+    android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/container_fragment_chart"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@color/colorAccent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <com.jjoe64.graphview.GraphView
+        <FrameLayout
+            android:id="@+id/container_fragment_chart"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:id="@+id/graph" />
-    </FrameLayout>
+            android:background="@color/colorPrimary">
 
-    <FrameLayout
-        android:id="@+id/container_fragment_items"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/container_fragment_chart">
+            <com.jjoe64.graphview.GraphView
+                android:id="@+id/graph"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-    </FrameLayout>
+        </FrameLayout>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/coordinatorLayout"
-        android:layout_width="match_parent"
-        android:layout_height="124dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_buyt"
-            app:fabSize="normal"
-            app:layout_anchor="@id/bottom_bar"
-            app:maxImageSize="48dp" />
-
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottom_bar"
+        <FrameLayout
+            android:id="@+id/container_fragment_items"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:backgroundTint="#000000"
-            app:fabAlignmentMode="center"
-            app:hideOnScroll="true"
-            app:navigationIcon="@drawable/ic_nav_menu" />
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_buyt"
+        app:fabSize="normal"
+        app:layout_anchor="@id/bottom_bar"
+        app:maxImageSize="42dp" />
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottom_bar"
+        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+        android:backgroundTint="#212121"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:fabAlignmentMode="center"
+        app:hideOnScroll="true"
+        app:navigationIcon="@drawable/ic_nav_menu" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

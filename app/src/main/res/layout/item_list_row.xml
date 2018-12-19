@@ -1,43 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<!-- padding for the last item is set in the recyclerView -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:orientation="horizontal"
-    tools:layout_editor_absoluteY="25dp">
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="0dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
 
-    <TextView
-        android:id="@+id/item_name"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:textAppearance="?attr/textAppearanceListItem"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/item_price"
-        app:layout_constraintStart_toEndOf="@+id/checkBox"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Item name" />
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/item_price"
-        android:layout_width="100dp"
-        android:layout_height="match_parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:gravity="center"
-        tools:text="525000" />
+        <TextView
+            android:id="@+id/item_name"
+            style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/item_volume"
+            app:layout_constraintEnd_toStartOf="@+id/imageButton"
+            app:layout_constraintStart_toEndOf="@+id/checkBox"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Item name" />
 
-    <CheckBox
-        android:id="@+id/checkBox"
-        android:enabled="false"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:buttonTint="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/item_volume"
+            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/description"
+            app:layout_constraintEnd_toEndOf="@+id/item_name"
+            app:layout_constraintStart_toStartOf="@+id/item_name"
+            app:layout_constraintTop_toBottomOf="@+id/item_name"
+            tools:text="Item volume" />
 
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginBottom="8dp"
+            android:buttonTint="@color/colorPrimary"
+            android:enabled="false"
+            app:layout_constraintBottom_toTopOf="@+id/description"
+            app:layout_constraintStart_toEndOf="@+id/storeIcon"
+            app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/storeIcon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/sym_def_app_icon" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.225"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Description" />
+
+        <!-- android:background="?attr/selectableItemBackgroundBorderless" to add ripple effect -->
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_expand" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
