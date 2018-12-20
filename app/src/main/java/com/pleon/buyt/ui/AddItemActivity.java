@@ -21,7 +21,7 @@ public class AddItemActivity extends AppCompatActivity implements OnFragmentInte
         Fragment addItemFragment = fragMgr.findFragmentById(R.id.container_fragment_add_item);
         if (addItemFragment == null) {
             fragMgr.beginTransaction()
-                    .add(R.id.container_fragment_add_item, new AddItemFragment())
+                    .add(R.id.container_fragment_add_item, AddItemFragment.newInstance())
                     .commit();
         }
     }
