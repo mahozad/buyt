@@ -127,6 +127,11 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
         public TextView mDescription;
         public Item mItem; // the item_list_row object itself
 
+
+        // just for the purpose of delete swipe
+        public MaterialCardView swipeBackground;
+        public MaterialCardView foreground;
+
         public ItemHolder(View view) {
             super(view);
             mView = view;
@@ -134,6 +139,10 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
             mCard = view.findViewById(R.id.itemCard);
             mExpand = view.findViewById(R.id.expandButton);
             mDescription = view.findViewById(R.id.description);
+
+
+            swipeBackground = view.findViewById(R.id.background);
+            foreground = view.findViewById(R.id.itemCard);
         }
     }
 }

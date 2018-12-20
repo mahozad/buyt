@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 
 import com.pleon.buyt.R;
 import com.pleon.buyt.model.Item;
@@ -13,6 +12,7 @@ import com.pleon.buyt.viewmodel.ItemListViewModel;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
@@ -58,8 +58,8 @@ public class ItemListFragment extends Fragment {
     public void enableCheckboxes() {
         for (int i = 0; i < mItemRecyclerView.getChildCount(); i++) {
             View view = mItemRecyclerView.getLayoutManager().findViewByPosition(i);
-            CheckBox checkbox = view.findViewById(R.id.checkBox);
-            checkbox.setEnabled(true);
+//            CheckBox checkbox = view.findViewById(R.id.checkBox);
+//            checkbox.setEnabled(true);
         }
     }
 
@@ -79,6 +79,40 @@ public class ItemListFragment extends Fragment {
 
         // the root and only element in this fragment is a RecyclerView
         mItemRecyclerView = (RecyclerView) view;
+
+
+        // swipe to delete item
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT,
+                (viewHolder, direction, position) -> {
+                    if (viewHolder instanceof ItemListAdapter.ItemHolder) {
+                        // get the removed item name to display it in snack bar
+//                        String name = cartList.get(viewHolder.getAdapterPosition()).getName();
+
+                        // backup of removed item for undo purpose
+//                        final Item deletedItem = cartList.get(viewHolder.getAdapterPosition());
+//                        final int deletedIndex = viewHolder.getAdapterPosition();
+
+                        // remove the item from recycler view
+//                        mAdapter.removeItem(viewHolder.getAdapterPosition());
+
+                        // showing snack bar with Undo option
+//                        Snackbar snackbar = Snackbar
+//                                .make(coordinatorLayout, name + " removed from cart!", Snackbar.LENGTH_LONG);
+//                        snackbar.setAction("UNDO", new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//
+//                                // undo is selected, restore the deleted item
+//                                mAdapter.restoreItem(deletedItem, deletedIndex);
+//                            }
+//                        });
+//                        snackbar.setActionTextColor(Color.YELLOW);
+//                        snackbar.show();
+                    }
+                });
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mItemRecyclerView);
+
+
         adapter = new ItemListAdapter(mHostActivity, getActivity().getApplicationContext());
         mItemRecyclerView.setAdapter(adapter);
         return view;
