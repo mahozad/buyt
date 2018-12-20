@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- padding for the last item is set in the recyclerView -->
+<!-- padding for the last item has been set in the recyclerView -->
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/itemCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="8dp"
@@ -24,11 +25,11 @@
             style="@style/TextAppearance.MaterialComponents.Headline6"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toTopOf="@+id/item_volume"
-            app:layout_constraintEnd_toStartOf="@+id/imageButton"
-            app:layout_constraintStart_toEndOf="@+id/checkBox"
+            app:layout_constraintEnd_toStartOf="@+id/urgentIcon"
+            app:layout_constraintStart_toEndOf="@+id/storeIcon"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Item name" />
 
@@ -43,18 +44,6 @@
             app:layout_constraintStart_toStartOf="@+id/item_name"
             app:layout_constraintTop_toBottomOf="@+id/item_name"
             tools:text="Item volume" />
-
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginBottom="8dp"
-            android:buttonTint="@color/colorPrimary"
-            android:enabled="false"
-            app:layout_constraintBottom_toTopOf="@+id/description"
-            app:layout_constraintStart_toEndOf="@+id/storeIcon"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/storeIcon"
@@ -82,15 +71,28 @@
 
         <!-- android:background="?attr/selectableItemBackgroundBorderless" to add ripple effect -->
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/expandButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
+            android:layout_marginBottom="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_expand" />
+
+        <ImageView
+            android:id="@+id/urgentIcon"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/description"
+            app:layout_constraintEnd_toStartOf="@+id/expandButton"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_quick" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

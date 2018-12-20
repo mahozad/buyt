@@ -2,15 +2,16 @@ package com.pleon.buyt.model;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 /**
- * An item_list_row to buy.
+ * An item to buy.
  */
 @Entity
 public class Item {
 
-//    model classes attributes don't need to start with 'm'
+    //  model class attribute names don't need to start with 'm'
 
     @PrimaryKey(autoGenerate = true)
     private long id; // TODO: change type of id here to int
@@ -20,15 +21,23 @@ public class Item {
 
     private final String name;
     private final String price;
+    private String description;
+    private String category;
     private double volume;
     private boolean bought;
-    private String category;
+    private boolean urgent;
+
+    @Ignore // for display purposes
+    private boolean expanded;
+    @Ignore // for display purposes
+    private boolean selected;
 
     public Item(String name, String price, double volume, String category) {
         this.name = name;
         this.price = price;
         this.volume = volume;
         this.category = category;
+        description = "I am a description set in the constructor";
     }
 
     public long getId() {
@@ -77,5 +86,37 @@ public class Item {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public boolean isUrgent() {
+        return urgent;
+    }
+
+    public void setUrgent(boolean urgent) {
+        this.urgent = urgent;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean isExpanded() {
+        return expanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }
