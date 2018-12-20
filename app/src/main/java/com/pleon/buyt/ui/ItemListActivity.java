@@ -29,7 +29,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -42,6 +41,17 @@ public class ItemListActivity extends AppCompatActivity implements
         ItemListFragment.Callable, AddItemFragment.OnFragmentInteractionListener,
         CreateStoreFragment.OnFragmentInteractionListener {
 
+    /*
+     *  FIXME: if the bottomAppBar is hidden (by scrolling) and then you expand an Item, the fab jumps up
+     *  The bug seems to have nothing to do with the expanding animation and persists even without that animation
+     */
+    // FIXME: Use srcCompat instead of src in layout files
+    // FIXME: If number of Items to buy is less than e.g. 4 then don't show the "items to buy"
+    // FIXME: What if someone forgets to tick items of a shop and then later wants to tick them
+    // the app can be described as both a t0do app and an expense manager and also a shopping list app
+    // After clicking Buyt fab button it converts to a d0ne button and then by clicking on each item it is highlighted and finally click d0ne
+    // TODO: Embed ads in between of regular items
+    // TODO: Add snap to center for recyclerView items
     // TODO: Convert the main screen layout to ConstraintLayout and animate it (it seems possible with the help of guidelines)
     // TODO: Collapse the chart a little in main screen when scrolling down (with coordinatorLayout)
     // TODO: extract margins and dimensions into xml files
@@ -68,13 +78,13 @@ public class ItemListActivity extends AppCompatActivity implements
     // TODO: Ability to add details (description) for each item
     // TODO: Show a small progress bar of how much has been spent if user has set a limit on spends
     /* FIXME: What happens if two stores are near each other and only one of them is saved in the app.
-       ~ now if user has bought something from the other store, it is saved for the persisted store */
+       now if user has bought something from the other store, it is saved for the persisted store */
     /* TODO: Show a prompt (or an emoji or whatever) when there is no items in the home screen
-       ~ to do this, add a new View to the layout and play with its setVisibility as appropriate
+       to do this, add a new View to the layout and play with its setVisibility as appropriate
     */
     /* TODO: Do you have multiple tables in your database and find yourself copying the same Insert,
-       ~ Update and Delete methods? DAOs support inheritance, so create a BaseDao<T> class, and define
-       ~ your generic @Insert,... there. Have each DAO extend the BaseDao and add methods specific to each of them.
+       Update and Delete methods? DAOs support inheritance, so create a BaseDao<T> class, and define
+       your generic @Insert,... there. Have each DAO extend the BaseDao and add methods specific to each of them.
     */
 
     // If want to replace a fragment as the whole activity pass android.R.id.content to fragment manager
@@ -198,7 +208,6 @@ public class ItemListActivity extends AppCompatActivity implements
         }
     }
 
-
     /**
      * Requests the Camera permission.
      * If the permission has been denied previously, a the user will be prompted
@@ -248,15 +257,17 @@ public class ItemListActivity extends AppCompatActivity implements
             case R.id.action_add:
                 Fragment addItemFragment = AddItemFragment.newInstance();
 
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.container_fragment_items, addItemFragment)
-                        /*.setCustomAnimations()*/
-                        .addToBackStack(null).commit();
+//                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//                transaction.replace(R.id.container_fragment_items, addItemFragment)
+//                        /*.setCustomAnimations()*/
+//                        .addToBackStack(null).commit();
+//                mBottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
+//                mFab.setImageResource(R.drawable.ic_done);
+//                mBottomAppBar.setNavigationIcon(null); // causes the fab animation to not run
+//                mBottomAppBar.replaceMenu(R.menu.menu_add_item);
 
-                mBottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
-                mFab.setImageResource(R.drawable.ic_done);
-                mBottomAppBar.setNavigationIcon(null); // causes the fab animation to not run
-                mBottomAppBar.replaceMenu(R.menu.menu_add_item);
+                Intent intent = new Intent(this, AddItemActivity.class);
+                startActivity(intent);
 
 //                View chartView = findViewById(R.id.container_fragment_chart);
 //                chartView.setVisibility(View.GONE); // TODO: maybe replacing the fragment is a better practice
