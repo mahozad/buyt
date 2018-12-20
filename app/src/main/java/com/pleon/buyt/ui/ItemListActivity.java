@@ -50,6 +50,10 @@ public class ItemListActivity extends AppCompatActivity implements
     // FIXME: What if someone forgets to tick items of a shop and then later wants to tick them
     // the app can be described as both a t0do app and an expense manager and also a shopping list app
     // After clicking Buyt fab button it converts to a d0ne button and then by clicking on each item it is highlighted and finally click d0ne
+    // TODO: Add an order icon to bottomAppBar so when taped, the cards show a handle to order them
+    // TODO: For margins of cards, Texts, ... see the page of that component in design section of material.io
+    // TODO: Difference between <ImageView>s to <AppcompatImageView>s ?
+    // TODO: hide the reorder items icon in bottomAppBar when number of items is not too many
     // TODO: Embed ads in between of regular items
     // TODO: Add snap to center for recyclerView items
     // TODO: Convert the main screen layout to ConstraintLayout and animate it (it seems possible with the help of guidelines)
