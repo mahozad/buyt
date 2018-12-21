@@ -56,4 +56,8 @@ public class ItemListViewModel extends AndroidViewModel {
     public void buy(Item item, Store store) {
         mMainRepository.buy(item, store);
     }
+
+    public void deleteItem(Item item) {
+        mMainRepository.deleteItem(item);
+    }
 }

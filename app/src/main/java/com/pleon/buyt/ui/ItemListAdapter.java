@@ -87,7 +87,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
         // which callback method is the best for setting these listeners? (e.g. onCreate or...?)
 
         holder.mCard.setOnClickListener(card -> {
-            // TODO: this can be d0ne with color state list
+            // TODO: this can be done with color state list
             int color = ContextCompat.getColor(mContext, R.color.colorPrimaryDark);
             ((MaterialCardView) card).setCardBackgroundColor(color);
             holder.mItem.setSelected(true);
@@ -115,6 +115,15 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
     public void setItems(List<Item> items) {
         mItems = items;
         notifyDataSetChanged();
+    }
+
+    public Item getItem(int position) {
+        return mItems.get(position);
+    }
+
+    public void removeItem(int position) {
+        mItems.remove(position);
+        notifyItemRemoved(position);
     }
 
     // Adapter (and RecyclerView) works with ViewHolders instead of direct Views.

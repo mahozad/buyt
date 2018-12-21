@@ -1,10 +1,15 @@
 package com.pleon.buyt.ui;
 
+import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+
+import static android.util.TypedValue.COMPLEX_UNIT_DIP;
+import static android.util.TypedValue.applyDimension;
 
 /**
  * ItemTouchHelper is a powerful utility that takes care of everything we need to add both
@@ -16,10 +21,16 @@ import androidx.recyclerview.widget.RecyclerView;
 public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 
     private RecyclerItemTouchHelperListener listener;
+    // in pixel (so it should be calculated to be same distance on all devices)
+    private float maxSwipeDistance;
 
     public RecyclerItemTouchHelper(int dragDirs, int swipeDirs, RecyclerItemTouchHelperListener listener) {
         super(dragDirs, swipeDirs);
         this.listener = listener;
+
+        float dp = 88f; // max distance in dp unit
+        DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
+        maxSwipeDistance = applyDimension(COMPLEX_UNIT_DIP, dp, displayMetrics);
     }
 
     @Override
@@ -56,10 +67,14 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                             float dX, float dY, int actionState, boolean isCurrentlyActive) {
 
-        // TODO: here I can also detect how much swipe is d0ne (with dX or dY) and for example show
+        // TODO: here I can also detect how much swipe is done (with dX or dY) and for example show
         // different icon or change the color of icon when reached a threshold
 
         View foregroundView = ((ItemListAdapter.ItemHolder) viewHolder).foreground;
+
+        // Here I have limited swipe distance. For full swipe, just remove this line.
+        // Also if the speed of swipe should be reduced, dX can be divided by for example 2
+        dX = dX > -maxSwipeDistance ? dX : -maxSwipeDistance;
 
         getDefaultUIUtil().onDraw(c, recyclerView, foregroundView, dX, dY,
                 actionState, isCurrentlyActive);

@@ -38,7 +38,6 @@ public class ItemListFragment extends Fragment {
     private RecyclerView mItemRecyclerView;
     private ItemListAdapter adapter;
     private ItemListViewModel mItemListViewModel;
-    private int itemListCurrentSize;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -89,15 +88,16 @@ public class ItemListFragment extends Fragment {
 //                        String name = cartList.get(viewHolder.getAdapterPosition()).getName();
 
                         // backup of removed item for undo purpose
-//                        final Item deletedItem = cartList.get(viewHolder.getAdapterPosition());
-//                        final int deletedIndex = viewHolder.getAdapterPosition();
+                        Item deletedItem = adapter.getItem(position);
+                        int deletedIndex = viewHolder.getAdapterPosition();
 
                         // remove the item from recycler view
-//                        mAdapter.removeItem(viewHolder.getAdapterPosition());
+                        adapter.removeItem(viewHolder.getAdapterPosition());
+//                        mItemListViewModel.deleteItem(adapter.getItem(position));
 
                         // showing snack bar with Undo option
 //                        Snackbar snackbar = Snackbar
-//                                .make(coordinatorLayout, name + " removed from cart!", Snackbar.LENGTH_LONG);
+//                                .make(, name + " removed from cart!", Snackbar.LENGTH_LONG);
 //                        snackbar.setAction("UNDO", new View.OnClickListener() {
 //                            @Override
 //                            public void onClick(View view) {
@@ -116,24 +116,6 @@ public class ItemListFragment extends Fragment {
         adapter = new ItemListAdapter(mHostActivity, getActivity().getApplicationContext());
         mItemRecyclerView.setAdapter(adapter);
         return view;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        // store the current size of the items in the list
-        itemListCurrentSize = adapter.getItemCount();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        // Check if size of the items has changed (a new item_list_row is added). This is to ensure that
-        // the user has not entered to the "Add Activity" and then immediately pressed back button
-        // which causes the notifyItemInserted() method to throw exception
-        if (itemListCurrentSize != adapter.getItemCount()) {
-            adapter.notifyItemInserted(adapter.getItemCount() - 1);
-        }
     }
 
     @Override
