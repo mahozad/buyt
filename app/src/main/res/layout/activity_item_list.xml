@@ -61,6 +61,7 @@
         android:layout_gravity="bottom"
         android:backgroundTint="#212121"
         app:fabAlignmentMode="center"
+        app:fabCradleMargin="6dp"
         app:hideOnScroll="true"
         app:navigationIcon="@drawable/ic_nav_menu" />
 
