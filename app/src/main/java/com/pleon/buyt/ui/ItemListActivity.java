@@ -45,15 +45,17 @@ public class ItemListActivity extends AppCompatActivity implements
      *  FIXME: if the bottomAppBar is hidden (by scrolling) and then you expand an Item, the fab jumps up
      *  The bug seems to have nothing to do with the expanding animation and persists even without that animation
      */
-    // FIXME: Use srcCompat instead of src in layout files
-    // FIXME: If number of Items to buy is less than e.g. 4 then don't show the "items to buy"
+    // FIXME: Use srcCompat instead of src in layout files?
+    // FIXME: If number of Items to buy is less than e.g. 4 then don't show the "items to buy" prompt
+    // DONE: the bottom shadow (elevation) of item cards is broken. Maybe because of swipe-to-delete background layer
     // FIXME: What if someone forgets to tick items of a shop and then later wants to tick them
     // the app can be described as both a t0do app and an expense manager and also a shopping list app
-    // After clicking Buyt fab button it converts to a d0ne button and then by clicking on each item it is highlighted and finally click d0ne
-    // TODO: Add an order icon to bottomAppBar so when taped, the cards show a handle to order them
-    // TODO: For margins of cards, Texts, ... see the page of that component in design section of material.io
+    // After clicking Buyt fab button it converts to a done button and then by clicking on each item it is highlighted and finally click done
+    // TODO: Add an reorder icon to bottomAppBar so when taped, the cards show a handle to order them
+    // TODO: Disable buyt fab button when there is no item
+    // TODO: For correct margins of cards, Texts, ... see the page of that component in design section of material.io
     // TODO: Difference between <ImageView>s to <AppcompatImageView>s ?
-    // TODO: hide the reorder items icon in bottomAppBar when number of items is not too many
+    // TODO: hide the reorder items icon in bottomAppBar when number of items is less than 2
     // TODO: Embed ads in between of regular items
     // TODO: Add snap to center for recyclerView items
     // TODO: Convert the main screen layout to ConstraintLayout and animate it (it seems possible with the help of guidelines)
@@ -64,14 +66,14 @@ public class ItemListActivity extends AppCompatActivity implements
     // TODO: for the item list to only one item be expanded see https://stackoverflow.com/q/27203817/8583692
     // FIXME: Correct all names and ids according to best practices
     // TODO: Use butter knife to declare activity views and view handlers
-    // TODO: Enable the user to disable location rationale dialog and always enters stores manually
+    // TODO: Enable the user to disable location rationale dialog and always enter stores manually
     // TODO: What is Spherical Law of Cosines? (for locations)
     // TODO: Add the functionality to export and import all app data
     // TODO: Try to first provide an MVP (minimally viable product) version of the app
     // TODO: Implement the app with Flutter
     // TODO: Make viewing stores on map a premium feature
     // TODO: Maybe instead of a fragment, I can use full-screen dialog for adding new Item?
-    // TODO: Enable the user to change the radius that app uses to find near stores
+    // TODO: Enable the user to change the radius that app uses to find near stores in settings
     // TODO: Add ability to remove all app data
     // TODO: Add android.support.annotation to the app
     // TODO: For item_list_row prices user can enter an inexact value (range)
