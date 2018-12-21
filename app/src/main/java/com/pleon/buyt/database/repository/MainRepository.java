@@ -55,8 +55,8 @@ public class MainRepository { // TODO: make this class singleton
         return mPurchaseDao.insert(purchase);
     }
 
-    public void updateItem(Item item) {
-        mItemDao.update(item);
+    public void deleteItem(Item item) {
+        new DeleteItemTask(mItemDao).execute(item);
     }
 
     public LiveData<List<Store>> findNearStores(Coordinates origin, double maxDistance) {
@@ -79,6 +79,20 @@ public class MainRepository { // TODO: make this class singleton
         @Override
         protected Void doInBackground(Item... items) {
             itemDao.insert(items[0]);
+            return null;
+        }
+    }
+    private static class DeleteItemTask extends AsyncTask<Item, Void, Void> {
+
+        private ItemDao itemDao;
+
+        DeleteItemTask(ItemDao itemDao) {
+            this.itemDao = itemDao;
+        }
+
+        @Override
+        protected Void doInBackground(Item... items) {
+            itemDao.delete(items[0]);
             return null;
         }
     }

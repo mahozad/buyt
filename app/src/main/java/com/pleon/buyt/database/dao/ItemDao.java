@@ -9,7 +9,6 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
-import androidx.room.Transaction;
 import androidx.room.Update;
 
 import static androidx.room.OnConflictStrategy.REPLACE;
@@ -31,10 +30,10 @@ public interface ItemDao {
     long insert(Item item);
 
     @Update
-    void update(Item items);
+    void update(Item item);
 
     @Delete
-    void delete(Item items);
+    void delete(Item item);
 
     /* Annotating a method with @Transaction makes sure that all database operations you’re
     executing in that method will be run inside one transaction.
