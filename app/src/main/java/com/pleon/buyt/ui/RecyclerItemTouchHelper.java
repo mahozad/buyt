@@ -28,21 +28,24 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
         super(dragDirs, swipeDirs);
         this.listener = listener;
 
-        float dp = 88f; // max distance in dp unit
+        float dp = 88f; // max dist in dp unit
         DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
-        maxSwipeDistance = applyDimension(COMPLEX_UNIT_DIP, dp, displayMetrics);
+        maxSwipeDistance = applyDimension(COMPLEX_UNIT_DIP, dp, displayMetrics); // max dist in px unit
     }
 
     @Override
     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
         // Here is if you want to move items up/down
-        return false;
+        if (viewHolder.getAdapterPosition() != target.getAdapterPosition()) {
+            listener.onMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+        }
+        return true;
     }
 
     @Override
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
         if (viewHolder != null) {
-            final View foregroundView = ((ItemListAdapter.ItemHolder) viewHolder).swipeBackground;
+            View foregroundView = ((ItemListAdapter.ItemHolder) viewHolder).cardBackground;
 
             getDefaultUIUtil().onSelected(foregroundView);
         }
@@ -52,14 +55,14 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     public void onChildDrawOver(Canvas c, RecyclerView recyclerView,
                                 RecyclerView.ViewHolder viewHolder, float dX, float dY,
                                 int actionState, boolean isCurrentlyActive) {
-        final View foregroundView = ((ItemListAdapter.ItemHolder) viewHolder).foreground;
+        View foregroundView = ((ItemListAdapter.ItemHolder) viewHolder).cardForeground;
         getDefaultUIUtil().onDrawOver(c, recyclerView, foregroundView, dX, dY,
                 actionState, isCurrentlyActive);
     }
 
     @Override
     public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-        final View foregroundView = ((ItemListAdapter.ItemHolder) viewHolder).foreground;
+        View foregroundView = ((ItemListAdapter.ItemHolder) viewHolder).cardForeground;
         getDefaultUIUtil().clearView(foregroundView);
     }
 
@@ -70,7 +73,14 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
         // TODO: here I can also detect how much swipe is done (with dX or dY) and for example show
         // different icon or change the color of icon when reached a threshold
 
-        View foregroundView = ((ItemListAdapter.ItemHolder) viewHolder).foreground;
+        View foregroundView = null;
+        if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
+            // if it's drag n drop then move the whole card
+            foregroundView = ((ItemListAdapter.ItemHolder) viewHolder).mCardContainer;
+        } else if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+            // if it's swipe then just move the foreground
+            foregroundView = ((ItemListAdapter.ItemHolder) viewHolder).cardForeground;
+        }
 
         // Here I have limited swipe distance. For full swipe, just remove this line.
         // Also if the speed of swipe should be reduced, dX can be divided by for example 2
@@ -91,6 +101,9 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     }
 
     public interface RecyclerItemTouchHelperListener {
+
+        void onMoved(int oldPosition, int newPosition);
+
         void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position);
     }
 }

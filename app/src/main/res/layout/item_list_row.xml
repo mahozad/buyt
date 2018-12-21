@@ -4,6 +4,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -13,7 +14,7 @@
     <!--Note: "app:cardUseCompatPadding" property is used because it is used in the foreground card.
     see below Note 2 for description -->
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/background"
+        android:id="@+id/cardBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"
@@ -47,7 +48,7 @@
     <!-- Note 2: for the bottom shadow of card to show (and not clipped by parent) set the
     "app:cardUseCompatPadding" property to "true" -->
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/itemCard"
+        android:id="@+id/cardForeground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

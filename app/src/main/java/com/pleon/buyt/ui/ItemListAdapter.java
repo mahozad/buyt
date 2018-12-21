@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -72,9 +73,9 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
 
             // Restore selected state of the Item
             if (holder.mItem.isSelected()) {
-                holder.mCard.setCardBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimaryDark));
+                holder.cardForeground.setCardBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimaryDark));
             } else {
-                holder.mCard.setCardBackgroundColor(defaultCardBgColor);
+                holder.cardForeground.setCardBackgroundColor(defaultCardBgColor);
             }
 
             // Restore expanded state of the item
@@ -86,7 +87,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
 
         // which callback method is the best for setting these listeners? (e.g. onCreate or...?)
 
-        holder.mCard.setOnClickListener(card -> {
+        holder.mCardContainer.setOnClickListener(card -> {
             // TODO: this can be done with color state list
             int color = ContextCompat.getColor(mContext, R.color.colorPrimaryDark);
             ((MaterialCardView) card).setCardBackgroundColor(color);
@@ -112,6 +113,10 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
         return mItems.size();
     }
 
+    public List<Item> getItems() {
+        return mItems;
+    }
+
     public void setItems(List<Item> items) {
         mItems = items;
         notifyDataSetChanged();
@@ -119,6 +124,10 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
 
     public Item getItem(int position) {
         return mItems.get(position);
+    }
+
+    public void addItem(Item item,int position) {
+        mItems.add(position, item);
     }
 
     public void removeItem(int position) {
@@ -131,27 +140,27 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
 
         public final View mView; // the view (row layout) for the item_list_row
         public final TextView mNameTextView;
-        public MaterialCardView mCard;
+        public FrameLayout mCardContainer;
         public ImageButton mExpand;
         public TextView mDescription;
         public Item mItem; // the item_list_row object itself
 
 
         // just for the purpose of delete swipe
-        public MaterialCardView swipeBackground;
-        public MaterialCardView foreground;
+        public MaterialCardView cardBackground;
+        public MaterialCardView cardForeground;
 
         public ItemHolder(View view) {
             super(view);
             mView = view;
             mNameTextView = view.findViewById(R.id.item_name);
-            mCard = view.findViewById(R.id.itemCard);
+            mCardContainer = view.findViewById(R.id.cardContainer);
             mExpand = view.findViewById(R.id.expandButton);
             mDescription = view.findViewById(R.id.description);
 
 
-            swipeBackground = view.findViewById(R.id.background);
-            foreground = view.findViewById(R.id.itemCard);
+            cardBackground = view.findViewById(R.id.cardBackground);
+            cardForeground = view.findViewById(R.id.cardForeground);
         }
     }
 }

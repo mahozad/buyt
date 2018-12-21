@@ -10,10 +10,16 @@ import com.pleon.buyt.R;
 import com.pleon.buyt.model.Item;
 import com.pleon.buyt.viewmodel.ItemListViewModel;
 
+import java.util.Collections;
+
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+
+import static androidx.recyclerview.widget.ItemTouchHelper.DOWN;
+import static androidx.recyclerview.widget.ItemTouchHelper.START;
+import static androidx.recyclerview.widget.ItemTouchHelper.UP;
 
 /**
  * A fragment representing a list of Items.
@@ -81,21 +87,34 @@ public class ItemListFragment extends Fragment {
 
 
         // swipe to delete item
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT,
-                (viewHolder, direction, position) -> {
-                    if (viewHolder instanceof ItemListAdapter.ItemHolder) {
-                        // get the removed item name to display it in snack bar
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(UP | DOWN, START,
+
+                new RecyclerItemTouchHelper.RecyclerItemTouchHelperListener() {
+                    @Override
+                    public void onMoved(int oldPosition, int newPosition) {
+                        Collections.swap(adapter.getItems(), newPosition, oldPosition);
+//                        Item targetItem = adapter.getItem(oldPosition);
+//                        User user = new User(targetUser);
+//                        adapter.addItem(targetItem, newPosition);
+//                        adapter.removeItem(oldPosition);
+                        adapter.notifyItemMoved(oldPosition, newPosition);
+                    }
+
+                    @Override
+                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+                        if (viewHolder instanceof ItemListAdapter.ItemHolder) {
+                            // get the removed item name to display it in snack bar
 //                        String name = cartList.get(viewHolder.getAdapterPosition()).getName();
 
-                        // backup of removed item for undo purpose
-                        Item deletedItem = adapter.getItem(position);
-                        int deletedIndex = viewHolder.getAdapterPosition();
+                            // backup of removed item for undo purpose
+                            Item deletedItem = adapter.getItem(position);
+                            int deletedIndex = viewHolder.getAdapterPosition();
 
-                        // remove the item from recycler view
-                        adapter.removeItem(viewHolder.getAdapterPosition());
+                            // remove the item from recycler view
+                            adapter.removeItem(viewHolder.getAdapterPosition());
 //                        mItemListViewModel.deleteItem(adapter.getItem(position));
 
-                        // showing snack bar with Undo option
+                            // showing snack bar with Undo option
 //                        Snackbar snackbar = Snackbar
 //                                .make(, name + " removed from cart!", Snackbar.LENGTH_LONG);
 //                        snackbar.setAction("UNDO", new View.OnClickListener() {
@@ -108,8 +127,10 @@ public class ItemListFragment extends Fragment {
 //                        });
 //                        snackbar.setActionTextColor(Color.YELLOW);
 //                        snackbar.show();
+                        }
                     }
                 });
+
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mItemRecyclerView);
 
 
