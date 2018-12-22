@@ -87,11 +87,10 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
 
         // which callback method is the best for setting these listeners? (e.g. onCreate or...?)
 
-        holder.mCardContainer.setOnClickListener(card -> {
+        holder.mCardContainer.setOnClickListener(container -> {
             // TODO: this can be done with color state list
             int color = ContextCompat.getColor(mContext, R.color.colorPrimaryDark);
-            ((MaterialCardView) card).setCardBackgroundColor(color);
-            holder.mItem.setSelected(true);
+            holder.cardForeground.setCardBackgroundColor(color);
         });
 
         holder.mExpand.setOnClickListener(expBtn -> {
@@ -126,7 +125,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
         return mItems.get(position);
     }
 
-    public void addItem(Item item,int position) {
+    public void addItem(Item item, int position) {
         mItems.add(position, item);
     }
 

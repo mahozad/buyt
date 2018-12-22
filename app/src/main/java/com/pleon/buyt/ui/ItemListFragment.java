@@ -44,6 +44,7 @@ public class ItemListFragment extends Fragment {
     private RecyclerView mItemRecyclerView;
     private ItemListAdapter adapter;
     private ItemListViewModel mItemListViewModel;
+    private RecyclerItemTouchHelper itemTouchHelperCallback;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -86,8 +87,8 @@ public class ItemListFragment extends Fragment {
         mItemRecyclerView = (RecyclerView) view;
 
 
-        // swipe to delete item
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(UP | DOWN, START,
+        // for swipe-to-delete and drag-n-drop of item
+        itemTouchHelperCallback = new RecyclerItemTouchHelper(UP | DOWN, START,
 
                 new RecyclerItemTouchHelper.RecyclerItemTouchHelperListener() {
                     @Override
@@ -153,5 +154,9 @@ public class ItemListFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mHostActivity = null;
+    }
+
+    public void toggleEditMode() {
+        itemTouchHelperCallback.toggleEditMode();
     }
 }

@@ -48,6 +48,14 @@ public class ItemListActivity extends AppCompatActivity implements
     // FIXME: Use srcCompat instead of src in layout files?
     // FIXME: If number of Items to buy is less than e.g. 4 then don't show the "items to buy" prompt
     // DONE: the bottom shadow (elevation) of item cards is broken. Maybe because of swipe-to-delete background layer
+    // FIXME: when dragging items, in some situations** item moves from behind of other cards
+    // **: this happens if the card being dragged over by this card, has itself dragged over this card
+    // in the past and its default (starting) position was after this card.
+    // steps to reproduce: drag card1 over card2 and then drop it (you can also drop it to its previous position).
+    // now drag card2 over card1. Then again drag card1 over card2; it moves behind of card2 and in front of other cards.
+    // to fix it see
+    // https://github.com/brianwernick/RecyclerExt/blob/master/library/src/main/java/com/devbrackets/android/recyclerext/adapter/helper/SimpleElevationItemTouchHelperCallback.java
+
     // FIXME: What if someone forgets to tick items of a shop and then later wants to tick them
     // the app can be described as both a t0do app and an expense manager and also a shopping list app
     // After clicking Buyt fab button it converts to a done button and then by clicking on each item it is highlighted and finally click done
@@ -277,6 +285,11 @@ public class ItemListActivity extends AppCompatActivity implements
 
 //                View chartView = findViewById(R.id.container_fragment_chart);
 //                chartView.setVisibility(View.GONE); // TODO: maybe replacing the fragment is a better practice
+                break;
+            case R.id.action_reorder:
+                ItemListFragment itemListFragment = (ItemListFragment)
+                        getSupportFragmentManager().findFragmentById(R.id.container_fragment_items);
+                itemListFragment.toggleEditMode();
                 break;
             case android.R.id.home: /* If you use setSupportActionBar() to set up the BottomAppBar
              you can handle the navigation menu click by checking if the menu item id is android.R.id.home. */
