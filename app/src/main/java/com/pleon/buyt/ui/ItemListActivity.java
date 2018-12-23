@@ -48,12 +48,13 @@ public class ItemListActivity extends AppCompatActivity implements
     // FIXME: Use srcCompat instead of src in layout files?
     // FIXME: If number of Items to buy is less than e.g. 4 then don't show the "items to buy" prompt
     // DONE: the bottom shadow (elevation) of item cards is broken. Maybe because of swipe-to-delete background layer
+
     // FIXME: when dragging items, in some situations** item moves from behind of other cards
-    // **: this happens if the card being dragged over by this card, has itself dragged over this card
-    // in the past and its default (starting) position was after this card.
+    // **: this happens if the card being dragged over by this card, has itself dragged over this card in the past.
     // steps to reproduce: drag card1 over card2 and then drop it (you can also drop it to its previous position).
     // now drag card2 over card1. Then again drag card1 over card2; it moves behind of card2 and in front of other cards.
-    // to fix it see
+    // NOTE: This is caused by "public void clearView..." method in ItemTouchHelperCallback class
+    // see the following to probably fix it:
     // https://github.com/brianwernick/RecyclerExt/blob/master/library/src/main/java/com/devbrackets/android/recyclerext/adapter/helper/SimpleElevationItemTouchHelperCallback.java
 
     // FIXME: What if someone forgets to tick items of a shop and then later wants to tick them
