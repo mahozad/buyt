@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static android.util.TypedValue.applyDimension;
+import static androidx.recyclerview.widget.ItemTouchHelper.DOWN;
+import static androidx.recyclerview.widget.ItemTouchHelper.START;
+import static androidx.recyclerview.widget.ItemTouchHelper.UP;
 
 /**
  * ItemTouchHelper is a powerful utility that takes care of everything we need to add both
@@ -19,15 +22,14 @@ import static android.util.TypedValue.applyDimension;
  * In order to use ItemTouchHelper, we’ll create an ItemTouchHelper.Callback.
  * This is the interface that allows us to listen for “move” and “swipe” events.
  */
-public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
+public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
-    private RecyclerItemTouchHelperListener listener;
+    private ItemTouchHelperListener listener;
     private boolean editModeEnabled = false; // for enable drag n drop of Items
     // in pixel (so it should be calculated to be same distance on all devices)
     private float maxSwipeDistance;
 
-    public RecyclerItemTouchHelper(int dragDirs, int swipeDirs, RecyclerItemTouchHelperListener listener) {
-        super(dragDirs, swipeDirs);
+    public ItemTouchHelperCallback(ItemTouchHelperListener listener) {
         this.listener = listener;
 
         float dp = 88f; // max dist in dp unit
@@ -35,26 +37,37 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
         this.maxSwipeDistance = applyDimension(COMPLEX_UNIT_DIP, dp, displayMetrics); // max dist in px unit
     }
 
+    // if you want to disable long-press-to-drag of items override this method and return false
+    // Note that if you want to completely disable drag-n-drop then override getMovementFlags()
+    /*@Override
+    public boolean isLongPressDragEnabled() {
+        return false;
+    }*/
+
+    // If you want to set how much swipe is considered done, override this method. Default is 0.5f.
+    /*@Override
+    public float getSwipeThreshold(@NonNull RecyclerView.ViewHolder viewHolder) {
+        return 0.5f;
+    }*/
+
     @Override
-    public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-        if (editModeEnabled) {
-            return super.getMovementFlags(recyclerView, viewHolder);
-        } else { // disable drag n drop of Items
-            return makeMovementFlags(0, getSwipeDirs(recyclerView, viewHolder));
-        }
+    public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+        int swipeFlags = START;
+        int dragFlags = editModeEnabled ? (UP | DOWN) : (0);
+        return makeMovementFlags(dragFlags, swipeFlags);
     }
 
     @Override
-    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-        if (viewHolder.getAdapterPosition() != target.getAdapterPosition()) {
-            listener.onMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder dragged, RecyclerView.ViewHolder target) {
+        if (dragged.getAdapterPosition() != target.getAdapterPosition()) {
+            listener.onMoved(dragged.getAdapterPosition(), target.getAdapterPosition());
         }
         return true;
     }
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-        listener.onSwiped(viewHolder, direction, viewHolder.getAdapterPosition());
+        listener.onSwiped(viewHolder, direction);
     }
 
     @Override
@@ -94,15 +107,14 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
         getDefaultUIUtil().onDraw(c, recyclerView, view, dX, dY, actionState, isCurrentlyActive);
     }
 
-
     public void toggleEditMode() {
         editModeEnabled = !editModeEnabled;
     }
 
-    public interface RecyclerItemTouchHelperListener {
+    public interface ItemTouchHelperListener {
 
         void onMoved(int oldPosition, int newPosition);
 
-        void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position);
+        void onSwiped(RecyclerView.ViewHolder viewHolder, int direction);
     }
 }

@@ -17,10 +17,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import static androidx.recyclerview.widget.ItemTouchHelper.DOWN;
-import static androidx.recyclerview.widget.ItemTouchHelper.START;
-import static androidx.recyclerview.widget.ItemTouchHelper.UP;
-
 /**
  * A fragment representing a list of Items.
  * <p/>
@@ -44,7 +40,7 @@ public class ItemListFragment extends Fragment {
     private RecyclerView mItemRecyclerView;
     private ItemListAdapter adapter;
     private ItemListViewModel mItemListViewModel;
-    private RecyclerItemTouchHelper itemTouchHelperCallback;
+    private ItemTouchHelperCallback itemTouchHelperCallback;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -88,34 +84,28 @@ public class ItemListFragment extends Fragment {
 
 
         // for swipe-to-delete and drag-n-drop of item
-        itemTouchHelperCallback = new RecyclerItemTouchHelper(UP | DOWN, START,
-
-                new RecyclerItemTouchHelper.RecyclerItemTouchHelperListener() {
+        itemTouchHelperCallback = new ItemTouchHelperCallback(
+                new ItemTouchHelperCallback.ItemTouchHelperListener() {
                     @Override
                     public void onMoved(int oldPosition, int newPosition) {
                         Collections.swap(adapter.getItems(), newPosition, oldPosition);
-//                        Item targetItem = adapter.getItem(oldPosition);
-//                        User user = new User(targetUser);
-//                        adapter.addItem(targetItem, newPosition);
-//                        adapter.removeItem(oldPosition);
                         adapter.notifyItemMoved(oldPosition, newPosition);
                     }
 
                     @Override
-                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-                        if (viewHolder instanceof ItemListAdapter.ItemHolder) {
-                            // get the removed item name to display it in snack bar
+                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                        // get the removed item name to display it in snack bar
 //                        String name = cartList.get(viewHolder.getAdapterPosition()).getName();
 
-                            // backup of removed item for undo purpose
-                            Item deletedItem = adapter.getItem(position);
-                            int deletedIndex = viewHolder.getAdapterPosition();
+                        // backup of removed item for undo purpose
+                        Item deletedItem = adapter.getItem(viewHolder.getAdapterPosition());
+                        int deletedIndex = viewHolder.getAdapterPosition();
 
-                            // remove the item from recycler view
-                            adapter.removeItem(viewHolder.getAdapterPosition());
+                        // remove the item from recycler view
+                        adapter.removeItem(viewHolder.getAdapterPosition());
 //                        mItemListViewModel.deleteItem(adapter.getItem(position));
 
-                            // showing snack bar with Undo option
+                        // showing snack bar with Undo option
 //                        Snackbar snackbar = Snackbar
 //                                .make(, name + " removed from cart!", Snackbar.LENGTH_LONG);
 //                        snackbar.setAction("UNDO", new View.OnClickListener() {
@@ -128,12 +118,10 @@ public class ItemListFragment extends Fragment {
 //                        });
 //                        snackbar.setActionTextColor(Color.YELLOW);
 //                        snackbar.show();
-                        }
                     }
                 });
 
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mItemRecyclerView);
-
 
         adapter = new ItemListAdapter(mHostActivity, getActivity().getApplicationContext());
         mItemRecyclerView.setAdapter(adapter);
