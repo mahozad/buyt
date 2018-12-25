@@ -36,6 +36,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
     private final int defaultCardBgColor = Color.parseColor("#424242");
     private Context mContext;
     private RecyclerView mRecyclerView;
+    private boolean editModeEnabled = false;
 
     public ItemListAdapter(ItemListFragment.Callable listener, Context context) {
         mListener = listener;
@@ -71,6 +72,13 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
             holder.mNameTextView.setText(mItems.get(position).getName());
             holder.mDescription.setText(mItems.get(position).getDescription());
 
+            // change expand icon to drag handler icon if in edit mode
+            if (editModeEnabled) {
+                holder.mExpandButton.setImageResource(R.drawable.ic_drag_handle);
+            } else {
+                holder.mExpandButton.setImageResource(R.drawable.ic_expand);
+            }
+
             // Restore selected state of the Item
             if (holder.mItem.isSelected()) {
                 holder.cardForeground.setCardBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimaryDark));
@@ -93,7 +101,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
             holder.cardForeground.setCardBackgroundColor(color);
         });
 
-        holder.mExpand.setOnClickListener(expBtn -> {
+        holder.mExpandButton.setOnClickListener(expBtn -> {
             if (holder.mDescription.getVisibility() == VISIBLE) {
                 holder.mDescription.setVisibility(GONE);
             } else {
@@ -134,16 +142,20 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
         notifyItemRemoved(position);
     }
 
+    public void toggleEditMode() {
+        editModeEnabled = !editModeEnabled;
+        notifyDataSetChanged();
+    }
+
     // Adapter (and RecyclerView) works with ViewHolders instead of direct Views.
     public class ItemHolder extends ViewHolder {
 
         public final View mView; // the view (row layout) for the item_list_row
         public final TextView mNameTextView;
         public FrameLayout mCardContainer;
-        public ImageButton mExpand;
+        public ImageButton mExpandButton;
         public TextView mDescription;
         public Item mItem; // the item_list_row object itself
-
 
         // just for the purpose of delete swipe
         public MaterialCardView cardBackground;
@@ -154,9 +166,8 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
             mView = view;
             mNameTextView = view.findViewById(R.id.item_name);
             mCardContainer = view.findViewById(R.id.cardContainer);
-            mExpand = view.findViewById(R.id.expandButton);
+            mExpandButton = view.findViewById(R.id.expandButton);
             mDescription = view.findViewById(R.id.description);
-
 
             cardBackground = view.findViewById(R.id.cardBackground);
             cardForeground = view.findViewById(R.id.cardForeground);

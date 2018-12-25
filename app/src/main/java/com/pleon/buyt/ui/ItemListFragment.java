@@ -145,6 +145,7 @@ public class ItemListFragment extends Fragment {
     }
 
     public void toggleEditMode() {
+        adapter.toggleEditMode();
         itemTouchHelperCallback.toggleEditMode();
     }
 }
