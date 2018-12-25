@@ -60,6 +60,9 @@ public class ItemListActivity extends AppCompatActivity implements
     // FIXME: What if someone forgets to tick items of a shop and then later wants to tick them
     // the app can be described as both a t0do app and an expense manager and also a shopping list app
     // After clicking Buyt fab button it converts to a done button and then by clicking on each item it is highlighted and finally click done
+
+    // TODO: For circular coloring of swipe background, see https://stackoverflow.com/q/46460978/8583692
+    // TODO: Use DiffUtil class (google it!) instead of calling notifyDataSetChanged() method of adapter
     // TODO: Add an reorder icon to bottomAppBar so when taped, the cards show a handle to order them
     // TODO: Disable buyt fab button when there is no item
     // TODO: For correct margins of cards, Texts, ... see the page of that component in design section of material.io
