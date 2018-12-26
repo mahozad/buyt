@@ -4,8 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <!-- To change its theme to dark or light, we need to set "bottomSheetDialogTheme"
-    item to "@style/Theme.MaterialComponents.BottomSheetDialog" in application theme -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
         android:layout_width="match_parent"
