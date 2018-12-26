@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/item_name"
                 style="@style/TextAppearance.MaterialComponents.Headline6"
                 android:layout_width="0dp"
@@ -78,7 +78,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Item name" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/item_volume"
                 style="@style/TextAppearance.MaterialComponents.Subtitle1"
                 android:layout_width="0dp"
@@ -90,7 +90,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/item_name"
                 tools:text="Item volume" />
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/storeIcon"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
@@ -100,7 +100,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@android:drawable/sym_def_app_icon" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
                 tools:text="Description" />
 
             <!-- android:background="?attr/selectableItemBackgroundBorderless" is to add ripple effect -->
-            <ImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/expandButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -127,7 +127,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_expand" />
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/urgentIcon"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
