@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,8 +37,7 @@ import static com.getkeepsafe.taptargetview.TapTarget.forView;
 import static java.lang.Math.cos;
 
 public class ItemListActivity extends AppCompatActivity implements
-        ItemListFragment.Callable, AddItemFragment.OnFragmentInteractionListener,
-        CreateStoreFragment.OnFragmentInteractionListener {
+        ItemListFragment.Callable, CreateStoreFragment.OnFragmentInteractionListener {
 
     /*
      *  FIXME: if the bottomAppBar is hidden (by scrolling) and then you expand an Item, the fab jumps up
@@ -61,6 +59,11 @@ public class ItemListActivity extends AppCompatActivity implements
     // the app can be described as both a t0do app and an expense manager and also a shopping list app
     // After clicking Buyt fab button it converts to a done button and then by clicking on each item it is highlighted and finally click done
 
+    // TODO: Add a separator (e.g. comma) in every 3 digits of price and other numeric fields
+    // TODO: Add option in settings to set the default item quantity in add new item activity (1 seems good)
+    // TODO: Reimplement item unit switch button with this approach: https://stackoverflow.com/a/48640424/8583692
+    // TODO: Add a functionality to merge another device data to a device (e.g. can merge all family spending data to father's phone)
+    // TODO: Add an action in bottomAppBar in Add Item activity to select a date for showing the item in home page
     // TODO: For circular coloring of swipe background, see https://stackoverflow.com/q/46460978/8583692
     // TODO: Use DiffUtil class (google it!) instead of calling notifyDataSetChanged() method of adapter
     // TODO: Add an reorder icon to bottomAppBar so when taped, the cards show a handle to order them
@@ -335,11 +338,6 @@ public class ItemListActivity extends AppCompatActivity implements
                     }
                 }
         );
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 
     @Override
