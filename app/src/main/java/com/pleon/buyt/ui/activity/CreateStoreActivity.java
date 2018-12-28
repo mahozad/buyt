@@ -1,9 +1,10 @@
-package com.pleon.buyt.ui;
+package com.pleon.buyt.ui.activity;
 
 import android.location.Location;
 import android.os.Bundle;
 
 import com.pleon.buyt.R;
+import com.pleon.buyt.ui.fragment.CreateStoreFragment;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
