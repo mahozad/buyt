@@ -137,7 +137,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/description"
                 app:layout_constraintEnd_toStartOf="@+id/expandButton"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_quick" />
+                app:srcCompat="@drawable/ic_urgent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
