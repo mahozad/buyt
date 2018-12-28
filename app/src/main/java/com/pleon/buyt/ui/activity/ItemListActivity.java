@@ -1,4 +1,4 @@
-package com.pleon.buyt.ui;
+package com.pleon.buyt.ui.activity;
 
 import android.content.Intent;
 import android.location.Location;
@@ -21,6 +21,11 @@ import com.pleon.buyt.R;
 import com.pleon.buyt.database.AppDatabase;
 import com.pleon.buyt.model.Coordinates;
 import com.pleon.buyt.model.Item;
+import com.pleon.buyt.ui.fragment.ItemListFragment;
+import com.pleon.buyt.ui.fragment.RationaleDialogFragment;
+import com.pleon.buyt.ui.fragment.AddItemFragment;
+import com.pleon.buyt.ui.fragment.BottomDrawerFragment;
+import com.pleon.buyt.ui.fragment.CreateStoreFragment;
 import com.pleon.buyt.viewmodel.ItemListViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -95,6 +100,7 @@ public class ItemListActivity extends AppCompatActivity implements
     // TODO: For every new version of the app display a what's new page on first app open
     // DONE: Convert the app architecture to MVVM
     // TODO: Use loaders to get data from database?
+    // TODO: Convert all ...left and ...right attributes to ...start and ...end
     // TODO: Add ability (an icon) for each item to mark it as high priority
     // TODO: Ability to add details (description) for each item
     // TODO: Show a small progress bar of how much has been spent if user has set a limit on spends
