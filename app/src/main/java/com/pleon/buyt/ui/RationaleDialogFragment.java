@@ -25,6 +25,7 @@ public class RationaleDialogFragment extends DialogFragment {
                 .Builder(getActivity()/*,android.R.style.Theme_DeviceDefault_Dialog*/).create();
         alertDialog.setTitle(getString(R.string.use_location_title)); // TODO: extract strings
         alertDialog.setMessage(getText(R.string.use_location_rationale)); // getText to preserve html formats
+        alertDialog.setIcon(R.drawable.ic_location_disabled);
         alertDialog.setButton(BUTTON_POSITIVE, getString(R.string.go_to_settings), (dialog, which) -> {
             // show app settings where user can click on Permissions and enable location permission
             Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);

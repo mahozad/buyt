@@ -10,7 +10,7 @@
         If enabled, you do not have to manually specify the store for each purchase.
         The permission could be toggled on in the <i>Permissions</i> section of the app settings.
     </string>
-    <string name="use_location_title">Use location services</string>
+    <string name="use_location_title">Location disabled</string>
     <string name="go_to_settings">GO TO SETTINGS</string>
     <string name="not_now">NOT NOW</string>
 
