@@ -1,4 +1,4 @@
-package com.pleon.buyt.ui;
+package com.pleon.buyt.ui.fragment;
 
 import android.content.Context;
 import android.location.Location;
