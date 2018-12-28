@@ -2,5 +2,5 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@drawable/ic_urgent_unchecked" android:state_checked="false" />
     <item android:drawable="@drawable/ic_urgent" android:state_checked="true" />
-    <item android:drawable="@drawable/ic_star" />
+    <item android:drawable="@drawable/ic_urgent" />
 </selector>
