@@ -1,20 +1,19 @@
 package com.pleon.buyt.ui;
 
-import android.content.Context;
-import android.net.Uri;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.DrawableContainer.DrawableContainerState;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.pleon.buyt.R;
-import com.pleon.buyt.model.Item;
-import com.pleon.buyt.viewmodel.ItemListViewModel;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,27 +25,8 @@ import androidx.lifecycle.ViewModelProviders;
  */
 public class AddItemFragment extends Fragment {
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
-
-    private OnFragmentInteractionListener mListener;
-
     private EditText nameField;
     private EditText priceField;
-    private Button addButton;
-    private ItemListViewModel mItemListViewModel;
 
     public AddItemFragment() {
         // Required empty public constructor
@@ -85,38 +65,38 @@ public class AddItemFragment extends Fragment {
 
         nameField = view.findViewById(R.id.name);
         priceField = view.findViewById(R.id.price);
-        addButton = view.findViewById(R.id.button_add);
-        mItemListViewModel = ViewModelProviders.of(this).get(ItemListViewModel.class);
 
-        addButton.setOnClickListener(button -> {
-            Item item = new Item(nameField.getText().toString(), priceField.getText().toString(), 0, "");
-            mItemListViewModel.insertItem(item);
-//            getActivity().finish();
-        });
+        RadioGroup radioGroup = view.findViewById(R.id.radio_group);
+        RadioButton[] radioButtons = new RadioButton[radioGroup.getChildCount()];
+        for (int i = 0; i < radioGroup.getChildCount(); i++) {
+            radioButtons[i] = (RadioButton) radioGroup.getChildAt(i);
+        }
+        view.findViewById(R.id.quantity).setOnFocusChangeListener((v, hasFocus) -> {
+                    // should set the new color for all radio buttons
+                    for (RadioButton radioButton : radioButtons) {
+                        StateListDrawable sld = (StateListDrawable) radioButton.getBackground();
+                        DrawableContainerState dcs = (DrawableContainerState) sld.getConstantState();
+                        // <color> element for checked state (<color> index 3 in unit_selector.xml)
+                        ColorDrawable checkedColor = (ColorDrawable) dcs.getChild(3);
+
+                        int newColor = getResources().getColor(hasFocus ? R.color.colorPrimary : R.color.unfocused);
+                        checkedColor.setColor(newColor);
+                    }
+                }
+        );
+
         return view;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+//    public Item getSubmittedItem() {
+//
+//    }
+
+    public String getItemName() {
+        return nameField.getText().toString();
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    public float getItemPrice() {
+        return Float.parseFloat(priceField.getText().toString());
     }
 }

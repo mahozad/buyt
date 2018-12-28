@@ -9,8 +9,45 @@
     <FrameLayout
         android:id="@+id/container_fragment_add_item"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" />
 
-    </FrameLayout>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_done"
+            app:fabSize="normal"
+            app:layout_anchor="@id/bottom_bar" />
+
+        <!-- android:gravity="start" is for the icons (wrapped in ActionViewMenu) to align to left -->
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottom_bar"
+            style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:backgroundTint="#212121"
+            android:gravity="start"
+            app:fabAlignmentMode="end"
+            app:fabCradleMargin="6dp">
+
+            <!-- container for action icons for aligning them on the left side. To align on the left
+                 set android:gravity="start" on the parent bar -->
+            <androidx.appcompat.widget.ActionMenuView
+                android:id="@+id/action_menu_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+        </com.google.android.material.bottomappbar.BottomAppBar>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

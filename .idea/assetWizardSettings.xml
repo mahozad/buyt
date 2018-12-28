@@ -67,7 +67,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_store_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_shopping_cart_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -79,8 +79,8 @@
                           <map>
                             <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_dollar" />
-                            <entry key="sourceFile" value="C:\Users\Mahdi\Downloads\noun_dollar_1919018.svg" />
+                            <entry key="outputName" value="ic_description" />
+                            <entry key="sourceFile" value="C:\Users\Mahdi\Downloads\noun_description_1371550.svg" />
                           </map>
                         </option>
                       </PersistentState>
