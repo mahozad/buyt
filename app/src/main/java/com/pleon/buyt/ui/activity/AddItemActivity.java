@@ -75,6 +75,8 @@ public class AddItemActivity extends AppCompatActivity implements AddItemFragmen
     public void onSubmit(Item item) {
         ItemListViewModel itemListViewModel = ViewModelProviders.of(this).get(ItemListViewModel.class);
         itemListViewModel.insertItem(item);
-        finish(); // fixme: how to be sure that item has been added to database?
+        // Calling finish() is safe here. We can be sure that the item will be added to database,
+        // because it is executed in a separate thread.
+        finish();
     }
 }
