@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.AddItemActivity">
+    tools:context=".ui.activity.AddItemActivity">
 
     <FrameLayout
         android:id="@+id/container_fragment_add_item"
@@ -40,7 +40,7 @@
             app:fabCradleMargin="6dp">
 
             <!-- container for action icons for aligning them on the left side. To align on the left
-                 set android:gravity="start" on the parent bar -->
+                 set android:gravity="start" in the parent -->
             <androidx.appcompat.widget.ActionMenuView
                 android:id="@+id/action_menu_view"
                 android:layout_width="wrap_content"

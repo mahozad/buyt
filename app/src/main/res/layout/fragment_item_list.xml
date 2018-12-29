@@ -14,5 +14,5 @@
     android:overScrollMode="never"
     android:paddingBottom="8dp"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    tools:context=".ui.ItemListFragment"
+    tools:context=".ui.fragment.ItemListFragment"
     tools:listitem="@layout/item_list_row" />
