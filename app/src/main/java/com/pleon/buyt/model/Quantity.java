@@ -29,4 +29,9 @@ public class Quantity {
     public void setUnit(Unit unit) {
         this.unit = unit;
     }
+
+    @Override
+    public String toString() {
+        return value + " " + unit.toString().toLowerCase();
+    }
 }
