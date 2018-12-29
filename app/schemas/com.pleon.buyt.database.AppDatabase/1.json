@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "f8ddb00b5e96bdece6493b6f0caade28",
+    "identityHash": "d7606b6b3da85d2e55d646988ae8fb33",
     "entities": [
       {
         "tableName": "Item",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `purchaseId` INTEGER NOT NULL, `name` TEXT, `volume` REAL NOT NULL, `category` TEXT, `description` TEXT, `price` REAL NOT NULL, `urgent` INTEGER NOT NULL, `bought` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `purchaseId` INTEGER NOT NULL, `storeId` INTEGER NOT NULL, `name` TEXT, `description` TEXT, `urgent` INTEGER NOT NULL, `bought` INTEGER NOT NULL, `price` INTEGER NOT NULL, `value` INTEGER, `unit` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -21,20 +21,14 @@
             "notNull": true
           },
           {
-            "fieldPath": "name",
-            "columnName": "name",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "volume",
-            "columnName": "volume",
-            "affinity": "REAL",
+            "fieldPath": "storeId",
+            "columnName": "storeId",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "category",
-            "columnName": "category",
+            "fieldPath": "name",
+            "columnName": "name",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -43,12 +37,6 @@
             "columnName": "description",
             "affinity": "TEXT",
             "notNull": false
-          },
-          {
-            "fieldPath": "price",
-            "columnName": "price",
-            "affinity": "REAL",
-            "notNull": true
           },
           {
             "fieldPath": "urgent",
@@ -61,6 +49,24 @@
             "columnName": "bought",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "price",
+            "columnName": "price",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "quantity.value",
+            "columnName": "value",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "quantity.unit",
+            "columnName": "unit",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -186,7 +192,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"f8ddb00b5e96bdece6493b6f0caade28\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"d7606b6b3da85d2e55d646988ae8fb33\")"
     ]
   }
 }

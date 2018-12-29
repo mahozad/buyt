@@ -1,5 +1,6 @@
 package com.pleon.buyt.model;
 
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
@@ -11,33 +12,34 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Item {
 
-    //  model class attribute names don't need to start with 'm'
+    // model class attribute names don't need to start with 'm'
 
     @PrimaryKey(autoGenerate = true)
-    private long id; // TODO: change type of id here to int
-
+    private long id; // TODO: change type of id here to int?
     @ForeignKey(entity = Purchase.class, parentColumns = "id", childColumns = "purchaseId")
     private long purchaseId;
+    @ForeignKey(entity = Store.class, parentColumns = "id", childColumns = "storeId")
+    private long storeId;
 
-    private final String name;
-    private final String price;
+    // TODO: make fields final
+    private String name;
     private String description;
-    private String category;
-    private double volume;
-    private boolean bought;
     private boolean urgent;
+    private boolean bought;
+    @Embedded
+    private Quantity quantity;
+    private long price;
 
     @Ignore // for display purposes
     private boolean expanded;
     @Ignore // for display purposes
     private boolean selected;
 
-    public Item(String name, String price, double volume, String category) {
+    public Item(String name, Quantity quantity, boolean urgent, boolean bought) {
         this.name = name;
-        this.price = price;
-        this.volume = volume;
-        this.category = category;
-        description = "I am a description set in the constructor";
+        this.quantity = quantity;
+        this.urgent = urgent;
+        this.bought = bought;
     }
 
     public long getId() {
@@ -56,36 +58,28 @@ public class Item {
         this.purchaseId = purchaseId;
     }
 
+    public long getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(long storeId) {
+        this.storeId = storeId;
+    }
+
     public String getName() {
         return name;
     }
 
-    public String getPrice() {
-        return price;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public double getVolume() {
-        return volume;
+    public String getDescription() {
+        return description;
     }
 
-    public void setVolume(double volume) {
-        this.volume = volume;
-    }
-
-    public boolean isBought() {
-        return bought;
-    }
-
-    public void setBought(boolean bought) {
-        this.bought = bought;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public boolean isUrgent() {
@@ -96,12 +90,28 @@ public class Item {
         this.urgent = urgent;
     }
 
-    public String getDescription() {
-        return description;
+    public boolean isBought() {
+        return bought;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setBought(boolean bought) {
+        this.bought = bought;
+    }
+
+    public Quantity getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Quantity quantity) {
+        this.quantity = quantity;
+    }
+
+    public long getPrice() {
+        return price;
+    }
+
+    public void setPrice(long price) {
+        this.price = price;
     }
 
     public boolean isExpanded() {
