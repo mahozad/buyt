@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.util.DisplayMetrics;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -105,6 +104,11 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
         dX = dX > -maxSwipeDistance ? dX : -maxSwipeDistance;
 
         getDefaultUIUtil().onDraw(c, recyclerView, view, dX, dY, actionState, isCurrentlyActive);
+    }
+
+    @Override
+    public boolean isLongPressDragEnabled() {
+        return false;
     }
 
     public void toggleEditMode() {

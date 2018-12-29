@@ -1,4 +1,4 @@
-package com.pleon.buyt.ui;
+package com.pleon.buyt.ui.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 
 import com.pleon.buyt.R;
 import com.pleon.buyt.model.Item;
+import com.pleon.buyt.ui.ItemListAdapter;
+import com.pleon.buyt.ui.ItemTouchHelperCallback;
 import com.pleon.buyt.viewmodel.ItemListViewModel;
 
 import java.util.Collections;
@@ -121,9 +123,10 @@ public class ItemListFragment extends Fragment {
                     }
                 });
 
-        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mItemRecyclerView);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(itemTouchHelperCallback);
+        touchHelper.attachToRecyclerView(mItemRecyclerView);
 
-        adapter = new ItemListAdapter(mHostActivity, getActivity().getApplicationContext());
+        adapter = new ItemListAdapter(mHostActivity, getActivity().getApplicationContext(), touchHelper);
         mItemRecyclerView.setAdapter(adapter);
         return view;
     }

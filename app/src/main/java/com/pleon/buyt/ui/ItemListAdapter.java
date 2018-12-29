@@ -3,6 +3,7 @@ package com.pleon.buyt.ui;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -13,10 +14,12 @@ import com.google.android.material.card.MaterialCardView;
 import com.pleon.buyt.R;
 import com.pleon.buyt.model.Item;
 import com.pleon.buyt.ui.ItemListAdapter.ItemHolder;
+import com.pleon.buyt.ui.fragment.ItemListFragment;
 
 import java.util.List;
 
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
@@ -38,9 +41,12 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
     private RecyclerView mRecyclerView;
     private boolean editModeEnabled = false;
 
-    public ItemListAdapter(ItemListFragment.Callable listener, Context context) {
-        mListener = listener;
-        mContext = context;
+    private ItemTouchHelper itemTouchHelper;
+
+    public ItemListAdapter(ItemListFragment.Callable listener, Context context, ItemTouchHelper itemTouchHelper) {
+        this.mListener = listener;
+        this.mContext = context;
+        this.itemTouchHelper = itemTouchHelper;
     }
 
     /**
@@ -71,6 +77,13 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
             holder.mItem = mItems.get(position);
             holder.mNameTextView.setText(mItems.get(position).getName());
             holder.mDescription.setText(mItems.get(position).getDescription());
+
+            holder.mExpandButton.setOnTouchListener((v, event) -> {
+                if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                    itemTouchHelper.startDrag(holder);
+                }
+                return false;
+            });
 
             // change expand icon to drag handler icon if in edit mode
             if (editModeEnabled) {
