@@ -8,10 +8,10 @@
         android:title="Discard"
         app:showAsAction="always" />
 
+    <!-- app:actionLayout sets a custom layout for this item (to show icon and text together) -->
     <item
         android:id="@+id/action_select_icon"
-        android:icon="@drawable/ic_store"
-        android:title="Change icon"
+        android:title="Select store"
+        app:actionLayout="@layout/menu_store"
         app:showAsAction="always" />
-
 </menu>

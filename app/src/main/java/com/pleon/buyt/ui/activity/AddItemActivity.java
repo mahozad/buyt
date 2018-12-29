@@ -1,4 +1,4 @@
-package com.pleon.buyt.ui;
+package com.pleon.buyt.ui.activity;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,6 +8,7 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pleon.buyt.R;
 import com.pleon.buyt.model.Item;
+import com.pleon.buyt.ui.fragment.AddItemFragment;
 import com.pleon.buyt.viewmodel.ItemListViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +16,7 @@ import androidx.appcompat.widget.ActionMenuView;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
-public class AddItemActivity extends AppCompatActivity {
+public class AddItemActivity extends AppCompatActivity implements AddItemFragment.Callback {
 
     private AddItemFragment addItemFragment;
 
@@ -40,16 +41,18 @@ public class AddItemActivity extends AppCompatActivity {
         }
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(v -> {
-            addItem();
-            finish(); // fixme: how to be sure that item has been added to database?
-        });
+        fab.setOnClickListener(v -> addItemFragment.onDonePressed()); // notify fragment fab was clicked
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         ActionMenuView actionMenuView = findViewById(R.id.action_menu_view);
         getMenuInflater().inflate(R.menu.menu_add_item, actionMenuView.getMenu());
+
+        // Setting up "Choose store" action because it has custom layout
+        MenuItem item = actionMenuView.getMenu().findItem(R.id.action_select_icon);
+        item.getActionView().setOnClickListener(v -> onOptionsItemSelected(item));
+
         return true;
     }
 
@@ -68,9 +71,10 @@ public class AddItemActivity extends AppCompatActivity {
         return true;
     }
 
-    private void addItem() {
+    @Override
+    public void onSubmit(Item item) {
         ItemListViewModel itemListViewModel = ViewModelProviders.of(this).get(ItemListViewModel.class);
-        Item item = new Item(addItemFragment.getItemName(), addItemFragment.getItemPrice(), 1);
         itemListViewModel.insertItem(item);
+        finish(); // fixme: how to be sure that item has been added to database?
     }
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.AddItemFragment">
+    tools:context=".ui.fragment.AddItemFragment">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/name_layout"
@@ -147,7 +147,7 @@
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="@id/quantity_container"
         app:layout_constraintStart_toStartOf="@id/quantity_container"
@@ -158,35 +158,54 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:buttonTint="#ffffff"
         android:paddingStart="4dp"
         android:text="Bought"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider" />
 
-    <!-- show if "Already bought" checkbox is selected -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/price_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+    <!-- Container for price input and label (تومان, dollar) -->
+    <FrameLayout
+        android:id="@+id/price_container"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="Unit price"
+        android:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintEnd_toEndOf="@id/description_layout"
         app:layout_constraintStart_toStartOf="@id/description_layout"
         app:layout_constraintTop_toBottomOf="@id/bought">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/price"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/price_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_dollar"
-            android:drawablePadding="8dp"
-            android:inputType="number"
-            tools:text="Item price (optional)" />
+            android:hint="Unit price"
+            app:errorEnabled="true">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_dollar"
+                android:drawablePadding="8dp"
+                android:inputType="number"
+                android:maxLength="13"
+                tools:text="Item price" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="6dp"
+            android:text="dollar" />
+
+    </FrameLayout>
 
     <androidx.appcompat.widget.AppCompatSpinner
         android:id="@+id/storesSpinner"
