@@ -44,19 +44,19 @@ public class AddItemFragment extends Fragment {
 
     private Callback callback;
 
-    private TextInputEditText etName;
-    private TextInputLayout tilName;
-    private TextInputEditText etQuantity;
-    private TextInputLayout tilQuantity;
-    private TextInputEditText etDescription;
-    private AppCompatCheckBox cbUrgent;
-    private AppCompatCheckBox cbBought;
-    private TextInputEditText etPrice;
-    private TextInputLayout tilPrice;
-    private RadioGroup rgUnit;
-    private long selectedStoreId;
+    private TextInputLayout nameTxinlt;
+    private TextInputEditText nameEdtx;
+    private TextInputLayout quantityTxinlt;
+    private TextInputEditText quantityEdtx;
+    private RadioGroup unitRdgrp;
+    private RadioButton[] unitRdbtns;
+    private TextInputEditText descriptionEdtx;
+    private AppCompatCheckBox urgentChbx;
+    private AppCompatCheckBox boughtChbx;
+    private TextInputLayout priceTxinlt;
+    private TextInputEditText priceEdtx;
 
-    private RadioButton[] unitRadioButtons;
+    private long selectedStoreId;
 
     public AddItemFragment() {
         // Required empty public constructor
@@ -93,51 +93,51 @@ public class AddItemFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_item, container, false);
 
-        etName = view.findViewById(R.id.name);
-        tilName = view.findViewById(R.id.name_layout);
-        etQuantity = view.findViewById(R.id.quantity);
-        tilQuantity = view.findViewById(R.id.quantity_layout);
-        etDescription = view.findViewById(R.id.description);
-        cbUrgent = view.findViewById(R.id.urgent);
-        cbBought = view.findViewById(R.id.bought);
-        etPrice = view.findViewById(R.id.price);
-        tilPrice = view.findViewById(R.id.price_layout);
-        rgUnit = view.findViewById(R.id.radio_group);
+        nameTxinlt = view.findViewById(R.id.name_layout);
+        nameEdtx = view.findViewById(R.id.name);
+        quantityTxinlt = view.findViewById(R.id.quantity_layout);
+        quantityEdtx = view.findViewById(R.id.quantity);
+        unitRdgrp = view.findViewById(R.id.radio_group);
+        unitRdbtns = new RadioButton[unitRdgrp.getChildCount()];
+        descriptionEdtx = view.findViewById(R.id.description);
+        urgentChbx = view.findViewById(R.id.urgent);
+        boughtChbx = view.findViewById(R.id.bought);
+        priceTxinlt = view.findViewById(R.id.price_layout);
+        priceEdtx = view.findViewById(R.id.price);
 
         setupListeners();
 
         FrameLayout priceContainer = view.findViewById(R.id.price_container);
-        cbBought.setOnCheckedChangeListener((buttonView, isChecked) ->
+        boughtChbx.setOnCheckedChangeListener((buttonView, isChecked) ->
                 priceContainer.setVisibility(isChecked ? VISIBLE : GONE)
         );
 
-        unitRadioButtons = new RadioButton[rgUnit.getChildCount()];
-        for (int i = 0; i < rgUnit.getChildCount(); i++) {
-            unitRadioButtons[i] = (RadioButton) rgUnit.getChildAt(i);
-            unitRadioButtons[i].setEnabled(false); // disabled by default (because quantity input is not focused)
+        for (int i = 0; i < unitRdgrp.getChildCount(); i++) {
+            unitRdbtns[i] = (RadioButton) unitRdgrp.getChildAt(i);
+            // disable by default (because quantity input is not focused yet)
+            unitRdbtns[i].setEnabled(false);
         }
 
-        etQuantity.setOnFocusChangeListener((v, hasFocus) -> {
+        quantityEdtx.setOnFocusChangeListener((v, hasFocus) -> {
                     // should enable and set the new color for EACH radio button
-                    for (RadioButton unitButton : unitRadioButtons) {
+                    for (RadioButton unitButton : unitRdbtns) {
                         unitButton.setEnabled(hasFocus);
                     }
                     int color = R.color.error;
-                    if (hasFocus && tilQuantity.getError() == null) {
+                    if (hasFocus && quantityTxinlt.getError() == null) {
                         color = R.color.colorPrimary;
-                    } else if (!hasFocus && tilQuantity.getError() == null) {
+                    } else if (!hasFocus && quantityTxinlt.getError() == null) {
                         color = R.color.unfocused;
                     }
-                    setUnitsColorForEnabledState(color);
+                    setColorOfAllUnitsForEnabledState(color);
                 }
         );
-
         return view;
     }
 
-    private void setUnitsColorForEnabledState(int color) {
-        for (RadioButton unitButton : unitRadioButtons) {
-            StateListDrawable sld = (StateListDrawable) unitButton.getBackground();
+    private void setColorOfAllUnitsForEnabledState(int color) {
+        for (RadioButton unitRdbtn : unitRdbtns) {
+            StateListDrawable sld = (StateListDrawable) unitRdbtn.getBackground();
             DrawableContainerState dcs = (DrawableContainerState) sld.getConstantState();
             // <color> element for checked state (<color> index 3 in unit_selector.xml)
             ColorDrawable checkedColor = (ColorDrawable) dcs.getChild(3);
@@ -147,25 +147,25 @@ public class AddItemFragment extends Fragment {
     }
 
     private void setupListeners() {
-        etName.addTextChangedListener(new TextWatcherAdapter() {
+        nameEdtx.addTextChangedListener(new TextWatcherAdapter() {
             @Override
             public void afterTextChanged(Editable s) {
-                tilName.setError(null); // clear error if exists
+                nameTxinlt.setError(null); // clear error if exists
             }
         });
 
-        etQuantity.addTextChangedListener(new TextWatcherAdapter() {
+        quantityEdtx.addTextChangedListener(new TextWatcherAdapter() {
             @Override
             public void afterTextChanged(Editable s) {
-                tilQuantity.setError(null); // clear error if exists
-                setUnitsColorForEnabledState(R.color.colorPrimary);
+                quantityTxinlt.setError(null); // clear error if exists
+                setColorOfAllUnitsForEnabledState(R.color.colorPrimary);
             }
         });
 
-        etPrice.addTextChangedListener(new TextWatcherAdapter() {
+        priceEdtx.addTextChangedListener(new TextWatcherAdapter() {
             @Override
             public void afterTextChanged(Editable s) {
-                tilPrice.setError(null); // clear error if exists
+                priceTxinlt.setError(null); // clear error if exists
             }
         });
     }
@@ -176,7 +176,7 @@ public class AddItemFragment extends Fragment {
         if (context instanceof Callback) {
             callback = (Callback) context;
         } else {
-            throw new RuntimeException(context.toString() + " must implement Callable");
+            throw new RuntimeException(context.toString() + " must implement Callback");
         }
     }
 
@@ -187,54 +187,53 @@ public class AddItemFragment extends Fragment {
     }
 
     public void onDonePressed() {
-        if (!validateFields()) {
-            return;
+        boolean validated = validateFields();
+
+        if (validated) {
+            String name = nameEdtx.getText().toString();
+            Quantity quantity = getQuantity();
+            Item item = new Item(name, quantity, urgentChbx.isChecked(), boughtChbx.isChecked());
+
+            if (!isEmpty(descriptionEdtx)) {
+                item.setDescription(descriptionEdtx.getText().toString());
+            }
+            if (!isEmpty(priceEdtx)) {
+                item.setPrice(Long.parseLong(priceEdtx.getText().toString()));
+            }
+
+            callback.onSubmit(item);
         }
-
-        String name = etName.getText().toString();
-        Quantity quantity = getQuantity();
-
-        Item item = new Item(name, quantity, cbUrgent.isChecked(), cbBought.isChecked());
-
-        if (!isEmpty(etDescription)) {
-            item.setDescription(etDescription.getText().toString());
-        }
-        if (!isEmpty(etPrice)) {
-            item.setPrice(Long.parseLong(etPrice.getText().toString()));
-        }
-
-        callback.onSubmit(item);
-    }
-
-    private Quantity getQuantity() {
-        long quantity = Long.parseLong(etQuantity.getText().toString());
-
-        int checkedUnitId = rgUnit.getCheckedRadioButtonId();
-        RadioButton checkedUnit = getView().findViewById(checkedUnitId);
-        int checkedIndex = rgUnit.indexOfChild(checkedUnit);
-        Unit quantityUnit = Unit.values()[checkedIndex];
-
-        return new Quantity(quantity, quantityUnit);
     }
 
     private boolean validateFields() {
         boolean validated = true;
 
-        if (isEmpty(etName)) {
-            tilName.setError("Name cannot be empty");
+        if (isEmpty(nameEdtx)) {
+            nameTxinlt.setError("Name cannot be empty");
             validated = false;
         }
-        if (isEmpty(etQuantity)) {
-            tilQuantity.setError("Quantity should be specified");
-            setUnitsColorForEnabledState(R.color.error);
+        if (isEmpty(quantityEdtx)) {
+            quantityTxinlt.setError("Quantity should be specified");
+            setColorOfAllUnitsForEnabledState(R.color.error);
             validated = false;
         }
-        if (cbBought.isChecked() && isEmpty(etPrice)) {
-            tilPrice.setError("Price should be specified");
+        if (boughtChbx.isChecked() && isEmpty(priceEdtx)) {
+            priceTxinlt.setError("Price should be specified");
             validated = false;
         }
 
         return validated;
+    }
+
+    private Quantity getQuantity() {
+        long quantity = Long.parseLong(quantityEdtx.getText().toString());
+
+        int idOfSelectedUnit = unitRdgrp.getCheckedRadioButtonId();
+        RadioButton SelectedUnit = getView().findViewById(idOfSelectedUnit);
+        int indexOfSelectedUnit = unitRdgrp.indexOfChild(SelectedUnit);
+        Unit unit = Unit.values()[indexOfSelectedUnit];
+
+        return new Quantity(quantity, unit);
     }
 
     private boolean isEmpty(@NonNull TextInputEditText editText) {
