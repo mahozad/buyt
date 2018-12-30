@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_discard"
+        android:id="@+id/action_cancel"
         android:icon="@drawable/ic_close"
-        android:title="Discard"
+        android:title="Cancel"
         app:showAsAction="always" />
 
     <!-- app:actionLayout sets a custom layout for this item (to show icon and text together) -->
     <item
-        android:id="@+id/action_select_icon"
+        android:id="@+id/action_select_store"
         android:title="Select store"
         app:actionLayout="@layout/menu_store"
         app:showAsAction="always" />
