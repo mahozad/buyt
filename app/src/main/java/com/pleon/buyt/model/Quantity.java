@@ -6,20 +6,20 @@ public class Quantity {
         UNIT, KILOGRAM, GRAM
     }
 
-    private long value;
+    private long quantity;
     private Unit unit;
 
-    public Quantity(long value, Unit unit) {
-        this.value = value;
+    public Quantity(long quantity, Unit unit) {
+        this.quantity = quantity;
         this.unit = unit;
     }
 
-    public long getValue() {
-        return value;
+    public long getQuantity() {
+        return quantity;
     }
 
-    public void setValue(long value) {
-        this.value = value;
+    public void setQuantity(long quantity) {
+        this.quantity = quantity;
     }
 
     public Unit getUnit() {
@@ -32,6 +32,6 @@ public class Quantity {
 
     @Override
     public String toString() {
-        return value + " " + unit.toString().toLowerCase();
+        return quantity + " " + unit.toString().toLowerCase();
     }
 }
