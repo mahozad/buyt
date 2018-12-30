@@ -50,6 +50,8 @@ dependencies {
 
     /* for inspecting the database and network in Chrome. In Iran, use VPN due to sanctions.*/
     debugImplementation 'com.facebook.stetho:stetho:1.5.0'
+    debugImplementation 'com.facebook.stetho:stetho-js-rhino:1.5.0'
+
     /* The AndroidX version of 'com.android.support:design'
      * Another support library that adds support for material components such as NavigationDrawer,
      * SnackBar, FAB and Tab for older android versions. */
