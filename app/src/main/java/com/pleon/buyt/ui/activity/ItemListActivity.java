@@ -6,6 +6,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,17 +22,20 @@ import com.pleon.buyt.R;
 import com.pleon.buyt.database.AppDatabase;
 import com.pleon.buyt.model.Coordinates;
 import com.pleon.buyt.model.Item;
+import com.pleon.buyt.model.Store;
+import com.pleon.buyt.ui.fragment.BottomDrawerFragment;
 import com.pleon.buyt.ui.fragment.ItemListFragment;
 import com.pleon.buyt.ui.fragment.RationaleDialogFragment;
-import com.pleon.buyt.ui.fragment.AddItemFragment;
-import com.pleon.buyt.ui.fragment.BottomDrawerFragment;
-import com.pleon.buyt.ui.fragment.CreateStoreFragment;
+import com.pleon.buyt.ui.fragment.SelectStoreDialogFragment;
 import com.pleon.buyt.viewmodel.ItemListViewModel;
 
+import java.util.ArrayList;
+import java.util.Set;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -42,7 +46,7 @@ import static com.getkeepsafe.taptargetview.TapTarget.forView;
 import static java.lang.Math.cos;
 
 public class ItemListActivity extends AppCompatActivity implements
-        ItemListFragment.Callable, CreateStoreFragment.OnFragmentInteractionListener {
+        ItemListFragment.Callable, SelectStoreDialogFragment.Callback {
 
     /*
      *  FIXME: if the bottomAppBar is hidden (by scrolling) and then you expand an Item, the fab jumps up
@@ -64,6 +68,9 @@ public class ItemListActivity extends AppCompatActivity implements
     // the app can be described as both a t0do app and an expense manager and also a shopping list app
     // After clicking Buyt fab button it converts to a done button and then by clicking on each item it is highlighted and finally click done
 
+    // TODO: Add a button (custom view) at the end of StoreListAdapter to create a new Store
+    // TODO: Add option in settings to disable/enable store confirmation (only one near store found)
+    // TODO: Add option in settings to disable/enable price confirmation dialog
     // TODO: Add a separator (e.g. comma) in every 3 digits of price and other numeric fields
     // TODO: Add option in settings to set the default item quantity in add new item activity (1 seems good)
     // TODO: Reimplement item unit switch button with this approach: https://stackoverflow.com/a/48640424/8583692
@@ -123,7 +130,7 @@ public class ItemListActivity extends AppCompatActivity implements
     // • to get the fragment manager, call getFragmentManager() instead of getSupportFragment...
 
     private static final String TAG = "ItemListActivity";
-    private static final double NEAR_STORES_DISTANCE = cos(0.1 / 6371); // == 100m (6371km is the radius of the Earth)
+    private static final double NEAR_STORES_DISTANCE = cos(0.2 / 6371); // == 200m (6371km is the radius of the Earth)
 
     /**
      * Id to identify a location permission request.
@@ -135,6 +142,9 @@ public class ItemListActivity extends AppCompatActivity implements
     private Location location;
     private AsyncTask<Void, Void, Void> locationTask;
     private ItemListViewModel mItemListViewModel;
+    private boolean findLocationMode = true;
+    private ItemListFragment itemListFragment;
+    private Set<Item> selectedItems;
 
 //    UI controllers such as activities and fragments are primarily intended to display UI data,
 //    react to user actions, or handle operating system communication, such as permission requests.
@@ -146,18 +156,18 @@ public class ItemListActivity extends AppCompatActivity implements
 
         mBottomAppBar = findViewById(R.id.bottom_bar);
         setSupportActionBar(mBottomAppBar);
-        Log.d(TAG, "bottom app bar created");
 
         mItemListViewModel = ViewModelProviders.of(this).get(ItemListViewModel.class);
 
         // FragmentManager of an activity is responsible for calling the lifecycle methods of the fragments in its list.
         FragmentManager fragMgr = getSupportFragmentManager();
-        Fragment itemsFragment = fragMgr.findFragmentById(R.id.container_fragment_items);
+        itemListFragment = (ItemListFragment) fragMgr.findFragmentById(R.id.container_fragment_items);
         // fragMgr saves the list of fragments when activity is destroyed and then retrieves them
         // so first we check if the fragment we want does not exist, then we create it
-        if (itemsFragment == null) {
+        if (itemListFragment == null) {
+            itemListFragment = ItemListFragment.newInstance();
             fragMgr.beginTransaction()
-                    .add(R.id.container_fragment_items, ItemListFragment.newInstance())
+                    .add(R.id.container_fragment_items, itemListFragment)
                     .commit(); // TODO: commit vs commitNow?
         }
 
@@ -175,9 +185,34 @@ public class ItemListActivity extends AppCompatActivity implements
         series.setColor(R.color.colorPrimaryDark);
         graph.addSeries(series);
 
+        // observe() methods should be set only once (e.g. in activity onCreate() method) so if you
+        // call it every time you want some data, maybe you're doing something wrong
+        mItemListViewModel.getNearStores().observe(this, nearStores -> {
+                    if (nearStores.size() == 0) {
+                        Intent intent = new Intent(this, CreateStoreActivity.class);
+                        intent.putExtra("LOCATION", location);
+                        startActivity(intent);
+                        mItemListViewModel.getLatestCreatedStore().observe(this, this::onStoreSelected);
+                    } else {
+                        SelectStoreDialogFragment selectStoreDialog = SelectStoreDialogFragment.newInstance((ArrayList<Store>) nearStores);
+                        selectStoreDialog.show(getSupportFragmentManager(), "selectStoreFragment");
+                        // handle selected Store in this::onStoreSelected()
+                    }
+                }
+        );
+
 
         mFab = findViewById(R.id.fab);
-        mFab.setOnClickListener(fab -> findLocation());
+        mFab.setOnClickListener(fab -> {
+            if (findLocationMode) {
+                itemListFragment.clearSelectedItems(); // clear previous selected items
+                findLocation();
+            } else {
+                // FIXME: Handle no item selected
+                buySelectedItems();
+            }
+            findLocationMode = !findLocationMode;
+        });
 
         //
         //
@@ -193,11 +228,14 @@ public class ItemListActivity extends AppCompatActivity implements
 
     private void findLocation() {
         LocationManager locationMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
-        /* you must check whether you have dangerous permission every time */
+        /* Check for dangerous permissions should be done EVERY time */
         if (ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
             requestLocationPermission();
         } else if (!locationMgr.isProviderEnabled(GPS_PROVIDER)) {
-            // TODO: GPS is off on the device; handle it
+            RationaleDialogFragment rationaleDialog =
+                    RationaleDialogFragment.newInstance(R.string.location_turn_on_title,
+                            R.string.location_turn_on_rationale, false);
+            rationaleDialog.show(getSupportFragmentManager(), "LOCATION_RATIONALE_DIALOG");
         } else {
             GpsListener gpsListener = new GpsListener();
             locationMgr.requestLocationUpdates(GPS_PROVIDER, 0, 0, gpsListener);
@@ -205,12 +243,16 @@ public class ItemListActivity extends AppCompatActivity implements
     }
 
     private void onLocationFound(Location location) {
-        Log.d(TAG, location.toString());
         ItemListActivity.this.location = location;
         ItemListFragment itemsFragment = (ItemListFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.container_fragment_items);
-        itemsFragment.enableCheckboxes();
     }
+
+    @Override
+    public void onItemCheckboxClicked(Item item) {
+
+    }
+
 
     private class GpsListener implements LocationListener {
 
@@ -241,9 +283,11 @@ public class ItemListActivity extends AppCompatActivity implements
      * to grant the permission, otherwise it is requested directly.
      */
     private void requestLocationPermission() {
-        // When the user responds to the app's permission request, the system invokes app's onRequestPermissionsResult() method
+        // When the user responds to the app's permission request, the system invokes onRequestPermissionsResult() method
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, ACCESS_FINE_LOCATION)) {
-            RationaleDialogFragment rationaleDialog = new RationaleDialogFragment();
+            RationaleDialogFragment rationaleDialog =
+                    RationaleDialogFragment.newInstance(R.string.location_permission_title,
+                            R.string.location_permission_rationale, true);
             rationaleDialog.show(getSupportFragmentManager(), "LOCATION_RATIONALE_DIALOG");
         } else {
             // Location permission has not been granted yet. Request it directly.
@@ -282,36 +326,27 @@ public class ItemListActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add:
-                Fragment addItemFragment = AddItemFragment.newInstance();
-
-//                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//                transaction.replace(R.id.container_fragment_items, addItemFragment)
-//                        /*.setCustomAnimations()*/
-//                        .addToBackStack(null).commit();
-//                mBottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
-//                mFab.setImageResource(R.drawable.ic_done);
-//                mBottomAppBar.setNavigationIcon(null); // causes the fab animation to not run
-//                mBottomAppBar.replaceMenu(R.menu.menu_add_item);
-
                 Intent intent = new Intent(this, AddItemActivity.class);
                 startActivity(intent);
 
-//                View chartView = findViewById(R.id.container_fragment_chart);
-//                chartView.setVisibility(View.GONE); // TODO: maybe replacing the fragment is a better practice
+                // View chartView = findViewById(R.id.container_fragment_chart);
+                // chartView.setVisibility(View.GONE); // TODO: maybe replacing the fragment is a better practice
                 break;
+
             case R.id.action_reorder:
                 ItemListFragment itemListFragment = (ItemListFragment)
                         getSupportFragmentManager().findFragmentById(R.id.container_fragment_items);
                 itemListFragment.toggleEditMode();
                 break;
-            case android.R.id.home: /* If you use setSupportActionBar() to set up the BottomAppBar
-             you can handle the navigation menu click by checking if the menu item id is android.R.id.home. */
 
-                // to change its theme to dark or light, we need to set "bottomSheetDialogTheme"
-                // item to "@style/Theme.MaterialComponents.BottomSheetDialog" in application theme
+            /* If you use setSupportActionBar() to set up the BottomAppBar
+             * you can handle the navigation menu click by checking if the menu item id is android.R.id.home.
+             */
+            case android.R.id.home:
                 BottomSheetDialogFragment bottomDrawerFragment = BottomDrawerFragment.newInstance();
                 bottomDrawerFragment.show(getSupportFragmentManager(), "alaki");
                 break;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -325,29 +360,14 @@ public class ItemListActivity extends AppCompatActivity implements
         AppDatabase.destroyInstance();
     }
 
-    @Override
-    public void onItemCheckboxClicked(Item item) {
+    public void buySelectedItems() {
+        selectedItems = itemListFragment.getSelectedItems();
         Coordinates originCoordinates = new Coordinates(location);
-        mItemListViewModel.findNearStores(originCoordinates, NEAR_STORES_DISTANCE).observe(this,
-                nearStores -> {
-                    if (nearStores.size() == 0) {
-                        ViewModelProviders.of(this).get(ItemListViewModel.class)
-                                .getLatestCreatedStore()
-                                .observe(this, store -> mItemListViewModel.buy(item, store));
-                        Intent intent = new Intent(this, CreateStoreActivity.class);
-                        intent.putExtra("LOCATION", location);
-                        startActivity(intent);
-                    } else if (nearStores.size() == 1) {
-                        mItemListViewModel.buy(item, nearStores.get(0));
-                    } else {
-                        // TODO: show a dialog to choose from stores
-                    }
-                }
-        );
+        mItemListViewModel.findNearStores(originCoordinates, NEAR_STORES_DISTANCE);
     }
 
     @Override
-    public void onStoreCreated(long storeId) {
-
+    public void onStoreSelected(Store store) {
+        mItemListViewModel.buy(selectedItems, store);
     }
 }

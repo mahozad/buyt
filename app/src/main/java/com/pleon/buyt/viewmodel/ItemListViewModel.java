@@ -9,9 +9,11 @@ import com.pleon.buyt.model.Item;
 import com.pleon.buyt.model.Store;
 
 import java.util.List;
+import java.util.Set;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 // The ViewModel's role is to provide data to the UI and survive configuration changes.
 // Every screen in the app (an activity with all its fragments) has one corresponding viewModel for itself.
@@ -26,7 +28,6 @@ public class ItemListViewModel extends AndroidViewModel {
     private MainRepository mMainRepository;
     private StoreRepository mStoreRepository;
 
-    // cache the list of Items
     // TODO: Use paging library architecture component
     private LiveData<List<Item>> mAllItems;
 
@@ -41,8 +42,12 @@ public class ItemListViewModel extends AndroidViewModel {
         return mAllItems;
     }
 
-    public LiveData<List<Store>> findNearStores(Coordinates origin, double maxDistance) {
-        return mMainRepository.findNearStores(origin, maxDistance);
+    public LiveData<List<Store>> getNearStores() {
+        return mMainRepository.getNearStores();
+    }
+
+    public void findNearStores(Coordinates origin, double maxDistance) {
+         mMainRepository.findNearStores(origin, maxDistance);
     }
 
     public void insertItem(Item item) {
@@ -53,8 +58,8 @@ public class ItemListViewModel extends AndroidViewModel {
         return mStoreRepository.getLatestCreatedStore();
     }
 
-    public void buy(Item item, Store store) {
-        mMainRepository.buy(item, store);
+    public void buy(Set<Item> items, Store store) {
+        mMainRepository.buy(items, store);
     }
 
     public void deleteItem(Item item) {

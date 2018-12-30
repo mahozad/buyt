@@ -14,6 +14,7 @@ import com.pleon.buyt.model.Store;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -59,13 +60,16 @@ public class MainRepository { // TODO: make this class singleton
         new DeleteItemTask(mItemDao).execute(item);
     }
 
-    public LiveData<List<Store>> findNearStores(Coordinates origin, double maxDistance) {
-        new FindNearStoresAsyncTask(mStoreDao, origin, maxDistance, mNearStores).execute();
+    public LiveData<List<Store>> getNearStores() {
         return mNearStores;
     }
 
-    public void buy(Item item, Store store) {
-        new BuyAsyncTask(item, store, mItemDao, mStoreDao, mPurchaseDao).execute();
+    public void findNearStores(Coordinates origin, double maxDistance) {
+        new FindNearStoresAsyncTask(mStoreDao, origin, maxDistance, mNearStores).execute();
+    }
+
+    public void buy(Set<Item> items, Store store) {
+        new BuyAsyncTask(items, store, mItemDao, mStoreDao, mPurchaseDao).execute();
     }
 
     private static class AddItemTask extends AsyncTask<Item, Void, Void> {
@@ -82,6 +86,7 @@ public class MainRepository { // TODO: make this class singleton
             return null;
         }
     }
+
     private static class DeleteItemTask extends AsyncTask<Item, Void, Void> {
 
         private ItemDao itemDao;
@@ -99,14 +104,14 @@ public class MainRepository { // TODO: make this class singleton
 
     private static class BuyAsyncTask extends AsyncTask<Void, Void, Void> {
 
-        private Item item;
+        private Set<Item> items;
         private Store store;
         private PurchaseDao mPurchaseDao;
         private ItemDao mItemDao;
         private StoreDao mStoreDao;
 
-        BuyAsyncTask(Item item, Store store, ItemDao mItemDao, StoreDao mStoreDao, PurchaseDao mPurchaseDao) {
-            this.item = item;
+        BuyAsyncTask(Set<Item> items, Store store, ItemDao mItemDao, StoreDao mStoreDao, PurchaseDao mPurchaseDao) {
+            this.items = items;
             this.store = store;
             this.mPurchaseDao = mPurchaseDao;
             this.mItemDao = mItemDao;
@@ -123,9 +128,11 @@ public class MainRepository { // TODO: make this class singleton
             Purchase purchase = new Purchase(storeId, new Date());
             long purchaseId = mPurchaseDao.insert(purchase);
 
-            item.setPurchaseId(purchaseId);
-            item.setBought(true);
-            mItemDao.update(item);
+            for (Item item : items) {
+                item.setPurchaseId(purchaseId);
+                item.setBought(true);
+                mItemDao.update(item);
+            }
 
             return null;
         }

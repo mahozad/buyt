@@ -1,12 +1,14 @@
 package com.pleon.buyt.model;
 
+import java.io.Serializable;
+
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 @Entity(indices = @Index({"latitude", "longitude"}))
-public class Store {
+public class Store implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     private long id;

@@ -2,11 +2,13 @@ package com.pleon.buyt.model;
 
 import android.location.Location;
 
+import java.io.Serializable;
+
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
-public class Coordinates {
+public class Coordinates implements Serializable {
 
     private double latitude;
     private double longitude;

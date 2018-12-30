@@ -13,6 +13,7 @@ import com.pleon.buyt.ui.ItemTouchHelperCallback;
 import com.pleon.buyt.viewmodel.ItemListViewModel;
 
 import java.util.Collections;
+import java.util.Set;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -150,5 +151,13 @@ public class ItemListFragment extends Fragment {
     public void toggleEditMode() {
         adapter.toggleEditMode();
         itemTouchHelperCallback.toggleEditMode();
+    }
+
+    public Set<Item> getSelectedItems() {
+        return adapter.getSelectedItems();
+    }
+
+    public void clearSelectedItems() {
+        adapter.clearSelectedItems();
     }
 }

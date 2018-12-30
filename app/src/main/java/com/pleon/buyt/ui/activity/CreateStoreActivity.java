@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-public class CreateStoreActivity extends AppCompatActivity implements CreateStoreFragment.OnFragmentInteractionListener {
+public class CreateStoreActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,10 +30,5 @@ public class CreateStoreActivity extends AppCompatActivity implements CreateStor
                     .add(R.id.createStoreContainer, CreateStoreFragment.newInstance(location))
                     .commit();
         }
-    }
-
-    @Override
-    public void onStoreCreated(long storeId) {
-
     }
 }

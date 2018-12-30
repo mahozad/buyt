@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- "paddingBottom" is for the last item (also set "clipToPadding" to "false" so children are not clipped) -->
+
+<!-- To remove scroll glow when at the end of the list, set "android:overScrollMode" to "never" -->
+
+<!--
+The RecyclerView is Wrapped in a parent layout (a FrameLayout here) because of a bug that is
+when you override onCreateDialog, Android COMPLETELY IGNORES several attributes of the root node
+of the .xml Layout you inflate. This includes, but probably isn't limited to:
+background_color, layout_gravity, layout_width, layout_height
+
+see this very good explanation: https://stackoverflow.com/a/41495370/8583692
+ -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/storeList"
+        android:layout_width="match_parent"
+        android:layout_height="144dp"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingBottom="8dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:context=".ui.fragment.SelectStoreDialogFragment"
+        tools:listitem="@layout/store_list_row" />
+
+</FrameLayout>
