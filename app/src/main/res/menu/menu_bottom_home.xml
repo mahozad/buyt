@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_reorder"
-        android:icon="@drawable/ic_reorder"
-        android:title="Reorder items"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/action_add"
         android:icon="@drawable/ic_add"
         android:title="@string/add_item"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_reorder"
+        android:icon="@drawable/ic_reorder"
+        android:title="Reorder items"
         app:showAsAction="always" />
 
 </menu>
