@@ -2,14 +2,15 @@
 
 <!-- custom layout for "Select store" action in bottomAppBar of "Add item" screen -->
 <androidx.appcompat.widget.AppCompatTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/select_store"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
     android:focusable="true"
     android:drawableStart="@drawable/ic_store"
-    android:drawablePadding="6dp"
-    android:gravity="center"
-    android:paddingStart="14dp"
-    android:text="Select store">
+    android:drawablePadding="8dp"
+    android:gravity="center_vertical"
+    android:paddingStart="16dp"
+    android:text="Select icon">
 
 </androidx.appcompat.widget.AppCompatTextView>

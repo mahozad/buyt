@@ -9,11 +9,12 @@ import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.pleon.buyt.R;
 import com.pleon.buyt.TextWatcherAdapter;
@@ -22,7 +23,6 @@ import com.pleon.buyt.model.Quantity;
 import com.pleon.buyt.model.Quantity.Unit;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.fragment.app.Fragment;
 
 import static android.view.View.GONE;
@@ -39,22 +39,25 @@ import static android.view.View.VISIBLE;
 public class AddItemFragment extends Fragment {
 
     public interface Callback {
+
         void onSubmit(Item item);
+
+        void onBoughtToggle(boolean checked);
     }
 
     private Callback callback;
 
     private TextInputLayout nameTxinlt;
-    private TextInputEditText nameEdtx;
+    private EditText nameEdtx;
     private TextInputLayout quantityTxinlt;
-    private TextInputEditText quantityEdtx;
+    private EditText quantityEdtx;
     private RadioGroup unitRdgrp;
     private RadioButton[] unitRdbtns;
-    private TextInputEditText descriptionEdtx;
-    private AppCompatCheckBox urgentChbx;
-    private AppCompatCheckBox boughtChbx;
+    private EditText descriptionEdtx;
+    private CheckBox urgentChbx;
+    private CheckBox boughtChbx;
     private TextInputLayout priceTxinlt;
-    private TextInputEditText priceEdtx;
+    private EditText priceEdtx;
 
     private long selectedStoreId;
 
@@ -108,8 +111,10 @@ public class AddItemFragment extends Fragment {
         setupListeners();
 
         FrameLayout priceContainer = view.findViewById(R.id.price_container);
-        boughtChbx.setOnCheckedChangeListener((buttonView, isChecked) ->
-                priceContainer.setVisibility(isChecked ? VISIBLE : GONE)
+        boughtChbx.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    callback.onBoughtToggle(isChecked);
+                    priceContainer.setVisibility(isChecked ? VISIBLE : GONE);
+                }
         );
 
         for (int i = 0; i < unitRdgrp.getChildCount(); i++) {
@@ -236,7 +241,7 @@ public class AddItemFragment extends Fragment {
         return new Quantity(quantity, unit);
     }
 
-    private boolean isEmpty(@NonNull TextInputEditText editText) {
+    private boolean isEmpty(@NonNull EditText editText) {
         return editText.getText().toString().trim().length() == 0;
     }
 }

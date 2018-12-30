@@ -3,6 +3,7 @@ package com.pleon.buyt.ui.activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -19,6 +20,7 @@ import androidx.lifecycle.ViewModelProviders;
 public class AddItemActivity extends AppCompatActivity implements AddItemFragment.Callback {
 
     private AddItemFragment addItemFragment;
+    private TextView selectStoreTxvi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +49,13 @@ public class AddItemActivity extends AppCompatActivity implements AddItemFragmen
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         ActionMenuView actionMenuView = findViewById(R.id.action_menu_view);
-        getMenuInflater().inflate(R.menu.menu_add_item, actionMenuView.getMenu());
+        Menu mainMenu = actionMenuView.getMenu();
+        getMenuInflater().inflate(R.menu.menu_add_item, mainMenu);
+
+        selectStoreTxvi = mainMenu.findItem(R.id.action_select_store).getActionView().findViewById(R.id.select_store);
 
         // Setting up "Choose store" action because it has custom layout
-        MenuItem item = actionMenuView.getMenu().findItem(R.id.action_select_icon);
+        MenuItem item = mainMenu.findItem(R.id.action_select_store);
         item.getActionView().setOnClickListener(v -> onOptionsItemSelected(item));
 
         return true;
@@ -59,16 +64,21 @@ public class AddItemActivity extends AppCompatActivity implements AddItemFragmen
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_discard:
+            case R.id.action_cancel:
                 finish();
                 break;
-            case R.id.action_select_icon:
+            case R.id.action_select_store:
                 // TODO: Implement select icon dialog
                 break;
             default:
                 return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+    @Override
+    public void onBoughtToggle(boolean checked) {
+        selectStoreTxvi.setText(checked ? "Select store" : "Select icon");
     }
 
     @Override
