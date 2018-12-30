@@ -93,7 +93,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
         View view = null;
         if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
             // if it's drag-n-drop then move the whole card
-            view = ((ItemListAdapter.ItemHolder) viewHolder).mCardContainer;
+            view = ((ItemListAdapter.ItemHolder) viewHolder).cardContainer;
         } else if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             // if it's swipe then just move the foreground
             view = ((ItemListAdapter.ItemHolder) viewHolder).cardForeground;

@@ -8,5 +8,7 @@
 
     <color name="ic_launcher_background">#FFFFFF</color>
 
+    <color name="card_background">#282828</color>
+
     <color name="unfocused">#6E6E6E</color>
 </resources>
