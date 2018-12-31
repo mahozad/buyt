@@ -155,8 +155,6 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
         mBottomAppBar = findViewById(R.id.bottom_bar);
         setSupportActionBar(mBottomAppBar);
 
-        mItemListViewModel = ViewModelProviders.of(this).get(ItemListViewModel.class);
-
         // FragmentManager of an activity is responsible for calling the lifecycle methods of the fragments in its list.
         FragmentManager fragMgr = getSupportFragmentManager();
         itemListFragment = (ItemListFragment) fragMgr.findFragmentById(R.id.container_fragment_items);
@@ -183,6 +181,8 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
         series.setColor(R.color.colorPrimaryDark);
         graph.addSeries(series);
 
+        mItemListViewModel = ViewModelProviders.of(this).get(ItemListViewModel.class);
+
         // observe() methods should be set only once (e.g. in activity onCreate() method) so if you
         // call it every time you want some data, maybe you're doing something wrong
         mItemListViewModel.getNearStores().observe(this, nearStores -> {
@@ -205,11 +205,10 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
             if (findLocationMode) {
                 itemListFragment.clearSelectedItems(); // clear items of previous purchase
                 findLocation();
+                findLocationMode = !findLocationMode;
             } else {
-                // FIXME: Handle no item selected
                 buySelectedItems();
             }
-            findLocationMode = !findLocationMode;
         });
 
         //
@@ -362,5 +361,6 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     @Override
     public void onStoreSelected(Store store) {
         mItemListViewModel.buy(selectedItems, store);
+        findLocationMode = !findLocationMode;
     }
 }
