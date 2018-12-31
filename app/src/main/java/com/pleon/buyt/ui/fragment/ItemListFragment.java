@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar.BaseCallback;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.pleon.buyt.R;
 import com.pleon.buyt.model.Item;
@@ -20,18 +22,15 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link Callable}
- * interface.
- */
+import static com.google.android.material.snackbar.Snackbar.LENGTH_LONG;
+
 public class ItemListFragment extends Fragment {
 
     private RecyclerView itemRecyclerView;
     private ItemListAdapter itemAdapter;
     private ItemListViewModel itemListViewModel;
     private ItemTouchHelperCallback itemTouchHelperCallback;
+    private int itemsLastSize = 0;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -56,7 +55,13 @@ public class ItemListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
 
         itemListViewModel = ViewModelProviders.of(this).get(ItemListViewModel.class);
-        itemListViewModel.getAll().observe(this, items -> itemAdapter.setItems(items));
+        itemListViewModel.getAll().observe(this, items -> {
+            // FIXME: What if 2 items were deleted and also 1 item was added? And it seems to be smelly code.
+            if (items.size() >= itemsLastSize) { // set only if item is added (not deleted)
+                itemAdapter.setItems(items);
+            }
+            itemsLastSize = items.size();
+        });
 
         // the root and only element in this fragment is a RecyclerView
         itemRecyclerView = (RecyclerView) view;
@@ -72,18 +77,25 @@ public class ItemListFragment extends Fragment {
 
                     @Override
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                        // get the removed item name to display it in snack bar
-//                      String name = cartList.get(viewHolder.getAdapterPosition()).getName();
+                        // Backup the item for undo purpose
+                        int itemIndex = viewHolder.getAdapterPosition();
+                        Item item = itemAdapter.getItem(itemIndex);
 
-                        // backup of removed item for undo purpose
-                        Item deletedItem = itemAdapter.getItem(viewHolder.getAdapterPosition());
-                        int deletedIndex = viewHolder.getAdapterPosition();
+                        // Delete only from the adapter
+                        itemAdapter.removeItem(itemIndex);
 
-                        // remove the item from recycler view
-                        itemAdapter.removeItem(viewHolder.getAdapterPosition());
-                        // itemListViewModel.deleteItem(itemAdapter.getItem(position));
-
-                        // show snack bar with Undo option
+                        Snackbar.make(getActivity().findViewById(R.id.snackBarContainer),
+                                "Item \"" + item.getName() + "\" deleted", LENGTH_LONG)
+                                .addCallback(new BaseCallback<Snackbar>() {
+                                    public void onDismissed(Snackbar transientBottomBar, int event) {
+                                        if (event != DISMISS_EVENT_ACTION) {
+                                            // Dismiss wasn't because of tapping "UNDO" so delete the item completely
+                                            itemListViewModel.deleteItem(item);
+                                        }
+                                    }
+                                })
+                                .setAction("UNDO", v -> itemAdapter.addItem(item, itemIndex))
+                                .show();
                     }
                 });
 

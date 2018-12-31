@@ -34,10 +34,6 @@ import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
-/**
- * {@link Adapter} that can display a {@link Item} and makes a call to the
- * specified {@link ItemListFragment.Callable}.
- */
 public class ItemListAdapter extends Adapter<ItemHolder> {
 
     private List<Item> allItems;
@@ -48,7 +44,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
 
     private ItemTouchHelper itemTouchHelper;
 
-    public ItemListAdapter( ItemTouchHelper itemTouchHelper) {
+    public ItemListAdapter(ItemTouchHelper itemTouchHelper) {
         this.itemTouchHelper = itemTouchHelper;
     }
 
@@ -181,6 +177,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
 
     public void addItem(Item item, int position) {
         allItems.add(position, item);
+        notifyItemInserted(position);
     }
 
     public void removeItem(int position) {
