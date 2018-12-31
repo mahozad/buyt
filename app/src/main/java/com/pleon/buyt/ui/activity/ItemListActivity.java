@@ -68,6 +68,7 @@ public class ItemListActivity extends AppCompatActivity implements
     // the app can be described as both a t0do app and an expense manager and also a shopping list app
     // After clicking Buyt fab button it converts to a done button and then by clicking on each item it is highlighted and finally click done
 
+    // TODO: Add option in settings to enable/disable showing urgent items at top of the list
     // TODO: Add a button (custom view) at the end of StoreListAdapter to create a new Store
     // TODO: Add option in settings to disable/enable store confirmation (only one near store found)
     // TODO: Add option in settings to disable/enable price confirmation dialog
