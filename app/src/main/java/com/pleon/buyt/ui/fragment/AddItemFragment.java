@@ -47,7 +47,7 @@ public class AddItemFragment extends Fragment {
 
     private Callback callback;
 
-    private TextInputLayout nameTxinlt;
+    private TextInputLayout nameTxInLt;
     private EditText nameEdtx;
     private TextInputLayout quantityTxinlt;
     private EditText quantityEdtx;
@@ -96,7 +96,7 @@ public class AddItemFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_item, container, false);
 
-        nameTxinlt = view.findViewById(R.id.name_layout);
+        nameTxInLt = view.findViewById(R.id.name_layout);
         nameEdtx = view.findViewById(R.id.name);
         quantityTxinlt = view.findViewById(R.id.quantity_layout);
         quantityEdtx = view.findViewById(R.id.quantity);
@@ -155,7 +155,7 @@ public class AddItemFragment extends Fragment {
         nameEdtx.addTextChangedListener(new TextWatcherAdapter() {
             @Override
             public void afterTextChanged(Editable s) {
-                nameTxinlt.setError(null); // clear error if exists
+                nameTxInLt.setError(null); // clear error if exists
             }
         });
 
@@ -214,7 +214,7 @@ public class AddItemFragment extends Fragment {
         boolean validated = true;
 
         if (isEmpty(nameEdtx)) {
-            nameTxinlt.setError("Name cannot be empty");
+            nameTxInLt.setError("Name cannot be empty");
             validated = false;
         }
         if (isEmpty(quantityEdtx)) {
