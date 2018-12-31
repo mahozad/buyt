@@ -29,7 +29,7 @@ public class CreateStoreFragment extends Fragment {
     private Button mAddButton;
 
     public CreateStoreFragment() {
-        // Required empty public constructor
+        // Required empty constructor
     }
 
     public static CreateStoreFragment newInstance(Location storeLocation) {

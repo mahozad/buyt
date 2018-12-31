@@ -42,12 +42,11 @@ import static android.location.LocationManager.GPS_PROVIDER;
 import static com.getkeepsafe.taptargetview.TapTarget.forView;
 import static java.lang.Math.cos;
 
-public class ItemListActivity extends AppCompatActivity implements
-        ItemListFragment.Callable, SelectStoreDialogFragment.Callback {
+public class ItemListActivity extends AppCompatActivity implements SelectStoreDialogFragment.Callback {
 
     /*
-     *  FIXME: if the bottomAppBar is hidden (by scrolling) and then you expand an Item, the fab jumps up
-     *  The bug seems to have nothing to do with the expanding animation and persists even without that animation
+     * FIXME: if the bottomAppBar is hidden (by scrolling) and then you expand an Item, the fab jumps up
+     * The bug seems to have nothing to do with the expanding animation and persists even without that animation
      */
     // FIXME: Use srcCompat instead of src in layout files?
     // FIXME: If number of Items to buy is less than e.g. 4 then don't show the "items to buy" prompt
@@ -116,9 +115,9 @@ public class ItemListActivity extends AppCompatActivity implements
        to do this, add a new View to the layout and play with its setVisibility as appropriate
     */
     /* TODO: Do you have multiple tables in your database and find yourself copying the same Insert,
-       Update and Delete methods? DAOs support inheritance, so create a BaseDao<T> class, and define
-       your generic @Insert,... there. Have each DAO extend the BaseDao and add methods specific to each of them.
-    */
+     * Update and Delete methods? DAOs support inheritance, so create a BaseDao<T> class, and define
+     * your generic @Insert,... there. Have each DAO extend the BaseDao and add methods specific to each of them.
+     */
 
     // If want to replace a fragment as the whole activity pass android.R.id.content to fragment manager
     // My solution: to have both the top and bottom app bars create the activity with top app bar
@@ -245,12 +244,6 @@ public class ItemListActivity extends AppCompatActivity implements
         ItemListActivity.this.location = location;
         itemListFragment.enableItemsCheckbox();
     }
-
-    @Override
-    public void onItemCheckboxClicked(Item item) {
-
-    }
-
 
     private class GpsListener implements LocationListener {
 

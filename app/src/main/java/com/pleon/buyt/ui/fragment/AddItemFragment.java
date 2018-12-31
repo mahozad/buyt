@@ -62,17 +62,9 @@ public class AddItemFragment extends Fragment {
     private long selectedStoreId;
 
     public AddItemFragment() {
-        // Required empty public constructor
+        // Required empty constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AddItemFragment.
-     */
     public static AddItemFragment newInstance() {
         AddItemFragment fragment = new AddItemFragment();
 //        Bundle args = new Bundle();

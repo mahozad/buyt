@@ -1,6 +1,5 @@
 package com.pleon.buyt.ui;
 
-import android.content.Context;
 import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,19 +40,15 @@ import static android.view.View.VISIBLE;
  */
 public class ItemListAdapter extends Adapter<ItemHolder> {
 
-    private List<Item> mItems;
-    private final ItemListFragment.Callable mListener;
-    private Context mContext;
-    public RecyclerView mRecyclerView;
+    private List<Item> allItems;
+    public RecyclerView recyclerView;
     private boolean editModeEnabled = false;
     private boolean selectionModeEnabled = false;
     private final Set<Item> selectedItems = new HashSet<>();
 
     private ItemTouchHelper itemTouchHelper;
 
-    public ItemListAdapter(ItemListFragment.Callable listener, Context context, ItemTouchHelper itemTouchHelper) {
-        this.mListener = listener;
-        this.mContext = context;
+    public ItemListAdapter( ItemTouchHelper itemTouchHelper) {
         this.itemTouchHelper = itemTouchHelper;
     }
 
@@ -69,7 +64,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        mRecyclerView = recyclerView;
+        this.recyclerView = recyclerView;
     }
 
     @Override
@@ -81,8 +76,8 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
 
     @Override
     public void onBindViewHolder(final ItemHolder holder, int position) {
-        if (mItems != null) {
-            Item item = mItems.get(position);
+        if (allItems != null) {
+            Item item = allItems.get(position);
             holder.nameTxVi.setText(item.getName());
             holder.descriptionTxVi.setText(item.getDescription());
             holder.quantityTxVi.setText(item.getQuantity().toString());
@@ -147,7 +142,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
             holder.expandDragBtn.setOnClickListener(expBtn -> {
                 holder.descriptionTxVi.setVisibility(holder.descriptionTxVi.getVisibility() == VISIBLE ? GONE : VISIBLE);
                 item.setExpanded(holder.descriptionTxVi.getVisibility() == VISIBLE);
-                TransitionManager.beginDelayedTransition(mRecyclerView);
+                TransitionManager.beginDelayedTransition(recyclerView);
             });
         } else {
             // Covers the case of data not being ready yet.
@@ -157,23 +152,23 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
 
     @Override
     public int getItemCount() {
-        if (mItems == null) {
+        if (allItems == null) {
             return 0;
         }
-        return mItems.size();
+        return allItems.size();
     }
 
     public List<Item> getItems() {
-        return mItems;
+        return allItems;
     }
 
     public void setItems(List<Item> items) {
-        mItems = items;
+        allItems = items;
         notifyDataSetChanged();
     }
 
     public Item getItem(int position) {
-        return mItems.get(position);
+        return allItems.get(position);
     }
 
     public Set<Item> getSelectedItems() {
@@ -185,11 +180,11 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
     }
 
     public void addItem(Item item, int position) {
-        mItems.add(position, item);
+        allItems.add(position, item);
     }
 
     public void removeItem(int position) {
-        mItems.remove(position);
+        allItems.remove(position);
         notifyItemRemoved(position);
     }
 
