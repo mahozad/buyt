@@ -6,8 +6,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -32,7 +30,6 @@ import com.pleon.buyt.viewmodel.ItemListViewModel;
 import java.util.ArrayList;
 import java.util.Set;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -68,6 +65,7 @@ public class ItemListActivity extends AppCompatActivity implements
     // the app can be described as both a t0do app and an expense manager and also a shopping list app
     // After clicking Buyt fab button it converts to a done button and then by clicking on each item it is highlighted and finally click done
 
+    // TODO: Add ability to cancel completely when in input price mode
     // TODO: Add option in settings to enable/disable showing urgent items at top of the list
     // TODO: Add a button (custom view) at the end of StoreListAdapter to create a new Store
     // TODO: Add option in settings to disable/enable store confirmation (only one near store found)
@@ -206,7 +204,7 @@ public class ItemListActivity extends AppCompatActivity implements
         mFab = findViewById(R.id.fab);
         mFab.setOnClickListener(fab -> {
             if (findLocationMode) {
-                itemListFragment.clearSelectedItems(); // clear previous selected items
+                itemListFragment.clearSelectedItems(); // clear items of previous purchase
                 findLocation();
             } else {
                 // FIXME: Handle no item selected
@@ -245,8 +243,7 @@ public class ItemListActivity extends AppCompatActivity implements
 
     private void onLocationFound(Location location) {
         ItemListActivity.this.location = location;
-        ItemListFragment itemsFragment = (ItemListFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.container_fragment_items);
+        itemListFragment.enableItemsCheckbox();
     }
 
     @Override
@@ -362,9 +359,11 @@ public class ItemListActivity extends AppCompatActivity implements
     }
 
     public void buySelectedItems() {
-        selectedItems = itemListFragment.getSelectedItems();
-        Coordinates originCoordinates = new Coordinates(location);
-        mItemListViewModel.findNearStores(originCoordinates, NEAR_STORES_DISTANCE);
+        if (itemListFragment.validateSelectedItemsPrice()) {
+            selectedItems = itemListFragment.getSelectedItems();
+            Coordinates originCoordinates = new Coordinates(location);
+            mItemListViewModel.findNearStores(originCoordinates, NEAR_STORES_DISTANCE);
+        }
     }
 
     @Override

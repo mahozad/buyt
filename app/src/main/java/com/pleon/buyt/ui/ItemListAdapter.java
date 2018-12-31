@@ -1,16 +1,21 @@
 package com.pleon.buyt.ui;
 
 import android.content.Context;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.textfield.TextInputLayout;
 import com.pleon.buyt.R;
+import com.pleon.buyt.TextWatcherAdapter;
 import com.pleon.buyt.model.Item;
 import com.pleon.buyt.ui.ItemListAdapter.ItemHolder;
 import com.pleon.buyt.ui.fragment.ItemListFragment;
@@ -19,7 +24,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
@@ -39,10 +43,10 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
 
     private List<Item> mItems;
     private final ItemListFragment.Callable mListener;
-    private final int defaultCardBgColor;
     private Context mContext;
-    private RecyclerView mRecyclerView;
+    public RecyclerView mRecyclerView;
     private boolean editModeEnabled = false;
+    private boolean selectionModeEnabled = false;
     private final Set<Item> selectedItems = new HashSet<>();
 
     private ItemTouchHelper itemTouchHelper;
@@ -50,7 +54,6 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
     public ItemListAdapter(ItemListFragment.Callable listener, Context context, ItemTouchHelper itemTouchHelper) {
         this.mListener = listener;
         this.mContext = context;
-        this.defaultCardBgColor = ContextCompat.getColor(context, R.color.card_background);
         this.itemTouchHelper = itemTouchHelper;
     }
 
@@ -80,50 +83,70 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
     public void onBindViewHolder(final ItemHolder holder, int position) {
         if (mItems != null) {
             Item item = mItems.get(position);
-            holder.nameTxvi.setText(item.getName());
-            holder.descriptionTxvi.setText(item.getDescription());
-            holder.quantityTxvi.setText(item.getQuantity().toString());
-            holder.urgentImgvi.setVisibility(item.isUrgent() ? VISIBLE : INVISIBLE);
+            holder.nameTxVi.setText(item.getName());
+            holder.descriptionTxVi.setText(item.getDescription());
+            holder.quantityTxVi.setText(item.getQuantity().toString());
+            holder.urgentImgVi.setVisibility(item.isUrgent() ? VISIBLE : INVISIBLE);
 
-            holder.expandBtn.setOnTouchListener((v, event) -> {
+            holder.expandDragBtn.setOnTouchListener((v, event) -> {
                 if (event.getActionMasked() == ACTION_DOWN) {
                     itemTouchHelper.startDrag(holder);
                 }
                 return false;
             });
 
-            if (editModeEnabled) {
-                holder.expandBtn.setImageResource(R.drawable.ic_drag_handle);
-                holder.expandBtn.setVisibility(VISIBLE);
+            holder.selectChBx.setOnClickListener(v -> {
+                if (holder.priceContainer.getVisibility() == GONE) {
+                    holder.priceContainer.setVisibility(VISIBLE);
+                    selectedItems.add(item);
+                } else {
+                    holder.priceContainer.setVisibility(GONE);
+                    selectedItems.remove(item);
+                }
+            });
+
+            if (selectionModeEnabled) {
+                holder.selectChBx.setVisibility(VISIBLE);
+            } else if (editModeEnabled) {
+                holder.expandDragBtn.setImageResource(R.drawable.ic_drag_handle);
+                holder.expandDragBtn.setVisibility(VISIBLE);
             } else if (item.getDescription() != null) {
-                holder.expandBtn.setImageResource(R.drawable.ic_expand);
-                holder.expandBtn.setVisibility(VISIBLE);
+                holder.expandDragBtn.setImageResource(R.drawable.ic_expand);
+                holder.expandDragBtn.setVisibility(VISIBLE);
             } else {
-                holder.expandBtn.setVisibility(INVISIBLE);
+                holder.expandDragBtn.setVisibility(INVISIBLE);
             }
+
+
+            holder.priceEdTx.addTextChangedListener(new TextWatcherAdapter() {
+                @Override
+                public void afterTextChanged(Editable s) {
+                    String priceString = holder.priceEdTx.getText().toString();
+                    if (!priceString.isEmpty()) {
+                        long price = Long.parseLong(priceString);
+                        item.setPrice(price);
+                    }
+                }
+            });
+
 
             // Restore selected state of the Item
-            if (selectedItems.contains(item)) {
-                holder.cardForeground.setCardBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimaryDark));
-            } else {
-                holder.cardForeground.setCardBackgroundColor(defaultCardBgColor);
-            }
+            holder.selectChBx.setChecked(selectedItems.contains(item));
 
             // Restore expanded state of the item
-            holder.descriptionTxvi.setVisibility(item.isExpanded() ? VISIBLE : GONE);
+            holder.descriptionTxVi.setVisibility(item.isExpanded() ? VISIBLE : GONE);
 
             // TODO: which callback method is the best for setting these listeners? (e.g. onCreate or...?)
 
             holder.cardForeground.setOnClickListener(container -> {
-                // TODO: this may be done with color state list
-                int color = ContextCompat.getColor(mContext, R.color.colorPrimaryDark);
-                holder.cardForeground.setCardBackgroundColor(color);
-                selectedItems.add(item);
+                if (selectionModeEnabled) {
+                    holder.selectChBx.performClick();
+                }
             });
 
-            holder.expandBtn.setOnClickListener(expBtn -> {
-                holder.descriptionTxvi.setVisibility(holder.descriptionTxvi.getVisibility() == VISIBLE ? GONE : VISIBLE);
-                item.setExpanded(holder.descriptionTxvi.getVisibility() == VISIBLE);
+            holder.expandDragBtn.setOnClickListener(expBtn -> {
+                holder.descriptionTxVi.setVisibility(holder.descriptionTxVi.getVisibility() == VISIBLE ? GONE : VISIBLE);
+                item.setExpanded(holder.descriptionTxVi.getVisibility() == VISIBLE);
                 TransitionManager.beginDelayedTransition(mRecyclerView);
             });
         } else {
@@ -175,16 +198,25 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
         notifyDataSetChanged();
     }
 
+    public void togglePriceInput() {
+        selectionModeEnabled = !selectionModeEnabled;
+        notifyDataSetChanged();
+    }
+
     // Adapter (and RecyclerView) works with ViewHolders instead of direct Views.
     public class ItemHolder extends ViewHolder {
 
         final View view; // the view (row layout) for the item
-        final TextView nameTxvi;
-        final TextView descriptionTxvi;
-        final TextView quantityTxvi;
+        final TextView nameTxVi;
+        final TextView descriptionTxVi;
+        final TextView quantityTxVi;
         final FrameLayout cardContainer;
-        final ImageButton expandBtn;
-        final ImageView urgentImgvi;
+        final ImageButton expandDragBtn;
+        final ImageView urgentImgVi;
+        final CheckBox selectChBx;
+        final FrameLayout priceContainer;
+        final TextInputLayout priceTxInLt;
+        final EditText priceEdTx;
 
         // just for the purpose of swipe-to-delete
         public MaterialCardView cardBackground;
@@ -193,15 +225,19 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
         ItemHolder(View view) {
             super(view);
             this.view = view;
-            this.nameTxvi = view.findViewById(R.id.item_name);
-            this.descriptionTxvi = view.findViewById(R.id.description);
-            this.quantityTxvi = view.findViewById(R.id.item_quantity);
+            this.nameTxVi = view.findViewById(R.id.item_name);
+            this.descriptionTxVi = view.findViewById(R.id.description);
+            this.quantityTxVi = view.findViewById(R.id.item_quantity);
             this.cardContainer = view.findViewById(R.id.cardContainer);
-            this.expandBtn = view.findViewById(R.id.expandButton);
-            this.urgentImgvi = view.findViewById(R.id.urgentIcon);
+            this.expandDragBtn = view.findViewById(R.id.expandDragButton);
+            this.urgentImgVi = view.findViewById(R.id.urgentIcon);
+            this.selectChBx = view.findViewById(R.id.selectCheckBox);
+            this.priceContainer = view.findViewById(R.id.price_container);
+            this.priceTxInLt = view.findViewById(R.id.price_layout);
+            this.priceEdTx = view.findViewById(R.id.price);
 
-            cardBackground = view.findViewById(R.id.cardBackground);
-            cardForeground = view.findViewById(R.id.cardForeground);
+            this.cardBackground = view.findViewById(R.id.cardBackground);
+            this.cardForeground = view.findViewById(R.id.cardForeground);
         }
     }
 }

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.pleon.buyt.R;
 import com.pleon.buyt.model.Item;
 import com.pleon.buyt.ui.ItemListAdapter;
@@ -159,5 +160,23 @@ public class ItemListFragment extends Fragment {
 
     public void clearSelectedItems() {
         adapter.clearSelectedItems();
+    }
+
+    public void enableItemsCheckbox() {
+        adapter.togglePriceInput();
+    }
+
+    public boolean validateSelectedItemsPrice() {
+        boolean validated = true;
+        for (Item item : adapter.getSelectedItems()) {
+            if (item.getPrice() == 0) {
+                int itemIndex = adapter.getItems().indexOf(item); // FIXME: maybe heavy operation
+                View itemView = adapter.mRecyclerView.getLayoutManager().findViewByPosition(itemIndex);
+                TextInputLayout priceLayout = itemView.findViewById(R.id.price_layout);
+                priceLayout.setError("price cannot be empty");
+                validated = false;
+            }
+        }
+        return validated;
     }
 }
