@@ -18,22 +18,18 @@ public class Item {
     private long id; // TODO: change type of id here to int?
     @ForeignKey(entity = Purchase.class, parentColumns = "id", childColumns = "purchaseId")
     private long purchaseId;
-    @ForeignKey(entity = Store.class, parentColumns = "id", childColumns = "storeId")
-    private long storeId;
 
     // TODO: make fields final
     private String name;
+    @Embedded
+    private Quantity quantity;
     private String description;
     private boolean urgent;
     private boolean bought;
-    @Embedded
-    private Quantity quantity;
     private long price;
 
     @Ignore // for display purposes
     private boolean expanded;
-    @Ignore // for display purposes
-    private boolean selected;
 
     public Item(String name, Quantity quantity, boolean urgent, boolean bought) {
         this.name = name;
@@ -56,14 +52,6 @@ public class Item {
 
     public void setPurchaseId(long purchaseId) {
         this.purchaseId = purchaseId;
-    }
-
-    public long getStoreId() {
-        return storeId;
-    }
-
-    public void setStoreId(long storeId) {
-        this.storeId = storeId;
     }
 
     public String getName() {
@@ -120,13 +108,5 @@ public class Item {
 
     public void setExpanded(boolean expanded) {
         this.expanded = expanded;
-    }
-
-    public boolean isSelected() {
-        return selected;
-    }
-
-    public void setSelected(boolean selected) {
-        this.selected = selected;
     }
 }
