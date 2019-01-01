@@ -17,7 +17,6 @@ import com.pleon.buyt.R;
 import com.pleon.buyt.TextWatcherAdapter;
 import com.pleon.buyt.model.Item;
 import com.pleon.buyt.ui.ItemListAdapter.ItemHolder;
-import com.pleon.buyt.ui.fragment.ItemListFragment;
 
 import java.util.HashSet;
 import java.util.List;
@@ -46,6 +45,9 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
 
     public ItemListAdapter(ItemTouchHelper itemTouchHelper) {
         this.itemTouchHelper = itemTouchHelper;
+        // setHasStableIds is an optimization hint that you can give to the RecyclerView.
+        // You're telling it "when I provide a ViewHolder, its id is unique and will not change."
+        setHasStableIds(true);
     }
 
     /**
@@ -152,6 +154,13 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
             return 0;
         }
         return allItems.size();
+    }
+
+    // setHasStableIds() should be set for the adapter. This is an optimization hint that you can
+    // give to the RecyclerView. You're telling it "when I provide a ViewHolder, its id is unique and won't change."
+    @Override
+    public long getItemId(int position) {
+        return allItems.get(position).getId();
     }
 
     public List<Item> getItems() {
