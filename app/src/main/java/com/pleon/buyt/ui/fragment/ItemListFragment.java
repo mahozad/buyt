@@ -68,6 +68,7 @@ public class ItemListFragment extends Fragment {
 
         // for swipe-to-delete and drag-n-drop of item
         itemTouchHelperCallback = new ItemTouchHelperCallback(
+                // TODO: Move this listener to the adapter (the adapter itself should be the listener)
                 new ItemTouchHelperCallback.ItemTouchHelperListener() {
                     @Override
                     public void onMoved(int oldPosition, int newPosition) {
