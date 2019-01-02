@@ -45,10 +45,10 @@ import static java.lang.Math.cos;
 public class ItemListActivity extends AppCompatActivity implements SelectStoreDialogFragment.Callback {
 
     /*
-     * FIXME: if the bottomAppBar is hidden (by scrolling) and then you expand an Item, the fab jumps up
+     * DONE: if the bottomAppBar is hidden (by scrolling) and then you expand an Item, the fab jumps up
      * The bug seems to have nothing to do with the expanding animation and persists even without that animation
      */
-    // FIXME: Use srcCompat instead of src in layout files?
+    // FIXME: Use srcCompat instead of src in layout files
     // FIXME: If number of Items to buy is less than e.g. 4 then don't show the "items to buy" prompt
     // DONE: the bottom shadow (elevation) of item cards is broken. Maybe because of swipe-to-delete background layer
 
@@ -349,7 +349,9 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        locationMgr.removeUpdates(gpsListener);
+        if (locationMgr != null && gpsListener != null) {
+            locationMgr.removeUpdates(gpsListener);
+        }
         AppDatabase.destroyInstance();
     }
 

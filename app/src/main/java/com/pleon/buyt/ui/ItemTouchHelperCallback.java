@@ -7,6 +7,7 @@ import android.view.View;
 
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static android.util.TypedValue.applyDimension;
@@ -50,14 +51,14 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
     }*/
 
     @Override
-    public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+    public int getMovementFlags(RecyclerView recyclerView, ViewHolder viewHolder) {
         int swipeFlags = START;
         int dragFlags = editModeEnabled ? (UP | DOWN) : (0);
         return makeMovementFlags(dragFlags, swipeFlags);
     }
 
     @Override
-    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder dragged, RecyclerView.ViewHolder target) {
+    public boolean onMove(RecyclerView recyclerView, ViewHolder dragged, ViewHolder target) {
         if (dragged.getAdapterPosition() != target.getAdapterPosition()) {
             listener.onMoved(dragged.getAdapterPosition(), target.getAdapterPosition());
         }
@@ -65,12 +66,12 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
     }
 
     @Override
-    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+    public void onSwiped(ViewHolder viewHolder, int direction) {
         listener.onSwiped(viewHolder, direction);
     }
 
     @Override
-    public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
+    public void onSelectedChanged(ViewHolder viewHolder, int actionState) {
         if (viewHolder != null) {
             View view = ((ItemListAdapter.ItemHolder) viewHolder).cardBackground;
             getDefaultUIUtil().onSelected(view);
@@ -78,13 +79,13 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
     }
 
     @Override
-    public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+    public void clearView(RecyclerView recyclerView, ViewHolder viewHolder) {
         View view = ((ItemListAdapter.ItemHolder) viewHolder).cardForeground;
         getDefaultUIUtil().clearView(view);
     }
 
     @Override
-    public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+    public void onChildDraw(Canvas c, RecyclerView recyclerView, ViewHolder viewHolder,
                             float dX, float dY, int actionState, boolean isCurrentlyActive) {
 
         // TODO: here I can also detect how much swipe is done (with dX or dY) and for example show
@@ -119,6 +120,6 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
         void onMoved(int oldPosition, int newPosition);
 
-        void onSwiped(RecyclerView.ViewHolder viewHolder, int direction);
+        void onSwiped(ViewHolder viewHolder, int direction);
     }
 }
