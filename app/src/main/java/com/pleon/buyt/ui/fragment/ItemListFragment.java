@@ -12,6 +12,7 @@ import com.pleon.buyt.R;
 import com.pleon.buyt.model.Item;
 import com.pleon.buyt.ui.ItemListAdapter;
 import com.pleon.buyt.ui.ItemTouchHelperCallback;
+import com.pleon.buyt.ui.ItemTouchHelperCallback.ItemTouchHelperListener;
 import com.pleon.buyt.viewmodel.ItemListViewModel;
 
 import java.util.Collections;
@@ -21,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import static com.google.android.material.snackbar.Snackbar.LENGTH_LONG;
 
@@ -30,7 +32,8 @@ public class ItemListFragment extends Fragment {
     private ItemListAdapter itemAdapter;
     private ItemListViewModel itemListViewModel;
     private ItemTouchHelperCallback itemTouchHelperCallback;
-    private int itemsLastSize = 0;
+    private int lastSizeOfItems = 0;
+    boolean itemsReordered = false;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -57,10 +60,10 @@ public class ItemListFragment extends Fragment {
         itemListViewModel = ViewModelProviders.of(this).get(ItemListViewModel.class);
         itemListViewModel.getAll().observe(this, items -> {
             // FIXME: What if 2 items were deleted and also 1 item was added? And it seems to be smelly code.
-            if (items.size() >= itemsLastSize) { // set only if item is added (not deleted)
+            if (items.size() >= lastSizeOfItems) { // set only if item is added (not deleted)
                 itemAdapter.setItems(items);
             }
-            itemsLastSize = items.size();
+            lastSizeOfItems = items.size();
         });
 
         // the root and only element in this fragment is a RecyclerView
@@ -68,18 +71,18 @@ public class ItemListFragment extends Fragment {
 
         // for swipe-to-delete and drag-n-drop of item
         itemTouchHelperCallback = new ItemTouchHelperCallback(
-                // TODO: Move this listener to the adapter (the adapter itself should be the listener)
-                new ItemTouchHelperCallback.ItemTouchHelperListener() {
+                new ItemTouchHelperListener() {
                     @Override
                     public void onMoved(int oldPosition, int newPosition) {
+                        itemAdapter.getItem(oldPosition).setPosition(newPosition);
+                        itemAdapter.getItem(newPosition).setPosition(oldPosition);
                         Collections.swap(itemAdapter.getItems(), newPosition, oldPosition);
-                        itemAdapter.getItem(oldPosition).setPosition(oldPosition);
-                        itemAdapter.getItem(newPosition).setPosition(newPosition);
                         itemAdapter.notifyItemMoved(oldPosition, newPosition);
+                        itemsReordered = true;
                     }
 
                     @Override
-                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                    public void onSwiped(ViewHolder viewHolder, int direction) {
                         // Backup the item for undo purpose
                         int itemIndex = viewHolder.getAdapterPosition();
                         Item item = itemAdapter.getItem(itemIndex);
@@ -113,8 +116,11 @@ public class ItemListFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        // FIXME: update only if positions changed
-        itemListViewModel.updateItems(itemAdapter.getItems());
+        // DONE: update only if positions changed
+        if (itemsReordered) {
+            itemListViewModel.updateItems(itemAdapter.getItems());
+            itemsReordered = false;
+        }
     }
 
     public void toggleEditMode() {
