@@ -10,6 +10,7 @@
     android:drawableStart="@drawable/ic_store"
     android:drawablePadding="8dp"
     android:gravity="center_vertical"
+    android:background="?attr/selectableItemBackgroundBorderless"
     android:paddingStart="16dp"
     android:text="Select icon">
 

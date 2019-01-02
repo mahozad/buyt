@@ -12,6 +12,6 @@
     <item
         android:id="@+id/action_select_store"
         android:title="Select store"
-        app:actionLayout="@layout/menu_store"
+        app:actionLayout="@layout/action_select_store_layout"
         app:showAsAction="always" />
 </menu>
