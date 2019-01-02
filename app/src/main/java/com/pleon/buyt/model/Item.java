@@ -28,8 +28,10 @@ public class Item {
     private boolean bought;
     private long price;
 
-    @Ignore // for display purposes
+    // for display purposes
+    @Ignore
     private boolean expanded;
+    private int position;
 
     public Item(String name, Quantity quantity, boolean urgent, boolean bought) {
         this.name = name;
@@ -108,5 +110,13 @@ public class Item {
 
     public void setExpanded(boolean expanded) {
         this.expanded = expanded;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 }

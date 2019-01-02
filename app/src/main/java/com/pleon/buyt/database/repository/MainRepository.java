@@ -12,6 +12,7 @@ import com.pleon.buyt.model.Item;
 import com.pleon.buyt.model.Purchase;
 import com.pleon.buyt.model.Store;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -46,6 +47,10 @@ public class MainRepository { // TODO: make this class singleton
 
     public void insertItem(Item item) {
         new AddItemTask(mItemDao).execute(item);
+    }
+
+    public void updateItems(Collection<Item> items) {
+        new UpdateItemsTask(mItemDao, items).execute();
     }
 
     public long insertStore(Store store) {
@@ -98,6 +103,23 @@ public class MainRepository { // TODO: make this class singleton
         @Override
         protected Void doInBackground(Item... items) {
             itemDao.delete(items[0]);
+            return null;
+        }
+    }
+
+    private static class UpdateItemsTask extends AsyncTask<Void, Void, Void> {
+
+        private ItemDao itemDao;
+        private Collection<Item> items;
+
+        UpdateItemsTask(ItemDao itemDao, Collection<Item> items) {
+            this.itemDao = itemDao;
+            this.items = items;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            itemDao.updateAll(items);
             return null;
         }
     }

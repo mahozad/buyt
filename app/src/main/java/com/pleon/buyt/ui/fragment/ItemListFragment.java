@@ -73,6 +73,8 @@ public class ItemListFragment extends Fragment {
                     @Override
                     public void onMoved(int oldPosition, int newPosition) {
                         Collections.swap(itemAdapter.getItems(), newPosition, oldPosition);
+                        itemAdapter.getItem(oldPosition).setPosition(oldPosition);
+                        itemAdapter.getItem(newPosition).setPosition(newPosition);
                         itemAdapter.notifyItemMoved(oldPosition, newPosition);
                     }
 
@@ -108,6 +110,13 @@ public class ItemListFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        // FIXME: update only if positions changed
+        itemListViewModel.updateItems(itemAdapter.getItems());
+    }
+
     public void toggleEditMode() {
         itemAdapter.toggleEditMode();
         itemTouchHelperCallback.toggleEditMode();
@@ -137,5 +146,9 @@ public class ItemListFragment extends Fragment {
             }
         }
         return validated;
+    }
+
+    public int getNextItemPosition() {
+        return itemAdapter.getItemCount();
     }
 }

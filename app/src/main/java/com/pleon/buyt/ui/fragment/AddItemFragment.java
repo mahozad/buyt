@@ -61,26 +61,26 @@ public class AddItemFragment extends Fragment {
 
     private long selectedStoreId;
 
+    private static int NEXT_ITEM_ORDER;
+
     public AddItemFragment() {
         // Required empty constructor
     }
 
-    public static AddItemFragment newInstance() {
+    public static AddItemFragment newInstance(int nextItemOrder) {
         AddItemFragment fragment = new AddItemFragment();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-//        fragment.setArguments(args);
+        Bundle args = new Bundle();
+        args.putInt("NEXT_ITEM_ORDER", nextItemOrder);
+        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
+        if (getArguments() != null) {
+            NEXT_ITEM_ORDER = getArguments().getInt("NEXT_ITEM_ORDER");
+        }
     }
 
     @Override
@@ -198,6 +198,7 @@ public class AddItemFragment extends Fragment {
                 item.setPrice(Long.parseLong(priceEdtx.getText().toString()));
             }
 
+            item.setPosition(NEXT_ITEM_ORDER);
             callback.onSubmit(item);
         }
     }

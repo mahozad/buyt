@@ -64,6 +64,7 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     // the app can be described as both a t0do app and an expense manager and also a shopping list app
     // After clicking Buyt fab button it converts to a done button and then by clicking on each item it is highlighted and finally click done
 
+    // FIXME: Update position field of items if an item is deleted
     // TODO: Add ability to cancel completely when in input price mode
     // TODO: Add option in settings to enable/disable showing urgent items at top of the list
     // TODO: Add a button (custom view) at the end of StoreListAdapter to create a new Store
@@ -211,8 +212,7 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
             }
         });
 
-        //
-        //
+
         // show tap target for FAB
         new TapTargetSequence(this).targets(
                 forView(findViewById(R.id.fab), "Tap here when you're ready")
@@ -317,6 +317,7 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
         switch (item.getItemId()) {
             case R.id.action_add:
                 Intent intent = new Intent(this, AddItemActivity.class);
+                intent.putExtra("NEXT_ITEM_ORDER", itemListFragment.getNextItemPosition());
                 startActivity(intent);
 
                 // View chartView = findViewById(R.id.container_fragment_chart);

@@ -36,7 +36,7 @@ public class AddItemActivity extends AppCompatActivity implements AddItemFragmen
         FragmentManager fragMgr = getSupportFragmentManager();
         addItemFragment = (AddItemFragment) fragMgr.findFragmentById(R.id.container_fragment_add_item);
         if (addItemFragment == null) {
-            addItemFragment = AddItemFragment.newInstance();
+            addItemFragment = AddItemFragment.newInstance(getIntent().getIntExtra("NEXT_ITEM_ORDER", 0));
             fragMgr.beginTransaction()
                     .add(R.id.container_fragment_add_item, addItemFragment)
                     .commit();
@@ -85,7 +85,7 @@ public class AddItemActivity extends AppCompatActivity implements AddItemFragmen
     public void onSubmit(Item item) {
         ItemListViewModel itemListViewModel = ViewModelProviders.of(this).get(ItemListViewModel.class);
         itemListViewModel.insertItem(item);
-        // Calling finish() is safe here. We can be sure that the item will be added to database,
+        // Calling finish() is safe here. We are sure that the item will be added to database,
         // because it is executed in a separate thread.
         finish();
     }

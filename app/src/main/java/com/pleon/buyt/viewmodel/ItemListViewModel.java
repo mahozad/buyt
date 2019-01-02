@@ -8,12 +8,12 @@ import com.pleon.buyt.model.Coordinates;
 import com.pleon.buyt.model.Item;
 import com.pleon.buyt.model.Store;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 // The ViewModel's role is to provide data to the UI and survive configuration changes.
 // Every screen in the app (an activity with all its fragments) has one corresponding viewModel for itself.
@@ -47,11 +47,15 @@ public class ItemListViewModel extends AndroidViewModel {
     }
 
     public void findNearStores(Coordinates origin, double maxDistance) {
-         mMainRepository.findNearStores(origin, maxDistance);
+        mMainRepository.findNearStores(origin, maxDistance);
     }
 
     public void insertItem(Item item) {
         mMainRepository.insertItem(item);
+    }
+
+    public void updateItems(Collection<Item> items) {
+        mMainRepository.updateItems(items);
     }
 
     public LiveData<Store> getLatestCreatedStore() {
