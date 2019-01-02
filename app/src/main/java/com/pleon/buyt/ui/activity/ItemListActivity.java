@@ -108,6 +108,7 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     // TODO: Use loaders to get data from database?
     // TODO: Convert all ...left and ...right attributes to ...start and ...end
     // TODO: Add ability (an icon) for each item to mark it as high priority
+    // TODO: Add animation to item expand icon
     // TODO: Ability to add details (description) for each item
     // TODO: Show a small progress bar of how much has been spent if user has set a limit on spends
     /* FIXME: What happens if two stores are near each other and only one of them is saved in the app.
@@ -139,7 +140,8 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     private FloatingActionButton mFab;
     private BottomAppBar mBottomAppBar;
     private Location location;
-    private AsyncTask<Void, Void, Void> locationTask;
+    private LocationManager locationMgr;
+    private LocationListener gpsListener;
     private ItemListViewModel mItemListViewModel;
     private boolean findLocationMode = true;
     private ItemListFragment itemListFragment;
@@ -224,7 +226,7 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     }
 
     private void findLocation() {
-        LocationManager locationMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locationMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
         /* Check for dangerous permissions should be done EVERY time */
         if (ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
             requestLocationPermission();
@@ -234,7 +236,7 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
                             R.string.location_turn_on_rationale, false);
             rationaleDialog.show(getSupportFragmentManager(), "LOCATION_RATIONALE_DIALOG");
         } else {
-            GpsListener gpsListener = new GpsListener();
+            gpsListener = new GpsListener();
             locationMgr.requestLocationUpdates(GPS_PROVIDER, 0, 0, gpsListener);
         }
     }
@@ -347,7 +349,7 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        locationTask.cancel(true);
+        locationMgr.removeUpdates(gpsListener);
         AppDatabase.destroyInstance();
     }
 
