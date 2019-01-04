@@ -18,7 +18,7 @@ import static androidx.room.OnConflictStrategy.REPLACE;
 @Dao
 public interface ItemDao {
 
-    @Query("SELECT * FROM Item ORDER BY urgent DESC, position ASC")
+    @Query("SELECT * FROM Item WHERE bought = 0 ORDER BY urgent DESC, position ASC")
     LiveData<List<Item>> getAll();
 
     @Query("SELECT * FROM Item WHERE id= :id")
