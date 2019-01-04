@@ -383,7 +383,6 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     }
 
     private void resetState() {
-        ((Animatable) mFab.getDrawable()).stop();
         mFab.setImageResource(R.drawable.avd_buyt_reverse);
         ((Animatable) mFab.getDrawable()).start();
 
@@ -392,9 +391,9 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
 
         mBottomAppBar.setHideOnScroll(true);
 
+        mBottomAppBar.getMenu().getItem(0).setVisible(true);
         mBottomAppBar.getMenu().getItem(0).setIcon(R.drawable.avd_add_show);
         ((Animatable) mBottomAppBar.getMenu().getItem(0).getIcon()).start();
-        mBottomAppBar.getMenu().getItem(0).setVisible(true);
 
         mBottomAppBar.getMenu().getItem(1).setIcon(R.drawable.avd_skip_reorder);
         ((Animatable) mBottomAppBar.getMenu().getItem(1).getIcon()).start();
