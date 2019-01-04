@@ -154,6 +154,10 @@ public class ItemListFragment extends Fragment {
         return validated;
     }
 
+    public boolean isCartEmpty() {
+        return itemAdapter.getItems().size() == 0;
+    }
+
     public int getNextItemPosition() {
         return itemAdapter.getItemCount();
     }

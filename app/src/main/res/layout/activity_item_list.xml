@@ -57,10 +57,10 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_buyt"
         app:fabSize="normal"
         app:layout_anchor="@id/bottom_bar"
-        app:maxImageSize="42dp" />
+        app:maxImageSize="42dp"
+        app:srcCompat="@drawable/avd_buyt" />
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottom_bar"

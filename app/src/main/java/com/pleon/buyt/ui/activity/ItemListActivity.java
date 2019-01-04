@@ -1,10 +1,10 @@
 package com.pleon.buyt.ui.activity;
 
 import android.content.Intent;
+import android.graphics.drawable.Animatable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -64,6 +64,9 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     // the app can be described as both a t0do app and an expense manager and also a shopping list app
     // After clicking Buyt fab button it converts to a done button and then by clicking on each item it is highlighted and finally click done
 
+    // TODO: Make icons animation durations consistent
+    // TODO: round and filled icons of material design are here: https://material.io/tools/icons/?icon=done&style=round
+    // TODO: Convert the logo to path (with path -> stroke to path option) and then recreate the logo
     // FIXME: Update position field of items if an item is deleted
     // TODO: Add ability to cancel completely when in input price mode
     // TODO: Add option in settings to enable/disable showing urgent items at top of the list
@@ -140,12 +143,16 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     private FloatingActionButton mFab;
     private BottomAppBar mBottomAppBar;
     private Location location;
+    private State state = State.IDLE; // TODO: Should be synchronized
     private LocationManager locationMgr;
     private LocationListener gpsListener;
     private ItemListViewModel mItemListViewModel;
-    private boolean findLocationMode = true;
     private ItemListFragment itemListFragment;
     private Set<Item> selectedItems;
+
+    private enum State {
+        IDLE, FINDING, SELECTING
+    }
 
 //    UI controllers such as activities and fragments are primarily intended to display UI data,
 //    react to user actions, or handle operating system communication, such as permission requests.
@@ -169,7 +176,6 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
                     .add(R.id.container_fragment_items, itemListFragment)
                     .commit(); // TODO: commit vs commitNow?
         }
-
 
         GraphView graph = findViewById(R.id.graph);
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
@@ -205,11 +211,34 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
 
         mFab = findViewById(R.id.fab);
         mFab.setOnClickListener(fab -> {
-            if (findLocationMode) {
-                itemListFragment.clearSelectedItems(); // clear items of previous purchase
+            if (state == State.IDLE && !itemListFragment.isCartEmpty()) {
+                mFab.setImageResource(R.drawable.avd_buyt);
+                ((Animatable) mFab.getDrawable()).start();
+
+                mBottomAppBar.setNavigationIcon(R.drawable.avd_nav_cancel);
+                ((Animatable) mBottomAppBar.getNavigationIcon()).start();
+
+                ((Animatable) mBottomAppBar.getMenu().getItem(0).getIcon()).start();
+                mBottomAppBar.getMenu().getItem(0).setVisible(false);
+
+                mBottomAppBar.getMenu().getItem(1).setIcon(R.drawable.avd_reorder_skip);
+                ((Animatable) mBottomAppBar.getMenu().getItem(1).getIcon()).start();
+
+//                mBottomAppBar.setFabAnimationMode(BottomAppBar.FAB_ANIMATION_MODE_SLIDE);
+//                mBottomAppBar.setFabAlignmentMode(FAB_ALIGNMENT_MODE_END);
+
+                Animatable fabDrawable = (Animatable) mFab.getDrawable();
+                fabDrawable.start();
+
+                // Make sure the bottomAppBar is not hidden and make it not hide
+                new BottomAppBar.Behavior().slideUp(mBottomAppBar);
+                mBottomAppBar.setHideOnScroll(false);
+
                 findLocation();
-                findLocationMode = !findLocationMode;
+            } else if (itemListFragment.isCartEmpty()) {
+
             } else {
+                mFab.setImageResource(R.drawable.ic_done);
                 buySelectedItems();
             }
         });
@@ -226,6 +255,7 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     }
 
     private void findLocation() {
+        state = State.FINDING;
         locationMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
         /* Check for dangerous permissions should be done EVERY time */
         if (ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
@@ -244,6 +274,7 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     private void onLocationFound(Location location) {
         ItemListActivity.this.location = location;
         itemListFragment.enableItemsCheckbox();
+        state = State.SELECTING;
     }
 
     private class GpsListener implements LocationListener {
@@ -336,14 +367,39 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
              * you can handle the navigation menu click by checking if the menu item id is android.R.id.home.
              */
             case android.R.id.home:
-                BottomSheetDialogFragment bottomDrawerFragment = BottomDrawerFragment.newInstance();
-                bottomDrawerFragment.show(getSupportFragmentManager(), "alaki");
+                if (state == State.IDLE) {
+                    BottomSheetDialogFragment bottomDrawerFragment = BottomDrawerFragment.newInstance();
+                    bottomDrawerFragment.show(getSupportFragmentManager(), "alaki");
+                } else { // then it is cancel button
+                    locationMgr.removeUpdates(gpsListener);
+                    resetState();
+                }
                 break;
 
             default:
                 return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+    private void resetState() {
+        ((Animatable) mFab.getDrawable()).stop();
+        mFab.setImageResource(R.drawable.avd_buyt_reverse);
+        ((Animatable) mFab.getDrawable()).start();
+
+        mBottomAppBar.setNavigationIcon(R.drawable.avd_cancel_nav);
+        ((Animatable) mBottomAppBar.getNavigationIcon()).start();
+
+        mBottomAppBar.setHideOnScroll(true);
+
+        mBottomAppBar.getMenu().getItem(0).setIcon(R.drawable.avd_add_show);
+        ((Animatable) mBottomAppBar.getMenu().getItem(0).getIcon()).start();
+        mBottomAppBar.getMenu().getItem(0).setVisible(true);
+
+        mBottomAppBar.getMenu().getItem(1).setIcon(R.drawable.avd_skip_reorder);
+        ((Animatable) mBottomAppBar.getMenu().getItem(1).getIcon()).start();
+
+        state = State.IDLE;
     }
 
     @Override
@@ -366,6 +422,7 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     @Override
     public void onStoreSelected(Store store) {
         mItemListViewModel.buy(selectedItems, store);
-        findLocationMode = !findLocationMode;
+        itemListFragment.clearSelectedItems(); // clear items of previous purchase
+        resetState();
     }
 }

@@ -4,13 +4,13 @@
 
     <item
         android:id="@+id/action_add"
-        android:icon="@drawable/ic_add"
+        android:icon="@drawable/avd_add_hide"
         android:title="@string/add_item"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/action_reorder"
-        android:icon="@drawable/ic_reorder"
+        android:icon="@drawable/avd_reorder_skip"
         android:title="Reorder items"
         app:showAsAction="always" />
 

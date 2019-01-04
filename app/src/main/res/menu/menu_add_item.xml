@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_cancel"
-        android:icon="@drawable/ic_close"
+        android:icon="@drawable/ic_cancel"
         android:title="Cancel"
         app:showAsAction="always" />
 
