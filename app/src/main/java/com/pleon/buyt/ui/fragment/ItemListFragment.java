@@ -132,12 +132,16 @@ public class ItemListFragment extends Fragment {
         return itemAdapter.getSelectedItems();
     }
 
+    public boolean isSelectedEmpty() {
+        return itemAdapter.getSelectedItems().size() == 0;
+    }
+
     public void clearSelectedItems() {
         itemAdapter.clearSelectedItems();
     }
 
-    public void enableItemsCheckbox() {
-        itemAdapter.togglePriceInput();
+    public void toggleItemsCheckbox(boolean enabled) {
+        itemAdapter.togglePriceInput(enabled);
     }
 
     public boolean validateSelectedItemsPrice() {

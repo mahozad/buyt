@@ -41,6 +41,7 @@ import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.location.LocationManager.GPS_PROVIDER;
 import static com.getkeepsafe.taptargetview.TapTarget.forView;
+import static com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_CENTER;
 import static com.google.android.material.snackbar.Snackbar.LENGTH_SHORT;
 import static java.lang.Math.cos;
 
@@ -136,7 +137,7 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     // • to get the fragment manager, call getFragmentManager() instead of getSupportFragment...
 
     private static final String TAG = "ItemListActivity";
-    private static final double NEAR_STORES_DISTANCE = cos(0.2 / 6371); // == 200m (6371km is the radius of the Earth)
+    private static final double NEAR_STORES_DISTANCE = cos(0.1 / 6371); // == 200m (6371km is the radius of the Earth)
 
     /**
      * Id to identify a location permission request.
@@ -151,6 +152,7 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     private LocationListener gpsListener;
     private ItemListViewModel mItemListViewModel;
     private ItemListFragment itemListFragment;
+    private boolean findingStateSkipped = false;
     private Set<Item> selectedItems;
 
     private enum State {
@@ -211,34 +213,18 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
                 }
         );
 
-
         mFab = findViewById(R.id.fab);
         mFab.setOnClickListener(fab -> {
-            if (state == State.IDLE && !itemListFragment.isCartEmpty()) {
-                mFab.setImageResource(R.drawable.avd_buyt);
-                ((Animatable) mFab.getDrawable()).start();
-
-                mBottomAppBar.setNavigationIcon(R.drawable.avd_nav_cancel);
-                ((Animatable) mBottomAppBar.getNavigationIcon()).start();
-
-                ((Animatable) mBottomAppBar.getMenu().getItem(0).getIcon()).start();
-                mBottomAppBar.getMenu().getItem(0).setVisible(false);
-
-                mBottomAppBar.getMenu().getItem(1).setIcon(R.drawable.avd_reorder_skip);
-                ((Animatable) mBottomAppBar.getMenu().getItem(1).getIcon()).start();
-
-                Animatable fabDrawable = (Animatable) mFab.getDrawable();
-                fabDrawable.start();
-
-                // Make sure the bottomAppBar is not hidden and make it not hide on scroll
-                new BottomAppBar.Behavior().slideUp(mBottomAppBar);
-                mBottomAppBar.setHideOnScroll(false);
-
-                findLocation();
-            } else if (itemListFragment.isCartEmpty()) {
-                Snackbar.make(findViewById(R.id.snackBarContainer), "No item to buy", LENGTH_SHORT).show();
+            if (state == State.IDLE) {
+                if (itemListFragment.isCartEmpty()) {
+                    Snackbar.make(findViewById(R.id.snackBarContainer), "No item to buy", LENGTH_SHORT).show();
+                } else {
+                    shiftToFindingState();
+                    itemListFragment.clearSelectedItems(); // clear items of previous purchase
+                    findLocation();
+                }
             } else if (state == State.SELECTING) {
-                if (itemListFragment.getSelectedItems().size() == 0) {
+                if (!itemListFragment.isSelectedEmpty()) {
                     Snackbar.make(findViewById(R.id.snackBarContainer), "No items selected", LENGTH_SHORT).show();
                 } else {
                     buySelectedItems();
@@ -255,6 +241,27 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
                         .transparentTarget(true)
                         .textColor(R.color.colorPrimaryDark))
                 .start();
+    }
+
+    private void shiftToFindingState() {
+        mFab.setImageResource(R.drawable.avd_buyt);
+        ((Animatable) mFab.getDrawable()).start();
+
+        mBottomAppBar.setNavigationIcon(R.drawable.avd_nav_cancel);
+        ((Animatable) mBottomAppBar.getNavigationIcon()).start();
+
+        ((Animatable) mBottomAppBar.getMenu().getItem(0).getIcon()).start();
+        mBottomAppBar.getMenu().getItem(0).setVisible(false);
+
+        mBottomAppBar.getMenu().getItem(1).setIcon(R.drawable.avd_reorder_skip);
+        ((Animatable) mBottomAppBar.getMenu().getItem(1).getIcon()).start();
+
+        Animatable fabDrawable = (Animatable) mFab.getDrawable();
+        fabDrawable.start();
+
+        // Make sure the bottomAppBar is not hidden and make it not hide on scroll
+        new BottomAppBar.Behavior().slideUp(mBottomAppBar);
+        mBottomAppBar.setHideOnScroll(false);
     }
 
     private void findLocation() {
@@ -275,14 +282,18 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     }
 
     private void onLocationFound(Location location) {
-        state = State.SELECTING;
+        shiftToSelectingState();
+        ItemListActivity.this.location = location;
+        itemListFragment.toggleItemsCheckbox(true);
+    }
+
+    private void shiftToSelectingState() {
         mBottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
         mFab.setImageResource(R.drawable.avd_find_done);
         ((Animatable) mFab.getDrawable()).start();
         mBottomAppBar.getMenu().getItem(1).setVisible(false);
 
-        ItemListActivity.this.location = location;
-        itemListFragment.enableItemsCheckbox();
+        state = State.SELECTING;
     }
 
     private class GpsListener implements LocationListener {
@@ -327,7 +338,8 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
         switch (requestCode) {
             case REQUEST_LOCATION_PERMISSION:
                 // If request is cancelled, the result arrays are empty.
@@ -366,9 +378,15 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
                 break;
 
             case R.id.action_reorder:
-                ItemListFragment itemListFragment = (ItemListFragment)
-                        getSupportFragmentManager().findFragmentById(R.id.container_fragment_items);
-                itemListFragment.toggleEditMode();
+                if (state == State.IDLE) {
+                    ItemListFragment itemListFragment = (ItemListFragment)
+                            getSupportFragmentManager().findFragmentById(R.id.container_fragment_items);
+                    itemListFragment.toggleEditMode();
+                } else {
+                    findingStateSkipped = true;
+                    shiftToSelectingState();
+                }
+
                 break;
 
             /* If you use setSupportActionBar() to set up the BottomAppBar
@@ -378,9 +396,12 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
                 if (state == State.IDLE) {
                     BottomSheetDialogFragment bottomDrawerFragment = BottomDrawerFragment.newInstance();
                     bottomDrawerFragment.show(getSupportFragmentManager(), "alaki");
-                } else { // then it is cancel button
+                } else if (state == State.FINDING) { // then it is cancel button
                     locationMgr.removeUpdates(gpsListener);
-                    resetState();
+                    shiftToIdleState();
+                } else {
+                    itemListFragment.toggleItemsCheckbox(false);
+                    shiftToIdleState();
                 }
                 break;
 
@@ -390,7 +411,8 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
         return true;
     }
 
-    private void resetState() {
+    private void shiftToIdleState() {
+        mBottomAppBar.setFabAlignmentMode(FAB_ALIGNMENT_MODE_CENTER);
         mFab.setImageResource(R.drawable.avd_buyt_reverse);
         ((Animatable) mFab.getDrawable()).start();
 
@@ -403,6 +425,7 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
         mBottomAppBar.getMenu().getItem(0).setIcon(R.drawable.avd_add_show);
         ((Animatable) mBottomAppBar.getMenu().getItem(0).getIcon()).start();
 
+        mBottomAppBar.getMenu().getItem(1).setVisible(true);
         mBottomAppBar.getMenu().getItem(1).setIcon(R.drawable.avd_skip_reorder);
         ((Animatable) mBottomAppBar.getMenu().getItem(1).getIcon()).start();
 
@@ -429,7 +452,6 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     @Override
     public void onStoreSelected(Store store) {
         mItemListViewModel.buy(selectedItems, store);
-        itemListFragment.clearSelectedItems(); // clear items of previous purchase
-        resetState();
+        shiftToIdleState();
     }
 }

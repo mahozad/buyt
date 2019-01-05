@@ -199,8 +199,8 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
         notifyDataSetChanged();
     }
 
-    public void togglePriceInput() {
-        selectionModeEnabled = !selectionModeEnabled;
+    public void togglePriceInput(boolean enabled) {
+        selectionModeEnabled = enabled;
         notifyDataSetChanged();
     }
 
