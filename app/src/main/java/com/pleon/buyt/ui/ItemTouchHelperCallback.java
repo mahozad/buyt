@@ -114,9 +114,10 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
         // animate circular reveal
         FrameLayout revealLayout = itemHolder.circularReveal;
         if (dX == -maxSwipeDistance && !itemHolder.animationMode) {
+            float finalRadius = Math.max(revealLayout.getWidth(), revealLayout.getHeight()) / 1.6f;
             Animator anim = createCircularReveal(revealLayout,
                     revealLayout.getWidth() / 2,
-                    revealLayout.getHeight() / 2, 0, 80);
+                    revealLayout.getHeight() / 2, 0, finalRadius);
             revealLayout.setVisibility(View.VISIBLE);
             anim.setDuration(160);
             anim.start();
