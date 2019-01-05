@@ -70,6 +70,7 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
 
     // DONE: What if someone forgets to tick items of a shop and then later wants to tick them: He can skip finding location
 
+    // TODO: disable swipe-to-delete the state is not in IDLE
     // TODO: Show the found store (icon or name) in bottomAppBar when location found (selecting mode)
     // TODO: Make icons animation durations consistent
     // TODO: round and filled icons of material design are here: https://material.io/tools/icons/?icon=done&style=round
