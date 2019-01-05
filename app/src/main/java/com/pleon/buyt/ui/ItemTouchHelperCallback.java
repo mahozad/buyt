@@ -29,7 +29,7 @@ import static androidx.recyclerview.widget.ItemTouchHelper.UP;
 public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     private ItemTouchHelperListener listener;
-    private boolean reorderModeEnabled = false; // for enable drag n drop of Items
+    private boolean dragModeEnabled = false; // for enable drag n drop of Items
     // in pixel (so it should be calculated to be same distance on all devices)
     private float maxSwipeDistance;
     private int revealWidth;
@@ -58,7 +58,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public int getMovementFlags(RecyclerView recyclerView, ViewHolder viewHolder) {
         int swipeFlags = START;
-        int dragFlags = reorderModeEnabled ? (UP | DOWN) : (0);
+        int dragFlags = dragModeEnabled ? (UP | DOWN) : (0);
         return makeMovementFlags(dragFlags, swipeFlags);
     }
 
@@ -139,8 +139,8 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
         return false;
     }
 
-    public void toggleEditMode() {
-        editModeEnabled = !editModeEnabled;
+    public void toggleDragMode() {
+        dragModeEnabled = !dragModeEnabled;
     }
 
     public interface ItemTouchHelperListener {

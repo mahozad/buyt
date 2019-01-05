@@ -125,7 +125,7 @@ public class ItemListFragment extends Fragment {
 
     public void toggleEditMode() {
         itemAdapter.toggleEditMode();
-        itemTouchHelperCallback.toggleEditMode();
+        itemTouchHelperCallback.toggleDragMode();
     }
 
     public Set<Item> getSelectedItems() {
