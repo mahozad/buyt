@@ -219,9 +219,12 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
         final TextInputLayout priceTxInLt;
         final EditText priceEdTx;
 
+        public boolean animationMode = false;
+
         // just for the purpose of swipe-to-delete
         public MaterialCardView cardBackground;
         public MaterialCardView cardForeground;
+        final FrameLayout circularReveal;
 
         ItemHolder(View view) {
             super(view);
@@ -239,6 +242,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
 
             this.cardBackground = view.findViewById(R.id.cardBackground);
             this.cardForeground = view.findViewById(R.id.cardForeground);
+            this.circularReveal = view.findViewById(R.id.circular_reveal);
         }
     }
 }

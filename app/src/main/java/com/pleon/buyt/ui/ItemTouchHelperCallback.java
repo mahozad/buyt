@@ -1,16 +1,20 @@
 package com.pleon.buyt.ui;
 
+import android.animation.Animator;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static android.util.TypedValue.applyDimension;
+import static android.view.ViewAnimationUtils.createCircularReveal;
 import static androidx.recyclerview.widget.ItemTouchHelper.DOWN;
 import static androidx.recyclerview.widget.ItemTouchHelper.START;
 import static androidx.recyclerview.widget.ItemTouchHelper.UP;
@@ -25,9 +29,10 @@ import static androidx.recyclerview.widget.ItemTouchHelper.UP;
 public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     private ItemTouchHelperListener listener;
-    private boolean editModeEnabled = false; // for enable drag n drop of Items
+    private boolean reorderModeEnabled = false; // for enable drag n drop of Items
     // in pixel (so it should be calculated to be same distance on all devices)
     private float maxSwipeDistance;
+    private int revealWidth;
 
     public ItemTouchHelperCallback(ItemTouchHelperListener listener) {
         this.listener = listener;
@@ -53,7 +58,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public int getMovementFlags(RecyclerView recyclerView, ViewHolder viewHolder) {
         int swipeFlags = START;
-        int dragFlags = editModeEnabled ? (UP | DOWN) : (0);
+        int dragFlags = reorderModeEnabled ? (UP | DOWN) : (0);
         return makeMovementFlags(dragFlags, swipeFlags);
     }
 
@@ -91,20 +96,42 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
         // TODO: here I can also detect how much swipe is done (with dX or dY) and for example show
         // different icon or change the color of icon when reached a threshold
 
+        ItemListAdapter.ItemHolder itemHolder = (ItemListAdapter.ItemHolder) viewHolder;
+
         View view = null;
         if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
             // if it's drag-n-drop then move the whole card
-            view = ((ItemListAdapter.ItemHolder) viewHolder).cardContainer;
+            view = itemHolder.cardContainer;
         } else if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             // if it's swipe then just move the foreground
-            view = ((ItemListAdapter.ItemHolder) viewHolder).cardForeground;
+            view = itemHolder.cardForeground;
         }
 
         // Here I have limited swipe distance. For full swipe, just remove this line.
         // Also if the speed of swipe should be reduced, dX can be divided by for example 2
         dX = dX > -maxSwipeDistance ? dX : -maxSwipeDistance;
 
+        // animate circular reveal
+        FrameLayout revealLayout = itemHolder.circularReveal;
+        if (dX == -maxSwipeDistance && !itemHolder.animationMode) {
+            Animator anim = createCircularReveal(revealLayout,
+                    revealLayout.getWidth() / 2,
+                    revealLayout.getHeight() / 2, 0, 80);
+            revealLayout.setVisibility(View.VISIBLE);
+            anim.setDuration(160);
+            anim.start();
+            itemHolder.animationMode = true;
+        } else if (dX > -maxSwipeDistance && itemHolder.animationMode) {
+            itemHolder.animationMode = false;
+            revealLayout.setVisibility(View.INVISIBLE);
+        }
+
         getDefaultUIUtil().onDraw(c, recyclerView, view, dX, dY, actionState, isCurrentlyActive);
+    }
+
+    @Override
+    public float getSwipeThreshold(@NonNull ViewHolder viewHolder) {
+        return 0.3f;
     }
 
     @Override

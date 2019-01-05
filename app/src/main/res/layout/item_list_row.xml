@@ -24,21 +24,28 @@
         app:cardElevation="0dp"
         app:cardUseCompatPadding="true">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <FrameLayout
             android:id="@+id/backgroundContentHolder"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <!-- to circular reveal-->
+            <FrameLayout
+                android:id="@+id/circular_reveal"
+                android:layout_width="88dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:visibility="invisible"
+                android:background="@color/error"/>
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"
-                app:layout_constraintBottom_toBottomOf="@id/backgroundContentHolder"
-                app:layout_constraintEnd_toEndOf="@id/backgroundContentHolder"
-                app:layout_constraintTop_toTopOf="@id/backgroundContentHolder"
+                android:layout_gravity="end|center_vertical"
                 app:srcCompat="@drawable/ic_delete" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </FrameLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
