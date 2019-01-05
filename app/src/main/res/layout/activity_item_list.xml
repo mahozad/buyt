@@ -60,6 +60,7 @@
         app:fabSize="normal"
         app:layout_anchor="@id/bottom_bar"
         app:maxImageSize="42dp"
+        app:rippleColor="@android:color/transparent"
         app:srcCompat="@drawable/avd_buyt" />
 
     <com.google.android.material.bottomappbar.BottomAppBar
@@ -72,6 +73,7 @@
         app:fabAlignmentMode="center"
         app:fabCradleMargin="6dp"
         app:hideOnScroll="true"
+        app:fabAnimationMode="slide"
         app:navigationIcon="@drawable/ic_nav_menu" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

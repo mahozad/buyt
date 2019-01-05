@@ -13,6 +13,7 @@ import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
@@ -40,6 +41,7 @@ import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.location.LocationManager.GPS_PROVIDER;
 import static com.getkeepsafe.taptargetview.TapTarget.forView;
+import static com.google.android.material.snackbar.Snackbar.LENGTH_SHORT;
 import static java.lang.Math.cos;
 
 public class ItemListActivity extends AppCompatActivity implements SelectStoreDialogFragment.Callback {
@@ -64,6 +66,7 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     // the app can be described as both a t0do app and an expense manager and also a shopping list app
     // After clicking Buyt fab button it converts to a done button and then by clicking on each item it is highlighted and finally click done
 
+    // TODO: Show the found store (icon or name) in bottomAppBar when location found (selecting mode)
     // TODO: Make icons animation durations consistent
     // TODO: round and filled icons of material design are here: https://material.io/tools/icons/?icon=done&style=round
     // TODO: Convert the logo to path (with path -> stroke to path option) and then recreate the logo
@@ -224,22 +227,22 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
                 mBottomAppBar.getMenu().getItem(1).setIcon(R.drawable.avd_reorder_skip);
                 ((Animatable) mBottomAppBar.getMenu().getItem(1).getIcon()).start();
 
-//                mBottomAppBar.setFabAnimationMode(BottomAppBar.FAB_ANIMATION_MODE_SLIDE);
-//                mBottomAppBar.setFabAlignmentMode(FAB_ALIGNMENT_MODE_END);
-
                 Animatable fabDrawable = (Animatable) mFab.getDrawable();
                 fabDrawable.start();
 
-                // Make sure the bottomAppBar is not hidden and make it not hide
+                // Make sure the bottomAppBar is not hidden and make it not hide on scroll
                 new BottomAppBar.Behavior().slideUp(mBottomAppBar);
                 mBottomAppBar.setHideOnScroll(false);
 
                 findLocation();
             } else if (itemListFragment.isCartEmpty()) {
-
-            } else {
-                mFab.setImageResource(R.drawable.ic_done);
-                buySelectedItems();
+                Snackbar.make(findViewById(R.id.snackBarContainer), "No item to buy", LENGTH_SHORT).show();
+            } else if (state == State.SELECTING) {
+                if (itemListFragment.getSelectedItems().size() == 0) {
+                    Snackbar.make(findViewById(R.id.snackBarContainer), "No items selected", LENGTH_SHORT).show();
+                } else {
+                    buySelectedItems();
+                }
             }
         });
 
@@ -272,9 +275,14 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     }
 
     private void onLocationFound(Location location) {
+        state = State.SELECTING;
+        mBottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
+        mFab.setImageResource(R.drawable.avd_find_done);
+        ((Animatable) mFab.getDrawable()).start();
+        mBottomAppBar.getMenu().getItem(1).setVisible(false);
+
         ItemListActivity.this.location = location;
         itemListFragment.enableItemsCheckbox();
-        state = State.SELECTING;
     }
 
     private class GpsListener implements LocationListener {
