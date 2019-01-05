@@ -36,6 +36,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
@@ -46,6 +49,8 @@ import static com.google.android.material.snackbar.Snackbar.LENGTH_SHORT;
 import static java.lang.Math.cos;
 
 public class ItemListActivity extends AppCompatActivity implements SelectStoreDialogFragment.Callback {
+
+    // the app can be described as both a t0do app and an expense manager and also a shopping list app
 
     /*
      * DONE: if the bottomAppBar is hidden (by scrolling) and then you expand an Item, the fab jumps up
@@ -63,16 +68,14 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     // see the following to probably fix it:
     // https://github.com/brianwernick/RecyclerExt/blob/master/library/src/main/java/com/devbrackets/android/recyclerext/adapter/helper/SimpleElevationItemTouchHelperCallback.java
 
-    // FIXME: What if someone forgets to tick items of a shop and then later wants to tick them
-    // the app can be described as both a t0do app and an expense manager and also a shopping list app
-    // After clicking Buyt fab button it converts to a done button and then by clicking on each item it is highlighted and finally click done
+    // DONE: What if someone forgets to tick items of a shop and then later wants to tick them: He can skip finding location
 
     // TODO: Show the found store (icon or name) in bottomAppBar when location found (selecting mode)
     // TODO: Make icons animation durations consistent
     // TODO: round and filled icons of material design are here: https://material.io/tools/icons/?icon=done&style=round
     // TODO: Convert the logo to path (with path -> stroke to path option) and then recreate the logo
     // FIXME: Update position field of items if an item is deleted
-    // TODO: Add ability to cancel completely when in input price mode
+    // DONE: Add ability to cancel completely when in input price mode
     // TODO: Add option in settings to enable/disable showing urgent items at top of the list
     // TODO: Add a button (custom view) at the end of StoreListAdapter to create a new Store
     // TODO: Add option in settings to disable/enable store confirmation (only one near store found)
@@ -144,10 +147,15 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
      */
     private static final int REQUEST_LOCATION_PERMISSION = 1;
 
-    private FloatingActionButton mFab;
-    private BottomAppBar mBottomAppBar;
+    @BindView(R.id.fab)
+    FloatingActionButton mFab;
+
+    @BindView(R.id.bottom_bar)
+    BottomAppBar mBottomAppBar;
+
     private Location location;
-    private State state = State.IDLE; // TODO: Should be synchronized
+    // TODO: Should be synchronized (user might click the fab and also location found at the same time)
+    private State state = State.IDLE;
     private LocationManager locationMgr;
     private LocationListener gpsListener;
     private ItemListViewModel mItemListViewModel;
@@ -166,8 +174,8 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_list);
+        ButterKnife.bind(this);
 
-        mBottomAppBar = findViewById(R.id.bottom_bar);
         setSupportActionBar(mBottomAppBar);
 
         // FragmentManager of an activity is responsible for calling the lifecycle methods of the fragments in its list.
@@ -213,26 +221,6 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
                 }
         );
 
-        mFab = findViewById(R.id.fab);
-        mFab.setOnClickListener(fab -> {
-            if (state == State.IDLE) {
-                if (itemListFragment.isCartEmpty()) {
-                    Snackbar.make(findViewById(R.id.snackBarContainer), "No item to buy", LENGTH_SHORT).show();
-                } else {
-                    shiftToFindingState();
-                    itemListFragment.clearSelectedItems(); // clear items of previous purchase
-                    findLocation();
-                }
-            } else if (state == State.SELECTING) {
-                if (!itemListFragment.isSelectedEmpty()) {
-                    Snackbar.make(findViewById(R.id.snackBarContainer), "No items selected", LENGTH_SHORT).show();
-                } else {
-                    buySelectedItems();
-                }
-            }
-        });
-
-
         // show tap target for FAB
         new TapTargetSequence(this).targets(
                 forView(findViewById(R.id.fab), "Tap here when you're ready")
@@ -241,6 +229,25 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
                         .transparentTarget(true)
                         .textColor(R.color.colorPrimaryDark))
                 .start();
+    }
+
+    @OnClick(R.id.fab)
+    void onFabClicked() {
+        if (state == State.IDLE) {
+            if (itemListFragment.isCartEmpty()) {
+                Snackbar.make(findViewById(R.id.snackBarContainer), "No item to buy", LENGTH_SHORT).show();
+            } else {
+                itemListFragment.clearSelectedItems(); // clear items of previous purchase
+                shiftToFindingState();
+                findLocation();
+            }
+        } else if (state == State.SELECTING) {
+            if (itemListFragment.isSelectedEmpty()) {
+                Snackbar.make(findViewById(R.id.snackBarContainer), "No items selected", LENGTH_SHORT).show();
+            } else {
+                buySelectedItems();
+            }
+        }
     }
 
     private void shiftToFindingState() {
@@ -384,6 +391,7 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
                     itemListFragment.toggleEditMode();
                 } else {
                     findingStateSkipped = true;
+                    locationMgr.removeUpdates(gpsListener);
                     shiftToSelectingState();
                 }
 
