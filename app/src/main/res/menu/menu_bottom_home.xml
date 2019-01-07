@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_add"
-        android:icon="@drawable/avd_add_hide"
+        android:icon="@drawable/avd_add_glow"
         android:title="@string/add_item"
         app:showAsAction="always" />
 

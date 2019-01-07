@@ -135,7 +135,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginTop="8dp"
-        android:button="@drawable/urgent_selector"
+        android:button="@drawable/avd_urgent_check"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
         android:text="Urgent"

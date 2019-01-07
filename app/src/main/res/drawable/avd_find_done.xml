@@ -13,7 +13,7 @@
                 android:pathData="M 6.05 12.854 L 9.45 16.254 L 17.95 7.754"
                 android:strokeColor="#fff"
                 android:strokeWidth="1.7"
-                android:trimPathEnd="0"
+                android:trimPathStart="1"
                 android:strokeLineCap="round"
                 android:strokeLineJoin="round"/>
         </vector>
@@ -21,10 +21,10 @@
     <target android:name="path_2">
         <aapt:attr name="android:animation">
             <objectAnimator
-                android:propertyName="trimPathEnd"
+                android:propertyName="trimPathStart"
                 android:duration="200"
-                android:valueFrom="0"
-                android:valueTo="1"
+                android:valueFrom="1"
+                android:valueTo="0"
                 android:valueType="floatType"
                 android:interpolator="@android:interpolator/fast_out_slow_in"/>
         </aapt:attr>
