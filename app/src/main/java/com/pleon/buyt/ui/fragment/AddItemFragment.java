@@ -1,11 +1,11 @@
 package com.pleon.buyt.ui.fragment;
 
 import android.content.Context;
+import android.graphics.drawable.Animatable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.DrawableContainer.DrawableContainerState;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
-import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,51 +17,51 @@ import android.widget.RadioGroup;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.pleon.buyt.R;
-import com.pleon.buyt.TextWatcherAdapter;
 import com.pleon.buyt.model.Item;
 import com.pleon.buyt.model.Quantity;
 import com.pleon.buyt.model.Quantity.Unit;
 
 import androidx.annotation.NonNull;
+import androidx.core.widget.CompoundButtonCompat;
 import androidx.fragment.app.Fragment;
+import butterknife.BindView;
+import butterknife.BindViews;
+import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
+import butterknife.OnFocusChange;
+import butterknife.OnTextChanged;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static butterknife.OnTextChanged.Callback.AFTER_TEXT_CHANGED;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link AddItemFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link AddItemFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AddItemFragment extends Fragment {
 
     public interface Callback {
 
         void onSubmit(Item item);
 
-        void onBoughtToggle(boolean checked);
+        void onBoughtToggled(boolean checked);
     }
 
     private Callback callback;
 
-    private TextInputLayout nameTxInLt;
-    private EditText nameEdtx;
-    private TextInputLayout quantityTxinlt;
-    private EditText quantityEdtx;
-    private RadioGroup unitRdgrp;
-    private RadioButton[] unitRdbtns;
-    private EditText descriptionEdtx;
-    private CheckBox urgentChbx;
-    private CheckBox boughtChbx;
-    private TextInputLayout priceTxinlt;
-    private EditText priceEdtx;
+    @BindView(R.id.name_layout) TextInputLayout nameTxInLt;
+    @BindView(R.id.name) EditText nameEdtx;
+    @BindView(R.id.quantity_layout) TextInputLayout quantityTxinlt;
+    @BindView(R.id.quantity) EditText quantityEdtx;
+    @BindView(R.id.radio_group) RadioGroup unitRdgrp;
+    @BindViews({R.id.unit, R.id.kilogram, R.id.gram}) RadioButton[] unitRdbtns;
+    @BindView(R.id.description) EditText descriptionEdtx;
+    @BindView(R.id.urgent) CheckBox urgentChbx;
+    @BindView(R.id.bought) CheckBox boughtChbx;
+    @BindView(R.id.price_layout) TextInputLayout priceTxinlt;
+    @BindView(R.id.price) EditText priceEdtx;
+    @BindView(R.id.price_container) FrameLayout priceContainer;
 
     private long selectedStoreId;
 
-    private static int NEXT_ITEM_ORDER;
+    private static int LAST_ITEM_ORDER;
 
     public AddItemFragment() {
         // Required empty constructor
@@ -79,57 +79,48 @@ public class AddItemFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            NEXT_ITEM_ORDER = getArguments().getInt("NEXT_ITEM_ORDER");
+            LAST_ITEM_ORDER = getArguments().getInt("NEXT_ITEM_ORDER");
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_item, container, false);
+        ButterKnife.bind(this, view);
 
-        nameTxInLt = view.findViewById(R.id.name_layout);
-        nameEdtx = view.findViewById(R.id.name);
-        quantityTxinlt = view.findViewById(R.id.quantity_layout);
-        quantityEdtx = view.findViewById(R.id.quantity);
-        unitRdgrp = view.findViewById(R.id.radio_group);
-        unitRdbtns = new RadioButton[unitRdgrp.getChildCount()];
-        descriptionEdtx = view.findViewById(R.id.description);
-        urgentChbx = view.findViewById(R.id.urgent);
-        boughtChbx = view.findViewById(R.id.bought);
-        priceTxinlt = view.findViewById(R.id.price_layout);
-        priceEdtx = view.findViewById(R.id.price);
-
-        setupListeners();
-
-        FrameLayout priceContainer = view.findViewById(R.id.price_container);
-        boughtChbx.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                    callback.onBoughtToggle(isChecked);
-                    priceContainer.setVisibility(isChecked ? VISIBLE : GONE);
-                }
-        );
-
-        for (int i = 0; i < unitRdgrp.getChildCount(); i++) {
-            unitRdbtns[i] = (RadioButton) unitRdgrp.getChildAt(i);
+        for (RadioButton unitRdbtn : unitRdbtns) {
             // disable by default (because quantity input is not focused yet)
-            unitRdbtns[i].setEnabled(false);
+            unitRdbtn.setEnabled(false);
         }
 
-        quantityEdtx.setOnFocusChangeListener((v, hasFocus) -> {
-                    // should enable and set the new color for EACH radio button
-                    for (RadioButton unitButton : unitRdbtns) {
-                        unitButton.setEnabled(hasFocus);
-                    }
-                    int color = R.color.error;
-                    if (hasFocus && quantityTxinlt.getError() == null) {
-                        color = R.color.colorPrimary;
-                    } else if (!hasFocus && quantityTxinlt.getError() == null) {
-                        color = R.color.unfocused;
-                    }
-                    setColorOfAllUnitsForEnabledState(color);
-                }
-        );
         return view;
+    }
+
+    @OnCheckedChanged(R.id.urgent)
+    void onUrgentToggled(boolean isChecked) {
+        urgentChbx.setButtonDrawable(isChecked ? R.drawable.avd_urgent_check : R.drawable.avd_urgent_uncheck);
+        ((Animatable) CompoundButtonCompat.getButtonDrawable(urgentChbx)).start();
+    }
+
+    @OnCheckedChanged(R.id.bought)
+    void onBoughtToggled(boolean isChecked) {
+        callback.onBoughtToggled(isChecked);
+        priceContainer.setVisibility(isChecked ? VISIBLE : GONE);
+    }
+
+    @OnFocusChange(R.id.quantity)
+    void onQuantityFocusChanged(boolean hasFocus) {
+        // should enable and set the new color for EACH radio button
+        for (RadioButton unitButton : unitRdbtns) {
+            unitButton.setEnabled(hasFocus);
+        }
+        int color = R.color.error;
+        if (hasFocus && quantityTxinlt.getError() == null) {
+            color = R.color.colorPrimary;
+        } else if (!hasFocus && quantityTxinlt.getError() == null) {
+            color = R.color.unfocused;
+        }
+        setColorOfAllUnitsForEnabledState(color);
     }
 
     private void setColorOfAllUnitsForEnabledState(int color) {
@@ -143,28 +134,20 @@ public class AddItemFragment extends Fragment {
         }
     }
 
-    private void setupListeners() {
-        nameEdtx.addTextChangedListener(new TextWatcherAdapter() {
-            @Override
-            public void afterTextChanged(Editable s) {
-                nameTxInLt.setError(null); // clear error if exists
-            }
-        });
+    @OnTextChanged(value = R.id.name, callback = AFTER_TEXT_CHANGED)
+    void onNameChanged() {
+        nameTxInLt.setError(null); // clear error if exists
+    }
 
-        quantityEdtx.addTextChangedListener(new TextWatcherAdapter() {
-            @Override
-            public void afterTextChanged(Editable s) {
-                quantityTxinlt.setError(null); // clear error if exists
-                setColorOfAllUnitsForEnabledState(R.color.colorPrimary);
-            }
-        });
+    @OnTextChanged(value = R.id.quantity, callback = AFTER_TEXT_CHANGED)
+    void onQuantityChanged() {
+        quantityTxinlt.setError(null); // clear error if exists
+        setColorOfAllUnitsForEnabledState(R.color.colorPrimary);
+    }
 
-        priceEdtx.addTextChangedListener(new TextWatcherAdapter() {
-            @Override
-            public void afterTextChanged(Editable s) {
-                priceTxinlt.setError(null); // clear error if exists
-            }
-        });
+    @OnTextChanged(value = R.id.price, callback = AFTER_TEXT_CHANGED)
+    void onPriceChanged() {
+        priceTxinlt.setError(null); // clear error if exists
     }
 
     @Override
@@ -198,7 +181,7 @@ public class AddItemFragment extends Fragment {
                 item.setPrice(Long.parseLong(priceEdtx.getText().toString()));
             }
 
-            item.setPosition(NEXT_ITEM_ORDER);
+            item.setPosition(LAST_ITEM_ORDER);
             callback.onSubmit(item);
         }
     }
