@@ -77,7 +77,7 @@ public class AddItemActivity extends AppCompatActivity implements AddItemFragmen
     }
 
     @Override
-    public void onBoughtToggle(boolean checked) {
+    public void onBoughtToggled(boolean checked) {
         selectStoreTxvi.setText(checked ? "Select store" : "Select icon");
     }
 

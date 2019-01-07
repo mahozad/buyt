@@ -19,5 +19,9 @@
     <string name="location_turn_on_title">GPS turned off</string>
     <string name="go_to_settings">GO TO SETTINGS</string>
     <string name="not_now">NOT NOW</string>
+    <string name="item_deleted_message">Item \"%1$s\" deleted</string>
+    <string name="undo">UNDO</string>
+    <string name="cart_empty_message">No item to buy</string>
+    <string name="no_item_selected_message">No items selected</string>
 
 </resources>

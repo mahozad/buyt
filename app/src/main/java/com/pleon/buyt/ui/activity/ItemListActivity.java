@@ -29,6 +29,7 @@ import com.pleon.buyt.ui.fragment.SelectStoreDialogFragment;
 import com.pleon.buyt.viewmodel.ItemListViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,7 +46,6 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.location.LocationManager.GPS_PROVIDER;
 import static com.getkeepsafe.taptargetview.TapTarget.forView;
 import static com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_CENTER;
-import static com.google.android.material.snackbar.Snackbar.LENGTH_SHORT;
 import static java.lang.Math.cos;
 
 public class ItemListActivity extends AppCompatActivity implements SelectStoreDialogFragment.Callback {
@@ -122,11 +122,14 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     // TODO: Add animation to item expand icon
     // TODO: Ability to add details (description) for each item
     // TODO: Show a small progress bar of how much has been spent if user has set a limit on spends
+
     /* FIXME: What happens if two stores are near each other and only one of them is saved in the app.
        now if user has bought something from the other store, it is saved for the persisted store */
+
     /* TODO: Show a prompt (or an emoji or whatever) when there is no items in the home screen
        to do this, add a new View to the layout and play with its setVisibility as appropriate
     */
+
     /* TODO: Do you have multiple tables in your database and find yourself copying the same Insert,
      * Update and Delete methods? DAOs support inheritance, so create a BaseDao<T> class, and define
      * your generic @Insert,... there. Have each DAO extend the BaseDao and add methods specific to each of them.
@@ -155,8 +158,8 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     BottomAppBar mBottomAppBar;
 
     private Location location;
-    // TODO: Should be synchronized (user might click the fab and also location found at the same time)
-    private State state = State.IDLE;
+    // volatile because user clicking the fab and location may be found at the same time)
+    private volatile State state = State.IDLE;
     private LocationManager locationMgr;
     private LocationListener gpsListener;
     private ItemListViewModel mItemListViewModel;
@@ -208,47 +211,45 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
 
         // observe() methods should be set only once (e.g. in activity onCreate() method) so if you
         // call it every time you want some data, maybe you're doing something wrong
-        mItemListViewModel.getNearStores().observe(this, nearStores -> {
-                    if (nearStores.size() == 0) {
-                        Intent intent = new Intent(this, CreateStoreActivity.class);
-                        intent.putExtra("LOCATION", location);
-                        startActivity(intent);
-                        mItemListViewModel.getLatestCreatedStore().observe(this, this::onStoreSelected);
-                    } else {
-                        SelectStoreDialogFragment selectStoreDialog = SelectStoreDialogFragment.newInstance((ArrayList<Store>) nearStores);
-                        selectStoreDialog.show(getSupportFragmentManager(), "selectStoreFragment");
-                        // handle selected Store in this::onStoreSelected()
-                    }
-                }
-        );
+        mItemListViewModel.getNearStores().observe(this, this::onNearStoresFound);
+    }
 
-        // show tap target for FAB
-        new TapTargetSequence(this).targets(
-                forView(findViewById(R.id.fab), "Tap here when you're ready")
-                        .outerCircleColor(R.color.colorAccent)
-                        .targetCircleColor(android.R.color.background_light)
-                        .transparentTarget(true)
-                        .textColor(R.color.colorPrimaryDark))
-                .start();
+    private void onNearStoresFound(List<Store> nearStores) {
+        if (nearStores.size() == 0) {
+            Intent intent = new Intent(this, CreateStoreActivity.class);
+            intent.putExtra("LOCATION", location);
+            startActivity(intent);
+            mItemListViewModel.getLatestCreatedStore().observe(this, this::onStoreSelected);
+        } else {
+            SelectStoreDialogFragment selectStoreDialog = SelectStoreDialogFragment.newInstance((ArrayList<Store>) nearStores);
+            selectStoreDialog.show(getSupportFragmentManager(), "selectStoreFragment");
+            // handle selected Store in this::onStoreSelected()
+        }
     }
 
     @OnClick(R.id.fab)
     void onFabClicked() {
-        if (state == State.IDLE) {
+        if (state == State.IDLE) { // act as find
             if (itemListFragment.isCartEmpty()) {
-                Snackbar.make(findViewById(R.id.snackBarContainer), "No item to buy", LENGTH_SHORT).show();
+                showSnackbar(R.string.cart_empty_message);
             } else {
                 itemListFragment.clearSelectedItems(); // clear items of previous purchase
                 shiftToFindingState();
                 findLocation();
             }
-        } else if (state == State.SELECTING) {
+        } else if (state == State.SELECTING) { // act as done
             if (itemListFragment.isSelectedEmpty()) {
-                Snackbar.make(findViewById(R.id.snackBarContainer), "No items selected", LENGTH_SHORT).show();
+                showSnackbar(R.string.no_item_selected_message);
             } else {
                 buySelectedItems();
             }
         }
+    }
+
+    private void showSnackbar(int message) {
+        Snackbar.make(findViewById(R.id.snackBarContainer),
+                getString(message), Snackbar.LENGTH_SHORT)
+                .show();
     }
 
     private void shiftToFindingState() {
