@@ -166,6 +166,7 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     private ItemListFragment itemListFragment;
     private boolean findingStateSkipped = false;
     private Set<Item> selectedItems;
+    private boolean newbie;
 
     private enum State {
         IDLE, FINDING, SELECTING
@@ -179,6 +180,19 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_list);
         ButterKnife.bind(this);
+
+        newbie = getPreferences(MODE_PRIVATE).getBoolean("NEWBIE", true);
+        if (newbie) {
+            // show tap target for FAB
+            new TapTargetSequence(this).targets(
+                    forView(findViewById(R.id.fab), "Tap here when you're ready")
+                            .outerCircleColor(R.color.colorAccent)
+                            .targetCircleColor(android.R.color.background_light)
+                            .transparentTarget(true)
+                            .textColor(R.color.colorPrimaryDark))
+                    .start();
+        }
+        getPreferences(MODE_PRIVATE).edit().putBoolean("NEWBIE", false).apply();
 
         setSupportActionBar(mBottomAppBar);
 
@@ -371,6 +385,10 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_bottom_home, menu);
+        if (newbie) {
+            // Make plus icon glow a little bit if the user is a newbie!
+            ((Animatable) menu.getItem(0).getIcon()).start();
+        }
         return true;
     }
 
