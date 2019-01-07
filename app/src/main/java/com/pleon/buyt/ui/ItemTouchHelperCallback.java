@@ -32,7 +32,6 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
     private boolean dragModeEnabled = false; // for enable drag n drop of Items
     // in pixel (so it should be calculated to be same distance on all devices)
     private float maxSwipeDistance;
-    private int revealWidth;
 
     public ItemTouchHelperCallback(ItemTouchHelperListener listener) {
         this.listener = listener;
