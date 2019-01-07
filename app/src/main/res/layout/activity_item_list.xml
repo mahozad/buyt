@@ -71,9 +71,9 @@
         android:layout_gravity="bottom"
         android:backgroundTint="#212121"
         app:fabAlignmentMode="center"
+        app:fabAnimationMode="slide"
         app:fabCradleMargin="6dp"
         app:hideOnScroll="true"
-        app:fabAnimationMode="slide"
         app:navigationIcon="@drawable/ic_nav_menu" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
