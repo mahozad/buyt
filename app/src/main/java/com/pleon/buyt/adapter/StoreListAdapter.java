@@ -1,4 +1,4 @@
-package com.pleon.buyt.ui;
+package com.pleon.buyt.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.pleon.buyt.R;
 import com.pleon.buyt.model.Store;
-import com.pleon.buyt.ui.StoreListAdapter.StoreHolder;
+import com.pleon.buyt.adapter.StoreListAdapter.StoreHolder;
 
 import java.util.List;
 

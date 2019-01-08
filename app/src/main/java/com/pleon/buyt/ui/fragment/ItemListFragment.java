@@ -10,7 +10,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.pleon.buyt.R;
 import com.pleon.buyt.model.Item;
-import com.pleon.buyt.ui.ItemListAdapter;
+import com.pleon.buyt.adapter.ItemListAdapter;
 import com.pleon.buyt.ui.ItemTouchHelperCallback;
 import com.pleon.buyt.ui.ItemTouchHelperCallback.ItemTouchHelperListener;
 import com.pleon.buyt.viewmodel.ItemListViewModel;

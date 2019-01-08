@@ -1,4 +1,4 @@
-package com.pleon.buyt.ui;
+package com.pleon.buyt.adapter;
 
 import android.text.Editable;
 import android.view.LayoutInflater;
@@ -16,7 +16,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.pleon.buyt.R;
 import com.pleon.buyt.TextWatcherAdapter;
 import com.pleon.buyt.model.Item;
-import com.pleon.buyt.ui.ItemListAdapter.ItemHolder;
+import com.pleon.buyt.adapter.ItemListAdapter.ItemHolder;
 
 import java.util.HashSet;
 import java.util.List;
@@ -211,7 +211,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
         final TextView nameTxVi;
         final TextView descriptionTxVi;
         final TextView quantityTxVi;
-        final FrameLayout cardContainer;
+        public final FrameLayout cardContainer;
         final ImageButton expandDragBtn;
         final ImageView urgentImgVi;
         final CheckBox selectChBx;
@@ -224,7 +224,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
         // just for the purpose of swipe-to-delete
         public MaterialCardView cardBackground;
         public MaterialCardView cardForeground;
-        final FrameLayout circularReveal;
+        public final FrameLayout circularReveal;
 
         ItemHolder(View view) {
             super(view);
