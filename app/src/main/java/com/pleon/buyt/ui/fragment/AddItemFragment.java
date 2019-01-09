@@ -72,9 +72,11 @@ public class AddItemFragment extends Fragment {
 
     public static AddItemFragment newInstance(int nextItemOrder) {
         AddItemFragment fragment = new AddItemFragment();
+
         Bundle args = new Bundle();
         args.putInt("NEXT_ITEM_ORDER", nextItemOrder);
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -89,7 +91,7 @@ public class AddItemFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_item, container, false);
-        unbinder = ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view); // unbind() is required only for Fragments
 
         for (RadioButton unitRdbtn : unitRdbtns) {
             // disable by default (because quantity input is not focused yet)

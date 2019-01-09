@@ -62,8 +62,7 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
-        unbinder = ButterKnife.bind(this, view);
-
+        unbinder = ButterKnife.bind(this, view); // unbind() is required only for Fragments
 
         itemListViewModel = ViewModelProviders.of(this).get(ItemListViewModel.class);
         itemListViewModel.getAll().observe(this, items -> {

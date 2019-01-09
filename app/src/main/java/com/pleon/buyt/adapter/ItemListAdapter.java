@@ -188,7 +188,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
 
         ItemHolder(View itemView) {
             super(itemView); // the view (row layout) for the item
-            ButterKnife.bind(this, itemView);
+            ButterKnife.bind(this, itemView); // unbind() is required only for Fragments
         }
 
         @OnTouch(R.id.expandDragButton)

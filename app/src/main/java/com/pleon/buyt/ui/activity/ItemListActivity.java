@@ -179,7 +179,7 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_list);
-        ButterKnife.bind(this);
+        ButterKnife.bind(this); // unbind() is required only for Fragments
 
         newbie = getPreferences(MODE_PRIVATE).getBoolean("NEWBIE", true);
         if (newbie) {
