@@ -11,8 +11,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.pleon.buyt.R;
 import com.pleon.buyt.model.Item;
 import com.pleon.buyt.adapter.ItemListAdapter;
-import com.pleon.buyt.ui.ItemTouchHelperCallback;
-import com.pleon.buyt.ui.ItemTouchHelperCallback.ItemTouchHelperListener;
+import com.pleon.buyt.ui.TouchHelperCallback;
+import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener;
 import com.pleon.buyt.viewmodel.ItemListViewModel;
 
 import java.util.Collections;
@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 import static com.google.android.material.snackbar.Snackbar.LENGTH_LONG;
 
@@ -34,9 +35,11 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
     @BindView(R.id.list) RecyclerView itemRecyclerView;
     private ItemListAdapter itemAdapter;
     private ItemListViewModel itemListViewModel;
-    private ItemTouchHelperCallback itemTouchHelperCallback;
+    private TouchHelperCallback touchHelperCallback;
     private int lastSizeOfItems = 0;
     private boolean itemsReordered = false;
+
+    private Unbinder unbinder;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -59,7 +62,8 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
+
 
         itemListViewModel = ViewModelProviders.of(this).get(ItemListViewModel.class);
         itemListViewModel.getAll().observe(this, items -> {
@@ -71,9 +75,9 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
         });
 
         // for swipe-to-delete and drag-n-drop of item
-        itemTouchHelperCallback = new ItemTouchHelperCallback(this);
+        touchHelperCallback = new TouchHelperCallback(this);
 
-        ItemTouchHelper touchHelper = new ItemTouchHelper(itemTouchHelperCallback);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(touchHelperCallback);
         touchHelper.attachToRecyclerView(itemRecyclerView);
 
         itemAdapter = new ItemListAdapter(touchHelper);
@@ -127,9 +131,16 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        // set the bindings to null (frees up memory)
+        unbinder.unbind();
+    }
+
     public void toggleEditMode() {
         itemAdapter.toggleEditMode();
-        itemTouchHelperCallback.toggleDragMode();
+        touchHelperCallback.toggleDragMode();
     }
 
     public Set<Item> getSelectedItems() {

@@ -30,6 +30,7 @@ import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnFocusChange;
 import butterknife.OnTextChanged;
+import butterknife.Unbinder;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -59,6 +60,8 @@ public class AddItemFragment extends Fragment {
     @BindView(R.id.price) EditText priceEdtx;
     @BindView(R.id.price_container) FrameLayout priceContainer;
 
+    private Unbinder unbinder;
+
     private long selectedStoreId;
 
     private static int LAST_ITEM_ORDER;
@@ -86,7 +89,7 @@ public class AddItemFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_item, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         for (RadioButton unitRdbtn : unitRdbtns) {
             // disable by default (because quantity input is not focused yet)
@@ -164,6 +167,13 @@ public class AddItemFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         callback = null;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        // set the bindings to null (frees up memory)
+        unbinder.unbind();
     }
 
     public void onDonePressed() {
