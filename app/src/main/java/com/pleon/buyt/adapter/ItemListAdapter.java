@@ -1,7 +1,8 @@
 package com.pleon.buyt.adapter;
 
-import android.text.Editable;
+import android.graphics.drawable.Animatable;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -14,28 +15,35 @@ import android.widget.TextView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.pleon.buyt.R;
-import com.pleon.buyt.TextWatcherAdapter;
-import com.pleon.buyt.model.Item;
 import com.pleon.buyt.adapter.ItemListAdapter.ItemHolder;
+import com.pleon.buyt.model.Item;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
-import androidx.transition.TransitionManager;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
+import butterknife.OnClick;
+import butterknife.OnTextChanged;
+import butterknife.OnTouch;
 
 import static android.view.MotionEvent.ACTION_DOWN;
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
+import static androidx.transition.TransitionManager.beginDelayedTransition;
+import static java.lang.Long.parseLong;
 
 public class ItemListAdapter extends Adapter<ItemHolder> {
 
-    private List<Item> allItems;
+    private List<Item> items;
     public RecyclerView recyclerView;
     private boolean editModeEnabled = false;
     private boolean selectionModeEnabled = false;
@@ -60,88 +68,43 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
      * @param recyclerView the enclosing RecyclerView
      */
     @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         this.recyclerView = recyclerView;
     }
 
+    @NonNull
     @Override
-    public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_list_row, parent, false);
         return new ItemHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final ItemHolder holder, int position) {
-        if (allItems != null) {
-            Item item = allItems.get(position);
+    public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
+        if (items != null) {
+            Item item = items.get(position);
             holder.nameTxVi.setText(item.getName());
-            holder.descriptionTxVi.setText(item.getDescription());
+            holder.descTxVi.setText(item.getDescription());
             holder.quantityTxVi.setText(item.getQuantity().toString());
             holder.urgentImgVi.setVisibility(item.isUrgent() ? VISIBLE : INVISIBLE);
-
-            holder.expandDragBtn.setOnTouchListener((v, event) -> {
-                if (event.getActionMasked() == ACTION_DOWN) {
-                    itemTouchHelper.startDrag(holder);
-                }
-                return false;
-            });
-
-            holder.selectChBx.setOnClickListener(v -> {
-                if (holder.priceContainer.getVisibility() == GONE) {
-                    holder.priceContainer.setVisibility(VISIBLE);
-                    selectedItems.add(item);
-                } else {
-                    holder.priceContainer.setVisibility(GONE);
-                    selectedItems.remove(item);
-                }
-            });
+            holder.selectChBx.setChecked(selectedItems.contains(item));
+            holder.descTxVi.setVisibility(item.isExpanded() ? VISIBLE : GONE);
 
             if (selectionModeEnabled) {
                 holder.selectChBx.setVisibility(VISIBLE);
+                holder.expandDragBtn.setVisibility(INVISIBLE);
             } else if (editModeEnabled) {
                 holder.expandDragBtn.setImageResource(R.drawable.ic_drag_handle);
                 holder.expandDragBtn.setVisibility(VISIBLE);
             } else if (item.getDescription() != null) {
-                holder.expandDragBtn.setImageResource(R.drawable.ic_expand);
+                holder.expandDragBtn.setImageResource(R.drawable.avd_expand);
                 holder.expandDragBtn.setVisibility(VISIBLE);
             } else {
+                holder.selectChBx.setVisibility(INVISIBLE);
                 holder.expandDragBtn.setVisibility(INVISIBLE);
             }
-
-
-            holder.priceEdTx.addTextChangedListener(new TextWatcherAdapter() {
-                @Override
-                public void afterTextChanged(Editable s) {
-                    String priceString = holder.priceEdTx.getText().toString();
-                    if (!priceString.isEmpty()) {
-                        long price = Long.parseLong(priceString);
-                        item.setPrice(price);
-                    }
-                }
-            });
-
-
-            // Restore selected state of the Item
-            holder.selectChBx.setChecked(selectedItems.contains(item));
-
-            // Restore expanded state of the item
-            holder.descriptionTxVi.setVisibility(item.isExpanded() ? VISIBLE : GONE);
-
-            // TODO: which callback method is the best for setting these listeners? (e.g. onCreate or...?)
-
-            holder.cardForeground.setOnClickListener(container -> {
-                if (selectionModeEnabled) {
-                    holder.selectChBx.performClick();
-                }
-            });
-
-            holder.expandDragBtn.setOnClickListener(expBtn -> {
-                holder.descriptionTxVi.setVisibility(holder.descriptionTxVi.getVisibility() == VISIBLE ? GONE : VISIBLE);
-                item.setExpanded(holder.descriptionTxVi.getVisibility() == VISIBLE);
-                TransitionManager.beginDelayedTransition(recyclerView);
-            });
         } else {
             // Covers the case of data not being ready yet.
             // set a placeholder or something
@@ -150,30 +113,30 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
 
     @Override
     public int getItemCount() {
-        if (allItems == null) {
+        if (items == null) {
             return 0;
         }
-        return allItems.size();
+        return items.size();
     }
 
-    // setHasStableIds() should be set for the adapter. This is an optimization hint that you can
+    // setHasStableIds() should also be set for the adapter. This is an optimization hint that you can
     // give to the RecyclerView. You're telling it "when I provide a ViewHolder, its id is unique and won't change."
     @Override
     public long getItemId(int position) {
-        return allItems.get(position).getId();
+        return items.get(position).getId();
     }
 
     public List<Item> getItems() {
-        return allItems;
+        return items;
     }
 
     public void setItems(List<Item> items) {
-        allItems = items;
+        this.items = items;
         notifyDataSetChanged();
     }
 
     public Item getItem(int position) {
-        return allItems.get(position);
+        return items.get(position);
     }
 
     public Set<Item> getSelectedItems() {
@@ -185,12 +148,12 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
     }
 
     public void addItem(Item item, int position) {
-        allItems.add(position, item);
+        items.add(position, item);
         notifyItemInserted(position);
     }
 
     public void removeItem(int position) {
-        allItems.remove(position);
+        items.remove(position);
         notifyItemRemoved(position);
     }
 
@@ -204,45 +167,79 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
         notifyDataSetChanged();
     }
 
-    // Adapter (and RecyclerView) works with ViewHolders instead of direct Views.
+    // Adapter (and RecyclerView) work with ViewHolders instead of direct Views.
     public class ItemHolder extends ViewHolder {
 
-        final View view; // the view (row layout) for the item
-        final TextView nameTxVi;
-        final TextView descriptionTxVi;
-        final TextView quantityTxVi;
-        public final FrameLayout cardContainer;
-        final ImageButton expandDragBtn;
-        final ImageView urgentImgVi;
-        final CheckBox selectChBx;
-        final FrameLayout priceContainer;
-        final TextInputLayout priceTxInLt;
-        final EditText priceEdTx;
+        @BindView(R.id.item_name) TextView nameTxVi;
+        @BindView(R.id.description) TextView descTxVi;
+        @BindView(R.id.item_quantity) TextView quantityTxVi;
+        @BindView(R.id.expandDragButton) ImageButton expandDragBtn;
+        @BindView(R.id.urgentIcon) ImageView urgentImgVi;
+        @BindView(R.id.selectCheckBox) CheckBox selectChBx;
+        @BindView(R.id.price_container) FrameLayout priceContainer;
+        @BindView(R.id.price_layout) TextInputLayout priceTxInLt;
+        @BindView(R.id.price) EditText priceEdTx;
+        @BindView(R.id.cardContainer) public FrameLayout cardCtn;
+        @BindView(R.id.cardBackground) public MaterialCardView cardBg;
+        @BindView(R.id.cardForeground) public MaterialCardView cardFg;
+        @BindView(R.id.circular_reveal) public ImageView delCircularReveal;
 
-        public boolean animationMode = false;
+        public boolean delAnimating = false;
 
-        // just for the purpose of swipe-to-delete
-        public MaterialCardView cardBackground;
-        public MaterialCardView cardForeground;
-        public final FrameLayout circularReveal;
+        ItemHolder(View itemView) {
+            super(itemView); // the view (row layout) for the item
+            ButterKnife.bind(this, itemView);
+        }
 
-        ItemHolder(View view) {
-            super(view);
-            this.view = view;
-            this.nameTxVi = view.findViewById(R.id.item_name);
-            this.descriptionTxVi = view.findViewById(R.id.description);
-            this.quantityTxVi = view.findViewById(R.id.item_quantity);
-            this.cardContainer = view.findViewById(R.id.cardContainer);
-            this.expandDragBtn = view.findViewById(R.id.expandDragButton);
-            this.urgentImgVi = view.findViewById(R.id.urgentIcon);
-            this.selectChBx = view.findViewById(R.id.selectCheckBox);
-            this.priceContainer = view.findViewById(R.id.price_container);
-            this.priceTxInLt = view.findViewById(R.id.price_layout);
-            this.priceEdTx = view.findViewById(R.id.price);
+        @OnTouch(R.id.expandDragButton)
+        boolean onDragHandleTouch(MotionEvent event) {
+            if (event.getActionMasked() == ACTION_DOWN) {
+                itemTouchHelper.startDrag(this);
+            }
+            return false;
+        }
 
-            this.cardBackground = view.findViewById(R.id.cardBackground);
-            this.cardForeground = view.findViewById(R.id.cardForeground);
-            this.circularReveal = view.findViewById(R.id.circular_reveal);
+        @OnClick(R.id.expandDragButton)
+        void onExpandToggle() {
+            Item item = items.get(getAdapterPosition());
+
+            expandDragBtn.setImageResource(item.isExpanded() ? R.drawable.avd_collapse : R.drawable.avd_expand);
+            ((Animatable) expandDragBtn.getDrawable()).start();
+
+            descTxVi.setVisibility(descTxVi.getVisibility() == GONE ? VISIBLE : GONE);
+            item.setExpanded(descTxVi.getVisibility() == VISIBLE);
+
+            beginDelayedTransition(recyclerView);
+        }
+
+        @OnClick(R.id.cardForeground)
+        void onCardClick() {
+            if (selectionModeEnabled) {
+                selectChBx.performClick();
+            } else {
+                expandDragBtn.post(() -> expandDragBtn.performClick());
+            }
+        }
+
+        @OnTextChanged(R.id.price)
+        void onPriceChanged() {
+            String priceString = priceEdTx.getText().toString();
+            if (!priceString.isEmpty()) {
+                long price = parseLong(priceString);
+                Item item = items.get(getAdapterPosition());
+                item.setPrice(price);
+            }
+        }
+
+        @OnCheckedChanged(R.id.selectCheckBox)
+        void onItemSelected(boolean isChecked) {
+            if (isChecked) {
+                priceContainer.setVisibility(VISIBLE);
+                selectedItems.add(items.get(getAdapterPosition()));
+            } else {
+                priceContainer.setVisibility(GONE);
+                selectedItems.remove(items.get(getAdapterPosition()));
+            }
         }
     }
 }
