@@ -64,7 +64,7 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     // **: this happens if the card being dragged over by this card, has itself dragged over this card in the past.
     // steps to reproduce: drag card1 over card2 and then drop it (you can also drop it to its previous position).
     // now drag card2 over card1. Then again drag card1 over card2; it moves behind of card2 and in front of other cards.
-    // NOTE: This is caused by "public void clearView..." method in ItemTouchHelperCallback class
+    // NOTE: This is caused by "public void clearView..." method in TouchHelperCallback class
     // see the following to probably fix it:
     // https://github.com/brianwernick/RecyclerExt/blob/master/library/src/main/java/com/devbrackets/android/recyclerext/adapter/helper/SimpleElevationItemTouchHelperCallback.java
 
