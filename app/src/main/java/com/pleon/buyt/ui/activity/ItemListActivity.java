@@ -70,7 +70,7 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
 
     // DONE: What if someone forgets to tick items of a shop and then later wants to tick them: He can skip finding location
 
-    // TODO: disable swipe-to-delete the state is not in IDLE
+    // TODO: disable swipe-to-delete when the state is not in IDLE
     // TODO: Show the found store (icon or name) in bottomAppBar when location found (selecting mode)
     // TODO: Make icons animation durations consistent
     // TODO: round and filled icons of material design are here: https://material.io/tools/icons/?icon=done&style=round
@@ -86,10 +86,10 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     // TODO: Reimplement item unit switch button with this approach: https://stackoverflow.com/a/48640424/8583692
     // TODO: Add a functionality to merge another device data to a device (e.g. can merge all family spending data to father's phone)
     // TODO: Add an action in bottomAppBar in Add Item activity to select a date for showing the item in home page
-    // TODO: For circular coloring of swipe background, see https://stackoverflow.com/q/46460978/8583692
+    // DONE: For circular coloring of swipe background, see https://stackoverflow.com/q/46460978/8583692
     // TODO: Use DiffUtil class (google it!) instead of calling notifyDataSetChanged() method of adapter
-    // TODO: Add an reorder icon to bottomAppBar so when taped, the cards show a handle to order them
-    // TODO: Disable buyt fab button when there is no item
+    // DONE: Add an reorder icon to bottomAppBar so when taped, the cards show a handle to order them
+    // DONE: Disable buyt fab button when there is no item
     // TODO: For correct margins of cards, Texts, ... see the page of that component in design section of material.io
     // TODO: Difference between <ImageView>s to <AppcompatImageView>s ?
     // TODO: hide the reorder items icon in bottomAppBar when number of items is less than 2
@@ -102,25 +102,23 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     // TODO: Dark material colors: https://stackoverflow.com/q/36915508
     // TODO: for the item list to only one item be expanded see https://stackoverflow.com/q/27203817/8583692
     // FIXME: Correct all names and ids according to best practices
-    // TODO: Use butter knife to declare activity views and view handlers
+    // DONE: Use butter knife to declare activity views and view handlers
     // TODO: Enable the user to disable location rationale dialog and always enter stores manually
     // TODO: What is Spherical Law of Cosines? (for locations)
     // TODO: Add the functionality to export and import all app data
     // TODO: Try to first provide an MVP (minimally viable product) version of the app
-    // TODO: Implement the app with Flutter
     // TODO: Make viewing stores on map a premium feature
-    // TODO: Maybe instead of a fragment, I can use full-screen dialog for adding new Item?
     // TODO: Enable the user to change the radius that app uses to find near stores in settings
     // TODO: Add ability to remove all app data
     // TODO: Add android.support.annotation to the app
-    // TODO: For item_list_row prices user can enter an inexact value (range)
+    // TODO: For item prices user can enter an inexact value (range)
     // TODO: For every new version of the app display a what's new page on first app open
     // DONE: Convert the app architecture to MVVM
     // TODO: Use loaders to get data from database?
     // TODO: Convert all ...left and ...right attributes to ...start and ...end
-    // TODO: Add ability (an icon) for each item to mark it as high priority
+    // DONE: Add ability (an icon) for each item to mark it as high priority
     // TODO: Add animation to item expand icon
-    // TODO: Ability to add details (description) for each item
+    // DONE: Ability to add details (description) for each item
     // TODO: Show a small progress bar of how much has been spent if user has set a limit on spends
 
     /* FIXME: What happens if two stores are near each other and only one of them is saved in the app.
@@ -151,11 +149,8 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
      */
     private static final int REQUEST_LOCATION_PERMISSION = 1;
 
-    @BindView(R.id.fab)
-    FloatingActionButton mFab;
-
-    @BindView(R.id.bottom_bar)
-    BottomAppBar mBottomAppBar;
+    @BindView(R.id.fab) FloatingActionButton mFab;
+    @BindView(R.id.bottom_bar) BottomAppBar mBottomAppBar;
 
     private Location location;
     // volatile because user clicking the fab and location may be found at the same time)
@@ -343,7 +338,7 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     }
 
     /**
-     * Requests the Camera permission.
+     * Requests the Location permission.
      * If the permission has been denied previously, a the user will be prompted
      * to grant the permission, otherwise it is requested directly.
      */
