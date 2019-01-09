@@ -16,14 +16,6 @@ import com.pleon.buyt.viewmodel.StoreViewModel;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link CreateStoreFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link CreateStoreFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CreateStoreFragment extends Fragment {
 
     private Button mAddButton;
