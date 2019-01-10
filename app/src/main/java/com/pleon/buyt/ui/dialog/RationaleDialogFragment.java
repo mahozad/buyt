@@ -1,10 +1,10 @@
-package com.pleon.buyt.ui.fragment;
+package com.pleon.buyt.ui.dialog;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
 
 import com.pleon.buyt.R;
 
@@ -13,19 +13,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+import static android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS;
+
 // DialogFragment is just another Fragment
 public class RationaleDialogFragment extends AppCompatDialogFragment {
 
-    public static RationaleDialogFragment newInstance(int title, int message, boolean permissionRequired) {
-        RationaleDialogFragment instance = new RationaleDialogFragment();
+    private Callback callback;
 
-        Bundle args = new Bundle();
-        args.putInt("TITLE", title);
-        args.putInt("MESSAGE", message);
-        args.putBoolean("PERMISSION_REQUIRED", permissionRequired);
-        instance.setArguments(args);
-
-        return instance;
+    public static RationaleDialogFragment newInstance() {
+        return new RationaleDialogFragment();
     }
 
     /**
@@ -45,35 +41,38 @@ public class RationaleDialogFragment extends AppCompatDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        boolean permissionRequired = getArguments().getBoolean("PERMISSION_REQUIRED");
-
         AlertDialog dialog = new AlertDialog.Builder(getActivity())
                 .setIcon(R.drawable.ic_location_off)
                 .setPositiveButton(getString(R.string.go_to_settings), (d, which) -> {
-                    startActivity(makeIntent(permissionRequired));
+                    Intent intent = new Intent(ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
+                    intent.setData(uri);
+                    startActivity(intent);
                 })
-                .setNegativeButton(getString(R.string.not_now), (d, which) -> {
-                    // TODO: user refused to enable location
-                }).create();
+                .setNegativeButton(getString(R.string.not_now), (d, which) -> callback.onEnableLocationDenied())
+                .create();
 
         // getText is to preserve html formats
-        dialog.setTitle(getText(getArguments().getInt("TITLE")));
-        dialog.setMessage(getText(getArguments().getInt("MESSAGE")));
+        dialog.setTitle(R.string.location_permission_title);
+        dialog.setMessage(getText(R.string.location_permission_rationale));
         // dialog.setCancelable(false); // Prevent dialog from getting dismissed on back key pressed
-        dialog.setCanceledOnTouchOutside(false);
+        // dialog.setCanceledOnTouchOutside(false);
         return dialog;
     }
 
-    private Intent makeIntent(boolean permissionRequired) {
-        Intent intent;
-        if (permissionRequired) {
-            intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-            Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
-            intent.setData(uri);
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof Callback) {
+            callback = (Callback) context;
         } else {
-            // just location is off
-            intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            throw new RuntimeException(context.toString() + " must implement Callback");
         }
-        return intent;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        callback = null;
     }
 }

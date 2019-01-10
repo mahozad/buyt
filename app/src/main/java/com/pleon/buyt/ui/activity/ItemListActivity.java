@@ -23,6 +23,9 @@ import com.pleon.buyt.database.AppDatabase;
 import com.pleon.buyt.model.Coordinates;
 import com.pleon.buyt.model.Item;
 import com.pleon.buyt.model.Store;
+import com.pleon.buyt.ui.dialog.Callback;
+import com.pleon.buyt.ui.dialog.LocationOffDialogFragment;
+import com.pleon.buyt.ui.dialog.RationaleDialogFragment;
 import com.pleon.buyt.ui.fragment.BottomDrawerFragment;
 import com.pleon.buyt.ui.fragment.ItemListFragment;
 import com.pleon.buyt.ui.fragment.SelectStoreDialogFragment;
@@ -304,10 +307,8 @@ public class ItemListActivity extends AppCompatActivity
         if (ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
             requestLocationPermission();
         } else if (!locationMgr.isProviderEnabled(GPS_PROVIDER)) {
-            RationaleDialogFragment rationaleDialog =
-                    RationaleDialogFragment.newInstance(R.string.location_turn_on_title,
-                            R.string.location_turn_on_rationale, false);
-            rationaleDialog.show(getSupportFragmentManager(), "LOCATION_RATIONALE_DIALOG");
+            LocationOffDialogFragment rationaleDialog = LocationOffDialogFragment.newInstance();
+            rationaleDialog.show(getSupportFragmentManager(), "LOCATION_OFF_DIALOG");
         } else {
             shiftToFindingState();
             gpsListener = new GpsListener(getApplicationContext(), this);
@@ -363,9 +364,7 @@ public class ItemListActivity extends AppCompatActivity
     private void requestLocationPermission() {
         // When the user responds to the app's permission request, the system invokes onRequestPermissionsResult() method
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, ACCESS_FINE_LOCATION)) {
-            RationaleDialogFragment rationaleDialog =
-                    RationaleDialogFragment.newInstance(R.string.location_permission_title,
-                            R.string.location_permission_rationale, true);
+            RationaleDialogFragment rationaleDialog = RationaleDialogFragment.newInstance();
             rationaleDialog.show(getSupportFragmentManager(), "LOCATION_RATIONALE_DIALOG");
         } else {
             // Location permission has not been granted yet. Request it directly.
