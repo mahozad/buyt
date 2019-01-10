@@ -45,7 +45,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
 
     private List<Item> items;
     public RecyclerView recyclerView;
-    private boolean editModeEnabled = false;
+    private boolean dragModeEnabled = false;
     private boolean selectionModeEnabled = false;
     private final Set<Item> selectedItems = new HashSet<>();
 
@@ -53,8 +53,8 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
 
     public ItemListAdapter(ItemTouchHelper itemTouchHelper) {
         this.itemTouchHelper = itemTouchHelper;
-        // setHasStableIds is an optimization hint that you can give to the RecyclerView.
-        // You're telling it "when I provide a ViewHolder, its id is unique and will not change."
+        // setHasStableIds is an optimization hint that you can give to the RecyclerView
+        // that tells it "when I provide a ViewHolder, its id is unique and will not change."
         setHasStableIds(true);
     }
 
@@ -95,15 +95,17 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
             if (selectionModeEnabled) {
                 holder.selectChBx.setVisibility(VISIBLE);
                 holder.expandDragBtn.setVisibility(INVISIBLE);
-            } else if (editModeEnabled) {
-                holder.expandDragBtn.setImageResource(R.drawable.ic_drag_handle);
-                holder.expandDragBtn.setVisibility(VISIBLE);
-            } else if (item.getDescription() != null) {
-                holder.expandDragBtn.setImageResource(R.drawable.avd_expand);
-                holder.expandDragBtn.setVisibility(VISIBLE);
             } else {
                 holder.selectChBx.setVisibility(INVISIBLE);
-                holder.expandDragBtn.setVisibility(INVISIBLE);
+                if (dragModeEnabled) {
+                    holder.expandDragBtn.setImageResource(R.drawable.ic_drag_handle);
+                    holder.expandDragBtn.setVisibility(VISIBLE);
+                } else if (item.getDescription() != null) {
+                    holder.expandDragBtn.setImageResource(R.drawable.avd_expand);
+                    holder.expandDragBtn.setVisibility(VISIBLE);
+                } else {
+                    holder.expandDragBtn.setVisibility(INVISIBLE);
+                }
             }
         } else {
             // Covers the case of data not being ready yet.
@@ -119,8 +121,8 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
         return items.size();
     }
 
-    // setHasStableIds() should also be set for the adapter. This is an optimization hint that you can
-    // give to the RecyclerView. You're telling it "when I provide a ViewHolder, its id is unique and won't change."
+    // setHasStableIds() should also be set (in e.g. constructor). This is an optimization hint that you can
+    // give to the RecyclerView that tells it "when I provide a ViewHolder, its id is unique and won't change."
     @Override
     public long getItemId(int position) {
         return items.get(position).getId();
@@ -158,7 +160,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
     }
 
     public void toggleEditMode() {
-        editModeEnabled = !editModeEnabled;
+        dragModeEnabled = !dragModeEnabled;
         notifyDataSetChanged();
     }
 
@@ -216,7 +218,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
         void onCardClick() {
             if (selectionModeEnabled) {
                 selectChBx.performClick();
-            } else {
+            } else if (!descTxVi.getText().toString().isEmpty()) {
                 expandDragBtn.post(() -> expandDragBtn.performClick());
             }
         }
