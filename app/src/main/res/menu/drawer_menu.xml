@@ -7,7 +7,7 @@
             android:title="Alaki" />
         <item
             android:id="@+id/nav2"
-            android:icon="@drawable/ic_add"
+            android:icon="@drawable/ic_buyt"
             android:title="Palaki" />
         <item
             android:id="@+id/nav3"
