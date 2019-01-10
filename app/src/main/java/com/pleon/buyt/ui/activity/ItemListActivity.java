@@ -223,18 +223,22 @@ public class ItemListActivity extends AppCompatActivity
 
         // observe() methods should be set only once (e.g. in activity onCreate() method) so if you
         // call it every time you want some data, maybe you're doing something wrong
-        mItemListViewModel.getNearStores().observe(this, this::onNearStoresFound);
+        mItemListViewModel.getNearStores().observe(this, this::onStoresFound);
     }
 
-    private void onNearStoresFound(List<Store> nearStores) {
-        if (nearStores.size() == 0) {
+    private void onStoresFound(Collection<Store> foundStores) {
+        if (foundStores.size() == 0 && findingStateSkipped) {
+            shiftToIdleState();
+            showIndefiniteSnackbar(R.string.no_store, R.string.ok);
+        } else if (foundStores.size() == 0) {
             Intent intent = new Intent(this, CreateStoreActivity.class);
             intent.putExtra("LOCATION", location);
             startActivity(intent);
             mItemListViewModel.getLatestCreatedStore().observe(this, this::onStoreSelected);
         } else {
-            SelectStoreDialogFragment selectStoreDialog = SelectStoreDialogFragment.newInstance((ArrayList<Store>) nearStores);
-            selectStoreDialog.show(getSupportFragmentManager(), "selectStoreFragment");
+            ArrayList<Store> stores = new ArrayList<>(foundStores); // dialog requires ArrayList
+            SelectStoreDialogFragment selectStoreDialog = SelectStoreDialogFragment.newInstance(stores);
+            selectStoreDialog.show(getSupportFragmentManager(), "SELECT_STORE_DIALOG");
             // handle selected Store in this::onStoreSelected()
         }
     }

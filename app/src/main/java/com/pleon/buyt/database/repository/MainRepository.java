@@ -73,6 +73,10 @@ public class MainRepository { // TODO: make this class singleton
         new FindNearStoresAsyncTask(mStoreDao, origin, maxDistance, mNearStores).execute();
     }
 
+    public void getAllStores() {
+        new GetAllStoresAsyncTask(mStoreDao, mNearStores).execute();
+    }
+
     public void buy(Set<Item> items, Store store) {
         new BuyAsyncTask(items, store, mItemDao, mStoreDao, mPurchaseDao).execute();
     }
@@ -186,6 +190,27 @@ public class MainRepository { // TODO: make this class singleton
         @Override
         protected void onPostExecute(List<Store> nearStores) {
             mNearStores.setValue(nearStores);
+        }
+    }
+
+    private static class GetAllStoresAsyncTask extends AsyncTask<Void, Void, List<Store>> {
+
+        private StoreDao mDao;
+        private MutableLiveData<List<Store>> mNearStores;
+
+        GetAllStoresAsyncTask(StoreDao mDao, MutableLiveData<List<Store>> mNearStores) {
+            this.mDao = mDao;
+            this.mNearStores = mNearStores;
+        }
+
+        @Override
+        protected List<Store> doInBackground(Void... voids) {
+            return mDao.getAll();
+        }
+
+        @Override
+        protected void onPostExecute(List<Store> stores) {
+            mNearStores.setValue(stores);
         }
     }
 }

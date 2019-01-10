@@ -50,6 +50,10 @@ public class ItemListViewModel extends AndroidViewModel {
         mMainRepository.findNearStores(origin, maxDistance);
     }
 
+    public void getAllStores() {
+        mMainRepository.getAllStores();
+    }
+
     public void insertItem(Item item) {
         mMainRepository.insertItem(item);
     }

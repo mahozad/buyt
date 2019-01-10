@@ -7,8 +7,6 @@ import com.pleon.buyt.database.AppDatabase;
 import com.pleon.buyt.database.dao.StoreDao;
 import com.pleon.buyt.model.Store;
 
-import java.util.List;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -17,15 +15,6 @@ public class StoreRepository {
     private static volatile StoreRepository sInstance;
     private static StoreDao mStoreDao;
     private MutableLiveData<Store> mLatestCreatedStore = new MutableLiveData<>();
-    private LiveData<List<Store>> allStores;
-
-    private StoreRepository() {
-        allStores = mStoreDao.getAll();
-    }
-
-    public LiveData<List<Store>> getAll() {
-        return allStores;
-    }
 
     public static StoreRepository getInstance(Context appContext) {
         if (sInstance == null) {
