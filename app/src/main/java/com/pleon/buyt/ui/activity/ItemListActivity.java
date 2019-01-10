@@ -17,6 +17,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.pleon.buyt.GpsListener;
 import com.pleon.buyt.R;
 import com.pleon.buyt.database.AppDatabase;
 import com.pleon.buyt.model.Coordinates;
@@ -48,7 +49,9 @@ import static com.getkeepsafe.taptargetview.TapTarget.forView;
 import static com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_CENTER;
 import static java.lang.Math.cos;
 
-public class ItemListActivity extends AppCompatActivity implements SelectStoreDialogFragment.Callback {
+public class ItemListActivity extends AppCompatActivity
+        implements SelectStoreDialogFragment.Callback,
+        GpsListener.Callback, Callback {
 
     // the app can be described as both a t0do app and an expense manager and also a shopping list app
 
@@ -285,7 +288,7 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
     private void findLocation() {
         state = State.FINDING;
         locationMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
-        /* Check for dangerous permissions should be done EVERY time */
+        // Check for dangerous permissions should be done EVERY time
         if (ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
             requestLocationPermission();
         } else if (!locationMgr.isProviderEnabled(GPS_PROVIDER)) {
@@ -294,7 +297,8 @@ public class ItemListActivity extends AppCompatActivity implements SelectStoreDi
                             R.string.location_turn_on_rationale, false);
             rationaleDialog.show(getSupportFragmentManager(), "LOCATION_RATIONALE_DIALOG");
         } else {
-            gpsListener = new GpsListener();
+            shiftToFindingState();
+            gpsListener = new GpsListener(getApplicationContext(), this);
             locationMgr.requestLocationUpdates(GPS_PROVIDER, 0, 0, gpsListener);
         }
     }
