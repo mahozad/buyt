@@ -25,12 +25,11 @@ import com.pleon.buyt.model.Item;
 import com.pleon.buyt.model.Store;
 import com.pleon.buyt.ui.fragment.BottomDrawerFragment;
 import com.pleon.buyt.ui.fragment.ItemListFragment;
-import com.pleon.buyt.ui.fragment.RationaleDialogFragment;
 import com.pleon.buyt.ui.fragment.SelectStoreDialogFragment;
 import com.pleon.buyt.viewmodel.ItemListViewModel;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.Set;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,6 +46,8 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.location.LocationManager.GPS_PROVIDER;
 import static com.getkeepsafe.taptargetview.TapTarget.forView;
 import static com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_CENTER;
+import static com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE;
+import static com.google.android.material.snackbar.Snackbar.LENGTH_SHORT;
 import static java.lang.Math.cos;
 
 public class ItemListActivity extends AppCompatActivity
@@ -144,9 +145,8 @@ public class ItemListActivity extends AppCompatActivity
     // • make your fragments subclass "android.app.fragment" instead of the support one
     // • to get the fragment manager, call getFragmentManager() instead of getSupportFragment...
 
-    private static final String TAG = "ItemListActivity";
+    private static final String TAG = "MainActivity";
     private static final double NEAR_STORES_DISTANCE = cos(0.1 / 6371); // == 200m (6371km is the radius of the Earth)
-
     /**
      * Id to identify a location permission request.
      */
@@ -156,7 +156,7 @@ public class ItemListActivity extends AppCompatActivity
     @BindView(R.id.bottom_bar) BottomAppBar mBottomAppBar;
 
     private Location location;
-    // volatile because user clicking the fab and location may be found at the same time)
+    // volatile because user clicking the fab and location may be found at the same time
     private volatile State state = State.IDLE;
     private LocationManager locationMgr;
     private LocationListener gpsListener;
@@ -247,28 +247,36 @@ public class ItemListActivity extends AppCompatActivity
     void onFabClicked() {
         if (state == State.IDLE) { // act as find
             if (itemListFragment.isCartEmpty()) {
-                showSnackbar(R.string.cart_empty_message);
+                showShortSnackbar(R.string.cart_empty_message);
             } else {
                 itemListFragment.clearSelectedItems(); // clear items of previous purchase
-                shiftToFindingState();
                 findLocation();
             }
         } else if (state == State.SELECTING) { // act as done
             if (itemListFragment.isSelectedEmpty()) {
-                showSnackbar(R.string.no_item_selected_message);
+                showShortSnackbar(R.string.no_item_selected_message);
             } else {
                 buySelectedItems();
             }
         }
     }
 
-    private void showSnackbar(int message) {
+    private void showShortSnackbar(int message) {
         Snackbar.make(findViewById(R.id.snackBarContainer),
-                getString(message), Snackbar.LENGTH_SHORT)
+                getString(message), LENGTH_SHORT)
+                .show();
+    }
+
+    private void showIndefiniteSnackbar(int message, int action) {
+        Snackbar.make(findViewById(R.id.snackBarContainer),
+                getString(message), LENGTH_INDEFINITE).setAction(action, v -> {
+        })
                 .show();
     }
 
     private void shiftToFindingState() {
+        state = State.FINDING;
+
         mFab.setImageResource(R.drawable.avd_buyt);
         ((Animatable) mFab.getDrawable()).start();
 
@@ -279,6 +287,7 @@ public class ItemListActivity extends AppCompatActivity
         mBottomAppBar.getMenu().getItem(0).setVisible(false);
 
         mBottomAppBar.getMenu().getItem(1).setIcon(R.drawable.avd_reorder_skip);
+        mBottomAppBar.getMenu().getItem(1).setTitle(R.string.skip);
         ((Animatable) mBottomAppBar.getMenu().getItem(1).getIcon()).start();
 
         Animatable fabDrawable = (Animatable) mFab.getDrawable();
@@ -290,7 +299,6 @@ public class ItemListActivity extends AppCompatActivity
     }
 
     private void findLocation() {
-        state = State.FINDING;
         locationMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
         // Check for dangerous permissions should be done EVERY time
         if (ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
@@ -307,13 +315,15 @@ public class ItemListActivity extends AppCompatActivity
         }
     }
 
-    private void onLocationFound(Location location) {
+    @Override
+    public void onLocationFound(Location location) {
         shiftToSelectingState();
         ItemListActivity.this.location = location;
-        itemListFragment.toggleItemsCheckbox(true);
     }
 
     private void shiftToSelectingState() {
+        itemListFragment.toggleItemsCheckbox(true);
+
         mBottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
         mFab.setImageResource(R.drawable.avd_find_done);
         ((Animatable) mFab.getDrawable()).start();
@@ -364,19 +374,17 @@ public class ItemListActivity extends AppCompatActivity
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                           int[] grantResults) {
-        switch (requestCode) {
-            case REQUEST_LOCATION_PERMISSION:
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0 && grantResults[0] == PERMISSION_GRANTED) {
-                    findLocation();
-                } else {
-                    // permission denied, boo! Disable the functionality that depends on this permission.
-                } // break; not needed here
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    public void onRequestPermissionsResult(int reqCode, String[] permissions, int[] grantResults) {
+        if (reqCode == REQUEST_LOCATION_PERMISSION) {
+            // If request is cancelled, the result arrays are empty.
+            if (grantResults.length > 0 && grantResults[0] == PERMISSION_GRANTED) {
+                findLocation();
+            } else { // if permission denied
+                findingStateSkipped = true;
+                shiftToSelectingState();
+            }
         }
+        super.onRequestPermissionsResult(reqCode, permissions, grantResults);
     }
 
     @Override
@@ -412,17 +420,15 @@ public class ItemListActivity extends AppCompatActivity
                     ItemListFragment itemListFragment = (ItemListFragment)
                             getSupportFragmentManager().findFragmentById(R.id.container_fragment_items);
                     itemListFragment.toggleEditMode();
-                } else {
+                } else { // if state == FINDING
                     findingStateSkipped = true;
                     locationMgr.removeUpdates(gpsListener);
                     shiftToSelectingState();
                 }
-
                 break;
 
-            /* If you use setSupportActionBar() to set up the BottomAppBar
-             * you can handle the navigation menu click by checking if the menu item id is android.R.id.home.
-             */
+            /* If you use setSupportActionBar() to set up the BottomAppBar you can handle the
+             * navigation menu click by checking if the menu item id equals android.R.id.home. */
             case android.R.id.home:
                 if (state == State.IDLE) {
                     BottomSheetDialogFragment bottomDrawerFragment = BottomDrawerFragment.newInstance();
@@ -443,6 +449,9 @@ public class ItemListActivity extends AppCompatActivity
     }
 
     private void shiftToIdleState() {
+        itemListFragment.clearSelectedItems();
+        itemListFragment.toggleItemsCheckbox(false);
+
         mBottomAppBar.setFabAlignmentMode(FAB_ALIGNMENT_MODE_CENTER);
         mFab.setImageResource(R.drawable.avd_buyt_reverse);
         ((Animatable) mFab.getDrawable()).start();
@@ -458,6 +467,7 @@ public class ItemListActivity extends AppCompatActivity
 
         mBottomAppBar.getMenu().getItem(1).setVisible(true);
         mBottomAppBar.getMenu().getItem(1).setIcon(R.drawable.avd_skip_reorder);
+        mBottomAppBar.getMenu().getItem(1).setTitle(R.string.reorder_items);
         ((Animatable) mBottomAppBar.getMenu().getItem(1).getIcon()).start();
 
         state = State.IDLE;
@@ -475,8 +485,13 @@ public class ItemListActivity extends AppCompatActivity
     public void buySelectedItems() {
         if (itemListFragment.validateSelectedItemsPrice()) {
             selectedItems = itemListFragment.getSelectedItems();
-            Coordinates originCoordinates = new Coordinates(location);
-            mItemListViewModel.findNearStores(originCoordinates, NEAR_STORES_DISTANCE);
+            if (findingStateSkipped) {
+                mItemListViewModel.getAllStores();
+            } else {
+                Coordinates originCoordinates = new Coordinates(location);
+                mItemListViewModel.findNearStores(originCoordinates, NEAR_STORES_DISTANCE);
+            }
+            // next this::onStoresFound() is called
         }
     }
 
@@ -484,5 +499,14 @@ public class ItemListActivity extends AppCompatActivity
     public void onStoreSelected(Store store) {
         mItemListViewModel.buy(selectedItems, store);
         shiftToIdleState();
+    }
+
+    @Override
+    public void onEnableLocationDenied() {
+        mBottomAppBar.getMenu().getItem(0).setVisible(false);
+        mBottomAppBar.setNavigationIcon(R.drawable.avd_nav_cancel);
+        ((Animatable) mBottomAppBar.getNavigationIcon()).start();
+        findingStateSkipped = true;
+        shiftToSelectingState();
     }
 }
