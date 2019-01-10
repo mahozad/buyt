@@ -333,29 +333,6 @@ public class ItemListActivity extends AppCompatActivity
         state = State.SELECTING;
     }
 
-    private class GpsListener implements LocationListener {
-
-        @Override
-        public void onLocationChanged(Location location) {
-            // stop using GPS
-            ((LocationManager) getSystemService(LOCATION_SERVICE)).removeUpdates(this);
-            onLocationFound(location);
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-            // TODO: handle gps disabled
-        }
-    }
-
     /**
      * Requests the Location permission.
      * If the permission has been denied previously, a the user will be prompted
