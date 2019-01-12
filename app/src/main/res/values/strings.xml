@@ -27,4 +27,6 @@
     <string name="location_turn_on_rationale">Location is not enabled. Toggle it on
         (in high precision mode) so you do not have to manually specify the store for each purchase.
     </string>
+    <string name="price_hint">Item total price</string>
+    <string name="price_suffix">dollar</string>
 </resources>
