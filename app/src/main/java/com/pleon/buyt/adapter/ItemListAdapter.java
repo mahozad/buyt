@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
+import androidx.transition.ChangeBounds;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
@@ -209,16 +210,16 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
             expandDragBtn.setImageResource(item.isExpanded() ? R.drawable.avd_collapse : R.drawable.avd_expand);
             ((Animatable) expandDragBtn.getDrawable()).start();
 
+            beginDelayedTransition(recyclerView, new ChangeBounds().setDuration(200));
+
             descTxVi.setVisibility(descTxVi.getVisibility() == GONE ? VISIBLE : GONE);
             item.setExpanded(descTxVi.getVisibility() == VISIBLE);
-
-            beginDelayedTransition(recyclerView);
         }
 
         @OnClick(R.id.cardForeground)
         void onCardClick() {
             if (selectionModeEnabled) {
-                selectChBx.performClick();
+                selectChBx.performClick(); // delegate to chBx listener
             } else if (!descTxVi.getText().toString().isEmpty()) {
                 expandDragBtn.post(() -> expandDragBtn.performClick());
             }
@@ -236,6 +237,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
 
         @OnCheckedChanged(R.id.selectCheckBox)
         void onItemSelected(boolean isChecked) {
+            beginDelayedTransition(recyclerView, new ChangeBounds().setDuration(200));
             if (isChecked) {
                 priceContainer.setVisibility(VISIBLE);
                 selectedItems.add(items.get(getAdapterPosition()));
