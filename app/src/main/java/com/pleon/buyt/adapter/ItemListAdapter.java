@@ -54,8 +54,8 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
 
     public ItemListAdapter(ItemTouchHelper itemTouchHelper) {
         this.itemTouchHelper = itemTouchHelper;
-        // setHasStableIds is an optimization hint that you can give to the RecyclerView
-        // that tells it "when I provide a ViewHolder, its id is unique and will not change."
+        // setHasStableIds is an optimization hint that you give to the RecyclerView
+        // and tell it "when I provide a ViewHolder, its id is unique and will not change."
         setHasStableIds(true);
     }
 
@@ -109,10 +109,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
                     holder.expandDragBtn.setVisibility(INVISIBLE);
                 }
             }
-        } else {
-            // Covers the case of data not being ready yet.
-            // set a placeholder or something
-        }
+        } // else: case of data not being ready yet; set a placeholder or something
     }
 
     @Override
@@ -123,8 +120,8 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
         return items.size();
     }
 
-    // setHasStableIds() should also be set (in e.g. constructor). This is an optimization hint that you can
-    // give to the RecyclerView that tells it "when I provide a ViewHolder, its id is unique and won't change."
+    // setHasStableIds() should also be set (in e.g. constructor). This is an optimization hint that you
+    // give to the RecyclerView and tell it "when I provide a ViewHolder, its id is unique and won't change."
     @Override
     public long getItemId(int position) {
         return items.get(position).getId();
