@@ -11,14 +11,14 @@
             <path
                 android:name="path"
                 android:pathData="M 555.058 500 C 637.901 500 705.058 432.843 705.058 350 C 705.058 267.157 637.901 200 555.058 200 L 295.251 350 Z"
-                android:strokeColor="#000000"
+                android:strokeColor="#fff"
                 android:strokeWidth="60"
                 android:strokeLineCap="round"
                 android:strokeLineJoin="round"/>
             <path
                 android:name="path_1"
                 android:pathData="M 294.646 319.576 C 278.088 319.825 264.863 333.441 265.097 349.999 L 265.097 649.999 C 265.098 660.717 270.816 670.62 280.097 675.98 L 539.906 825.98 C 544.466 828.613 549.64 829.999 554.906 829.999 C 811.254 803.479 782.765 477.125 554.906 469.999 C 538.171 469.763 524.478 483.263 524.478 499.999 C 524.478 516.736 538.171 530.236 554.906 529.999 C 731.15 549.321 686.586 758.539 562.304 769.63 L 325.097 632.679 L 325.097 349.999 C 325.336 333.088 311.557 319.321 294.646 319.576 Z"
-                android:fillColor="#000000"
+                android:fillColor="#fff"
                 android:strokeWidth="1"/>
         </vector>
     </aapt:attr>
