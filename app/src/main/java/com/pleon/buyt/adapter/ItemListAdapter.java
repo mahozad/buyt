@@ -91,6 +91,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
             holder.urgentImgVi.setVisibility(item.isUrgent() ? VISIBLE : INVISIBLE);
             holder.selectChBx.setChecked(selectedItems.contains(item));
             holder.descTxVi.setVisibility(item.isExpanded() ? VISIBLE : GONE);
+            holder.delCircularReveal.setAlpha(0f); // for the case of undo of deleted item
 
             if (selectionModeEnabled) {
                 holder.selectChBx.setVisibility(VISIBLE);
