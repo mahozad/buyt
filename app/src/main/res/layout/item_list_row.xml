@@ -107,17 +107,16 @@
                 android:id="@+id/urgentIcon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:translationX="8dp"
+                android:layout_marginEnd="6dp"
                 app:layout_constraintBottom_toBottomOf="@+id/item_quantity"
                 app:layout_constraintEnd_toStartOf="@+id/expandCheckBoxContainer"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/item_name"
                 app:srcCompat="@drawable/ic_urgent" />
 
             <FrameLayout
                 android:id="@+id/expandCheckBoxContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:translationX="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/urgentIcon">
 
@@ -126,19 +125,20 @@
                     android:id="@+id/expandDragButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:layout_marginTop="-8dp"
                     android:background="@android:color/transparent"
                     android:padding="8dp"
+                    android:paddingEnd="0dp"
                     app:srcCompat="@drawable/avd_expand" />
 
                 <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/selectCheckBox"
-                    android:layout_width="wrap_content"
+                    android:layout_width="26dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="-16.5dp"
-                    android:translationX="12dp"
-                    android:translationY="4dp"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="-12.5dp"
+                    android:layout_marginEnd="2dp"
+                    android:text="@null"
                     android:visibility="gone"
                     tools:visibility="visible" />
 
@@ -172,7 +172,7 @@
                         android:drawablePadding="8dp"
                         android:inputType="number"
                         android:maxLength="13"
-                        tools:text="Item price" />
+                        tools:text="@string/price_hint" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -193,11 +193,11 @@
                 android:layout_marginTop="8dp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/expandCheckBoxContainer"
                 app:layout_constraintStart_toStartOf="@+id/storeIcon"
                 app:layout_constraintTop_toBottomOf="@+id/price_container"
                 tools:text="Description"
                 tools:visibility="visible" />
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
