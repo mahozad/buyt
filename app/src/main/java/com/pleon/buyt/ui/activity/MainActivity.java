@@ -10,7 +10,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.github.mikephil.charting.charts.BarChart;
@@ -42,9 +41,7 @@ import java.util.Set;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.util.Pair;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -176,7 +173,6 @@ public class MainActivity extends AppCompatActivity
     public static final String EXTRA_LOCATION = "com.pleon.buyt.extra.LOCATION";
     public static final String EXTRA_ITEM_ORDER = "com.pleon.buyt.extra.ITEM_ORDER";
 
-    private BroadcastReceiver locationReceiver;
 
     @BindView(R.id.fab) FloatingActionButton mFab;
     @BindView(R.id.bottom_bar) BottomAppBar mBottomAppBar;
@@ -185,6 +181,7 @@ public class MainActivity extends AppCompatActivity
     // volatile because user clicking the fab and location may be found at the same time
     private volatile State state = State.IDLE;
     private LocationManager locationMgr;
+    private BroadcastReceiver locationReceiver;
     private ItemListViewModel mItemListViewModel;
     private ItemListFragment itemListFragment;
     private boolean findingStateSkipped = false;
@@ -272,6 +269,120 @@ public class MainActivity extends AppCompatActivity
         // observe() methods should be set only once (e.g. in activity onCreate() method) so if you
         // call it every time you want some data, maybe you're doing something wrong
         mItemListViewModel.getNearStores().observe(this, this::onStoresFound);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_bottom_home, menu);
+        if (newbie) {
+            // Make plus icon glow a little bit if the user is a newbie!
+            ((Animatable) menu.getItem(0).getIcon()).start();
+        }
+        return true;
+    }
+
+    /**
+     * Caution: If you use an intent to start a Service, ensure that your app is secure
+     * by using an explicit intent.
+     *
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add:
+                Intent intent = new Intent(this, AddItemActivity.class);
+                intent.putExtra(EXTRA_ITEM_ORDER, itemListFragment.getNextItemPosition());
+                startActivity(intent);
+
+                // View chartView = findViewById(R.id.container_fragment_chart);
+                // chartView.setVisibility(View.GONE); // TODO: maybe replacing the fragment is a better practice
+                break;
+
+            case R.id.action_reorder:
+                if (state == State.IDLE) {
+                    ItemListFragment itemListFragment = (ItemListFragment)
+                            getSupportFragmentManager().findFragmentById(R.id.container_fragment_items);
+                    itemListFragment.toggleEditMode();
+                } else { // if state == FINDING
+                    findingStateSkipped = true;
+                    stopService(new Intent(this, GpsService.class));
+                    shiftToSelectingState();
+                }
+                break;
+
+            /* If you use setSupportActionBar() to set up the BottomAppBar you can handle the
+             * navigation menu click by checking if the menu item id equals android.R.id.home. */
+            case android.R.id.home:
+                if (state == State.IDLE) {
+                    BottomSheetDialogFragment bottomDrawerFragment = BottomDrawerFragment.newInstance();
+                    bottomDrawerFragment.show(getSupportFragmentManager(), "alaki");
+                } else if (state == State.FINDING) { // then it is cancel button
+                    stopService(new Intent(this, GpsService.class));
+                    shiftToIdleState();
+                } else {
+                    itemListFragment.toggleItemsCheckbox(false);
+                    shiftToIdleState();
+                }
+                break;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+
+    /**
+     * Registers the location broadcast receiver.
+     * <p>
+     * Note that Local broadcast receivers can be registered only dynamically in code
+     * (like in this case) and not in the manifest file.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).
+                registerReceiver(locationReceiver, new IntentFilter("LOCATION_INTENT"));
+    }
+
+    /**
+     * Unregisters the location broadcast receiver.
+     * <p>
+     * Note that <b>Local</b> broadcast receivers can be registered only dynamically in code
+     * (like in this case) and not in the manifest file.
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(locationReceiver);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // save the application form and temp data to survive config changes and force-kills
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int reqCode, String[] permissions, int[] grantResults) {
+        if (reqCode == REQUEST_LOCATION_PERMISSION) {
+            // If request is cancelled, the result arrays are empty.
+            if (grantResults.length > 0 && grantResults[0] == PERMISSION_GRANTED) {
+                findLocation();
+            } else { // if permission denied
+                findingStateSkipped = true;
+                shiftToSelectingState();
+            }
+        }
+        super.onRequestPermissionsResult(reqCode, permissions, grantResults);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopService(new Intent(this, GpsService.class));
+        AppDatabase.destroyInstance();
     }
 
     private void onStoresFound(Collection<Store> foundStores) {
@@ -410,119 +521,6 @@ public class MainActivity extends AppCompatActivity
             // Location permission has not been granted yet. Request it directly.
             ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
         }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int reqCode, String[] permissions, int[] grantResults) {
-        if (reqCode == REQUEST_LOCATION_PERMISSION) {
-            // If request is cancelled, the result arrays are empty.
-            if (grantResults.length > 0 && grantResults[0] == PERMISSION_GRANTED) {
-                findLocation();
-            } else { // if permission denied
-                findingStateSkipped = true;
-                shiftToSelectingState();
-            }
-        }
-        super.onRequestPermissionsResult(reqCode, permissions, grantResults);
-    }
-
-    /**
-     * Registers the location broadcast receiver.
-     * <p>
-     * Note that Local broadcast receivers can be registered only dynamically in code
-     * (like in this case) and not in the manifest file.
-     */
-    @Override
-    protected void onResume() {
-        super.onResume();
-        LocalBroadcastManager.getInstance(this).
-                registerReceiver(locationReceiver, new IntentFilter("LOCATION_INTENT"));
-    }
-
-    /**
-     * Unregisters the location broadcast receiver.
-     * <p>
-     * Note that <b>Local</b> broadcast receivers can be registered only dynamically in code
-     * (like in this case) and not in the manifest file.
-     */
-    @Override
-    protected void onPause() {
-        super.onPause();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(locationReceiver);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        // save the application form and temp data to survive config changes and force-kills
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_bottom_home, menu);
-        if (newbie) {
-            // Make plus icon glow a little bit if the user is a newbie!
-            ((Animatable) menu.getItem(0).getIcon()).start();
-        }
-        return true;
-    }
-
-    /**
-     * Caution: If you use an intent to start a Service, ensure that your app is secure
-     * by using an explicit intent.
-     * @param item
-     * @return
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_add:
-                Intent intent = new Intent(this, AddItemActivity.class);
-                intent.putExtra(EXTRA_ITEM_ORDER, itemListFragment.getNextItemPosition());
-                startActivity(intent);
-
-                // View chartView = findViewById(R.id.container_fragment_chart);
-                // chartView.setVisibility(View.GONE); // TODO: maybe replacing the fragment is a better practice
-                break;
-
-            case R.id.action_reorder:
-                if (state == State.IDLE) {
-                    ItemListFragment itemListFragment = (ItemListFragment)
-                            getSupportFragmentManager().findFragmentById(R.id.container_fragment_items);
-                    itemListFragment.toggleEditMode();
-                } else { // if state == FINDING
-                    findingStateSkipped = true;
-                    stopService(new Intent(this, GpsService.class));
-                    shiftToSelectingState();
-                }
-                break;
-
-            /* If you use setSupportActionBar() to set up the BottomAppBar you can handle the
-             * navigation menu click by checking if the menu item id equals android.R.id.home. */
-            case android.R.id.home:
-                if (state == State.IDLE) {
-                    BottomSheetDialogFragment bottomDrawerFragment = BottomDrawerFragment.newInstance();
-                    bottomDrawerFragment.show(getSupportFragmentManager(), "alaki");
-                } else if (state == State.FINDING) { // then it is cancel button
-                    stopService(new Intent(this, GpsService.class));
-                    shiftToIdleState();
-                } else {
-                    itemListFragment.toggleItemsCheckbox(false);
-                    shiftToIdleState();
-                }
-                break;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-        return true;
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        // stopService(new Intent(this, GpsService.class));
-        AppDatabase.destroyInstance();
     }
 
     public void buySelectedItems() {
