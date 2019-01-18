@@ -14,8 +14,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
-        android:focusedByDefault="true"
-        android:hint="Name"
+        android:hint="@string/name_hint"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +24,7 @@
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_text"
+            android:drawableStart="@drawable/ic_cart"
             android:drawablePadding="8dp"
             android:inputType="text"
             tools:text="Item name" />
@@ -46,7 +45,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Quantity"
+            android:hint="@string/quantity_hint"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -58,7 +57,7 @@
                 android:inputType="numberDecimal"
                 android:maxLength="8"
                 android:selectAllOnFocus="true"
-                android:text="1"
+                android:text="@string/quantity_default_value"
                 tools:text="Item quantity" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -114,7 +113,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="Description (optional)"
+        android:hint="@string/description_hint"
         app:layout_constraintEnd_toEndOf="@id/quantity_container"
         app:layout_constraintStart_toStartOf="@id/quantity_container"
         app:layout_constraintTop_toBottomOf="@id/quantity_container">
@@ -138,7 +137,7 @@
         android:button="@drawable/avd_urgent_check"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        android:text="Urgent"
+        android:text="@string/urgent"
         app:layout_constraintStart_toStartOf="@+id/description_layout"
         app:layout_constraintTop_toBottomOf="@+id/description_layout" />
 
@@ -147,9 +146,9 @@
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="20dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="@id/quantity_container"
         app:layout_constraintStart_toStartOf="@id/quantity_container"
@@ -174,10 +173,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:visibility="gone"
-        tools:visibility="visible"
         app:layout_constraintEnd_toEndOf="@id/description_layout"
         app:layout_constraintStart_toStartOf="@id/description_layout"
-        app:layout_constraintTop_toBottomOf="@id/bought">
+        app:layout_constraintTop_toBottomOf="@id/bought"
+        tools:visibility="visible">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/price_layout"
