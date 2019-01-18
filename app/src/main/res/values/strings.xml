@@ -4,12 +4,14 @@
     <string name="add">ADD</string>
     <string name="item_name">Name: </string>
     <string name="item_price">Price: </string>
-    <string name="item_name_hint">Name</string>
+    <string name="name_hint">Name</string>
+    <string name="quantity_hint">Quantity</string>
+    <string name="quantity_default_value">1</string>
     <string name="item_price_hint">Price</string>
     <string name="location_permission_title">Location disabled</string>
-    <string name="location_turn_on_title">GPS turned off</string>
+    <string name="location_turn_on_title">GPS disabled</string>
     <string name="go_to_settings">GO TO SETTINGS</string>
-    <string name="not_now">NOT NOW</string>
+    <string name="not_now">SKIP</string>
     <string name="item_deleted_message">Item \"%1$s\" deleted</string>
     <string name="undo">UNDO</string>
     <string name="cart_empty_message">No item to buy</string>
@@ -20,13 +22,15 @@
     <string name="reorder_items">Reorder items</string>
 
     <string name="location_permission_rationale">It seems you have revoked location permission.
-        If enabled, you do not have to manually specify the store for each purchase.
+        If granted, you do not have to manually specify the store for each purchase.
         The permission could be toggled on in the <i>Permissions</i> section of the app settings.
     </string>
 
-    <string name="location_turn_on_rationale">Location is not enabled. Toggle it on
+    <string name="location_turn_on_rationale">Location is off. Toggle it on
         (in high precision mode) so you do not have to manually specify the store for each purchase.
     </string>
     <string name="price_hint">Item total price</string>
     <string name="price_suffix">dollar</string>
+    <string name="description_hint">Description (optional)</string>
+    <string name="urgent">Urgent</string>
 </resources>
