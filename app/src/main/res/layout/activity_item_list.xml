@@ -13,11 +13,16 @@
         <FrameLayout
             android:id="@+id/container_fragment_chart"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="160dp"
             android:background="@color/colorPrimary">
 
-            <com.jjoe64.graphview.GraphView
-                android:id="@+id/graph"
+            <!--<com.pleon.buyt.PlotView-->
+            <!--android:id="@+id/plot"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent" />-->
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/chart"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

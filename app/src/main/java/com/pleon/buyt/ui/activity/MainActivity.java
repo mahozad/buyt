@@ -1,23 +1,27 @@
 package com.pleon.buyt.ui.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.Animatable;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.getkeepsafe.taptargetview.TapTargetSequence;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
-import com.pleon.buyt.GpsListener;
+import com.pleon.buyt.GpsService;
 import com.pleon.buyt.R;
 import com.pleon.buyt.database.AppDatabase;
 import com.pleon.buyt.model.Coordinates;
@@ -33,13 +37,17 @@ import com.pleon.buyt.viewmodel.ItemListViewModel;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.util.Pair;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -162,7 +170,6 @@ public class ItemListActivity extends AppCompatActivity
     // volatile because user clicking the fab and location may be found at the same time
     private volatile State state = State.IDLE;
     private LocationManager locationMgr;
-    private LocationListener gpsListener;
     private ItemListViewModel mItemListViewModel;
     private ItemListFragment itemListFragment;
     private boolean findingStateSkipped = false;
@@ -209,21 +216,35 @@ public class ItemListActivity extends AppCompatActivity
                     .commit(); // TODO: commit vs commitNow?
         }
 
-        GraphView graph = findViewById(R.id.graph);
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
-                new DataPoint(0, 21),
-                new DataPoint(1, 5),
-                new DataPoint(2, 3),
-                new DataPoint(3, 2),
-                new DataPoint(4, 2),
-                new DataPoint(5, 2),
-                new DataPoint(6, 6)
-        });
-        series.setColor(R.color.colorPrimaryDark);
-        graph.addSeries(series);
+//        GraphView graph = findViewById(R.id.graph);
+//        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
+//                new DataPoint(0, 21),
+//                new DataPoint(1, 5),
+//                new DataPoint(2, 3),
+//                new DataPoint(3, 2),
+//                new DataPoint(4, 2),
+//                new DataPoint(5, 2),
+//                new DataPoint(6, 6)
+//        });
+//        series.setColor(R.color.colorPrimaryDark);
+//        graph.addSeries(series);
+
+        BarChart lineChart = findViewById(R.id.chart);
+        List<BarEntry> entries = new ArrayList<>();
+        entries.add(new BarEntry(0, 10));
+        entries.add(new BarEntry(1, 107));
+        entries.add(new BarEntry(2, 1));
+        entries.add(new BarEntry(3, 15));
+        entries.add(new BarEntry(4, 8));
+        entries.add(new BarEntry(5, 8));
+        entries.add(new BarEntry(6, 3));
+        lineChart.animateY(2000);
+        BarDataSet dataSet = new BarDataSet(entries, "Label"); // add entries to dataset
+        BarData data = new BarData(dataSet);
+        lineChart.setData(data);
+        lineChart.invalidate(); // refresh
 
         mItemListViewModel = ViewModelProviders.of(this).get(ItemListViewModel.class);
-
         // observe() methods should be set only once (e.g. in activity onCreate() method) so if you
         // call it every time you want some data, maybe you're doing something wrong
         mItemListViewModel.getNearStores().observe(this, this::onStoresFound);
