@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Buyt</string>
+    <string name="price_hint">قیمت کل محصول</string>
+    <string name="price_suffix">تومان</string>
+    <string name="item_name">نام:</string>
+    <string name="item_price">قیمت:</string>
+    <string name="name_hint">نام</string>
+    <string name="item_price_hint">قیمت</string>
+    <string name="go_to_settings">برو به تنظیمات</string>
+    <string name="item_deleted_message">آیتم %1$s حذف شد</string>
+    <string name="undo">لغو</string>
+    <string name="cart_empty_message">آیتمی برای خریدن موجود نیست</string>
+    <string name="no_item_selected_message">آیتمی انتخاب نشده است</string>
+    <string name="add_item">افزودن آیتم</string>
+    <string name="add">افزودن</string>
+    <string name="quantity_default_value">۱</string>
+    <string name="quantity_hint">مقدار</string>
+    <string name="description_hint">توضیحات (اختیاری)</string>
+    <string name="urgent">ضروری</string>
+</resources>
