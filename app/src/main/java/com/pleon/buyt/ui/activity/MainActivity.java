@@ -167,14 +167,13 @@ public class MainActivity extends AppCompatActivity
     // • to get the fragment manager, call getFragmentManager() instead of getSupportFragment...
 
     private static final String TAG = "MainActivity";
-    private static final double NEAR_STORES_DISTANCE = cos(0.1 / 6371); // == 200m (6371km is the radius of the Earth)
+    private static final double NEAR_STORES_DISTANCE = cos(0.1 / 6371); // == 100m (6371km is the radius of the Earth)
     /**
      * Id to identify a location permission request.
      */
     private static final int REQUEST_LOCATION_PERMISSION = 1;
     public static final String EXTRA_LOCATION = "com.pleon.buyt.extra.LOCATION";
     public static final String EXTRA_ITEM_ORDER = "com.pleon.buyt.extra.ITEM_ORDER";
-
 
     @BindView(R.id.fab) FloatingActionButton mFab;
     @BindView(R.id.bottom_bar) BottomAppBar mBottomAppBar;

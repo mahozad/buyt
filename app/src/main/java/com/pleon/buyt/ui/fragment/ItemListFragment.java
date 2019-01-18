@@ -70,7 +70,6 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
 
         // for swipe-to-delete and drag-n-drop of item
         touchHelperCallback = new TouchHelperCallback(this);
-
         ItemTouchHelper touchHelper = new ItemTouchHelper(touchHelperCallback);
         touchHelper.attachToRecyclerView(itemRecyclerView);
 
