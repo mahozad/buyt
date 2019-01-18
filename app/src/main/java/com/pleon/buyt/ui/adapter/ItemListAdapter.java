@@ -99,6 +99,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
                 holder.expandDragBtn.setVisibility(INVISIBLE);
             } else {
                 holder.selectChBx.setVisibility(INVISIBLE);
+                holder.onItemSelected(selectionModeEnabled);
                 if (dragModeEnabled) {
                     holder.expandDragBtn.setImageResource(R.drawable.ic_drag_handle);
                     holder.expandDragBtn.setVisibility(VISIBLE);
@@ -146,16 +147,6 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
 
     public void clearSelectedItems() {
         selectedItems.clear();
-    }
-
-    public void addItem(Item item, int position) {
-        items.add(position, item);
-        notifyItemInserted(position);
-    }
-
-    public void removeItem(int position) {
-        items.remove(position);
-        notifyItemRemoved(position);
     }
 
     public void toggleEditMode() {

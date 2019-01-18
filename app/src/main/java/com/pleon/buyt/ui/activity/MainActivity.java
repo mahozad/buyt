@@ -13,9 +13,11 @@ import android.view.MenuItem;
 
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -243,22 +245,35 @@ public class MainActivity extends AppCompatActivity
         // call it every time you want some data, maybe you're doing something wrong
         mainViewModel.getNearStores().observe(this, this::onStoresFound);
 
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
-        cal.add(Calendar.DAY_OF_WEEK, -7);
-        long from = cal.getTime().getTime();
-        long to = new Date().getTime();
-        mainViewModel.getTotalWeekdayCosts(from, to).observe(this, costs -> {
-            BarChart lineChart = findViewById(R.id.chart);
-            List<BarEntry> entries = new ArrayList<>();
-            for (int i = 0; i < costs.size(); i++) {
-                entries.add(new BarEntry(i, costs.get(i)));
-            }
-            BarDataSet dataSet = new BarDataSet(entries, "Label"); // add entries to dataset
-            BarData data = new BarData(dataSet);
-            lineChart.animateY(2000);
-            lineChart.setData(data);
-            lineChart.invalidate(); // refresh
+        ViewModelProviders.of(this).get(MainViewModel.class).getAllItems().observe(this, items -> {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            cal.add(Calendar.DAY_OF_WEEK, -7);
+            long from = cal.getTime().getTime();
+            mainViewModel.getTotalWeekdayCosts(from, new Date().getTime()).observe(this, costs -> {
+                BarChart lineChart = findViewById(R.id.chart);
+                List<String> labels = new ArrayList<>();
+                labels.add("Sun");
+                labels.add("Mon");
+                labels.add("Tue");
+                labels.add("Wed");
+                labels.add("Thu");
+                labels.add("Fri");
+                labels.add("Sat");
+                lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
+                XAxis xAxis = lineChart.getXAxis();
+                xAxis.setGranularity(1f);
+                xAxis.setGranularityEnabled(true);
+                List<BarEntry> entries = new ArrayList<>();
+                for (int i = 0; i < costs.size(); i++) {
+                    entries.add(new BarEntry(i, costs.get(i)));
+                }
+                BarDataSet dataSet = new BarDataSet(entries, "Label"); // add entries to dataset
+                BarData data = new BarData(dataSet);
+                lineChart.setData(data);
+                lineChart.animateY(1000);
+                lineChart.invalidate(); // refresh
+            });
         });
     }
 
@@ -313,7 +328,6 @@ public class MainActivity extends AppCompatActivity
                     stopService(new Intent(this, GpsService.class));
                     shiftToIdleState();
                 } else {
-                    itemListFragment.toggleItemsCheckbox(false);
                     shiftToIdleState();
                 }
                 break;
@@ -474,6 +488,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void shiftToIdleState() {
+        findingStateSkipped = false;
         itemListFragment.toggleItemsCheckbox(false);
 
         mBottomAppBar.setFabAlignmentMode(FAB_ALIGNMENT_MODE_CENTER);
