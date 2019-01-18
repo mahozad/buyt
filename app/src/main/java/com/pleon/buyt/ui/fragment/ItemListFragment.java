@@ -13,7 +13,7 @@ import com.pleon.buyt.model.Item;
 import com.pleon.buyt.ui.TouchHelperCallback;
 import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener;
 import com.pleon.buyt.ui.adapter.ItemListAdapter;
-import com.pleon.buyt.viewmodel.ItemListViewModel;
+import com.pleon.buyt.viewmodel.MainViewModel;
 
 import java.util.Collections;
 import java.util.Set;
@@ -35,7 +35,7 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
 
     @BindView(R.id.list) RecyclerView itemRecyclerView;
     private ItemListAdapter itemAdapter;
-    private ItemListViewModel itemListViewModel;
+    private MainViewModel mainViewModel;
     private TouchHelperCallback touchHelperCallback;
     private Unbinder unbinder;
     private boolean itemsReordered = false;
@@ -63,9 +63,9 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
         unbinder = ButterKnife.bind(this, view); // unbind() is required only for Fragments
 
-        itemListViewModel = ViewModelProviders.of(this).get(ItemListViewModel.class);
+        mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         // In fragments use getViewLifecycleOwner() for owner
-        itemListViewModel.getAllItems().observe(getViewLifecycleOwner(),
+        mainViewModel.getAllItems().observe(getViewLifecycleOwner(),
                 items -> itemAdapter.setItems(items));
 
         // for swipe-to-delete and drag-n-drop of item
@@ -95,7 +95,7 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
         Item item = itemAdapter.getItem(itemIndex);
 
         item.setFlaggedForDeletion(true);
-        itemListViewModel.updateItems(singletonList(item));
+        mainViewModel.updateItems(singletonList(item));
 
         showUndoSnackbar(item);
     }
@@ -105,13 +105,13 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
                 getString(R.string.item_deleted_message, item.getName()), LENGTH_LONG);
         snackbar.setAction(getString(R.string.undo), v -> {
             item.setFlaggedForDeletion(false);
-            itemListViewModel.updateItems(singletonList(item));
+            mainViewModel.updateItems(singletonList(item));
         });
         snackbar.addCallback(new BaseCallback<Snackbar>() {
             public void onDismissed(Snackbar transientBottomBar, int event) {
                 if (event != DISMISS_EVENT_ACTION) { // If dismiss wasn't because of "UNDO"...
                     // ... Then delete the item completely from database
-                    itemListViewModel.deleteItem(item);
+                    mainViewModel.deleteItem(item);
                 }
             }
         });
@@ -122,7 +122,7 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
     public void onPause() {
         super.onPause();
         if (itemsReordered) {
-            itemListViewModel.updateItems(itemAdapter.getItems());
+            mainViewModel.updateItems(itemAdapter.getItems());
             itemsReordered = false;
         }
     }

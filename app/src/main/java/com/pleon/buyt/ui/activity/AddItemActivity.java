@@ -10,7 +10,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pleon.buyt.R;
 import com.pleon.buyt.model.Item;
 import com.pleon.buyt.ui.fragment.AddItemFragment;
-import com.pleon.buyt.viewmodel.ItemListViewModel;
+import com.pleon.buyt.viewmodel.MainViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.ActionMenuView;
@@ -84,8 +84,8 @@ public class AddItemActivity extends AppCompatActivity implements AddItemFragmen
 
     @Override
     public void onSubmit(Item item) {
-        ItemListViewModel itemListViewModel = ViewModelProviders.of(this).get(ItemListViewModel.class);
-        itemListViewModel.addItem(item);
+        MainViewModel mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mainViewModel.addItem(item);
         // Calling finish() is safe here. We are sure that the item will be added to database,
         // because it is executed in a separate thread.
         finish();

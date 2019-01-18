@@ -32,7 +32,7 @@ import com.pleon.buyt.ui.dialog.RationaleDialogFragment;
 import com.pleon.buyt.ui.fragment.BottomDrawerFragment;
 import com.pleon.buyt.ui.fragment.ItemListFragment;
 import com.pleon.buyt.ui.fragment.SelectStoreDialogFragment;
-import com.pleon.buyt.viewmodel.ItemListViewModel;
+import com.pleon.buyt.viewmodel.MainViewModel;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity
     private volatile State state = State.IDLE;
     private LocationManager locationMgr;
     private BroadcastReceiver locationReceiver;
-    private ItemListViewModel mItemListViewModel;
+    private MainViewModel mainViewModel;
     private ItemListFragment itemListFragment;
     private boolean findingStateSkipped = false;
     private Set<Item> selectedItems;
@@ -239,17 +239,17 @@ public class MainActivity extends AppCompatActivity
                     .commit(); // TODO: commit vs commitNow?
         }
 
-        mItemListViewModel = ViewModelProviders.of(this).get(ItemListViewModel.class);
+        mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         // observe() methods should be set only once (e.g. in activity onCreate() method) so if you
         // call it every time you want some data, maybe you're doing something wrong
-        mItemListViewModel.getNearStores().observe(this, this::onStoresFound);
+        mainViewModel.getNearStores().observe(this, this::onStoresFound);
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         cal.add(Calendar.DAY_OF_WEEK, -7);
         long from = cal.getTime().getTime();
         long to = new Date().getTime();
-        mItemListViewModel.getTotalWeekdayCosts(from, to).observe(this, costs -> {
+        mainViewModel.getTotalWeekdayCosts(from, to).observe(this, costs -> {
             BarChart lineChart = findViewById(R.id.chart);
             List<BarEntry> entries = new ArrayList<>();
             for (int i = 0; i < costs.size(); i++) {
@@ -417,7 +417,7 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(this, CreateStoreActivity.class);
             intent.putExtra(EXTRA_LOCATION, location);
             startActivity(intent);
-            mItemListViewModel.getLatestCreatedStore().observe(this, this::onStoreSelected);
+            mainViewModel.getLatestCreatedStore().observe(this, this::onStoreSelected);
         } else {
             ArrayList<Store> stores = new ArrayList<>(foundStores); // dialog requires ArrayList
             SelectStoreDialogFragment selectStoreDialog = SelectStoreDialogFragment.newInstance(stores);
@@ -518,10 +518,10 @@ public class MainActivity extends AppCompatActivity
         if (itemListFragment.validateSelectedItemsPrice()) {
             selectedItems = itemListFragment.getSelectedItems();
             if (findingStateSkipped) {
-                mItemListViewModel.getAllStores();
+                mainViewModel.getAllStores();
             } else {
                 Coordinates originCoordinates = new Coordinates(location);
-                mItemListViewModel.findNearStores(originCoordinates, NEAR_STORES_DISTANCE);
+                mainViewModel.findNearStores(originCoordinates, NEAR_STORES_DISTANCE);
             }
             // next this::onStoresFound() is called
         }
@@ -529,7 +529,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onStoreSelected(Store store) {
-        mItemListViewModel.buy(selectedItems, store);
+        mainViewModel.buy(selectedItems, store);
         shiftToIdleState();
     }
 
