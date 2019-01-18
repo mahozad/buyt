@@ -52,7 +52,7 @@ public class GpsService extends Service implements LocationListener {
                     .setContentText("Doing some work...")
                     .setContentIntent(pendingIntent);
 
-            // note that apps targeting android P (API level 28) or later must request the permission
+            // note that apps targeting android P (API level 28) or later must declare the permission
             // Manifest.permission.FOREGROUND_SERVICE in order to use startForeground()
             startForeground(12421, notification.build());
         }
@@ -98,7 +98,10 @@ public class GpsService extends Service implements LocationListener {
         result.putExtra("LOCATION", location);
         LocalBroadcastManager.getInstance(this).sendBroadcast(result);
 
-        notification.setContentTitle("Location found");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notification.setContentTitle("Location found");
+        }
+
         stopSelf();
     }
 

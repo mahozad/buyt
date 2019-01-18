@@ -126,7 +126,7 @@ public class Item {
         return flaggedForDeletion;
     }
 
-    public void setFlaggedForDeletion(boolean flaggedForDeletion) {
-        this.flaggedForDeletion = flaggedForDeletion;
+    public void setFlaggedForDeletion(boolean flag) {
+        this.flaggedForDeletion = flag;
     }
 }

@@ -29,6 +29,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static com.google.android.material.snackbar.Snackbar.LENGTH_LONG;
+import static java.util.Collections.singletonList;
 
 public class ItemListFragment extends Fragment implements ItemTouchHelperListener {
 
@@ -94,7 +95,7 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
         Item item = itemAdapter.getItem(itemIndex);
 
         item.setFlaggedForDeletion(true);
-        itemListViewModel.updateItems(item);
+        itemListViewModel.updateItems(singletonList(item));
 
         showUndoSnackbar(item);
     }
@@ -104,7 +105,7 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
                 getString(R.string.item_deleted_message, item.getName()), LENGTH_LONG);
         snackbar.setAction(getString(R.string.undo), v -> {
             item.setFlaggedForDeletion(false);
-            itemListViewModel.updateItems(item);
+            itemListViewModel.updateItems(singletonList(item));
         });
         snackbar.addCallback(new BaseCallback<Snackbar>() {
             public void onDismissed(Snackbar transientBottomBar, int event) {

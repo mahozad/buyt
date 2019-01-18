@@ -10,7 +10,6 @@ import com.pleon.buyt.model.Store;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -59,19 +58,15 @@ public class ItemListViewModel extends AndroidViewModel {
     }
 
     public void updateItems(Collection<Item> items) {
-        updateItems(items.toArray(new Item[0])); // size (0) doesn't matter
+        mMainRepository.updateItems(items);
     }
 
-    public void updateItems(Item... items) {
-        mMainRepository.updateItems(items);
+    public void buy(Collection<Item> items, Store store) {
+        mMainRepository.buy(items, store);
     }
 
     public LiveData<Store> getLatestCreatedStore() {
         return mStoreRepository.getLatestCreatedStore();
-    }
-
-    public void buy(Set<Item> items, Store store) {
-        mMainRepository.buy(items, store);
     }
 
     public void deleteItem(Item item) {

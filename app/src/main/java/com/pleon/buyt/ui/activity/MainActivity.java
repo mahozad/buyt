@@ -385,6 +385,38 @@ public class MainActivity extends AppCompatActivity
         AppDatabase.destroyInstance();
     }
 
+    @OnClick(R.id.fab)
+    void onFabClick() {
+        if (state == State.IDLE) { // act as find
+            if (itemListFragment.isCartEmpty()) {
+                showShortSnackbar(R.string.cart_empty_message);
+            } else {
+                itemListFragment.clearSelectedItems(); // clear items of previous purchase
+                findLocation();
+            }
+        } else if (state == State.SELECTING) { // act as done
+            if (itemListFragment.isSelectedEmpty()) {
+                showShortSnackbar(R.string.no_item_selected_message);
+            } else {
+                buySelectedItems();
+            }
+        }
+    }
+
+    private void findLocation() {
+        // Dangerous permissions should be checked EVERY time
+        if (ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
+            requestLocationPermission();
+        } else if (!locationMgr.isProviderEnabled(GPS_PROVIDER)) {
+            LocationOffDialogFragment rationaleDialog = LocationOffDialogFragment.newInstance();
+            rationaleDialog.show(getSupportFragmentManager(), "LOCATION_OFF_DIALOG");
+        } else {
+            shiftToFindingState();
+            Intent intent = new Intent(this, GpsService.class);
+            ContextCompat.startForegroundService(this, intent); // no need to check api lvl
+        }
+    }
+
     private void onStoresFound(Collection<Store> foundStores) {
         if (foundStores.size() == 0 && findingStateSkipped) {
             shiftToIdleState();
@@ -399,24 +431,6 @@ public class MainActivity extends AppCompatActivity
             SelectStoreDialogFragment selectStoreDialog = SelectStoreDialogFragment.newInstance(stores);
             selectStoreDialog.show(getSupportFragmentManager(), "SELECT_STORE_DIALOG");
             // handle selected Store in this::onStoreSelected()
-        }
-    }
-
-    @OnClick(R.id.fab)
-    void onFabClicked() {
-        if (state == State.IDLE) { // act as find
-            if (itemListFragment.isCartEmpty()) {
-                showShortSnackbar(R.string.cart_empty_message);
-            } else {
-                itemListFragment.clearSelectedItems(); // clear items of previous purchase
-                findLocation();
-            }
-        } else if (state == State.SELECTING) { // act as done
-            if (itemListFragment.isSelectedEmpty()) {
-                showShortSnackbar(R.string.no_item_selected_message);
-            } else {
-                buySelectedItems();
-            }
         }
     }
 
@@ -491,20 +505,6 @@ public class MainActivity extends AppCompatActivity
         ((Animatable) mBottomAppBar.getMenu().getItem(1).getIcon()).start();
 
         state = State.IDLE;
-    }
-
-    private void findLocation() {
-        // Dangerous permissions should be checked EVERY time
-        if (ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
-            requestLocationPermission();
-        } else if (!locationMgr.isProviderEnabled(GPS_PROVIDER)) {
-            LocationOffDialogFragment rationaleDialog = LocationOffDialogFragment.newInstance();
-            rationaleDialog.show(getSupportFragmentManager(), "LOCATION_OFF_DIALOG");
-        } else {
-            shiftToFindingState();
-            Intent intent = new Intent(this, GpsService.class);
-            ContextCompat.startForegroundService(this, intent); // no need to check api lvl
-        }
     }
 
     /**

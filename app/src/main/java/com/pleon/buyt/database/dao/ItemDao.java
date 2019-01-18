@@ -32,16 +32,13 @@ public interface ItemDao {
     @Insert(onConflict = REPLACE)
     long insert(Item item);
 
-    @Update
-    void update(Item item);
-
-    @Delete
-    void delete(Item item);
-
     // FIXME: very heavy operation. @Update method, updates all fields of an entity
     // so this method updates all fields of all of the given items!
     @Update
-    void updateAll(Item... items);
+    void updateAll(Collection<Item> items);
+
+    @Delete
+    void delete(Item item);
 
     /* Annotating a method with @Transaction makes sure that all database operations you’re
     executing in that method will be run inside one transaction.
