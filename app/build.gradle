@@ -45,8 +45,8 @@ dependencies {
     annotationProcessor 'androidx.room:room-compiler:2.1.0-alpha03'
 
     // ViewModel and LiveData
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
-    implementation 'androidx.lifecycle:lifecycle-common-java8:2.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha01'
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.1.0-alpha01'
 
     /* for inspecting the database and network in Chrome. In Iran, use VPN due to sanctions.*/
     debugImplementation 'com.facebook.stetho:stetho:1.5.0'
