@@ -30,6 +30,7 @@ public class MainRepository { // TODO: make this class singleton
     private PurchaseDao mPurchaseDao;
     private LiveData<List<Item>> mAllItems;
     private MutableLiveData<List<Store>> mNearStores;
+    private MutableLiveData<List<Long>> totalWeekdayCosts;
 
     public MainRepository(Application application) {
         mItemDao = AppDatabase.getDatabase(application).itemDao();
@@ -37,6 +38,7 @@ public class MainRepository { // TODO: make this class singleton
         mPurchaseDao = AppDatabase.getDatabase(application).purchaseDao();
         mAllItems = mItemDao.getAll();
         mNearStores = new MutableLiveData<>();
+        totalWeekdayCosts = new MutableLiveData<>();
     }
 
     // this does not need to be run in separate thread because it just returns LiveData
@@ -74,6 +76,11 @@ public class MainRepository { // TODO: make this class singleton
 
     public void getAllStores() {
         new GetAllStoresAsyncTask(mStoreDao, mNearStores).execute();
+    }
+
+    public LiveData<List<Long>> getTotalWeekdayCosts(long from, long to) {
+        new GetCostTask(mPurchaseDao, totalWeekdayCosts).execute(from, to);
+        return totalWeekdayCosts;
     }
 
     public void buy(Collection<Item> items, Store store) {
@@ -147,12 +154,15 @@ public class MainRepository { // TODO: make this class singleton
         @Override
         protected Void doInBackground(Void... voids) {
             long storeId = store.getId();
-            if (storeId == 0) {
-                // then this is a new Store so persist it
+            if (storeId == 0) { // then this is a new Store so persist it
                 storeId = mStoreDao.insert(store);
             }
 
-            Purchase purchase = new Purchase(storeId, new Date());
+            long totalCost = 0;
+            for (Item item : items) {
+                totalCost += item.getPrice() * item.getQuantity().getQuantity();
+            }
+            Purchase purchase = new Purchase(storeId, new Date(), totalCost);
             long purchaseId = mPurchaseDao.insert(purchase);
 
             for (Item item : items) {
@@ -212,6 +222,27 @@ public class MainRepository { // TODO: make this class singleton
         @Override
         protected void onPostExecute(List<Store> stores) {
             mNearStores.setValue(stores);
+        }
+    }
+
+    private static class GetCostTask extends AsyncTask<Long, Void, List<Long>> {
+
+        private PurchaseDao purchaseDao;
+        private MutableLiveData<List<Long>> totalWeekdayCosts;
+
+        GetCostTask(PurchaseDao purchaseDao, MutableLiveData<List<Long>> totalWeekdayCosts) {
+            this.purchaseDao = purchaseDao;
+            this.totalWeekdayCosts = totalWeekdayCosts;
+        }
+
+        @Override
+        protected List<Long> doInBackground(Long... endpoints) {
+            return purchaseDao.getCost(endpoints[0], endpoints[1]);
+        }
+
+        @Override
+        protected void onPostExecute(List<Long> costs) {
+            totalWeekdayCosts.setValue(costs);
         }
     }
 }

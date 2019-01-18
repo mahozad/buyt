@@ -35,7 +35,9 @@ import com.pleon.buyt.ui.fragment.SelectStoreDialogFragment;
 import com.pleon.buyt.viewmodel.ItemListViewModel;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -237,38 +239,28 @@ public class MainActivity extends AppCompatActivity
                     .commit(); // TODO: commit vs commitNow?
         }
 
-//        GraphView graph = findViewById(R.id.graph);
-//        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
-//                new DataPoint(0, 21),
-//                new DataPoint(1, 5),
-//                new DataPoint(2, 3),
-//                new DataPoint(3, 2),
-//                new DataPoint(4, 2),
-//                new DataPoint(5, 2),
-//                new DataPoint(6, 6)
-//        });
-//        series.setColor(R.color.colorPrimaryDark);
-//        graph.addSeries(series);
-
-        BarChart lineChart = findViewById(R.id.chart);
-        List<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(0, 10));
-        entries.add(new BarEntry(1, 107));
-        entries.add(new BarEntry(2, 1));
-        entries.add(new BarEntry(3, 15));
-        entries.add(new BarEntry(4, 8));
-        entries.add(new BarEntry(5, 8));
-        entries.add(new BarEntry(6, 3));
-        lineChart.animateY(2000);
-        BarDataSet dataSet = new BarDataSet(entries, "Label"); // add entries to dataset
-        BarData data = new BarData(dataSet);
-        lineChart.setData(data);
-        lineChart.invalidate(); // refresh
-
         mItemListViewModel = ViewModelProviders.of(this).get(ItemListViewModel.class);
         // observe() methods should be set only once (e.g. in activity onCreate() method) so if you
         // call it every time you want some data, maybe you're doing something wrong
         mItemListViewModel.getNearStores().observe(this, this::onStoresFound);
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.DAY_OF_WEEK, -7);
+        long from = cal.getTime().getTime();
+        long to = new Date().getTime();
+        mItemListViewModel.getTotalWeekdayCosts(from, to).observe(this, costs -> {
+            BarChart lineChart = findViewById(R.id.chart);
+            List<BarEntry> entries = new ArrayList<>();
+            for (int i = 0; i < costs.size(); i++) {
+                entries.add(new BarEntry(i, costs.get(i)));
+            }
+            BarDataSet dataSet = new BarDataSet(entries, "Label"); // add entries to dataset
+            BarData data = new BarData(dataSet);
+            lineChart.animateY(2000);
+            lineChart.setData(data);
+            lineChart.invalidate(); // refresh
+        });
     }
 
     @Override
@@ -483,7 +475,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void shiftToIdleState() {
-        itemListFragment.clearSelectedItems();
         itemListFragment.toggleItemsCheckbox(false);
 
         mBottomAppBar.setFabAlignmentMode(FAB_ALIGNMENT_MODE_CENTER);

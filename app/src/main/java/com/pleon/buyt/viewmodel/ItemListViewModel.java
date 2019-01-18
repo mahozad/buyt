@@ -69,6 +69,10 @@ public class ItemListViewModel extends AndroidViewModel {
         return mStoreRepository.getLatestCreatedStore();
     }
 
+    public LiveData<List<Long>> getTotalWeekdayCosts(long from, long to) {
+        return mMainRepository.getTotalWeekdayCosts(from, to);
+    }
+
     public void deleteItem(Item item) {
         mMainRepository.deleteItem(item);
     }

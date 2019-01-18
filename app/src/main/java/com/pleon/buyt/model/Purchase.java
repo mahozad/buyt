@@ -15,11 +15,14 @@ public class Purchase {
     @ForeignKey(entity = Store.class, parentColumns = "id", childColumns = "storeId")
     private long storeId;
 
+    private long totalCost;
+
     private Date date;
 
-    public Purchase(long storeId, Date date) {
+    public Purchase(long storeId, Date date, long totalCost) {
         this.storeId = storeId;
         this.date = date;
+        this.totalCost = totalCost;
     }
 
     public long getId() {
@@ -44,5 +47,13 @@ public class Purchase {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public long getTotalCost() {
+        return totalCost;
+    }
+
+    public void setTotalCost(long totalCost) {
+        this.totalCost = totalCost;
     }
 }
