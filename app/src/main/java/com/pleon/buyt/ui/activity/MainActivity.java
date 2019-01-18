@@ -61,11 +61,16 @@ import static com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE;
 import static com.google.android.material.snackbar.Snackbar.LENGTH_SHORT;
 import static java.lang.Math.cos;
 
-public class ItemListActivity extends AppCompatActivity
-        implements SelectStoreDialogFragment.Callback,
-        GpsListener.Callback, Callback {
+public class MainActivity extends AppCompatActivity
+        implements SelectStoreDialogFragment.Callback, Callback {
 
     // the app can be described as both a t0do app and an expense manager and also a shopping list app
+
+    // FIXME: The bug that adding new items won't show in main screen is because of configuration change;
+    // after config change the observer in fragment is no longer triggered no matter you again change the config or...
+
+    // FIXME: The bug that sometimes occur when expanding an item (the bottom item jumps up one moment),
+    // is produced when another item was swiped partially
 
     /*
      * DONE: if the bottomAppBar is hidden (by scrolling) and then you expand an Item, the fab jumps up
@@ -148,6 +153,12 @@ public class ItemListActivity extends AppCompatActivity
      * your generic @Insert,... there. Have each DAO extend the BaseDao and add methods specific to each of them.
      */
 
+    // TODO: new version of MaterialCardView will include a setCheckedIcon. check it out
+
+    // TODO: In case you are using Proguard, you will need to whitelist MPAndroidChart,
+    // which requires to add the following line to your Proguard configuration file:
+    //-keep class com.github.mikephil.charting.** { *; }
+
     // If want to replace a fragment as the whole activity pass android.R.id.content to fragment manager
     // My solution: to have both the top and bottom app bars create the activity with top app bar
     // and add a fragment that includes the bottom app bar in it in this activity
@@ -162,6 +173,10 @@ public class ItemListActivity extends AppCompatActivity
      * Id to identify a location permission request.
      */
     private static final int REQUEST_LOCATION_PERMISSION = 1;
+    public static final String EXTRA_LOCATION = "com.pleon.buyt.extra.LOCATION";
+    public static final String EXTRA_ITEM_ORDER = "com.pleon.buyt.extra.ITEM_ORDER";
+
+    private BroadcastReceiver locationReceiver;
 
     @BindView(R.id.fab) FloatingActionButton mFab;
     @BindView(R.id.bottom_bar) BottomAppBar mBottomAppBar;
@@ -187,7 +202,16 @@ public class ItemListActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_list);
-        ButterKnife.bind(this); // unbind() is required only for Fragments
+        ButterKnife.bind(this); // unbind() is not required for activities
+
+        locationMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        locationReceiver = new BroadcastReceiver() { // on location found
+            public void onReceive(Context context, Intent intent) {
+                location = intent.getParcelableExtra("LOCATION");
+                shiftToSelectingState();
+            }
+        };
 
         newbie = getPreferences(MODE_PRIVATE).getBoolean("NEWBIE", true);
         if (newbie) {
@@ -256,7 +280,7 @@ public class ItemListActivity extends AppCompatActivity
             showIndefiniteSnackbar(R.string.no_store, R.string.ok);
         } else if (foundStores.size() == 0) {
             Intent intent = new Intent(this, CreateStoreActivity.class);
-            intent.putExtra("LOCATION", location);
+            intent.putExtra(EXTRA_LOCATION, location);
             startActivity(intent);
             mItemListViewModel.getLatestCreatedStore().observe(this, this::onStoreSelected);
         } else {
@@ -307,8 +331,8 @@ public class ItemListActivity extends AppCompatActivity
         mBottomAppBar.setNavigationIcon(R.drawable.avd_nav_cancel);
         ((Animatable) mBottomAppBar.getNavigationIcon()).start();
 
-        ((Animatable) mBottomAppBar.getMenu().getItem(0).getIcon()).start();
-        mBottomAppBar.getMenu().getItem(0).setVisible(false);
+//        ((Animatable) mBottomAppBar.getMenu().getItem(0).getIcon()).start();
+//        mBottomAppBar.getMenu().getItem(0).setVisible(false);
 
         mBottomAppBar.getMenu().getItem(1).setIcon(R.drawable.avd_reorder_skip);
         mBottomAppBar.getMenu().getItem(1).setTitle(R.string.skip);
@@ -322,27 +346,6 @@ public class ItemListActivity extends AppCompatActivity
         mBottomAppBar.setHideOnScroll(false);
     }
 
-    private void findLocation() {
-        locationMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
-        // Check for dangerous permissions should be done EVERY time
-        if (ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
-            requestLocationPermission();
-        } else if (!locationMgr.isProviderEnabled(GPS_PROVIDER)) {
-            LocationOffDialogFragment rationaleDialog = LocationOffDialogFragment.newInstance();
-            rationaleDialog.show(getSupportFragmentManager(), "LOCATION_OFF_DIALOG");
-        } else {
-            shiftToFindingState();
-            gpsListener = new GpsListener(getApplicationContext(), this);
-            locationMgr.requestLocationUpdates(GPS_PROVIDER, 0, 0, gpsListener);
-        }
-    }
-
-    @Override
-    public void onLocationFound(Location location) {
-        shiftToSelectingState();
-        ItemListActivity.this.location = location;
-    }
-
     private void shiftToSelectingState() {
         itemListFragment.toggleItemsCheckbox(true);
 
@@ -352,6 +355,45 @@ public class ItemListActivity extends AppCompatActivity
         mBottomAppBar.getMenu().getItem(1).setVisible(false);
 
         state = State.SELECTING;
+    }
+
+    private void shiftToIdleState() {
+        itemListFragment.clearSelectedItems();
+        itemListFragment.toggleItemsCheckbox(false);
+
+        mBottomAppBar.setFabAlignmentMode(FAB_ALIGNMENT_MODE_CENTER);
+        mFab.setImageResource(R.drawable.avd_buyt_reverse);
+        ((Animatable) mFab.getDrawable()).start();
+
+        mBottomAppBar.setNavigationIcon(R.drawable.avd_cancel_nav);
+        ((Animatable) mBottomAppBar.getNavigationIcon()).start();
+
+        mBottomAppBar.setHideOnScroll(true);
+
+//        mBottomAppBar.getMenu().getItem(0).setVisible(true);
+//        mBottomAppBar.getMenu().getItem(0).setIcon(R.drawable.avd_add_show);
+//        ((Animatable) mBottomAppBar.getMenu().getItem(0).getIcon()).start();
+
+        mBottomAppBar.getMenu().getItem(1).setVisible(true);
+        mBottomAppBar.getMenu().getItem(1).setIcon(R.drawable.avd_skip_reorder);
+        mBottomAppBar.getMenu().getItem(1).setTitle(R.string.reorder_items);
+        ((Animatable) mBottomAppBar.getMenu().getItem(1).getIcon()).start();
+
+        state = State.IDLE;
+    }
+
+    private void findLocation() {
+        // Dangerous permissions should be checked EVERY time
+        if (ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
+            requestLocationPermission();
+        } else if (!locationMgr.isProviderEnabled(GPS_PROVIDER)) {
+            LocationOffDialogFragment rationaleDialog = LocationOffDialogFragment.newInstance();
+            rationaleDialog.show(getSupportFragmentManager(), "LOCATION_OFF_DIALOG");
+        } else {
+            shiftToFindingState();
+            Intent intent = new Intent(this, GpsService.class);
+            ContextCompat.startForegroundService(this, intent); // no need to check api lvl
+        }
     }
 
     /**
@@ -366,7 +408,7 @@ public class ItemListActivity extends AppCompatActivity
             rationaleDialog.show(getSupportFragmentManager(), "LOCATION_RATIONALE_DIALOG");
         } else {
             // Location permission has not been granted yet. Request it directly.
-            ActivityCompat.requestPermissions(ItemListActivity.this, new String[]{ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
+            ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
         }
     }
 
@@ -382,6 +424,31 @@ public class ItemListActivity extends AppCompatActivity
             }
         }
         super.onRequestPermissionsResult(reqCode, permissions, grantResults);
+    }
+
+    /**
+     * Registers the location broadcast receiver.
+     * <p>
+     * Note that Local broadcast receivers can be registered only dynamically in code
+     * (like in this case) and not in the manifest file.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).
+                registerReceiver(locationReceiver, new IntentFilter("LOCATION_INTENT"));
+    }
+
+    /**
+     * Unregisters the location broadcast receiver.
+     * <p>
+     * Note that <b>Local</b> broadcast receivers can be registered only dynamically in code
+     * (like in this case) and not in the manifest file.
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(locationReceiver);
     }
 
     @Override
@@ -400,12 +467,18 @@ public class ItemListActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * Caution: If you use an intent to start a Service, ensure that your app is secure
+     * by using an explicit intent.
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add:
                 Intent intent = new Intent(this, AddItemActivity.class);
-                intent.putExtra("NEXT_ITEM_ORDER", itemListFragment.getNextItemPosition());
+                intent.putExtra(EXTRA_ITEM_ORDER, itemListFragment.getNextItemPosition());
                 startActivity(intent);
 
                 // View chartView = findViewById(R.id.container_fragment_chart);
@@ -419,7 +492,7 @@ public class ItemListActivity extends AppCompatActivity
                     itemListFragment.toggleEditMode();
                 } else { // if state == FINDING
                     findingStateSkipped = true;
-                    locationMgr.removeUpdates(gpsListener);
+                    stopService(new Intent(this, GpsService.class));
                     shiftToSelectingState();
                 }
                 break;
@@ -431,7 +504,7 @@ public class ItemListActivity extends AppCompatActivity
                     BottomSheetDialogFragment bottomDrawerFragment = BottomDrawerFragment.newInstance();
                     bottomDrawerFragment.show(getSupportFragmentManager(), "alaki");
                 } else if (state == State.FINDING) { // then it is cancel button
-                    locationMgr.removeUpdates(gpsListener);
+                    stopService(new Intent(this, GpsService.class));
                     shiftToIdleState();
                 } else {
                     itemListFragment.toggleItemsCheckbox(false);
@@ -445,37 +518,10 @@ public class ItemListActivity extends AppCompatActivity
         return true;
     }
 
-    private void shiftToIdleState() {
-        itemListFragment.clearSelectedItems();
-        itemListFragment.toggleItemsCheckbox(false);
-
-        mBottomAppBar.setFabAlignmentMode(FAB_ALIGNMENT_MODE_CENTER);
-        mFab.setImageResource(R.drawable.avd_buyt_reverse);
-        ((Animatable) mFab.getDrawable()).start();
-
-        mBottomAppBar.setNavigationIcon(R.drawable.avd_cancel_nav);
-        ((Animatable) mBottomAppBar.getNavigationIcon()).start();
-
-        mBottomAppBar.setHideOnScroll(true);
-
-        mBottomAppBar.getMenu().getItem(0).setVisible(true);
-        mBottomAppBar.getMenu().getItem(0).setIcon(R.drawable.avd_add_show);
-        ((Animatable) mBottomAppBar.getMenu().getItem(0).getIcon()).start();
-
-        mBottomAppBar.getMenu().getItem(1).setVisible(true);
-        mBottomAppBar.getMenu().getItem(1).setIcon(R.drawable.avd_skip_reorder);
-        mBottomAppBar.getMenu().getItem(1).setTitle(R.string.reorder_items);
-        ((Animatable) mBottomAppBar.getMenu().getItem(1).getIcon()).start();
-
-        state = State.IDLE;
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (locationMgr != null && gpsListener != null) {
-            locationMgr.removeUpdates(gpsListener);
-        }
+        // stopService(new Intent(this, GpsService.class));
         AppDatabase.destroyInstance();
     }
 

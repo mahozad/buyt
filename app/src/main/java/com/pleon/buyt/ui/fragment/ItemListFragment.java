@@ -10,9 +10,9 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.pleon.buyt.R;
 import com.pleon.buyt.model.Item;
-import com.pleon.buyt.adapter.ItemListAdapter;
 import com.pleon.buyt.ui.TouchHelperCallback;
 import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener;
+import com.pleon.buyt.ui.adapter.ItemListAdapter;
 import com.pleon.buyt.viewmodel.ItemListViewModel;
 
 import java.util.Collections;
@@ -36,10 +36,8 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
     private ItemListAdapter itemAdapter;
     private ItemListViewModel itemListViewModel;
     private TouchHelperCallback touchHelperCallback;
-    private int lastSizeOfItems = 0;
-    private boolean itemsReordered = false;
-
     private Unbinder unbinder;
+    private boolean itemsReordered = false;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -65,13 +63,9 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
         unbinder = ButterKnife.bind(this, view); // unbind() is required only for Fragments
 
         itemListViewModel = ViewModelProviders.of(this).get(ItemListViewModel.class);
-        itemListViewModel.getAll().observe(this, items -> {
-            // FIXME: What if 2 items were deleted and also 1 item was added? And it seems to be smelly code.
-            if (items.size() >= lastSizeOfItems) { // set only if item is added (not deleted)
-                itemAdapter.setItems(items);
-            }
-            lastSizeOfItems = items.size();
-        });
+        // In fragments use getViewLifecycleOwner() for owner
+        itemListViewModel.getAllItems().observe(getViewLifecycleOwner(),
+                items -> itemAdapter.setItems(items));
 
         // for swipe-to-delete and drag-n-drop of item
         touchHelperCallback = new TouchHelperCallback(this);
@@ -99,20 +93,23 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
         int itemIndex = viewHolder.getAdapterPosition();
         Item item = itemAdapter.getItem(itemIndex);
 
-        // Delete only from the adapter
-        itemAdapter.removeItem(itemIndex);
+        item.setFlaggedForDeletion(true);
+        itemListViewModel.updateItems(item);
 
-        showUndoSnackbar(itemIndex, item);
+        showUndoSnackbar(item);
     }
 
-    private void showUndoSnackbar(int itemIndex, Item item) {
+    private void showUndoSnackbar(Item item) {
         Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.snackBarContainer),
                 getString(R.string.item_deleted_message, item.getName()), LENGTH_LONG);
-        snackbar.setAction(getString(R.string.undo), v -> itemAdapter.addItem(item, itemIndex));
+        snackbar.setAction(getString(R.string.undo), v -> {
+            item.setFlaggedForDeletion(false);
+            itemListViewModel.updateItems(item);
+        });
         snackbar.addCallback(new BaseCallback<Snackbar>() {
             public void onDismissed(Snackbar transientBottomBar, int event) {
-                if (event != DISMISS_EVENT_ACTION) {
-                    // Dismiss wasn't because of tapping "UNDO" so delete the item completely
+                if (event != DISMISS_EVENT_ACTION) { // If dismiss wasn't because of "UNDO"...
+                    // ... Then delete the item completely from database
                     itemListViewModel.deleteItem(item);
                 }
             }
@@ -123,7 +120,6 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
     @Override
     public void onPause() {
         super.onPause();
-        // DONE: update only if positions changed
         if (itemsReordered) {
             itemListViewModel.updateItems(itemAdapter.getItems());
             itemsReordered = false;

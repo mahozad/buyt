@@ -4,6 +4,9 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <!-- foreground services require this for API level 28 or higher-->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <!-- The app can function without location features so we specify it as not required -->
     <uses-feature
         android:name="android.hardware.location"
@@ -16,7 +19,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.ItemListActivity">
+        <activity android:name=".ui.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,8 +28,12 @@
         </activity>
         <activity
             android:name=".ui.activity.AddItemActivity"
-            android:parentActivityName=".ui.activity.ItemListActivity" />
-        <activity android:name=".ui.activity.CreateStoreActivity"></activity>
+            android:parentActivityName=".ui.activity.MainActivity" />
+        <activity android:name=".ui.activity.CreateStoreActivity" />
+
+        <service
+            android:name=".GpsService"
+            android:exported="false"></service>
     </application>
 
 </manifest>

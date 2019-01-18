@@ -18,7 +18,9 @@ import static androidx.room.OnConflictStrategy.REPLACE;
 @Dao
 public interface ItemDao {
 
-    @Query("SELECT * FROM Item WHERE bought = 0 ORDER BY urgent DESC, position ASC")
+    @Query("SELECT * FROM Item " +
+            "WHERE bought = 0 AND flaggedForDeletion = 0 " +
+            "ORDER BY urgent DESC, position ASC")
     LiveData<List<Item>> getAll();
 
     @Query("SELECT * FROM Item WHERE id= :id")
@@ -39,7 +41,7 @@ public interface ItemDao {
     // FIXME: very heavy operation. @Update method, updates all fields of an entity
     // so this method updates all fields of all of the given items!
     @Update
-    void updateAll(Collection<Item> items);
+    void updateAll(Item... items);
 
     /* Annotating a method with @Transaction makes sure that all database operations you’re
     executing in that method will be run inside one transaction.

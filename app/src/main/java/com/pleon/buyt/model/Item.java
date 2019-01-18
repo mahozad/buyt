@@ -32,6 +32,8 @@ public class Item {
     @Ignore
     private boolean expanded;
     private int position;
+    // To fix the bug that happens when two items are deleted in row (the first appears again)
+    private boolean flaggedForDeletion = false;
 
     public Item(String name, Quantity quantity, boolean urgent, boolean bought) {
         this.name = name;
@@ -118,5 +120,13 @@ public class Item {
 
     public void setPosition(int position) {
         this.position = position;
+    }
+
+    public boolean isFlaggedForDeletion() {
+        return flaggedForDeletion;
+    }
+
+    public void setFlaggedForDeletion(boolean flaggedForDeletion) {
+        this.flaggedForDeletion = flaggedForDeletion;
     }
 }

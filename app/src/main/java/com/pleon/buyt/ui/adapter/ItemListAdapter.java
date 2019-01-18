@@ -1,4 +1,4 @@
-package com.pleon.buyt.adapter;
+package com.pleon.buyt.ui.adapter;
 
 import android.graphics.drawable.Animatable;
 import android.view.LayoutInflater;
@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.pleon.buyt.R;
-import com.pleon.buyt.adapter.ItemListAdapter.ItemHolder;
+import com.pleon.buyt.ui.adapter.ItemListAdapter.ItemHolder;
 import com.pleon.buyt.model.Item;
 
 import java.util.HashSet;

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.pleon.buyt.R;
 
 import androidx.annotation.NonNull;
@@ -41,19 +42,19 @@ public class LocationOffDialogFragment extends AppCompatDialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
-        AlertDialog dialog = new AlertDialog.Builder(getActivity())
+        AlertDialog dialog = new MaterialAlertDialogBuilder(getContext())
                 .setIcon(R.drawable.ic_location_off)
-                .setPositiveButton(getString(R.string.go_to_settings), (d, which) -> {
-                    startActivity(new Intent(ACTION_LOCATION_SOURCE_SETTINGS));
-                })
+                .setPositiveButton(getString(R.string.go_to_settings), (d, which) ->
+                        startActivity(new Intent(ACTION_LOCATION_SOURCE_SETTINGS))
+                )
                 .setNegativeButton(getString(R.string.not_now), (d, which) -> callback.onEnableLocationDenied())
                 .create();
 
         // getText is to preserve html formats
         dialog.setTitle(R.string.location_turn_on_title);
         dialog.setMessage(getText(R.string.location_turn_on_rationale));
-        // dialog.setCancelable(false); // Prevent dialog from getting dismissed on back key pressed
-        // dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false); // Prevent dialog from getting dismissed on back key pressed
+        dialog.setCanceledOnTouchOutside(false);
         return dialog;
     }
 

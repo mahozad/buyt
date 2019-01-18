@@ -49,7 +49,7 @@ public class MainRepository { // TODO: make this class singleton
         new AddItemTask(mItemDao).execute(item);
     }
 
-    public void updateItems(Collection<Item> items) {
+    public void updateItems(Item... items) {
         new UpdateItemsTask(mItemDao, items).execute();
     }
 
@@ -114,9 +114,9 @@ public class MainRepository { // TODO: make this class singleton
     private static class UpdateItemsTask extends AsyncTask<Void, Void, Void> {
 
         private ItemDao itemDao;
-        private Collection<Item> items;
+        private Item[] items;
 
-        UpdateItemsTask(ItemDao itemDao, Collection<Item> items) {
+        UpdateItemsTask(ItemDao itemDao, Item[] items) {
             this.itemDao = itemDao;
             this.items = items;
         }

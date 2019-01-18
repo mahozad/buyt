@@ -17,10 +17,9 @@ public class CreateStoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_store);
 
-        // TODO: extract the name of extra
-
         Bundle extras = getIntent().getExtras();
-        Location location = extras != null ? getIntent().getParcelableExtra("LOCATION") : null;
+        Location location = (extras != null) ?
+                getIntent().getParcelableExtra(MainActivity.EXTRA_LOCATION) : null;
 
         FragmentManager fragMgr = getSupportFragmentManager();
         Fragment createStoreFragment = fragMgr.findFragmentById(R.id.createStoreContainer);

@@ -38,7 +38,7 @@ public class ItemListViewModel extends AndroidViewModel {
         mAllItems = mMainRepository.getAll();
     }
 
-    public LiveData<List<Item>> getAll() {
+    public LiveData<List<Item>> getAllItems() {
         return mAllItems;
     }
 
@@ -54,11 +54,15 @@ public class ItemListViewModel extends AndroidViewModel {
         mMainRepository.getAllStores();
     }
 
-    public void insertItem(Item item) {
+    public void addItem(Item item) {
         mMainRepository.insertItem(item);
     }
 
     public void updateItems(Collection<Item> items) {
+        updateItems(items.toArray(new Item[0])); // size (0) doesn't matter
+    }
+
+    public void updateItems(Item... items) {
         mMainRepository.updateItems(items);
     }
 

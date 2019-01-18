@@ -8,7 +8,7 @@ import android.view.View;
 
 import com.pleon.buyt.R;
 import com.pleon.buyt.model.Store;
-import com.pleon.buyt.adapter.StoreListAdapter;
+import com.pleon.buyt.ui.adapter.StoreListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
