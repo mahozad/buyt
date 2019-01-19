@@ -276,7 +276,7 @@ public class MainActivity extends AppCompatActivity
                     chart.setBorderSpacing(12);
                     // set the same as borderSpacing to remove wrong top spacing
                     chart.setTopSpacing(-12);
-                    chart.setFontSize(16);
+                    chart.setFontSize(15);
 
 
                     BarSet barSet = new BarSet();
