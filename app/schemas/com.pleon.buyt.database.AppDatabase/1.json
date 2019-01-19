@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "ec3b3cb8712a6977e1a599238d67cce0",
+    "identityHash": "27d9b0f23e8f93e216b13ea2ebea7bc7",
     "entities": [
       {
         "tableName": "Item",
@@ -164,7 +164,7 @@
       },
       {
         "tableName": "Purchase",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `storeId` INTEGER NOT NULL, `date` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `storeId` INTEGER NOT NULL, `totalCost` INTEGER NOT NULL, `date` INTEGER)",
         "fields": [
           {
             "fieldPath": "id",
@@ -175,6 +175,12 @@
           {
             "fieldPath": "storeId",
             "columnName": "storeId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "totalCost",
+            "columnName": "totalCost",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -198,7 +204,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"ec3b3cb8712a6977e1a599238d67cce0\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"27d9b0f23e8f93e216b13ea2ebea7bc7\")"
     ]
   }
 }
