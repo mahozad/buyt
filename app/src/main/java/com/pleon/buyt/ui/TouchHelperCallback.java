@@ -3,11 +3,13 @@ package com.pleon.buyt.ui;
 import android.animation.Animator;
 import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.drawable.Animatable;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 
+import com.pleon.buyt.R;
 import com.pleon.buyt.ui.adapter.ItemListAdapter;
 
 import androidx.annotation.NonNull;
@@ -99,8 +101,12 @@ public class TouchHelperCallback extends ItemTouchHelper.Callback {
 
         // Animate delete circular reveal
         if (abs(dX) == maxSwipeDistInPx && !itemHolder.delAnimating) {
+            itemHolder.delIcon.setImageResource(R.drawable.avd_delete_open);
+            ((Animatable) itemHolder.delIcon.getDrawable()).start();
             showCircularReveal(itemHolder, itemHolder.delCircularReveal);
         } else if (abs(dX) < maxSwipeDistInPx && itemHolder.delAnimating) {
+            itemHolder.delIcon.setImageResource(R.drawable.avd_delete_close);
+            ((Animatable) itemHolder.delIcon.getDrawable()).start();
             hideCircularReveal(itemHolder, itemHolder.delCircularReveal);
         }
 

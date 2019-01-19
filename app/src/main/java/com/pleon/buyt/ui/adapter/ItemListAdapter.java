@@ -176,6 +176,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
         @BindView(R.id.cardContainer) public FrameLayout cardCtn;
         @BindView(R.id.cardBackground) public MaterialCardView cardBg;
         @BindView(R.id.cardForeground) public MaterialCardView cardFg;
+        @BindView(R.id.delete_icon) public ImageView delIcon;
         @BindView(R.id.circular_reveal) public ImageView delCircularReveal;
 
         public boolean delAnimating = false;
