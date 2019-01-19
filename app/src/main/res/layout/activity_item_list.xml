@@ -10,18 +10,19 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <FrameLayout
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/container_fragment_chart"
             android:layout_width="match_parent"
-            android:layout_height="180dp">
+            android:layout_height="180dp"
+            android:layout_margin="12dp">
 
             <com.db.chart.view.BarChartView
                 android:id="@+id/chart"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="8dp" />
+                android:layout_margin="12dp" />
 
-        </FrameLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <View
             android:id="@+id/divider"
@@ -56,6 +57,7 @@
         android:layout_height="wrap_content"
         app:fabSize="normal"
         app:layout_anchor="@id/bottom_bar"
+        app:backgroundTint="#FFABB933"
         app:maxImageSize="42dp"
         app:rippleColor="@android:color/transparent"
         app:srcCompat="@drawable/avd_buyt" />
