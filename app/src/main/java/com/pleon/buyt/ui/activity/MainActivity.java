@@ -54,11 +54,14 @@ import butterknife.OnClick;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.location.LocationManager.GPS_PROVIDER;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.getkeepsafe.taptargetview.TapTarget.forView;
 import static com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_CENTER;
 import static com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE;
 import static com.google.android.material.snackbar.Snackbar.LENGTH_SHORT;
 import static java.lang.Math.cos;
+import static java.util.Calendar.DATE;
 
 public class MainActivity extends AppCompatActivity
         implements SelectStoreDialogFragment.Callback, Callback {
@@ -246,29 +249,30 @@ public class MainActivity extends AppCompatActivity
         ViewModelProviders.of(this).get(MainViewModel.class).getAllItems().observe(this, items -> {
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
-            cal.add(Calendar.DATE, -7);
+            cal.add(DATE, -7);
             long from = cal.getTime().getTime();
             mainViewModel.getTotalWeekdayCosts(from, new Date().getTime()).observe(this, weekdayCosts -> {
                 if (weekdayCosts.size() > 0) {
+                    // TODO: retrieve the past year costs and just show the past week costs,
+                    // if there is no cost in the past week, show costs for the past month,
+                    // if there is no cost in the past month, show costs in the past year
                     BarChartView chart = findViewById(R.id.chart);
                     chart.reset(); // required (in case number of bars changed)
+                    findViewById(R.id.container_fragment_chart).setVisibility(VISIBLE);
 
                     chart.setAxisColor(0xFFAAAAAA);
                     chart.setLabelsColor(ContextCompat.getColor(this, R.color.ic_launcher_background));
-//                    chart.setStep(1000);
 
                     DecimalFormat moneyFormat = new DecimalFormat("\u00A4##,###");
                     if (getResources().getConfiguration().locale.getDisplayName().equals("فارسی (ایران)")) {
                         moneyFormat = new DecimalFormat("##,### ت");
                     }
                     chart.setLabelsFormat(moneyFormat);
-//                chart.setGrid(2, 3, new Paint());
-//                chart.setValueThreshold(100, 4000, new Paint());
 //                chart.setBarBackgroundColor(R.color.error);
                     chart.setRoundCorners(2);
 
                     chart.setBarSpacing(20);
-                    chart.setBorderSpacing(10);
+                    chart.setBorderSpacing(12);
 
                     BarSet barSet = new BarSet();
                     for (WeekdayCost weekdayCost : weekdayCosts) {
@@ -281,7 +285,9 @@ public class MainActivity extends AppCompatActivity
                     barSet.setGradientColor(colors, steps);
 
                     chart.addData(barSet);
-                    chart.show(new Animation(600));
+                    chart.show(new Animation(500));
+                } else {
+                    findViewById(R.id.container_fragment_chart).setVisibility(GONE);
                 }
             });
         });
