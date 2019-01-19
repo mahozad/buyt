@@ -39,7 +39,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -268,17 +270,37 @@ public class MainActivity extends AppCompatActivity
                         moneyFormat = new DecimalFormat("##,### ت");
                     }
                     chart.setLabelsFormat(moneyFormat);
-//                chart.setBarBackgroundColor(R.color.error);
                     chart.setRoundCorners(2);
 
-                    chart.setBarSpacing(20);
+                    chart.setBarSpacing(16);
                     chart.setBorderSpacing(12);
+                    // set the same as borderSpacing to remove wrong top spacing
+                    chart.setTopSpacing(-12);
+                    chart.setFontSize(16);
+
 
                     BarSet barSet = new BarSet();
-                    for (WeekdayCost weekdayCost : weekdayCosts) {
-                        String day = getString(WeekdayCost.Days.values()[weekdayCost.getDay()].getNameStringRes());
-                        barSet.addBar(day, weekdayCost.getCost());
+                    Map<Integer, Long> costs = new TreeMap<>();
+                    for (int i = 0; i < weekdayCosts.size(); i++) {
+                        costs.put(weekdayCosts.get(i).getDay(), weekdayCosts.get(i).getCost());
                     }
+                    for (int i = 0; i < 7; i++) { // this loop cannot be integrated into the next one
+                        if (costs.get(i) == null) {
+                            costs.put(i, 0L);
+                        }
+                    }
+                    for (int i = 0; i < 7; i++) {
+                        int dayIndex;
+                        // FIXME: .locale is deprecated
+                        if (getResources().getConfiguration().locale.getDisplayName().equals("فارسی (ایران)")) {
+                            dayIndex = WeekdayCost.Days.iranianOrder[i];
+                        } else {
+                            dayIndex = WeekdayCost.Days.internationalOrder[i];
+                        }
+                        String day = getString(WeekdayCost.Days.values()[dayIndex].getNameStringRes());
+                        barSet.addBar(day, costs.get(dayIndex));
+                    }
+
 
                     int[] colors = {ContextCompat.getColor(this, R.color.colorPrimaryDark), ContextCompat.getColor(this, R.color.colorPrimary)};
                     float[] steps = {0, 0.5F};

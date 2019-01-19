@@ -6,8 +6,19 @@ import androidx.annotation.StringRes;
 
 public class WeekdayCost {
 
+    /**
+     * According to international standard ISO 8601, Monday is the first day of the week.
+     * It is followed by Tuesday, Wednesday, Thursday, Friday, and Saturday.
+     * Sunday is the 7th and final day.
+     * <p>
+     * Although this is the international standard, several countries, including
+     * the United States, Canada, and Australia consider Sunday as the start of the week.
+     */
     public enum Days {
 
+        /**
+         * Do NOT reorder the days. This is the order that is returned by sqlite (PurchaseDao).
+         */
         SUNDAY(R.string.sun),
         MONDAY(R.string.mon),
         TUESDAY(R.string.tue),
@@ -18,6 +29,8 @@ public class WeekdayCost {
 
         @StringRes
         private int nameStringRes;
+        public static int[] internationalOrder = {1, 2, 3, 4, 5, 6, 0};
+        public static int[] iranianOrder = {6, 0, 1, 2, 3, 4, 5}; // to show days RTL reverse it
 
         Days(@StringRes int nameStringRes) {
             this.nameStringRes = nameStringRes;

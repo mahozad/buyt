@@ -26,7 +26,11 @@ public interface PurchaseDao {
      * @param to   the ending date in milliseconds
      * @return List of total costs per weekday
      */
-    @Query("SELECT strftime('%w', date/1000, 'unixepoch') as day, SUM(totalcost) as cost FROM purchase WHERE date BETWEEN :from AND :to GROUP BY strftime('%w', date/1000, 'unixepoch')")
+    @Query("SELECT strftime('%w', date/1000, 'unixepoch') as day, SUM(totalcost) as cost " +
+            "FROM purchase " +
+            "WHERE date BETWEEN :from AND :to " +
+            "GROUP BY strftime('%w', date/1000, 'unixepoch')" +
+            "ORDER BY day")
     List<WeekdayCost> getCost(long from, long to);
 
 //    @Query("SELECT SUM(totalCost) FROM purchase WHERE date BETWEEN :from AND :to GROUP BY date ")
