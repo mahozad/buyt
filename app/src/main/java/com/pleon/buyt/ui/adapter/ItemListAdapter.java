@@ -150,8 +150,10 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
     }
 
     public void toggleEditMode() {
-        dragModeEnabled = !dragModeEnabled;
-        notifyDataSetChanged();
+        if (items.size() > 0) { // toggle only if there is any item
+            dragModeEnabled = !dragModeEnabled;
+            notifyDataSetChanged();
+        }
     }
 
     public void togglePriceInput(boolean enabled) {
