@@ -11,6 +11,7 @@ import com.pleon.buyt.model.Coordinates;
 import com.pleon.buyt.model.Item;
 import com.pleon.buyt.model.Purchase;
 import com.pleon.buyt.model.Store;
+import com.pleon.buyt.model.WeekdayCost;
 
 import java.util.Collection;
 import java.util.Date;
@@ -30,7 +31,7 @@ public class MainRepository { // TODO: make this class singleton
     private PurchaseDao mPurchaseDao;
     private LiveData<List<Item>> mAllItems;
     private MutableLiveData<List<Store>> mNearStores;
-    private MutableLiveData<List<Long>> totalWeekdayCosts;
+    private MutableLiveData<List<WeekdayCost>> totalWeekdayCosts;
 
     public MainRepository(Application application) {
         mItemDao = AppDatabase.getDatabase(application).itemDao();
@@ -78,7 +79,7 @@ public class MainRepository { // TODO: make this class singleton
         new GetAllStoresAsyncTask(mStoreDao, mNearStores).execute();
     }
 
-    public LiveData<List<Long>> getTotalWeekdayCosts(long from, long to) {
+    public LiveData<List<WeekdayCost>> getTotalWeekdayCosts(long from, long to) {
         new GetCostTask(mPurchaseDao, totalWeekdayCosts).execute(from, to);
         return totalWeekdayCosts;
     }
@@ -225,23 +226,23 @@ public class MainRepository { // TODO: make this class singleton
         }
     }
 
-    private static class GetCostTask extends AsyncTask<Long, Void, List<Long>> {
+    private static class GetCostTask extends AsyncTask<Long, Void, List<WeekdayCost>> {
 
         private PurchaseDao purchaseDao;
-        private MutableLiveData<List<Long>> totalWeekdayCosts;
+        private MutableLiveData<List<WeekdayCost>> totalWeekdayCosts;
 
-        GetCostTask(PurchaseDao purchaseDao, MutableLiveData<List<Long>> totalWeekdayCosts) {
+        GetCostTask(PurchaseDao purchaseDao, MutableLiveData<List<WeekdayCost>> totalWeekdayCosts) {
             this.purchaseDao = purchaseDao;
             this.totalWeekdayCosts = totalWeekdayCosts;
         }
 
         @Override
-        protected List<Long> doInBackground(Long... endpoints) {
+        protected List<WeekdayCost> doInBackground(Long... endpoints) {
             return purchaseDao.getCost(endpoints[0], endpoints[1]);
         }
 
         @Override
-        protected void onPostExecute(List<Long> costs) {
+        protected void onPostExecute(List<WeekdayCost> costs) {
             totalWeekdayCosts.setValue(costs);
         }
     }

@@ -7,6 +7,7 @@ import com.pleon.buyt.database.repository.StoreRepository;
 import com.pleon.buyt.model.Coordinates;
 import com.pleon.buyt.model.Item;
 import com.pleon.buyt.model.Store;
+import com.pleon.buyt.model.WeekdayCost;
 
 import java.util.Collection;
 import java.util.List;
@@ -69,7 +70,7 @@ public class MainViewModel extends AndroidViewModel {
         return mStoreRepository.getLatestCreatedStore();
     }
 
-    public LiveData<List<Long>> getTotalWeekdayCosts(long from, long to) {
+    public LiveData<List<WeekdayCost>> getTotalWeekdayCosts(long from, long to) {
         return mMainRepository.getTotalWeekdayCosts(from, to);
     }
 

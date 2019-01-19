@@ -11,13 +11,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.db.chart.animation.Animation;
+import com.db.chart.model.BarSet;
+import com.db.chart.view.BarChartView;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -28,6 +25,7 @@ import com.pleon.buyt.database.AppDatabase;
 import com.pleon.buyt.model.Coordinates;
 import com.pleon.buyt.model.Item;
 import com.pleon.buyt.model.Store;
+import com.pleon.buyt.model.WeekdayCost;
 import com.pleon.buyt.ui.dialog.Callback;
 import com.pleon.buyt.ui.dialog.LocationOffDialogFragment;
 import com.pleon.buyt.ui.dialog.RationaleDialogFragment;
@@ -36,11 +34,11 @@ import com.pleon.buyt.ui.fragment.ItemListFragment;
 import com.pleon.buyt.ui.fragment.SelectStoreDialogFragment;
 import com.pleon.buyt.viewmodel.MainViewModel;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -248,31 +246,43 @@ public class MainActivity extends AppCompatActivity
         ViewModelProviders.of(this).get(MainViewModel.class).getAllItems().observe(this, items -> {
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
-            cal.add(Calendar.DAY_OF_WEEK, -7);
+            cal.add(Calendar.DATE, -7);
             long from = cal.getTime().getTime();
-            mainViewModel.getTotalWeekdayCosts(from, new Date().getTime()).observe(this, costs -> {
-                BarChart lineChart = findViewById(R.id.chart);
-                List<String> labels = new ArrayList<>();
-                labels.add("Sun");
-                labels.add("Mon");
-                labels.add("Tue");
-                labels.add("Wed");
-                labels.add("Thu");
-                labels.add("Fri");
-                labels.add("Sat");
-                lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
-                XAxis xAxis = lineChart.getXAxis();
-                xAxis.setGranularity(1f);
-                xAxis.setGranularityEnabled(true);
-                List<BarEntry> entries = new ArrayList<>();
-                for (int i = 0; i < costs.size(); i++) {
-                    entries.add(new BarEntry(i, costs.get(i)));
+            mainViewModel.getTotalWeekdayCosts(from, new Date().getTime()).observe(this, weekdayCosts -> {
+                if (weekdayCosts.size() > 0) {
+                    BarChartView chart = findViewById(R.id.chart);
+                    chart.reset(); // required (in case number of bars changed)
+
+                    chart.setAxisColor(0xFFAAAAAA);
+                    chart.setLabelsColor(ContextCompat.getColor(this, R.color.ic_launcher_background));
+//                    chart.setStep(1000);
+
+                    DecimalFormat moneyFormat = new DecimalFormat("\u00A4##,###");
+                    if (getResources().getConfiguration().locale.getDisplayName().equals("فارسی (ایران)")) {
+                        moneyFormat = new DecimalFormat("##,### ت");
+                    }
+                    chart.setLabelsFormat(moneyFormat);
+//                chart.setGrid(2, 3, new Paint());
+//                chart.setValueThreshold(100, 4000, new Paint());
+//                chart.setBarBackgroundColor(R.color.error);
+                    chart.setRoundCorners(2);
+
+                    chart.setBarSpacing(20);
+                    chart.setBorderSpacing(10);
+
+                    BarSet barSet = new BarSet();
+                    for (WeekdayCost weekdayCost : weekdayCosts) {
+                        String day = getString(WeekdayCost.Days.values()[weekdayCost.getDay()].getNameStringRes());
+                        barSet.addBar(day, weekdayCost.getCost());
+                    }
+
+                    int[] colors = {ContextCompat.getColor(this, R.color.colorPrimaryDark), ContextCompat.getColor(this, R.color.colorPrimary)};
+                    float[] steps = {0, 0.5F};
+                    barSet.setGradientColor(colors, steps);
+
+                    chart.addData(barSet);
+                    chart.show(new Animation(600));
                 }
-                BarDataSet dataSet = new BarDataSet(entries, "Label"); // add entries to dataset
-                BarData data = new BarData(dataSet);
-                lineChart.setData(data);
-                lineChart.animateY(1000);
-                lineChart.invalidate(); // refresh
             });
         });
     }

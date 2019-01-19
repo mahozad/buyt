@@ -18,4 +18,11 @@
     <string name="quantity_hint">مقدار</string>
     <string name="description_hint">توضیحات (اختیاری)</string>
     <string name="urgent">ضروری</string>
+    <string name="fri">ج</string>
+    <string name="sat">ش</string>
+    <string name="thu">پ</string>
+    <string name="wed">چ</string>
+    <string name="tue">س</string>
+    <string name="mon">د</string>
+    <string name="sun">ی</string>
 </resources>
