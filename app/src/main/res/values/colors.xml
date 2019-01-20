@@ -11,4 +11,13 @@
     <color name="card_background">#282828</color>
 
     <color name="unfocused">#6E6E6E</color>
+
+    <color name="chartMidColor">#259600</color>
+
+    <array name="chartGradient">
+        <item>@color/colorPrimaryDark</item>
+        <item>@color/chartMidColor</item>
+        <item>@color/colorPrimary</item>
+    </array>
+
 </resources>

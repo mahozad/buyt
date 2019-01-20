@@ -303,9 +303,8 @@ public class MainActivity extends AppCompatActivity
                         barSet.addBar(day, costs.get(dayIndex));
                     }
 
-
-                    int[] colors = {ContextCompat.getColor(this, R.color.colorPrimaryDark), ContextCompat.getColor(this, R.color.colorPrimary)};
-                    float[] steps = {0, 0.5F};
+                    int[] colors = getResources().getIntArray(R.array.chartGradient);
+                    float[] steps = {0, 0.4f, 0.7f};
                     barSet.setGradientColor(colors, steps);
 
                     chart.addData(barSet);
