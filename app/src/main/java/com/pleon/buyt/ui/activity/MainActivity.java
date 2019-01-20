@@ -270,13 +270,15 @@ public class MainActivity extends AppCompatActivity
                         moneyFormat = new DecimalFormat("##,### ت");
                     }
                     chart.setLabelsFormat(moneyFormat);
-                    chart.setRoundCorners(2);
+                    chart.setRoundCorners(4);
+                    chart.setXAxis(false);
+                    chart.setYAxis(false);
 
-                    chart.setBarSpacing(16);
+                    chart.setFontSize(15);
+                    chart.setBarSpacing(14);
                     chart.setBorderSpacing(12);
                     // set the same as borderSpacing to remove wrong top spacing
                     chart.setTopSpacing(-12);
-                    chart.setFontSize(15);
 
 
                     BarSet barSet = new BarSet();
