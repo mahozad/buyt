@@ -34,7 +34,7 @@ import static java.util.Collections.singletonList;
 public class ItemListFragment extends Fragment implements ItemTouchHelperListener {
 
     @BindView(R.id.list) RecyclerView itemRecyclerView;
-    private ItemListAdapter itemAdapter;
+    private ItemListAdapter adapter;
     private MainViewModel mainViewModel;
     private TouchHelperCallback touchHelperCallback;
     private Unbinder unbinder;
@@ -61,29 +61,28 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
-        unbinder = ButterKnife.bind(this, view); // unbind() is required only for Fragments
+        unbinder = ButterKnife.bind(this, view); // unbinding is required only for Fragments
 
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        // In fragments use getViewLifecycleOwner() for owner
-        mainViewModel.getAllItems().observe(getViewLifecycleOwner(),
-                items -> itemAdapter.setItems(items));
+        // In fragments use getViewLifecycleOwner() as owner argument
+        mainViewModel.getAllItems().observe(getViewLifecycleOwner(), items -> adapter.setItems(items));
 
         // for swipe-to-delete and drag-n-drop of item
         touchHelperCallback = new TouchHelperCallback(this);
         ItemTouchHelper touchHelper = new ItemTouchHelper(touchHelperCallback);
         touchHelper.attachToRecyclerView(itemRecyclerView);
 
-        itemAdapter = new ItemListAdapter(touchHelper);
-        itemRecyclerView.setAdapter(itemAdapter);
+        adapter = new ItemListAdapter(touchHelper);
+        itemRecyclerView.setAdapter(adapter);
         return view;
     }
 
     @Override
     public void onMoved(int oldPosition, int newPosition) {
-        itemAdapter.getItem(oldPosition).setPosition(newPosition);
-        itemAdapter.getItem(newPosition).setPosition(oldPosition);
-        Collections.swap(itemAdapter.getItems(), newPosition, oldPosition);
-        itemAdapter.notifyItemMoved(oldPosition, newPosition);
+        adapter.getItem(oldPosition).setPosition(newPosition);
+        adapter.getItem(newPosition).setPosition(oldPosition);
+        Collections.swap(adapter.getItems(), newPosition, oldPosition);
+        adapter.notifyItemMoved(oldPosition, newPosition);
         itemsReordered = true;
     }
 
@@ -91,7 +90,7 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
     public void onSwiped(ViewHolder viewHolder, int direction) {
         // Backup the item for undo purpose
         int itemIndex = viewHolder.getAdapterPosition();
-        Item item = itemAdapter.getItem(itemIndex);
+        Item item = adapter.getItem(itemIndex);
 
         item.setFlaggedForDeletion(true);
         mainViewModel.updateItems(singletonList(item));
@@ -121,7 +120,7 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
     public void onPause() {
         super.onPause();
         if (itemsReordered) {
-            mainViewModel.updateItems(itemAdapter.getItems());
+            mainViewModel.updateItems(adapter.getItems());
             itemsReordered = false;
         }
     }
@@ -134,32 +133,32 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
     }
 
     public void toggleEditMode() {
-        itemAdapter.toggleEditMode();
+        adapter.toggleEditMode();
         touchHelperCallback.toggleDragMode();
     }
 
     public Set<Item> getSelectedItems() {
-        return itemAdapter.getSelectedItems();
+        return adapter.getSelectedItems();
     }
 
     public boolean isSelectedEmpty() {
-        return itemAdapter.getSelectedItems().size() == 0;
+        return adapter.getSelectedItems().size() == 0;
     }
 
     public void clearSelectedItems() {
-        itemAdapter.clearSelectedItems();
+        adapter.clearSelectedItems();
     }
 
     public void toggleItemsCheckbox(boolean enabled) {
-        itemAdapter.togglePriceInput(enabled);
+        adapter.togglePriceInput(enabled);
     }
 
     public boolean validateSelectedItemsPrice() {
         boolean validated = true;
-        for (Item item : itemAdapter.getSelectedItems()) {
+        for (Item item : adapter.getSelectedItems()) {
             if (item.getTotalPrice() == 0) {
-                int itemIndex = itemAdapter.getItems().indexOf(item); // FIXME: maybe heavy operation
-                View itemView = itemAdapter.recyclerView.getLayoutManager().findViewByPosition(itemIndex);
+                int itemIndex = adapter.getItems().indexOf(item); // FIXME: maybe heavy operation
+                View itemView = adapter.recyclerView.getLayoutManager().findViewByPosition(itemIndex);
                 TextInputLayout priceLayout = itemView.findViewById(R.id.price_layout);
                 priceLayout.setError("price cannot be empty");
                 validated = false;
@@ -169,10 +168,10 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
     }
 
     public boolean isCartEmpty() {
-        return itemAdapter.getItems().size() == 0;
+        return adapter.getItems().size() == 0;
     }
 
     public int getNextItemPosition() {
-        return itemAdapter.getItemCount();
+        return adapter.getItemCount();
     }
 }
