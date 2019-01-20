@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.db.chart.animation.Animation;
+import com.db.chart.model.Bar;
 import com.db.chart.model.BarSet;
 import com.db.chart.view.BarChartView;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
@@ -269,17 +270,17 @@ public class MainActivity extends AppCompatActivity
                     if (getResources().getConfiguration().locale.getDisplayName().equals("فارسی (ایران)")) {
                         moneyFormat = new DecimalFormat("##,### ت");
                     }
+
                     chart.setLabelsFormat(moneyFormat);
-                    chart.setRoundCorners(4);
                     chart.setXAxis(false);
                     chart.setYAxis(false);
-
+                    chart.setRoundCorners(4);
+                    chart.setAxisLabelsSpacing(12);
                     chart.setFontSize(15);
-                    chart.setBarSpacing(14);
-                    chart.setBorderSpacing(12);
+                    chart.setBarSpacing(26);
                     // set the same as borderSpacing to remove wrong top spacing
                     chart.setTopSpacing(-12);
-
+                    chart.setBorderSpacing(12);
 
                     BarSet barSet = new BarSet();
                     Map<Integer, Long> costs = new TreeMap<>();
