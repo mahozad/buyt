@@ -12,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.db.chart.animation.Animation;
-import com.db.chart.model.Bar;
 import com.db.chart.model.BarSet;
 import com.db.chart.view.BarChartView;
 import com.getkeepsafe.taptargetview.TapTargetSequence;

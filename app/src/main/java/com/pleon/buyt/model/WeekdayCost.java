@@ -27,7 +27,6 @@ public class WeekdayCost {
         FRIDAY(R.string.fri),
         SATURDAY(R.string.sat);
 
-        @StringRes
         private int nameStringRes;
         public static int[] internationalOrder = {1, 2, 3, 4, 5, 6, 0};
         public static int[] iranianOrder = {6, 0, 1, 2, 3, 4, 5}; // to show days RTL reverse it
