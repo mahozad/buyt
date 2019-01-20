@@ -190,7 +190,7 @@ public class AddItemFragment extends Fragment {
                 item.setDescription(descriptionEdtx.getText().toString());
             }
             if (!isEmpty(priceEdtx)) {
-                item.setPrice(Long.parseLong(priceEdtx.getText().toString()));
+                item.setTotalPrice(Long.parseLong(priceEdtx.getText().toString()));
             }
 
             item.setPosition(LAST_ITEM_ORDER);

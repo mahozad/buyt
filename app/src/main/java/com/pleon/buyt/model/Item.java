@@ -6,13 +6,8 @@ import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-/**
- * An item to buy.
- */
 @Entity
 public class Item {
-
-    // model class attribute names don't need to start with 'm'
 
     @PrimaryKey(autoGenerate = true)
     private long id; // TODO: change type of id here to int?
@@ -26,7 +21,7 @@ public class Item {
     private String description;
     private boolean urgent;
     private boolean bought;
-    private long price;
+    private long totalPrice;
 
     // for display purposes
     @Ignore
@@ -98,12 +93,12 @@ public class Item {
         this.quantity = quantity;
     }
 
-    public long getPrice() {
-        return price;
+    public long getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setPrice(long price) {
-        this.price = price;
+    public void setTotalPrice(long totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public boolean isExpanded() {

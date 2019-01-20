@@ -157,7 +157,7 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
     public boolean validateSelectedItemsPrice() {
         boolean validated = true;
         for (Item item : itemAdapter.getSelectedItems()) {
-            if (item.getPrice() == 0) {
+            if (item.getTotalPrice() == 0) {
                 int itemIndex = itemAdapter.getItems().indexOf(item); // FIXME: maybe heavy operation
                 View itemView = itemAdapter.recyclerView.getLayoutManager().findViewByPosition(itemIndex);
                 TextInputLayout priceLayout = itemView.findViewById(R.id.price_layout);

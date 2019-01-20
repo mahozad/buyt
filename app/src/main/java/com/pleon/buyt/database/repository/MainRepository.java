@@ -161,7 +161,7 @@ public class MainRepository { // TODO: make this class singleton
 
             long totalCost = 0;
             for (Item item : items) {
-                totalCost += item.getPrice() * item.getQuantity().getQuantity();
+                totalCost += item.getTotalPrice();
             }
             Purchase purchase = new Purchase(storeId, new Date(), totalCost);
             long purchaseId = mPurchaseDao.insert(purchase);

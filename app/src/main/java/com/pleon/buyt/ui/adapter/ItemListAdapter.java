@@ -222,7 +222,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
             if (!priceString.isEmpty()) {
                 long price = parseLong(priceString);
                 Item item = items.get(getAdapterPosition());
-                item.setPrice(price);
+                item.setTotalPrice(price);
             }
         }
 
