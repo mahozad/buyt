@@ -6,6 +6,7 @@ import com.pleon.buyt.database.repository.MainRepository;
 import com.pleon.buyt.database.repository.StoreRepository;
 import com.pleon.buyt.model.Coordinates;
 import com.pleon.buyt.model.Item;
+import com.pleon.buyt.model.Purchase;
 import com.pleon.buyt.model.Store;
 import com.pleon.buyt.model.WeekdayCost;
 
@@ -30,12 +31,14 @@ public class MainViewModel extends AndroidViewModel {
 
     // TODO: Use paging library architecture component
     private LiveData<List<Item>> mAllItems;
+    private LiveData<List<Purchase>> allPurchases;
 
     public MainViewModel(Application application) {
         super(application);
         mMainRepository = new MainRepository(application);
         mStoreRepository = StoreRepository.getInstance(application);
-        mAllItems = mMainRepository.getAll();
+        mAllItems = mMainRepository.getAllItems();
+        allPurchases = mMainRepository.getAllPurchases();
     }
 
     public LiveData<List<Item>> getAllItems() {
@@ -72,6 +75,10 @@ public class MainViewModel extends AndroidViewModel {
 
     public LiveData<List<WeekdayCost>> getTotalWeekdayCosts(long from, long to) {
         return mMainRepository.getTotalWeekdayCosts(from, to);
+    }
+
+    public LiveData<List<Purchase>> getAllPurchases() {
+        return allPurchases;
     }
 
     public void deleteItem(Item item) {

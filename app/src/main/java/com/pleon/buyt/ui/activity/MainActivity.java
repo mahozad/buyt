@@ -8,6 +8,7 @@ import android.graphics.drawable.Animatable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -249,7 +250,10 @@ public class MainActivity extends AppCompatActivity
         // call it every time you want some data, maybe you're doing something wrong
         mainViewModel.getNearStores().observe(this, this::onStoresFound);
 
-        ViewModelProviders.of(this).get(MainViewModel.class).getAllItems().observe(this, items -> {
+        mainViewModel.getAllPurchases().observe(this, purchases -> {
+
+            Log.i(TAG, "get all purchases called. number of purchases: " + purchases.size());
+
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
             cal.add(DATE, -7);
@@ -263,14 +267,13 @@ public class MainActivity extends AppCompatActivity
                     chart.reset(); // required (in case number of bars changed)
                     findViewById(R.id.container_fragment_chart).setVisibility(VISIBLE);
 
-                    chart.setAxisColor(0xFFAAAAAA);
-                    chart.setLabelsColor(ContextCompat.getColor(this, R.color.ic_launcher_background));
-
                     DecimalFormat moneyFormat = new DecimalFormat("\u00A4##,###");
                     if (getResources().getConfiguration().locale.getDisplayName().equals("فارسی (ایران)")) {
+                        // for Farsi, \u00A4 is ریال but we want something else (e.g. ت)
                         moneyFormat = new DecimalFormat("##,### ت");
                     }
 
+                    chart.setLabelsColor(ContextCompat.getColor(this, R.color.ic_launcher_background));
                     chart.setLabelsFormat(moneyFormat);
                     chart.setXAxis(false);
                     chart.setYAxis(false);

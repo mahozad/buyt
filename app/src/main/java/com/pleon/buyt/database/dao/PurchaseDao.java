@@ -5,6 +5,7 @@ import com.pleon.buyt.model.WeekdayCost;
 
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -33,9 +34,6 @@ public interface PurchaseDao {
             "ORDER BY day")
     List<WeekdayCost> getCost(long from, long to);
 
-//    @Query("SELECT SUM(totalCost) FROM purchase WHERE date BETWEEN :from AND :to GROUP BY date ")
-//    List<Long> getCost(long from, long to);
-
-//    @Query("SELECT * FROM purchase")
-//    LiveData<List<Purchase>> getAll();
+    @Query("SELECT * FROM purchase")
+    LiveData<List<Purchase>> getAll();
 }

@@ -30,6 +30,7 @@ public class MainRepository { // TODO: make this class singleton
     private StoreDao mStoreDao;
     private PurchaseDao mPurchaseDao;
     private LiveData<List<Item>> mAllItems;
+    private LiveData<List<Purchase>> allPurchases;
     private MutableLiveData<List<Store>> mNearStores;
     private MutableLiveData<List<WeekdayCost>> totalWeekdayCosts;
 
@@ -38,13 +39,18 @@ public class MainRepository { // TODO: make this class singleton
         mStoreDao = AppDatabase.getDatabase(application).storeDao();
         mPurchaseDao = AppDatabase.getDatabase(application).purchaseDao();
         mAllItems = mItemDao.getAll();
+        allPurchases = mPurchaseDao.getAll();
         mNearStores = new MutableLiveData<>();
         totalWeekdayCosts = new MutableLiveData<>();
     }
 
     // this does not need to be run in separate thread because it just returns LiveData
-    public LiveData<List<Item>> getAll() {
+    public LiveData<List<Item>> getAllItems() {
         return mAllItems;
+    }
+
+    public LiveData<List<Purchase>> getAllPurchases() {
+        return allPurchases;
     }
 
     public void insertItem(Item item) {
