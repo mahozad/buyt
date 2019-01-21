@@ -4,6 +4,11 @@
     <color name="colorPrimaryDark">#1d7b00</color>
     <color name="colorAccent">#89dd5f</color>
 
+    <!-- colors for persian date picker (if you want to switch dark/light theme, set it in code:
+     timePickerDialog.setThemeDark(true);) -->
+    <color name="mdtp_accent_color">@color/colorPrimary</color>
+    <color name="mdtp_accent_color_dark">@color/colorPrimaryDark</color>
+
     <color name="error">#c26c7a</color>
     <color name="ic_launcher_background">#FFFFFF</color>
     <color name="card_background">#282828</color>

@@ -212,6 +212,31 @@
 
         </FrameLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/date_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Date"
+            app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="@id/description_layout"
+            app:layout_constraintStart_toStartOf="@id/description_layout"
+            app:layout_constraintTop_toBottomOf="@id/price_container">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:drawableStart="@drawable/ic_calendar"
+                android:drawablePadding="8dp"
+                android:editable="false"
+                android:focusable="true"
+                android:text="Today"
+                tools:text="Purchase date" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/stores_list"
             android:layout_width="wrap_content"
