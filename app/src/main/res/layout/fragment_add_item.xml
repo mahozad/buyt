@@ -1,222 +1,227 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.fragment.AddItemFragment">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/name_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:hint="@string/name_hint"
-        app:errorEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_cart"
-            android:drawablePadding="8dp"
-            android:inputType="text"
-            tools:text="Item name" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <FrameLayout
-        android:id="@+id/quantity_container"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="@id/name_layout"
-        app:layout_constraintStart_toStartOf="@+id/name_layout"
-        app:layout_constraintTop_toBottomOf="@+id/name_layout">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/quantity_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/quantity_hint"
-            app:errorEnabled="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/quantity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_quantity"
-                android:drawablePadding="8dp"
-                android:inputType="numberDecimal"
-                android:maxLength="8"
-                android:selectAllOnFocus="true"
-                android:text="@string/quantity_default_value"
-                tools:text="Item quantity" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- wrapper for radio buttons to make the corners round -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/materialCardView"
-            android:layout_width="wrap_content"
-            android:layout_height="43.5dp"
-            android:layout_gravity="center|end"
-            android:layout_marginEnd="3.8dp"
-            android:layout_marginBottom="6.8dp"
-            android:elevation="0dp"
-            app:cardCornerRadius="2dp">
-
-            <RadioGroup
-                android:id="@+id/radio_group"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:checkedButton="@id/unit"
-                android:orientation="horizontal">
-
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/unit"
-                    style="@style/UnitToggleButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="unit" />
-
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/kilogram"
-                    style="@style/UnitToggleButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="kg" />
-
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/gram"
-                    style="@style/UnitToggleButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="g" />
-
-            </RadioGroup>
-
-        </com.google.android.material.card.MaterialCardView>
-
-    </FrameLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/description_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="@string/description_hint"
-        app:layout_constraintEnd_toEndOf="@id/quantity_container"
-        app:layout_constraintStart_toStartOf="@id/quantity_container"
-        app:layout_constraintTop_toBottomOf="@id/quantity_container">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_description"
-            android:drawablePadding="8dp"
-            tools:text="Item description (optional)" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <androidx.appcompat.widget.AppCompatCheckBox
-        android:id="@+id/urgent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="8dp"
-        android:button="@drawable/avd_urgent_check"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:text="@string/urgent"
-        app:layout_constraintStart_toStartOf="@+id/description_layout"
-        app:layout_constraintTop_toBottomOf="@+id/description_layout" />
-
-    <!-- a divider -->
-    <View
-        android:id="@+id/divider"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="20dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintEnd_toEndOf="@id/quantity_container"
-        app:layout_constraintStart_toStartOf="@id/quantity_container"
-        app:layout_constraintTop_toBottomOf="@id/urgent" />
-
-    <androidx.appcompat.widget.AppCompatCheckBox
-        android:id="@+id/bought"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:buttonTint="#ffffff"
-        android:paddingStart="4dp"
-        android:text="Bought"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider" />
-
-    <!-- Container for price input and label (تومان, dollar) -->
-    <FrameLayout
-        android:id="@+id/price_container"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@id/description_layout"
-        app:layout_constraintStart_toStartOf="@id/description_layout"
-        app:layout_constraintTop_toBottomOf="@id/bought"
-        tools:visibility="visible">
+        android:layout_height="match_parent"
+        tools:context=".ui.fragment.AddItemFragment">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/price_layout"
+            android:id="@+id/name_layout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Unit price"
-            app:errorEnabled="true">
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:hint="@string/name_hint"
+            app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/price"
+                android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_price"
+                android:drawableStart="@drawable/ic_cart"
                 android:drawablePadding="8dp"
-                android:inputType="number"
-                android:maxLength="13"
-                tools:text="Item price" />
+                android:inputType="text"
+                tools:text="Item name" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <FrameLayout
+            android:id="@+id/quantity_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@id/name_layout"
+            app:layout_constraintStart_toStartOf="@+id/name_layout"
+            app:layout_constraintTop_toBottomOf="@+id/name_layout">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/quantity_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/quantity_hint"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/quantity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_quantity"
+                    android:drawablePadding="8dp"
+                    android:inputType="numberDecimal"
+                    android:maxLength="8"
+                    android:selectAllOnFocus="true"
+                    android:text="@string/quantity_default_value"
+                    tools:text="Item quantity" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- wrapper for radio buttons to make the corners round -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/materialCardView"
+                android:layout_width="wrap_content"
+                android:layout_height="43.5dp"
+                android:layout_gravity="center|end"
+                android:layout_marginEnd="3.8dp"
+                android:layout_marginBottom="6.8dp"
+                android:elevation="0dp"
+                app:cardCornerRadius="2dp">
+
+                <RadioGroup
+                    android:id="@+id/radio_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:checkedButton="@id/unit"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/unit"
+                        style="@style/UnitToggleButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="unit" />
+
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/kilogram"
+                        style="@style/UnitToggleButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="kg" />
+
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/gram"
+                        style="@style/UnitToggleButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="g" />
+
+                </RadioGroup>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </FrameLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/description_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/description_hint"
+            app:layout_constraintEnd_toEndOf="@id/quantity_container"
+            app:layout_constraintStart_toStartOf="@id/quantity_container"
+            app:layout_constraintTop_toBottomOf="@id/quantity_container">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_description"
+                android:drawablePadding="8dp"
+                tools:text="Item description (optional)" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/urgent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center|end"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="6dp"
-            android:text="dollar" />
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:button="@drawable/avd_urgent_check"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="@string/urgent"
+            app:layout_constraintStart_toStartOf="@+id/description_layout"
+            app:layout_constraintTop_toBottomOf="@+id/description_layout" />
 
-    </FrameLayout>
+        <!-- a divider -->
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="20dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="@id/quantity_container"
+            app:layout_constraintStart_toStartOf="@id/quantity_container"
+            app:layout_constraintTop_toBottomOf="@id/urgent" />
 
-    <androidx.appcompat.widget.AppCompatSpinner
-        android:id="@+id/storesSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="28dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginEnd="8dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bought" />
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/bought"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:buttonTint="#ffffff"
+            android:paddingStart="4dp"
+            android:text="Bought"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Container for price input and label (تومان, dollar) -->
+        <FrameLayout
+            android:id="@+id/price_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/description_layout"
+            app:layout_constraintStart_toStartOf="@id/description_layout"
+            app:layout_constraintTop_toBottomOf="@id/bought"
+            tools:visibility="visible">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/price_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Unit price"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_price"
+                    android:drawablePadding="8dp"
+                    android:inputType="number"
+                    android:maxLength="13"
+                    tools:text="Item price" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="6dp"
+                android:text="dollar" />
+
+        </FrameLayout>
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/stores_list"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_marginStart="56dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bought" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
