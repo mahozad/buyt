@@ -190,7 +190,7 @@
                 android:id="@+id/price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_dollar"
+                android:drawableStart="@drawable/ic_price"
                 android:drawablePadding="8dp"
                 android:inputType="number"
                 android:maxLength="13"
