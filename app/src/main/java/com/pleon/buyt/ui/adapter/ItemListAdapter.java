@@ -92,7 +92,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
             holder.urgentImgVi.setVisibility(item.isUrgent() ? VISIBLE : INVISIBLE);
             holder.selectChBx.setChecked(selectedItems.contains(item));
             holder.descTxVi.setVisibility(item.isExpanded() ? VISIBLE : GONE);
-            holder.delCircularReveal.setAlpha(0f); // for the case of undo of deleted item
+            holder.delRevealView.setAlpha(0f); // for the case of undo of deleted item
 
             if (selectionModeEnabled) {
                 holder.selectChBx.setVisibility(VISIBLE);
@@ -177,7 +177,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
         @BindView(R.id.cardBackground) public MaterialCardView cardBg;
         @BindView(R.id.cardForeground) public MaterialCardView cardFg;
         @BindView(R.id.delete_icon) public ImageView delIcon;
-        @BindView(R.id.circular_reveal) public ImageView delCircularReveal;
+        @BindView(R.id.circular_reveal) public View delRevealView;
 
         public boolean delAnimating = false;
 

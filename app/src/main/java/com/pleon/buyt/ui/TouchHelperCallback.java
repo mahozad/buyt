@@ -7,7 +7,6 @@ import android.graphics.drawable.Animatable;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
-import android.widget.ImageView;
 
 import com.pleon.buyt.R;
 import com.pleon.buyt.ui.adapter.ItemListAdapter;
@@ -103,37 +102,37 @@ public class TouchHelperCallback extends ItemTouchHelper.Callback {
         if (abs(dX) == maxSwipeDistInPx && !itemHolder.delAnimating) {
             itemHolder.delIcon.setImageResource(R.drawable.avd_delete_open);
             ((Animatable) itemHolder.delIcon.getDrawable()).start();
-            showCircularReveal(itemHolder, itemHolder.delCircularReveal);
+            showCircularReveal(itemHolder, itemHolder.delRevealView);
         } else if (abs(dX) < maxSwipeDistInPx && itemHolder.delAnimating) {
             itemHolder.delIcon.setImageResource(R.drawable.avd_delete_close);
             ((Animatable) itemHolder.delIcon.getDrawable()).start();
-            hideCircularReveal(itemHolder, itemHolder.delCircularReveal);
+            hideCircularReveal(itemHolder, itemHolder.delRevealView);
         }
 
         getDefaultUIUtil().onDraw(c, recyclerView, view, dX, dY, actionState, isCurrentlyActive);
     }
 
-    private void showCircularReveal(ItemListAdapter.ItemHolder itemHolder, ImageView revealLayout) {
+    private void showCircularReveal(ItemListAdapter.ItemHolder itemHolder, View revealView) {
         itemHolder.delAnimating = true;
 
-        float finalRadius = max(revealLayout.getWidth(), revealLayout.getHeight()) / 1.6f;
-        int centerX = revealLayout.getWidth() / 2;
-        int centerY = revealLayout.getHeight() / 2;
+        float finalRadius = max(revealView.getWidth(), revealView.getHeight()) / 1.6f;
+        int centerX = revealView.getWidth() / 2;
+        int centerY = revealView.getHeight() / 2;
 
-        Animator anim = createCircularReveal(revealLayout, centerX, centerY, 0, finalRadius);
-        revealLayout.setAlpha(1.0f);
-        revealLayout.setVisibility(VISIBLE);
+        Animator anim = createCircularReveal(revealView, centerX, centerY, 0, finalRadius);
+        revealView.setAlpha(1.0f);
+        revealView.setVisibility(VISIBLE);
         anim.setDuration(160);
         anim.start();
     }
 
-    private void hideCircularReveal(ItemListAdapter.ItemHolder itemHolder, ImageView revealLayout) {
+    private void hideCircularReveal(ItemListAdapter.ItemHolder itemHolder, View revealView) {
         itemHolder.delAnimating = false;
 
         AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
         anim.setDuration(60);
-        revealLayout.startAnimation(anim);
-        revealLayout.setVisibility(INVISIBLE);
+        revealView.startAnimation(anim);
+        revealView.setVisibility(INVISIBLE);
     }
 
     // Set how much swipe is considered done. Default is 0.5f.

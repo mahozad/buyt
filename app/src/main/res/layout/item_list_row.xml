@@ -30,7 +30,7 @@
             android:layout_height="match_parent">
 
             <!-- to circular reveal-->
-            <androidx.appcompat.widget.AppCompatImageView
+            <View
                 android:id="@+id/circular_reveal"
                 android:layout_width="88dp"
                 android:layout_height="match_parent"
