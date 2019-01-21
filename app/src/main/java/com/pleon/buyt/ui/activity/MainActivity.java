@@ -236,12 +236,10 @@ public class MainActivity extends AppCompatActivity
         itemListFragment = (ItemListFragment) fragMgr.findFragmentById(R.id.container_fragment_items);
         // fragMgr saves the list of fragments when activity is destroyed and then retrieves them
         // so first we check if the fragment we want does not exist, then we create it
-        if (itemListFragment == null) {
-            itemListFragment = ItemListFragment.newInstance();
-            fragMgr.beginTransaction()
-                    .add(R.id.container_fragment_items, itemListFragment)
-                    .commit(); // TODO: commit vs commitNow?
-        }
+        itemListFragment = ItemListFragment.newInstance();
+        fragMgr.beginTransaction()
+                .replace(R.id.container_fragment_items, itemListFragment)
+                .commit(); // TODO: commit vs commitNow?
 
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         // observe() methods should be set only once (e.g. in activity onCreate() method) so if you
