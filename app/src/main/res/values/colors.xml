@@ -9,14 +9,10 @@
     <color name="card_background">#282828</color>
     <color name="unfocused">#6E6E6E</color>
 
-    <color name="chartStartColor">#1C7900</color> <!-- alias -->
-    <color name="chartMidColor">#259600</color>
-    <color name="chartEndColor">@color/colorPrimary</color>  <!-- alias -->
-
     <array name="chartGradient">
-        <item>@color/chartStartColor</item>
-        <item>@color/chartMidColor</item>
-        <item>@color/chartEndColor</item>
+        <item>#1C7a00</item>
+        <item>#259600</item>
+        <item>@color/colorPrimary</item>
     </array>
 
 </resources>
