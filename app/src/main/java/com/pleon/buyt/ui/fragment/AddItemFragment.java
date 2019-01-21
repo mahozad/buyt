@@ -132,7 +132,7 @@ public class AddItemFragment extends Fragment {
         for (RadioButton unitRdbtn : unitRdbtns) {
             StateListDrawable sld = (StateListDrawable) unitRdbtn.getBackground();
             DrawableContainerState dcs = (DrawableContainerState) sld.getConstantState();
-            // <color> element for checked state (<color> index 3 in unit_selector.xml)
+            // <color> element for checked state (<color> index 3 in unit_background_selector.xml)
             ColorDrawable checkedColor = (ColorDrawable) dcs.getChild(3);
 
             checkedColor.setColor(getResources().getColor(color));
