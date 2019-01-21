@@ -94,6 +94,9 @@ public class MainActivity extends AppCompatActivity
 
     // DONE: What if someone forgets to tick items of a shop and then later wants to tick them: He can skip finding location
 
+    // FIXME: Slide-up bottom bar if it was hidden (because of scroll) and some items were deleted and
+    // now cannot scroll to make it slide up again
+    // TODO: Redesign the logo in 24 by 24 grid in inkscape to make it crisp (like standard icons)
     // TODO: disable swipe-to-delete when the state is not in IDLE
     // TODO: Show the found store (icon or name) in bottomAppBar when location found (selecting mode)
     // TODO: Make icons animation durations consistent
