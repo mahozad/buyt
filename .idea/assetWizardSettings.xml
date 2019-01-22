@@ -64,8 +64,8 @@
                           <map>
                             <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_item_generic" />
-                            <entry key="sourceFile" value="C:\Users\Mahdi\Downloads\groceries (1).svg" />
+                            <entry key="outputName" value="ic_item_fast_food" />
+                            <entry key="sourceFile" value="C:\Users\Mahdi\Downloads\cheeseburger.svg" />
                           </map>
                         </option>
                       </PersistentState>

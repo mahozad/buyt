@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- custom layout for "Select store" action in bottomAppBar of "Add item" screen -->
+<!-- custom layout for "Select item category" action in bottomAppBar of "Add item" screen -->
 <androidx.appcompat.widget.AppCompatTextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/select_store"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clickable="true"
-    android:focusable="true"
-    android:drawableStart="@drawable/ic_store"
-    android:drawablePadding="8dp"
-    android:gravity="center_vertical"
     android:background="?attr/selectableItemBackgroundBorderless"
+    android:clickable="true"
+    android:drawableStart="@drawable/ic_item_generic"
+    android:drawablePadding="8dp"
+    android:focusable="true"
+    android:gravity="center_vertical"
     android:paddingStart="16dp"
+    android:paddingEnd="16dp"
     android:text="Select icon">
 
 </androidx.appcompat.widget.AppCompatTextView>
