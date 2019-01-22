@@ -31,7 +31,7 @@ import com.pleon.buyt.ui.dialog.LocationOffDialogFragment;
 import com.pleon.buyt.ui.dialog.RationaleDialogFragment;
 import com.pleon.buyt.ui.fragment.BottomDrawerFragment;
 import com.pleon.buyt.ui.fragment.ItemListFragment;
-import com.pleon.buyt.ui.fragment.SelectStoreDialogFragment;
+import com.pleon.buyt.ui.dialog.SelectStoreDialogFragment;
 import com.pleon.buyt.viewmodel.MainViewModel;
 
 import java.text.DecimalFormat;

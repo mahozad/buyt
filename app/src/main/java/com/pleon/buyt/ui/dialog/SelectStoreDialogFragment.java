@@ -1,4 +1,4 @@
-package com.pleon.buyt.ui.fragment;
+package com.pleon.buyt.ui.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
