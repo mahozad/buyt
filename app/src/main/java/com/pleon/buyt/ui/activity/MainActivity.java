@@ -37,8 +37,8 @@ import com.pleon.buyt.viewmodel.MainViewModel;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -189,6 +189,8 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.chart_container) CardView chartContainer;
     @BindView(R.id.chart) BarChartView chart;
 
+    private List<Store> foundStores;
+
     private Location location;
     // volatile because user clicking the fab and location may be found at the same time
     private volatile State state = State.IDLE;
@@ -218,7 +220,8 @@ public class MainActivity extends AppCompatActivity
         locationReceiver = new BroadcastReceiver() { // on location found
             public void onReceive(Context context, Intent intent) {
                 location = intent.getParcelableExtra("LOCATION");
-                shiftToSelectingState();
+                Coordinates originCoordinates = new Coordinates(location);
+                mainViewModel.findNearStores(originCoordinates, NEAR_STORES_DISTANCE);
             }
         };
 
@@ -256,7 +259,7 @@ public class MainActivity extends AppCompatActivity
         chart.setXAxis(false);
         chart.setYAxis(false);
         chart.setRoundCorners(3);
-        chart.setAxisLabelsSpacing(10);
+        chart.setAxisLabelsSpacing(11);
         chart.setFontSize(15);
         chart.setBarSpacing(26);
         // set the same as borderSpacing to remove wrong top spacing
@@ -324,7 +327,7 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.menu_bottom_home, menu);
         if (newbie) {
             // Make plus icon glow a little bit if the user is a newbie!
-            ((Animatable) menu.getItem(0).getIcon()).start();
+            ((Animatable) menu.getItem(1).getIcon()).start();
         }
         return true;
     }
@@ -356,7 +359,7 @@ public class MainActivity extends AppCompatActivity
                 } else { // if state == FINDING
                     findingStateSkipped = true;
                     stopService(new Intent(this, GpsService.class));
-                    shiftToSelectingState();
+                    mainViewModel.getAllStores();
                 }
                 break;
 
@@ -464,20 +467,25 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void onStoresFound(Collection<Store> foundStores) {
-        if (foundStores.size() == 0 && findingStateSkipped) {
-            shiftToIdleState();
-            showIndefiniteSnackbar(R.string.no_store, R.string.ok);
-        } else if (foundStores.size() == 0) {
-            Intent intent = new Intent(this, CreateStoreActivity.class);
-            intent.putExtra(EXTRA_LOCATION, location);
-            startActivity(intent);
-            mainViewModel.getLatestCreatedStore().observe(this, this::onStoreSelected);
+    private void onStoresFound(List<Store> foundStores) {
+        if (foundStores.size() == 0) {
+            if (findingStateSkipped) {
+                showIndefiniteSnackbar(R.string.no_store, R.string.ok);
+                shiftToIdleState();
+            } else {
+                mBottomAppBar.getMenu().getItem(0).setIcon(R.drawable.ic_store_new);
+                mBottomAppBar.getMenu().getItem(0).setVisible(true);
+                shiftToSelectingState();
+            }
         } else {
-            ArrayList<Store> stores = new ArrayList<>(foundStores); // dialog requires ArrayList
-            SelectStoreDialogFragment selectStoreDialog = SelectStoreDialogFragment.newInstance(stores);
-            selectStoreDialog.show(getSupportFragmentManager(), "SELECT_STORE_DIALOG");
-            // handle selected Store in this::onStoreSelected()
+            this.foundStores = foundStores;
+            shiftToSelectingState();
+            if (foundStores.size() == 1) {
+                // TODO: set menuitem(0) icon to the store category icon
+            } else {
+                mBottomAppBar.getMenu().getItem(0).setIcon(R.drawable.ic_store_multi);
+            }
+            mBottomAppBar.getMenu().getItem(0).setVisible(true);
         }
     }
 
@@ -506,9 +514,9 @@ public class MainActivity extends AppCompatActivity
 //        ((Animatable) mBottomAppBar.getMenu().getItem(0).getIcon()).start();
 //        mBottomAppBar.getMenu().getItem(0).setVisible(false);
 
-        mBottomAppBar.getMenu().getItem(1).setIcon(R.drawable.avd_reorder_skip);
-        mBottomAppBar.getMenu().getItem(1).setTitle(R.string.skip);
-        ((Animatable) mBottomAppBar.getMenu().getItem(1).getIcon()).start();
+        mBottomAppBar.getMenu().getItem(2).setIcon(R.drawable.avd_reorder_skip);
+        mBottomAppBar.getMenu().getItem(2).setTitle(R.string.skip);
+        ((Animatable) mBottomAppBar.getMenu().getItem(2).getIcon()).start();
 
         Animatable fabDrawable = (Animatable) mFab.getDrawable();
         fabDrawable.start();
@@ -524,7 +532,7 @@ public class MainActivity extends AppCompatActivity
         mBottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
         mFab.setImageResource(R.drawable.avd_find_done);
         ((Animatable) mFab.getDrawable()).start();
-        mBottomAppBar.getMenu().getItem(1).setVisible(false);
+        mBottomAppBar.getMenu().getItem(2).setVisible(false);
 
         state = State.SELECTING;
     }
@@ -542,14 +550,16 @@ public class MainActivity extends AppCompatActivity
 
         mBottomAppBar.setHideOnScroll(true);
 
-//        mBottomAppBar.getMenu().getItem(0).setVisible(true);
-//        mBottomAppBar.getMenu().getItem(0).setIcon(R.drawable.avd_add_show);
-//        ((Animatable) mBottomAppBar.getMenu().getItem(0).getIcon()).start();
+        mBottomAppBar.getMenu().getItem(0).setVisible(false);
 
-        mBottomAppBar.getMenu().getItem(1).setVisible(true);
-        mBottomAppBar.getMenu().getItem(1).setIcon(R.drawable.avd_skip_reorder);
-        mBottomAppBar.getMenu().getItem(1).setTitle(R.string.reorder_items);
-        ((Animatable) mBottomAppBar.getMenu().getItem(1).getIcon()).start();
+//        mBottomAppBar.getMenu().getItem(1).setVisible(true);
+//        mBottomAppBar.getMenu().getItem(1).setIcon(R.drawable.avd_add_show);
+//        ((Animatable) mBottomAppBar.getMenu().getItem(1).getIcon()).start();
+
+        mBottomAppBar.getMenu().getItem(2).setVisible(true);
+        mBottomAppBar.getMenu().getItem(2).setIcon(R.drawable.avd_skip_reorder);
+        mBottomAppBar.getMenu().getItem(2).setTitle(R.string.reorder_items);
+        ((Animatable) mBottomAppBar.getMenu().getItem(2).getIcon()).start();
 
         state = State.IDLE;
     }
@@ -573,25 +583,31 @@ public class MainActivity extends AppCompatActivity
     public void buySelectedItems() {
         if (itemListFragment.validateSelectedItemsPrice()) {
             selectedItems = itemListFragment.getSelectedItems();
-            if (findingStateSkipped) {
-                mainViewModel.getAllStores();
-            } else {
-                Coordinates originCoordinates = new Coordinates(location);
-                mainViewModel.findNearStores(originCoordinates, NEAR_STORES_DISTANCE);
+            if (foundStores == null || foundStores.size() == 0) {
+                Intent intent = new Intent(this, CreateStoreActivity.class);
+                intent.putExtra(EXTRA_LOCATION, location);
+                startActivity(intent);
+                mainViewModel.getLatestCreatedStore().observe(this, this::completeBuy);
+            } else if (foundStores.size() == 1) {
+                completeBuy(foundStores.get(0));
+            } else { // show store selection dialog
+                ArrayList<Store> stores = new ArrayList<>(foundStores); // dialog requires ArrayList
+                SelectStoreDialogFragment selectStoreDialog = SelectStoreDialogFragment.newInstance(stores);
+                selectStoreDialog.show(getSupportFragmentManager(), "SELECT_STORE_DIALOG");
+                // next this::completeBuy() is called
             }
-            // next this::onStoresFound() is called
         }
     }
 
     @Override
-    public void onStoreSelected(Store store) {
+    public void completeBuy(Store store) {
         mainViewModel.buy(selectedItems, store);
         shiftToIdleState();
     }
 
     @Override
     public void onEnableLocationDenied() {
-        mBottomAppBar.getMenu().getItem(0).setVisible(false);
+        mBottomAppBar.getMenu().getItem(1).setVisible(false);
         mBottomAppBar.setNavigationIcon(R.drawable.avd_nav_cancel);
         ((Animatable) mBottomAppBar.getNavigationIcon()).start();
         findingStateSkipped = true;

@@ -26,7 +26,7 @@ import static android.content.DialogInterface.BUTTON_POSITIVE;
 public class SelectStoreDialogFragment extends AppCompatDialogFragment implements StoreListAdapter.Callback {
 
     public interface Callback {
-        void onStoreSelected(Store store);
+        void completeBuy(Store store);
     }
 
     private AlertDialog dialog;
@@ -73,7 +73,7 @@ public class SelectStoreDialogFragment extends AppCompatDialogFragment implement
                 .setView(customView).setTitle("TITLE")
                 .setPositiveButton("OK", (d, which) -> {
                     Store selectedStore = adapter.getSelectedStores();
-                    callback.onStoreSelected(selectedStore);
+                    callback.completeBuy(selectedStore);
                 })
                 .setNegativeButton("CANCEL", (d, which) -> {
                     // cancel
