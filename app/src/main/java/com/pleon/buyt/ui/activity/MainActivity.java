@@ -278,7 +278,7 @@ public class MainActivity extends AppCompatActivity
                     chart.setXAxis(false);
                     chart.setYAxis(false);
                     chart.setRoundCorners(3);
-                    chart.setAxisLabelsSpacing(12);
+                    chart.setAxisLabelsSpacing(10);
                     chart.setFontSize(15);
                     chart.setBarSpacing(26);
                     // set the same as borderSpacing to remove wrong top spacing
