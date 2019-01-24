@@ -25,7 +25,7 @@ public class AddItemActivity extends AppCompatActivity
         implements AddItemFragment.Callback, SelectDialogFragment.Callback {
 
     private AddItemFragment addItemFragment;
-    private TextView selectStoreTxvi;
+    private TextView selectCategoryTxvi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +58,7 @@ public class AddItemActivity extends AppCompatActivity
         Menu mainMenu = actionMenuView.getMenu();
         getMenuInflater().inflate(R.menu.menu_add_item, mainMenu);
 
-        selectStoreTxvi = mainMenu.findItem(R.id.action_select_store).getActionView().findViewById(R.id.select_store);
+        selectCategoryTxvi = mainMenu.findItem(R.id.action_select_store).getActionView().findViewById(R.id.select_store);
 
         // Setting up "Choose store" action because it has custom layout
         MenuItem item = mainMenu.findItem(R.id.action_select_store);
@@ -91,7 +91,7 @@ public class AddItemActivity extends AppCompatActivity
 
     @Override
     public void onBoughtToggled(boolean checked) {
-        selectStoreTxvi.setText(checked ? "Select store" : "Select icon");
+        selectCategoryTxvi.setText(checked ? "Select store" : "Select icon");
     }
 
     @Override
@@ -105,8 +105,8 @@ public class AddItemActivity extends AppCompatActivity
 
     @Override
     public void onSelected(int index) {
-        selectStoreTxvi.setCompoundDrawablesRelativeWithIntrinsicBounds(Item.Category.values()[index].getImage(), 0, 0, 0);
-        selectStoreTxvi.setText(Item.Category.values()[index].name());
+        selectCategoryTxvi.setCompoundDrawablesRelativeWithIntrinsicBounds(Item.Category.values()[index].getImage(), 0, 0, 0);
+        selectCategoryTxvi.setText(Item.Category.values()[index].name());
         addItemFragment.setItemCategory(Item.Category.values()[index]);
     }
 }
