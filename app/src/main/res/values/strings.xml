@@ -16,7 +16,7 @@
     <string name="undo">UNDO</string>
     <string name="cart_empty_message">No item to buy</string>
     <string name="no_item_selected_message">No item selected</string>
-    <string name="no_store">No store found! Location needed</string>
+    <string name="no_store">No saved store! Location needed</string>
     <string name="ok">OK</string>
     <string name="skip">Skip</string>
     <string name="reorder_items">Reorder items</string>
