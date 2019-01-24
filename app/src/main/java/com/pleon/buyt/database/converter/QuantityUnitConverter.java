@@ -1,4 +1,4 @@
-package com.pleon.buyt.database;
+package com.pleon.buyt.database.converter;
 
 import com.pleon.buyt.model.Quantity.Unit;
 
