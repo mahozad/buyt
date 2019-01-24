@@ -81,7 +81,7 @@ public class AddItemActivity extends AppCompatActivity
                     selectionList.add(selection);
                 }
                 SelectStoreDialogFragment selectStoreDialog = SelectStoreDialogFragment.newInstance(selectionList);
-                selectStoreDialog.show(getSupportFragmentManager(), "SELECT_STORE_DIALOG");
+                selectStoreDialog.show(getSupportFragmentManager(), "SELECT_ITEM_DIALOG");
                 break;
             default:
                 return super.onOptionsItemSelected(item);
