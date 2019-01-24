@@ -86,6 +86,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
     public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
         if (items != null) {
             Item item = items.get(position);
+            holder.categoryImgVi.setImageResource(item.getCategory().getImage());
             holder.nameTxVi.setText(item.getName());
             holder.descTxVi.setText(item.getDescription());
             holder.quantityTxVi.setText(item.getQuantity().toString());
@@ -164,6 +165,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
     // Adapter (and RecyclerView) work with ViewHolders instead of direct Views.
     public class ItemHolder extends ViewHolder {
 
+        @BindView(R.id.categoryIcon) ImageView categoryImgVi;
         @BindView(R.id.item_name) TextView nameTxVi;
         @BindView(R.id.description) TextView descTxVi;
         @BindView(R.id.item_quantity) TextView quantityTxVi;

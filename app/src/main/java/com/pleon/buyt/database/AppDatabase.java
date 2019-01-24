@@ -19,7 +19,7 @@ import androidx.room.TypeConverters;
 
 // Usually, you only need one instance of the Room database for the whole app
 @Database(entities = {Item.class, Store.class, Purchase.class}, version = 1)
-@TypeConverters({DateConverter.class, QuantityUnitConverter.class})
+@TypeConverters({DateConverter.class, QuantityUnitConverter.class, CategoryConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DATABASE_NAME = "buyt-database.db";

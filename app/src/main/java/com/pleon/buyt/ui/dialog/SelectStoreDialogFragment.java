@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.pleon.buyt.R;
-import com.pleon.buyt.model.Store;
 import com.pleon.buyt.ui.adapter.StoreListAdapter;
 
 import java.util.ArrayList;
@@ -26,16 +25,16 @@ import static android.content.DialogInterface.BUTTON_POSITIVE;
 public class SelectStoreDialogFragment extends AppCompatDialogFragment implements StoreListAdapter.Callback {
 
     public interface Callback {
-        void completeBuy(Store store);
+        void onSelected(int index);
     }
 
     private AlertDialog dialog;
     private Callback callback;
 
-    public static SelectStoreDialogFragment newInstance(ArrayList<Store> nearStores) {
+    public static SelectStoreDialogFragment newInstance(ArrayList<SelectionDialogRow> list) {
         SelectStoreDialogFragment fragment = new SelectStoreDialogFragment();
         Bundle args = new Bundle();
-        args.putSerializable("NEAR_STORES", nearStores);
+        args.putSerializable("LIST", list);
         fragment.setArguments(args);
         return fragment;
     }
@@ -62,7 +61,7 @@ public class SelectStoreDialogFragment extends AppCompatDialogFragment implement
         View customView = inflater.inflate(R.layout.fragment_store_list, null);
 
         StoreListAdapter adapter = new StoreListAdapter(getActivity().getApplicationContext(), this);
-        adapter.setStores((List<Store>) getArguments().getSerializable("NEAR_STORES"));
+        adapter.setList((List<SelectionDialogRow>) getArguments().getSerializable("LIST"));
 
         RecyclerView storeRecyclerView = customView.findViewById(R.id.storeList);
         storeRecyclerView.setAdapter(adapter);
@@ -72,8 +71,8 @@ public class SelectStoreDialogFragment extends AppCompatDialogFragment implement
         dialog = new AlertDialog.Builder(getActivity())
                 .setView(customView).setTitle("TITLE")
                 .setPositiveButton("OK", (d, which) -> {
-                    Store selectedStore = adapter.getSelectedStores();
-                    callback.completeBuy(selectedStore);
+                    int selectedIndex = adapter.getSelectedIndex();
+                    callback.onSelected(selectedIndex);
                 })
                 .setNegativeButton("CANCEL", (d, which) -> {
                     // cancel
@@ -85,7 +84,6 @@ public class SelectStoreDialogFragment extends AppCompatDialogFragment implement
 
         return dialog;
     }
-
 
     @Override
     public void onStoreClick() {

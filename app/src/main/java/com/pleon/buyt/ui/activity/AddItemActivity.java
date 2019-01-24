@@ -9,15 +9,20 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pleon.buyt.R;
 import com.pleon.buyt.model.Item;
+import com.pleon.buyt.ui.dialog.SelectStoreDialogFragment;
+import com.pleon.buyt.ui.dialog.SelectionDialogRow;
 import com.pleon.buyt.ui.fragment.AddItemFragment;
 import com.pleon.buyt.viewmodel.MainViewModel;
+
+import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
-public class AddItemActivity extends AppCompatActivity implements AddItemFragment.Callback {
+public class AddItemActivity extends AppCompatActivity
+        implements AddItemFragment.Callback, SelectStoreDialogFragment.Callback {
 
     private AddItemFragment addItemFragment;
     private TextView selectStoreTxvi;
@@ -69,7 +74,14 @@ public class AddItemActivity extends AppCompatActivity implements AddItemFragmen
                 finish();
                 break;
             case R.id.action_select_store:
-                // TODO: Implement select icon dialog
+                // FIXME: initialize this only once
+                ArrayList<SelectionDialogRow> selectionList = new ArrayList<>(); // dialog requires ArrayList
+                for (Item.Category category : Item.Category.values()) {
+                    SelectionDialogRow selection = new SelectionDialogRow(category.name(), category.getImage());
+                    selectionList.add(selection);
+                }
+                SelectStoreDialogFragment selectStoreDialog = SelectStoreDialogFragment.newInstance(selectionList);
+                selectStoreDialog.show(getSupportFragmentManager(), "SELECT_STORE_DIALOG");
                 break;
             default:
                 return super.onOptionsItemSelected(item);
@@ -89,5 +101,12 @@ public class AddItemActivity extends AppCompatActivity implements AddItemFragmen
         // Calling finish() is safe here. We are sure that the item will be added to database,
         // because it is executed in a separate thread.
         finish();
+    }
+
+    @Override
+    public void onSelected(int index) {
+        selectStoreTxvi.setCompoundDrawablesRelativeWithIntrinsicBounds(Item.Category.values()[index].getImage(), 0, 0, 0);
+        selectStoreTxvi.setText(Item.Category.values()[index].name());
+        addItemFragment.setItemCategory(Item.Category.values()[index]);
     }
 }

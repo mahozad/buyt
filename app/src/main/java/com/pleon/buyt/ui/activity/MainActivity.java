@@ -29,6 +29,7 @@ import com.pleon.buyt.model.WeekdayCost;
 import com.pleon.buyt.ui.dialog.Callback;
 import com.pleon.buyt.ui.dialog.LocationOffDialogFragment;
 import com.pleon.buyt.ui.dialog.RationaleDialogFragment;
+import com.pleon.buyt.ui.dialog.SelectionDialogRow;
 import com.pleon.buyt.ui.fragment.BottomDrawerFragment;
 import com.pleon.buyt.ui.fragment.ItemListFragment;
 import com.pleon.buyt.ui.dialog.SelectStoreDialogFragment;
@@ -482,6 +483,7 @@ public class MainActivity extends AppCompatActivity
             shiftToSelectingState();
             if (foundStores.size() == 1) {
                 // TODO: set menuitem(0) icon to the store category icon
+                // mBottomAppBar.getMenu().getItem(0).setIcon(foundStores.get(0).getIcon());
             } else {
                 mBottomAppBar.getMenu().getItem(0).setIcon(R.drawable.ic_store_multi);
             }
@@ -596,8 +598,12 @@ public class MainActivity extends AppCompatActivity
             } else if (foundStores.size() == 1) {
                 completeBuy(foundStores.get(0));
             } else { // show store selection dialog
-                ArrayList<Store> stores = new ArrayList<>(foundStores); // dialog requires ArrayList
-                SelectStoreDialogFragment selectStoreDialog = SelectStoreDialogFragment.newInstance(stores);
+                ArrayList<SelectionDialogRow> selectionList = new ArrayList<>(); // dialog requires ArrayList
+                for (Store store : foundStores) {
+                    SelectionDialogRow selection = new SelectionDialogRow(store.getName(),/*store.getIcon()*/ R.drawable.ic_store);
+                    selectionList.add(selection);
+                }
+                SelectStoreDialogFragment selectStoreDialog = SelectStoreDialogFragment.newInstance(selectionList);
                 selectStoreDialog.show(getSupportFragmentManager(), "SELECT_STORE_DIALOG");
                 // next this::completeBuy() is called
             }
@@ -605,6 +611,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void onSelected(int index) {
+        completeBuy(foundStores.get(index));
+    }
+
     public void completeBuy(Store store) {
         mainViewModel.buy(selectedItems, store);
         shiftToIdleState();

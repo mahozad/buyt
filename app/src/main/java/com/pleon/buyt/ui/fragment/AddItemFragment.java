@@ -73,6 +73,8 @@ public class AddItemFragment extends Fragment
     @BindView(R.id.date_layout) TextInputLayout dateTxinlt;
     @BindView(R.id.date) EditText dateEdtx;
 
+    private Item.Category itemCategory = Item.Category.GROCERY;
+
     private Unbinder unbinder;
 
     private long selectedStoreId;
@@ -254,13 +256,17 @@ public class AddItemFragment extends Fragment
         unbinder.unbind();
     }
 
+    public void setItemCategory(Item.Category category) {
+        this.itemCategory = category;
+    }
+
     public void onDonePressed() {
         boolean validated = validateFields();
 
         if (validated) {
             String name = nameEdtx.getText().toString();
             Quantity quantity = getQuantity();
-            Item item = new Item(name, quantity, urgentChbx.isChecked(), boughtChbx.isChecked());
+            Item item = new Item(name, quantity, urgentChbx.isChecked(), boughtChbx.isChecked(), itemCategory);
 
             if (!isEmpty(descriptionEdtx)) {
                 item.setDescription(descriptionEdtx.getText().toString());

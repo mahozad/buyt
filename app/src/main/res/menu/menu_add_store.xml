@@ -10,8 +10,8 @@
     <!-- app:actionLayout sets a custom layout for this item (to show icon and text together) -->
     <item
         android:id="@+id/action_select_category"
-        android:title="Select category"
-        app:actionLayout="@layout/action_select_category_layout"
+        android:title="Select Icon"
+        app:actionLayout="@layout/action_select_store_icon_layout"
         app:showAsAction="always" />
 
 </menu>

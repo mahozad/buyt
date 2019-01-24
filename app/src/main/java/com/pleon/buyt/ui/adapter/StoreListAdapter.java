@@ -4,12 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.pleon.buyt.R;
-import com.pleon.buyt.model.Store;
 import com.pleon.buyt.ui.adapter.StoreListAdapter.StoreHolder;
+import com.pleon.buyt.ui.dialog.SelectionDialogRow;
 
 import java.util.List;
 
@@ -18,10 +19,10 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 public class StoreListAdapter extends Adapter<StoreHolder> {
 
-    private List<Store> stores;
+    private List<SelectionDialogRow> list;
     private Context mContext;
     private Callback callback;
-    private int selectedStore = -1;
+    private int selectedIndex = -1;
     private boolean callbackNotified = false;
 
     public StoreListAdapter(Context context, Callback callback) {
@@ -38,10 +39,11 @@ public class StoreListAdapter extends Adapter<StoreHolder> {
 
     @Override
     public void onBindViewHolder(final StoreHolder holder, int position) {
-        if (stores != null) {
-            Store store = stores.get(position);
-            holder.nameTxvi.setText(store.getName());
-            holder.radioButton.setChecked(position == selectedStore);
+        if (list != null) {
+            SelectionDialogRow selection = list.get(position);
+            holder.nameTxvi.setText(selection.getName());
+            holder.image.setImageResource(selection.getImage());
+            holder.radioButton.setChecked(position == selectedIndex);
 
             // TODO: which callback method is the best for setting these listeners? (e.g. onCreate or...?)
             View.OnClickListener clickListener = v -> {
@@ -54,9 +56,9 @@ public class StoreListAdapter extends Adapter<StoreHolder> {
                 }
                 callbackNotified = true;
 
-                notifyItemChanged(selectedStore);
-                selectedStore = position;
-                notifyItemChanged(selectedStore);
+                notifyItemChanged(selectedIndex);
+                selectedIndex = position;
+                notifyItemChanged(selectedIndex);
             };
 
             holder.radioButton.setOnClickListener(clickListener);
@@ -70,18 +72,18 @@ public class StoreListAdapter extends Adapter<StoreHolder> {
 
     @Override
     public int getItemCount() {
-        if (stores == null) {
+        if (list == null) {
             return 0;
         }
-        return stores.size();
+        return list.size();
     }
 
-    public Store getSelectedStores() {
-        return stores.get(selectedStore);
+    public int getSelectedIndex() {
+        return selectedIndex;
     }
 
-    public void setStores(List<Store> stores) {
-        this.stores = stores;
+    public void setList(List<SelectionDialogRow> list) {
+        this.list = list;
         notifyDataSetChanged();
     }
 
@@ -90,6 +92,7 @@ public class StoreListAdapter extends Adapter<StoreHolder> {
 
         final View view; // the view (row layout) for the item
         final TextView nameTxvi;
+        final ImageView image;
         final RadioButton radioButton;
 
         StoreHolder(View view) {
@@ -97,11 +100,11 @@ public class StoreListAdapter extends Adapter<StoreHolder> {
             this.view = view;
             this.nameTxvi = view.findViewById(R.id.storeName);
             this.radioButton = view.findViewById(R.id.storeRadioButton);
+            this.image = view.findViewById(R.id.storeIcon);
         }
     }
 
     public interface Callback {
         void onStoreClick();
     }
-
 }
