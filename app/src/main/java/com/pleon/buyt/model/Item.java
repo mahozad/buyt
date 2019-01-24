@@ -1,5 +1,7 @@
 package com.pleon.buyt.model;
 
+import com.pleon.buyt.R;
+
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -8,6 +10,34 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class Item {
+
+    // TODO: store the enum as a separate table in the database. see [https://softwareengineering.stackexchange.com/a/305153/311271]
+    public enum Category {
+
+        GROCERY(R.drawable.ic_item_generic),
+        BREAD(R.drawable.ic_item_bread),
+        DAIRY(R.drawable.ic_item_dairy),
+        FRUIT(R.drawable.ic_item_fruit),
+        VEGETABLE(R.drawable.ic_item_vegetable),
+        MEAT(R.drawable.ic_item_meat),
+        CHICKEN(R.drawable.ic_item_chicken),
+        FISH(R.drawable.ic_item_fishery),
+        FAST_FOOD(R.drawable.ic_item_fast_food),
+        ICE_CREAM(R.drawable.ic_item_icecream),
+        PASTRY(R.drawable.ic_item_pastry),
+        TOOLS(R.drawable.ic_item_tools),
+        OTHER(R.drawable.ic_item_other);
+
+        private final int image;
+
+        Category(int image) {
+            this.image = image;
+        }
+
+        public int getImage() {
+            return image;
+        }
+    }
 
     @PrimaryKey(autoGenerate = true)
     private long id; // TODO: change type of id here to int?
@@ -21,6 +51,7 @@ public class Item {
     private String description;
     private boolean urgent;
     private boolean bought;
+    private Category category;
     private long totalPrice;
 
     // for display purposes
@@ -30,11 +61,12 @@ public class Item {
     // To fix the bug that happens when two items are deleted in row (the first appears again)
     private boolean flaggedForDeletion = false;
 
-    public Item(String name, Quantity quantity, boolean urgent, boolean bought) {
+    public Item(String name, Quantity quantity, boolean urgent, boolean bought, Category category) {
         this.name = name;
         this.quantity = quantity;
         this.urgent = urgent;
         this.bought = bought;
+        this.category = category;
     }
 
     public long getId() {
@@ -91,6 +123,14 @@ public class Item {
 
     public void setQuantity(Quantity quantity) {
         this.quantity = quantity;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public long getTotalPrice() {
