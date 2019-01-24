@@ -64,8 +64,8 @@
                           <map>
                             <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_item_other" />
-                            <entry key="sourceFile" value="C:\Users\Mahdi\Desktop\icons\items\other.svg" />
+                            <entry key="outputName" value="ic_store_pastry" />
+                            <entry key="sourceFile" value="D:\Project\Design\02-Icons\stores\pastry.svg" />
                           </map>
                         </option>
                       </PersistentState>
