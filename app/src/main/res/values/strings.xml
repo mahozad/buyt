@@ -23,7 +23,7 @@
 
     <string name="location_permission_rationale">It seems you have revoked location permission.
         If granted, you do not have to manually specify the store for each purchase.
-        The permission could be toggled on in the <i>Permissions</i> section of the app settings.
+        The permission could be toggled on in <i>\'Permissions\'</i> section of the app settings.
     </string>
 
     <string name="location_turn_on_rationale">Location is off. Toggle it on
