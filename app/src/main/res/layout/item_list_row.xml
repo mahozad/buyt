@@ -72,7 +72,7 @@
             android:padding="14dp">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/storeIcon"
+                android:id="@+id/categoryIcon"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:padding="8dp"
@@ -88,9 +88,9 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="8dp"
                 android:textSize="18sp"
-                app:layout_constraintEnd_toStartOf="@+id/urgentIcon"
-                app:layout_constraintStart_toEndOf="@+id/storeIcon"
-                app:layout_constraintTop_toTopOf="@+id/storeIcon"
+                app:layout_constraintEnd_toStartOf="@id/urgentIcon"
+                app:layout_constraintStart_toEndOf="@id/categoryIcon"
+                app:layout_constraintTop_toTopOf="@id/categoryIcon"
                 tools:text="Item name" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -99,10 +99,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="@id/storeIcon"
-                app:layout_constraintEnd_toEndOf="@+id/item_name"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/item_name"
+                app:layout_constraintBottom_toBottomOf="@id/categoryIcon"
+                app:layout_constraintEnd_toEndOf="@id/item_name"
+                app:layout_constraintStart_toStartOf="@id/item_name"
                 tools:text="Item volume" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -110,9 +109,9 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginEnd="6dp"
-                app:layout_constraintBottom_toBottomOf="@+id/item_quantity"
-                app:layout_constraintEnd_toStartOf="@+id/expandCheckBoxContainer"
-                app:layout_constraintTop_toTopOf="@+id/item_name"
+                app:layout_constraintBottom_toBottomOf="@id/item_quantity"
+                app:layout_constraintEnd_toStartOf="@id/expandCheckBoxContainer"
+                app:layout_constraintTop_toTopOf="@id/item_name"
                 app:srcCompat="@drawable/ic_urgent" />
 
             <FrameLayout
@@ -120,7 +119,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/urgentIcon">
+                app:layout_constraintTop_toTopOf="@id/urgentIcon">
 
                 <!-- android:background="?attr/selectableItemBackgroundBorderless" is to add ripple effect -->
                 <androidx.appcompat.widget.AppCompatImageButton
@@ -153,9 +152,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="@+id/expandCheckBoxContainer"
-                app:layout_constraintStart_toStartOf="@+id/storeIcon"
-                app:layout_constraintTop_toBottomOf="@+id/item_quantity"
+                app:layout_constraintEnd_toEndOf="@id/expandCheckBoxContainer"
+                app:layout_constraintStart_toStartOf="@id/categoryIcon"
+                app:layout_constraintTop_toBottomOf="@id/item_quantity"
                 tools:visibility="visible">
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -195,9 +194,9 @@
                 android:layout_marginTop="8dp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/expandCheckBoxContainer"
-                app:layout_constraintStart_toStartOf="@+id/storeIcon"
-                app:layout_constraintTop_toBottomOf="@+id/price_container"
+                app:layout_constraintEnd_toEndOf="@id/expandCheckBoxContainer"
+                app:layout_constraintStart_toStartOf="@id/categoryIcon"
+                app:layout_constraintTop_toBottomOf="@id/price_container"
                 tools:text="Description"
                 tools:visibility="visible" />
 
