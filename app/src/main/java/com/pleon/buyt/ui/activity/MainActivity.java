@@ -32,7 +32,7 @@ import com.pleon.buyt.ui.dialog.RationaleDialogFragment;
 import com.pleon.buyt.ui.dialog.SelectionDialogRow;
 import com.pleon.buyt.ui.fragment.BottomDrawerFragment;
 import com.pleon.buyt.ui.fragment.ItemListFragment;
-import com.pleon.buyt.ui.dialog.SelectStoreDialogFragment;
+import com.pleon.buyt.ui.dialog.SelectDialogFragment;
 import com.pleon.buyt.viewmodel.MainViewModel;
 
 import java.text.DecimalFormat;
@@ -68,7 +68,7 @@ import static java.lang.Math.cos;
 import static java.util.Calendar.DATE;
 
 public class MainActivity extends AppCompatActivity
-        implements SelectStoreDialogFragment.Callback, Callback {
+        implements SelectDialogFragment.Callback, Callback {
 
     // the app can be described as both a t0do app and an expense manager and also a shopping list app
 
@@ -603,7 +603,7 @@ public class MainActivity extends AppCompatActivity
                     SelectionDialogRow selection = new SelectionDialogRow(store.getName(),/*store.getIcon()*/ R.drawable.ic_store);
                     selectionList.add(selection);
                 }
-                SelectStoreDialogFragment selectStoreDialog = SelectStoreDialogFragment.newInstance(selectionList);
+                SelectDialogFragment selectStoreDialog = SelectDialogFragment.newInstance(selectionList);
                 selectStoreDialog.show(getSupportFragmentManager(), "SELECT_STORE_DIALOG");
                 // next this::completeBuy() is called
             }

@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 import static android.content.DialogInterface.BUTTON_POSITIVE;
 
 // DialogFragment is just another Fragment
-public class SelectStoreDialogFragment extends AppCompatDialogFragment implements StoreListAdapter.Callback {
+public class SelectDialogFragment extends AppCompatDialogFragment implements StoreListAdapter.Callback {
 
     public interface Callback {
         void onSelected(int index);
@@ -31,8 +31,8 @@ public class SelectStoreDialogFragment extends AppCompatDialogFragment implement
     private AlertDialog dialog;
     private Callback callback;
 
-    public static SelectStoreDialogFragment newInstance(ArrayList<SelectionDialogRow> list) {
-        SelectStoreDialogFragment fragment = new SelectStoreDialogFragment();
+    public static SelectDialogFragment newInstance(ArrayList<SelectionDialogRow> list) {
+        SelectDialogFragment fragment = new SelectDialogFragment();
         Bundle args = new Bundle();
         args.putSerializable("LIST", list);
         fragment.setArguments(args);

@@ -9,7 +9,7 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pleon.buyt.R;
 import com.pleon.buyt.model.Item;
-import com.pleon.buyt.ui.dialog.SelectStoreDialogFragment;
+import com.pleon.buyt.ui.dialog.SelectDialogFragment;
 import com.pleon.buyt.ui.dialog.SelectionDialogRow;
 import com.pleon.buyt.ui.fragment.AddItemFragment;
 import com.pleon.buyt.viewmodel.MainViewModel;
@@ -22,7 +22,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 public class AddItemActivity extends AppCompatActivity
-        implements AddItemFragment.Callback, SelectStoreDialogFragment.Callback {
+        implements AddItemFragment.Callback, SelectDialogFragment.Callback {
 
     private AddItemFragment addItemFragment;
     private TextView selectStoreTxvi;
@@ -80,7 +80,7 @@ public class AddItemActivity extends AppCompatActivity
                     SelectionDialogRow selection = new SelectionDialogRow(category.name(), category.getImage());
                     selectionList.add(selection);
                 }
-                SelectStoreDialogFragment selectStoreDialog = SelectStoreDialogFragment.newInstance(selectionList);
+                SelectDialogFragment selectStoreDialog = SelectDialogFragment.newInstance(selectionList);
                 selectStoreDialog.show(getSupportFragmentManager(), "SELECT_ITEM_DIALOG");
                 break;
             default:
