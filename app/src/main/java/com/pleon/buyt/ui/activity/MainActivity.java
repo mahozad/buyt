@@ -538,11 +538,16 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void shiftToIdleState() {
-        findingStateSkipped = false;
+        findingStateSkipped = false; // reset the flag
         itemListFragment.toggleItemsCheckbox(false);
 
         mBottomAppBar.setFabAlignmentMode(FAB_ALIGNMENT_MODE_CENTER);
-        mFab.setImageResource(R.drawable.avd_buyt_reverse);
+
+        if (state == State.FINDING) {
+            mFab.setImageResource(R.drawable.avd_buyt_reverse);
+        } else {
+            mFab.setImageResource(R.drawable.avd_done_buyt);
+        }
         ((Animatable) mFab.getDrawable()).start();
 
         mBottomAppBar.setNavigationIcon(R.drawable.avd_cancel_nav);
@@ -561,7 +566,7 @@ public class MainActivity extends AppCompatActivity
         mBottomAppBar.getMenu().getItem(2).setTitle(R.string.reorder_items);
         ((Animatable) mBottomAppBar.getMenu().getItem(2).getIcon()).start();
 
-        state = State.IDLE;
+        state = State.IDLE; // this should be the last statement (because of the if above)
     }
 
     /**
