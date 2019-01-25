@@ -39,7 +39,7 @@
             <!-- container for action icons for aligning them on the left side. To align on the left
                  set android:gravity="start" in the parent -->
             <androidx.appcompat.widget.ActionMenuView
-                android:id="@+id/action_menu_view"
+                android:id="@+id/menu_view"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
 

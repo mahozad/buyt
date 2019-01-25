@@ -38,7 +38,7 @@ public class CreateStoreActivity extends AppCompatActivity
 
         setSupportActionBar(findViewById(R.id.bottom_bar));
 
-        ActionMenuView actionMenuView = findViewById(R.id.action_menu_view);
+        ActionMenuView actionMenuView = findViewById(R.id.menu_view);
         // delegate to activity method
         actionMenuView.setOnMenuItemClickListener(this::onOptionsItemSelected);
 
@@ -58,14 +58,14 @@ public class CreateStoreActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        ActionMenuView actionMenuView = findViewById(R.id.action_menu_view);
+        ActionMenuView actionMenuView = findViewById(R.id.menu_view);
         Menu mainMenu = actionMenuView.getMenu();
         getMenuInflater().inflate(R.menu.menu_add_store, mainMenu);
 
-        selectCategoryTxvi = mainMenu.findItem(R.id.action_select_category).getActionView().findViewById(R.id.select_category);
+        selectCategoryTxvi = mainMenu.findItem(R.id.action_store_category).getActionView().findViewById(R.id.select_category);
 
         // Setting up "Select category" action because it has custom layout
-        MenuItem item = mainMenu.findItem(R.id.action_select_category);
+        MenuItem item = mainMenu.findItem(R.id.action_store_category);
         item.getActionView().setOnClickListener(v -> onOptionsItemSelected(item));
 
         return true;
@@ -77,7 +77,7 @@ public class CreateStoreActivity extends AppCompatActivity
             case R.id.action_cancel:
                 finish();
                 break;
-            case R.id.action_select_category:
+            case R.id.action_store_category:
                 // FIXME: initialize this only once
                 ArrayList<SelectionDialogRow> selectionList = new ArrayList<>(); // dialog requires ArrayList
                 for (Store.Category category : Store.Category.values()) {
