@@ -37,5 +37,4 @@
         android:icon="@drawable/avd_reorder_skip"
         android:title="@string/reorder_items"
         app:showAsAction="always" />
-
 </menu>

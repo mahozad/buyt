@@ -6,6 +6,7 @@
         android:id="@+id/action_cancel"
         android:icon="@drawable/ic_cancel"
         android:title="Cancel"
+        android:alphabeticShortcut="cancel"
         app:showAsAction="always" />
 
     <!-- app:actionLayout sets a custom layout for this item (to show icon and text together) -->
