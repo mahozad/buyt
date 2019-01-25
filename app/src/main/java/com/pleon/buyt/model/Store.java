@@ -13,10 +13,18 @@ public class Store {
     // TODO: store the enum as a separate table in the database. see [https://softwareengineering.stackexchange.com/a/305153/311271]
     public enum Category {
 
-        GROCERY(R.drawable.ic_item_generic),
-        BAKERY(R.drawable.ic_item_bread),
-        BUTCHERY(R.drawable.ic_item_meat),
-        MEAT(R.drawable.ic_item_meat);
+        GENERIC(R.drawable.ic_store_generic),
+        BAKERY(R.drawable.ic_store_bakery),
+        BUTCHERY(R.drawable.ic_store_butchery),
+        CHICKENERY(R.drawable.ic_store_chickenery),
+        DAIRY(R.drawable.ic_store_dairy),
+        FAST_FOOD(R.drawable.ic_store_fast_food),
+        FISHERY(R.drawable.ic_store_fishery),
+        FRUITERY(R.drawable.ic_store_fruitery),
+        GROCERY(R.drawable.ic_store_grocery),
+        HARDWARE(R.drawable.ic_store_hardwary),
+        ICE_CREAMY(R.drawable.ic_store_ice_creamy),
+        PASTRY(R.drawable.ic_store_pastry);
 
         private final int image;
 
@@ -36,9 +44,9 @@ public class Store {
     private Coordinates location;
 
     private String name;
-    private String category;
+    private Category category;
 
-    public Store(Coordinates location, String name, String category) {
+    public Store(Coordinates location, String name, Category category) {
         this.location = location;
         this.name = name;
         this.category = category;
@@ -68,11 +76,11 @@ public class Store {
         this.name = name;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 }

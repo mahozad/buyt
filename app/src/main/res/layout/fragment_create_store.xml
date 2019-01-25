@@ -7,7 +7,7 @@
     tools:context=".ui.fragment.CreateStoreFragment">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/storeNameLayout"
+        android:id="@+id/name_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/storeName"
+            android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Store name" />
@@ -32,23 +32,6 @@
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/storeNameLayout">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/storeCategory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Category" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/addStoreButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp"
-        android:text="@string/add"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/name_layout"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity
 
     // DONE: What if someone forgets to tick items of a shop and then later wants to tick them: He can skip finding location
 
+    // FIXME: Shift to idle state if the app is in finding state and all items are deleted meanwhile
     // FIXME: Slide-up bottom bar if it was hidden (because of scroll) and some items were deleted and
     // now cannot scroll to make it slide up again
     // TODO: Redesign the logo in 24 by 24 grid in inkscape to make it crisp (like standard icons)
@@ -482,8 +483,8 @@ public class MainActivity extends AppCompatActivity
             this.foundStores = foundStores;
             shiftToSelectingState();
             if (foundStores.size() == 1) {
-                // TODO: set menuitem(0) icon to the store category icon
-                // mBottomAppBar.getMenu().getItem(0).setIcon(foundStores.get(0).getIcon());
+                int icon = foundStores.get(0).getCategory().getImage();
+                mBottomAppBar.getMenu().getItem(0).setIcon(icon);
             } else {
                 mBottomAppBar.getMenu().getItem(0).setIcon(R.drawable.ic_store_multi);
             }

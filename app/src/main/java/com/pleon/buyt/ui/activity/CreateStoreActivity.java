@@ -4,16 +4,28 @@ import android.location.Location;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pleon.buyt.R;
+import com.pleon.buyt.model.Store;
+import com.pleon.buyt.ui.dialog.SelectDialogFragment;
+import com.pleon.buyt.ui.dialog.SelectionDialogRow;
 import com.pleon.buyt.ui.fragment.CreateStoreFragment;
+import com.pleon.buyt.viewmodel.StoreViewModel;
+
+import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.ActionMenuView;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProviders;
 
-public class CreateStoreActivity extends AppCompatActivity {
+public class CreateStoreActivity extends AppCompatActivity
+        implements SelectDialogFragment.Callback, CreateStoreFragment.Callback {
+
+    private CreateStoreFragment createStoreFragment;
+    private TextView selectCategoryTxvi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +43,17 @@ public class CreateStoreActivity extends AppCompatActivity {
         actionMenuView.setOnMenuItemClickListener(this::onOptionsItemSelected);
 
         FragmentManager fragMgr = getSupportFragmentManager();
-        Fragment createStoreFragment = fragMgr.findFragmentById(R.id.createStoreContainer);
+        createStoreFragment = (CreateStoreFragment) fragMgr.findFragmentById(R.id.createStoreContainer);
 
         if (createStoreFragment == null) {
+            createStoreFragment = CreateStoreFragment.newInstance(location);
             fragMgr.beginTransaction()
-                    .add(R.id.createStoreContainer, CreateStoreFragment.newInstance(location))
+                    .add(R.id.createStoreContainer, createStoreFragment)
                     .commit();
         }
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(v -> createStoreFragment.onDonePressed());
     }
 
     @Override
@@ -45,6 +61,8 @@ public class CreateStoreActivity extends AppCompatActivity {
         ActionMenuView actionMenuView = findViewById(R.id.action_menu_view);
         Menu mainMenu = actionMenuView.getMenu();
         getMenuInflater().inflate(R.menu.menu_add_store, mainMenu);
+
+        selectCategoryTxvi = mainMenu.findItem(R.id.action_select_category).getActionView().findViewById(R.id.select_category);
 
         // Setting up "Select category" action because it has custom layout
         MenuItem item = mainMenu.findItem(R.id.action_select_category);
@@ -60,11 +78,33 @@ public class CreateStoreActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.action_select_category:
-                // TODO: Implement select category dialog
+                // FIXME: initialize this only once
+                ArrayList<SelectionDialogRow> selectionList = new ArrayList<>(); // dialog requires ArrayList
+                for (Store.Category category : Store.Category.values()) {
+                    SelectionDialogRow selection = new SelectionDialogRow(category.name(), category.getImage());
+                    selectionList.add(selection);
+                }
+                SelectDialogFragment selectStoreDialog = SelectDialogFragment.newInstance(selectionList);
+                selectStoreDialog.show(getSupportFragmentManager(), "SELECT_STORE_DIALOG");
                 break;
             default:
                 return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+    @Override
+    public void onSelected(int index) {
+        selectCategoryTxvi.setCompoundDrawablesRelativeWithIntrinsicBounds(Store.Category.values()[index].getImage(), 0, 0, 0);
+        selectCategoryTxvi.setText(Store.Category.values()[index].name());
+        createStoreFragment.setStoreCategory(Store.Category.values()[index]);
+    }
+
+    @Override
+    public void onSubmit(Store store) {
+        ViewModelProviders.of(this).get(StoreViewModel.class).insertForObserver(store);
+        // Calling finish() is safe here. We are sure that the item will be added to
+        // database because it is executed in a separate thread.
+        finish();
     }
 }
