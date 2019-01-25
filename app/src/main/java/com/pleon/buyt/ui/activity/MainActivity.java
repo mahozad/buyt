@@ -29,10 +29,10 @@ import com.pleon.buyt.model.WeekdayCost;
 import com.pleon.buyt.ui.dialog.Callback;
 import com.pleon.buyt.ui.dialog.LocationOffDialogFragment;
 import com.pleon.buyt.ui.dialog.RationaleDialogFragment;
+import com.pleon.buyt.ui.dialog.SelectDialogFragment;
 import com.pleon.buyt.ui.dialog.SelectionDialogRow;
 import com.pleon.buyt.ui.fragment.BottomDrawerFragment;
 import com.pleon.buyt.ui.fragment.ItemListFragment;
-import com.pleon.buyt.ui.dialog.SelectDialogFragment;
 import com.pleon.buyt.viewmodel.MainViewModel;
 
 import java.text.DecimalFormat;
@@ -470,6 +470,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void onStoresFound(List<Store> foundStores) {
+        this.foundStores = foundStores; // this seems to not change this.foundStores. Why?!
         if (foundStores.size() == 0) {
             if (findingStateSkipped) {
                 showIndefiniteSnackbar(R.string.no_store, R.string.ok);
@@ -480,7 +481,6 @@ public class MainActivity extends AppCompatActivity
                 shiftToSelectingState();
             }
         } else {
-            this.foundStores = foundStores;
             shiftToSelectingState();
             if (foundStores.size() == 1) {
                 int icon = foundStores.get(0).getCategory().getImage();
@@ -521,9 +521,6 @@ public class MainActivity extends AppCompatActivity
         mBottomAppBar.getMenu().getItem(2).setTitle(R.string.skip);
         ((Animatable) mBottomAppBar.getMenu().getItem(2).getIcon()).start();
 
-        Animatable fabDrawable = (Animatable) mFab.getDrawable();
-        fabDrawable.start();
-
         // Make sure the bottomAppBar is not hidden and make it not hide on scroll
         new BottomAppBar.Behavior().slideUp(mBottomAppBar);
         mBottomAppBar.setHideOnScroll(false);
@@ -532,15 +529,17 @@ public class MainActivity extends AppCompatActivity
     private void shiftToSelectingState() {
         itemListFragment.toggleItemsCheckbox(true);
 
+        mBottomAppBar.getMenu().getItem(2).setVisible(false);
         mBottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
+
         mFab.setImageResource(R.drawable.avd_find_done);
         ((Animatable) mFab.getDrawable()).start();
-        mBottomAppBar.getMenu().getItem(2).setVisible(false);
 
         state = State.SELECTING;
     }
 
     private void shiftToIdleState() {
+        foundStores.clear();
         findingStateSkipped = false; // reset the flag
         itemListFragment.toggleItemsCheckbox(false);
 
@@ -611,6 +610,10 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * On store selected from selection dialog
+     * @param index
+     */
     @Override
     public void onSelected(int index) {
         completeBuy(foundStores.get(index));
