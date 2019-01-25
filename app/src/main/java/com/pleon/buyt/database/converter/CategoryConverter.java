@@ -13,7 +13,7 @@ public class CategoryConverter {
     }
 
     @TypeConverter
-    public static String convertToItemCatName(Item.Category category) {
+    public static String convertToItemCategoryName(Item.Category category) {
         return category.name();
     }
 
@@ -23,7 +23,7 @@ public class CategoryConverter {
     }
 
     @TypeConverter
-    public static String convertToStoreCatName(Store.Category category) {
+    public static String convertToStoreCategoryName(Store.Category category) {
         return category.name();
     }
 }
