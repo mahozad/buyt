@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity
     // DONE: Disable buyt fab button when there is no item
     // TODO: For correct margins of cards, Texts, ... see the page of that component in design section of material.io
     // TODO: Difference between <ImageView>s to <AppcompatImageView>s ?
-    // TODO: hide the reorder items icon in bottomAppBar when number of items is less than 2
+    // TODO: disable the reorder items icon in bottomAppBar when number of items is less than 2 (by 'enabled' property of the menu item)
     // TODO: Embed ads in between of regular items
     // TODO: Add snap to center for recyclerView items
     // TODO: Convert the main screen layout to ConstraintLayout and animate it (it seems possible with the help of guidelines)
@@ -151,6 +151,7 @@ public class MainActivity extends AppCompatActivity
     // DONE: Ability to add details (description) for each item
     // TODO: Show a small progress bar of how much has been spent if user has set a limit on spends
 
+    // TODO: use downloadable fonts instead of integrating the font in the app to reduce the app size
     /* FIXME: What happens if two stores are near each other and only one of them is saved in the app.
        now if user has bought something from the other store, it is saved for the persisted store */
 
