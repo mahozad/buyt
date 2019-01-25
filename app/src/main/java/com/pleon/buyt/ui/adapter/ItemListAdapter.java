@@ -19,6 +19,7 @@ import com.pleon.buyt.R;
 import com.pleon.buyt.model.Item;
 import com.pleon.buyt.ui.adapter.ItemListAdapter.ItemHolder;
 
+import java.text.NumberFormat;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -92,7 +93,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
             holder.categoryImgVi.setImageResource(item.getCategory().getImageRes());
             holder.nameTxVi.setText(item.getName());
             holder.descTxVi.setText(item.getDescription());
-            holder.quantityTxVi.setText(item.getQuantity().getQuantity() + " " + context.getString(item.getQuantity().getUnit().getNameRes()));
+            holder.quantityTxVi.setText(NumberFormat.getInstance().format(item.getQuantity().getQuantity()) + " " + context.getString(item.getQuantity().getUnit().getNameRes()));
             holder.urgentImgVi.setVisibility(item.isUrgent() ? VISIBLE : INVISIBLE);
             holder.selectChBx.setChecked(selectedItems.contains(item));
             holder.descTxVi.setVisibility(item.isExpanded() ? VISIBLE : GONE);
