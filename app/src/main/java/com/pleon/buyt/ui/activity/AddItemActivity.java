@@ -80,13 +80,13 @@ public class AddItemActivity extends AppCompatActivity
                 if (addItemFragment.isBoughtChecked()) {
                     ViewModelProviders.of(this).get(MainViewModel.class).getAllStores().observe(this, stores -> {
                         for (Store store : stores) {
-                            SelectionDialogRow selection = new SelectionDialogRow(store.getName(), store.getCategory().getImage());
+                            SelectionDialogRow selection = new SelectionDialogRow(store.getName(), store.getCategory().getImageRes());
                             selectionList.add(selection);
                         }
                     });
                 } else {
                     for (Item.Category category : Item.Category.values()) {
-                        SelectionDialogRow selection = new SelectionDialogRow(category.name(), category.getImage());
+                        SelectionDialogRow selection = new SelectionDialogRow(getString(category.getNameRes()), category.getImageRes());
                         selectionList.add(selection);
                     }
                 }
@@ -101,7 +101,7 @@ public class AddItemActivity extends AppCompatActivity
 
     @Override
     public void onBoughtToggled(boolean checked) {
-        selectCategoryTxvi.setText(checked ? "Select store" : addItemFragment.getItemCategory().name());
+        selectCategoryTxvi.setText(checked ? getString(R.string.action_select_store) : getString(addItemFragment.getItemCategory().getNameRes()));
     }
 
     @Override
@@ -115,8 +115,9 @@ public class AddItemActivity extends AppCompatActivity
 
     @Override
     public void onSelected(int index) {
-        selectCategoryTxvi.setCompoundDrawablesRelativeWithIntrinsicBounds(Item.Category.values()[index].getImage(), 0, 0, 0);
-        selectCategoryTxvi.setText(Item.Category.values()[index].name());
-        addItemFragment.setItemCategory(Item.Category.values()[index]);
+        Item.Category category = Item.Category.values()[index];
+        selectCategoryTxvi.setCompoundDrawablesRelativeWithIntrinsicBounds(category.getImageRes(), 0, 0, 0);
+        selectCategoryTxvi.setText(category.getNameRes());
+        addItemFragment.setItemCategory(category);
     }
 }

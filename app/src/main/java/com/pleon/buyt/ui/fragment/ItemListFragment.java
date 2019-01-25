@@ -72,7 +72,7 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
         ItemTouchHelper touchHelper = new ItemTouchHelper(touchHelperCallback);
         touchHelper.attachToRecyclerView(itemRecyclerView);
 
-        adapter = new ItemListAdapter(touchHelper);
+        adapter = new ItemListAdapter(getContext(), touchHelper);
         itemRecyclerView.setAdapter(adapter);
         return view;
     }

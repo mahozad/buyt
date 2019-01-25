@@ -20,6 +20,7 @@
     <string name="ok">OK</string>
     <string name="skip">Skip</string>
     <string name="reorder_items">Reorder items</string>
+    <string name="action_select_store">Select store</string>
 
     <string name="location_permission_rationale">It seems you have revoked location permission.
         If granted, you do not have to manually specify the store for each purchase.
@@ -41,5 +42,44 @@
     <string name="thu">Thu</string>
     <string name="fri">Fri</string>
     <string name="sat">Sat</string>
+
+    <string name="item_cat_grocery">Grocery</string>
+    <string name="item_cat_bread">Bread</string>
+    <string name="item_cat_dairy">Dairy</string>
+    <string name="item_cat_fruit">Fruit</string>
+    <string name="item_cat_vegetable">Vegetable</string>
+    <string name="item_cat_meat">Meat</string>
+    <string name="item_cat_chicken">Chicken</string>
+    <string name="item_cat_fish">Fish</string>
+    <string name="item_cat_fast_food">Fast food</string>
+    <string name="item_cat_ice_cream">Ice cream</string>
+    <string name="item_cat_pastry">Pastry</string>
+    <string name="item_cat_tools">Tools</string>
+    <string name="item_cat_other">Other</string>
+
+    <string name="store_cat_generic">Generic</string>
+    <string name="store_cat_grocery_store">Grocery store</string>
+    <string name="store_cat_bakery">Bakery</string>
+    <string name="store_cat_butchery">Butchery</string>
+    <string name="store_cat_chicken_shop">Chicken shop</string>
+    <string name="store_cat_dairy">Dairy</string>
+    <string name="store_cat_fast_food">Fast food</string>
+    <string name="store_cat_fish_shop">Fish shop</string>
+    <string name="store_cat_grocers">Grocer\'s</string>
+    <string name="store_cat_hardware_store">Hardware store</string>
+    <string name="store_cat_icecream_shop">Ice cream shop</string>
+    <string name="store_cat_drugstore">Drugstore</string>
+    <string name="store_cat_flower_shop">Flower shop</string>
+    <string name="store_cat_dry_cleaners">Dry cleaner\'s</string>
+    <string name="store_cat_stationary_store">Stationary store</string>
+    <string name="store_cat_book_shop">Bookshop</string>
+    <string name="store_cat_clothes_shop">Clothes shop</string>
+    <string name="store_cat_shoe_shop">Shoe shop</string>
+    <string name="store_cat_confectionery">Confectionery</string>
+
+    <string name="quantity_unit">Unit</string>
+    <string name="quantity_kilogram">Kilogram</string>
+    <string name="quantity_gram">Gram</string>
+
 
 </resources>

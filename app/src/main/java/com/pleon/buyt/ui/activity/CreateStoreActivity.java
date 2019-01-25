@@ -81,7 +81,7 @@ public class CreateStoreActivity extends AppCompatActivity
                 // FIXME: initialize this only once
                 ArrayList<SelectionDialogRow> selectionList = new ArrayList<>(); // dialog requires ArrayList
                 for (Store.Category category : Store.Category.values()) {
-                    SelectionDialogRow selection = new SelectionDialogRow(category.name(), category.getImage());
+                    SelectionDialogRow selection = new SelectionDialogRow(getString(category.getNameRes()), category.getImageRes());
                     selectionList.add(selection);
                 }
                 SelectDialogFragment selectStoreDialog = SelectDialogFragment.newInstance(selectionList);
@@ -95,8 +95,8 @@ public class CreateStoreActivity extends AppCompatActivity
 
     @Override
     public void onSelected(int index) {
-        selectCategoryTxvi.setCompoundDrawablesRelativeWithIntrinsicBounds(Store.Category.values()[index].getImage(), 0, 0, 0);
-        selectCategoryTxvi.setText(Store.Category.values()[index].name());
+        selectCategoryTxvi.setCompoundDrawablesRelativeWithIntrinsicBounds(Store.Category.values()[index].getImageRes(), 0, 0, 0);
+        selectCategoryTxvi.setText(Store.Category.values()[index].getNameRes());
         createStoreFragment.setStoreCategory(Store.Category.values()[index]);
     }
 

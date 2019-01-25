@@ -2,6 +2,8 @@ package com.pleon.buyt.model;
 
 import com.pleon.buyt.R;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -14,27 +16,33 @@ public class Item {
     // TODO: store the enum as a separate table in the database. see [https://softwareengineering.stackexchange.com/a/305153/311271]
     public enum Category {
 
-        GROCERY(R.drawable.ic_item_generic),
-        BREAD(R.drawable.ic_item_bread),
-        DAIRY(R.drawable.ic_item_dairy),
-        FRUIT(R.drawable.ic_item_fruit),
-        VEGETABLE(R.drawable.ic_item_vegetable),
-        MEAT(R.drawable.ic_item_meat),
-        CHICKEN(R.drawable.ic_item_chicken),
-        FISH(R.drawable.ic_item_fishery),
-        FAST_FOOD(R.drawable.ic_item_fast_food),
-        ICE_CREAM(R.drawable.ic_item_icecream),
-        PASTRY(R.drawable.ic_item_pastry),
-        TOOLS(R.drawable.ic_item_tools),
-        OTHER(R.drawable.ic_item_other);
+        GROCERY(R.string.item_cat_grocery, R.drawable.ic_item_generic),
+        BREAD(R.string.item_cat_bread, R.drawable.ic_item_bread),
+        DAIRY(R.string.item_cat_dairy, R.drawable.ic_item_dairy),
+        FRUIT(R.string.item_cat_fruit, R.drawable.ic_item_fruit),
+        VEGETABLE(R.string.item_cat_vegetable, R.drawable.ic_item_vegetable),
+        MEAT(R.string.item_cat_meat, R.drawable.ic_item_meat),
+        CHICKEN(R.string.item_cat_chicken, R.drawable.ic_item_chicken),
+        FISH(R.string.item_cat_fish, R.drawable.ic_item_fishery),
+        FAST_FOOD(R.string.item_cat_fast_food, R.drawable.ic_item_fast_food),
+        ICE_CREAM(R.string.item_cat_ice_cream, R.drawable.ic_item_icecream),
+        PASTRY(R.string.item_cat_pastry, R.drawable.ic_item_pastry),
+        TOOLS(R.string.item_cat_tools, R.drawable.ic_item_tools),
+        OTHER(R.string.item_cat_other, R.drawable.ic_item_other);
 
-        private final int image;
+        @StringRes private final int name;
+        @DrawableRes private final int image;
 
-        Category(int image) {
+        Category(int name, int image) {
+            this.name = name;
             this.image = image;
         }
 
-        public int getImage() {
+        public int getNameRes() {
+            return name;
+        }
+
+        public int getImageRes() {
             return image;
         }
     }

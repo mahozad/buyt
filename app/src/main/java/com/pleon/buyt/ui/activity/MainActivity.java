@@ -484,7 +484,7 @@ public class MainActivity extends AppCompatActivity
         } else {
             shiftToSelectingState();
             if (foundStores.size() == 1) {
-                int icon = foundStores.get(0).getCategory().getImage();
+                int icon = foundStores.get(0).getCategory().getImageRes();
                 mBottomAppBar.getMenu().getItem(0).setIcon(icon);
             } else {
                 mBottomAppBar.getMenu().getItem(0).setIcon(R.drawable.ic_store_multi);

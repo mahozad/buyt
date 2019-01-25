@@ -1,5 +1,6 @@
 package com.pleon.buyt.ui.adapter;
 
+import android.content.Context;
 import android.graphics.drawable.Animatable;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -15,8 +16,8 @@ import android.widget.TextView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.pleon.buyt.R;
-import com.pleon.buyt.ui.adapter.ItemListAdapter.ItemHolder;
 import com.pleon.buyt.model.Item;
+import com.pleon.buyt.ui.adapter.ItemListAdapter.ItemHolder;
 
 import java.util.HashSet;
 import java.util.List;
@@ -44,6 +45,7 @@ import static java.lang.Long.parseLong;
 
 public class ItemListAdapter extends Adapter<ItemHolder> {
 
+    private Context context;
     private List<Item> items;
     public RecyclerView recyclerView;
     private boolean dragModeEnabled = false;
@@ -52,7 +54,8 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
 
     private ItemTouchHelper itemTouchHelper;
 
-    public ItemListAdapter(ItemTouchHelper itemTouchHelper) {
+    public ItemListAdapter(Context context, ItemTouchHelper itemTouchHelper) {
+        this.context = context;
         this.itemTouchHelper = itemTouchHelper;
         // setHasStableIds is an optimization hint that you give to the RecyclerView
         // and tell it "when I provide a ViewHolder, its id is unique and will not change."
@@ -86,10 +89,10 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
     public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
         if (items != null) {
             Item item = items.get(position);
-            holder.categoryImgVi.setImageResource(item.getCategory().getImage());
+            holder.categoryImgVi.setImageResource(item.getCategory().getImageRes());
             holder.nameTxVi.setText(item.getName());
             holder.descTxVi.setText(item.getDescription());
-            holder.quantityTxVi.setText(item.getQuantity().toString());
+            holder.quantityTxVi.setText(item.getQuantity().getQuantity() + " " + context.getString(item.getQuantity().getUnit().getNameRes()));
             holder.urgentImgVi.setVisibility(item.isUrgent() ? VISIBLE : INVISIBLE);
             holder.selectChBx.setChecked(selectedItems.contains(item));
             holder.descTxVi.setVisibility(item.isExpanded() ? VISIBLE : GONE);
