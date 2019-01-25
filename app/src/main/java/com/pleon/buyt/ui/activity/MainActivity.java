@@ -361,7 +361,7 @@ public class MainActivity extends AppCompatActivity
                 } else { // if state == FINDING
                     findingStateSkipped = true;
                     stopService(new Intent(this, GpsService.class));
-                    mainViewModel.getAllStores();
+                    mainViewModel.getAllStores().observe(this, this::onStoresFound);
                 }
                 break;
 
@@ -539,7 +539,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void shiftToIdleState() {
-        foundStores.clear();
+        foundStores = null;
         findingStateSkipped = false; // reset the flag
         itemListFragment.toggleItemsCheckbox(false);
 
@@ -612,6 +612,7 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * On store selected from selection dialog
+     *
      * @param index
      */
     @Override

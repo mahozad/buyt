@@ -33,6 +33,7 @@ public class MainViewModel extends AndroidViewModel {
     private LiveData<List<Item>> mAllItems;
     private LiveData<List<Purchase>> allPurchases;
 
+
     public MainViewModel(Application application) {
         super(application);
         mMainRepository = new MainRepository(application);
@@ -53,8 +54,8 @@ public class MainViewModel extends AndroidViewModel {
         mMainRepository.findNearStores(origin, maxDistance);
     }
 
-    public void getAllStores() {
-        mMainRepository.getAllStores();
+    public LiveData<List<Store>> getAllStores() {
+        return mMainRepository.getAllStores();
     }
 
     public void addItem(Item item) {

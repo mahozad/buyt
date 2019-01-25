@@ -81,8 +81,9 @@ public class MainRepository { // TODO: make this class singleton
         new FindNearStoresAsyncTask(mStoreDao, origin, maxDistance, mNearStores).execute();
     }
 
-    public void getAllStores() {
+    public LiveData<List<Store>> getAllStores() {
         new GetAllStoresAsyncTask(mStoreDao, mNearStores).execute();
+        return mNearStores;
     }
 
     public LiveData<List<WeekdayCost>> getTotalWeekdayCosts(long from, long to) {

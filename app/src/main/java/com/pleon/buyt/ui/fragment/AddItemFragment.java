@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -69,7 +69,7 @@ public class AddItemFragment extends Fragment
     @BindView(R.id.bought) CheckBox boughtChbx;
     @BindView(R.id.price_layout) TextInputLayout priceTxinlt;
     @BindView(R.id.price) EditText priceEdtx;
-    @BindView(R.id.price_container) FrameLayout priceContainer;
+    @BindView(R.id.bought_container) LinearLayout boughtContainer;
     @BindView(R.id.date_layout) TextInputLayout dateTxinlt;
     @BindView(R.id.date) EditText dateEdtx;
 
@@ -188,7 +188,7 @@ public class AddItemFragment extends Fragment
     @OnCheckedChanged(R.id.bought)
     void onBoughtToggled(boolean isChecked) {
         callback.onBoughtToggled(isChecked);
-        priceContainer.setVisibility(isChecked ? VISIBLE : GONE);
+        boughtContainer.setVisibility(isChecked ? VISIBLE : GONE);
     }
 
     @OnFocusChange(R.id.quantity)
@@ -256,8 +256,16 @@ public class AddItemFragment extends Fragment
         unbinder.unbind();
     }
 
+    public boolean isBoughtChecked() {
+        return boughtChbx.isChecked();
+    }
+
     public void setItemCategory(Item.Category category) {
         this.itemCategory = category;
+    }
+
+    public Item.Category getItemCategory() {
+        return itemCategory;
     }
 
     public void onDonePressed() {

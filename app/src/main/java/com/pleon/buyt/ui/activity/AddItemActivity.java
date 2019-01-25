@@ -9,6 +9,7 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pleon.buyt.R;
 import com.pleon.buyt.model.Item;
+import com.pleon.buyt.model.Store;
 import com.pleon.buyt.ui.dialog.SelectDialogFragment;
 import com.pleon.buyt.ui.dialog.SelectionDialogRow;
 import com.pleon.buyt.ui.fragment.AddItemFragment;
@@ -76,9 +77,18 @@ public class AddItemActivity extends AppCompatActivity
             case R.id.action_item_category:
                 // FIXME: initialize this only once
                 ArrayList<SelectionDialogRow> selectionList = new ArrayList<>(); // dialog requires ArrayList
-                for (Item.Category category : Item.Category.values()) {
-                    SelectionDialogRow selection = new SelectionDialogRow(category.name(), category.getImage());
-                    selectionList.add(selection);
+                if (addItemFragment.isBoughtChecked()) {
+                    ViewModelProviders.of(this).get(MainViewModel.class).getAllStores().observe(this, stores -> {
+                        for (Store store : stores) {
+                            SelectionDialogRow selection = new SelectionDialogRow(store.getName(), store.getCategory().getImage());
+                            selectionList.add(selection);
+                        }
+                    });
+                } else {
+                    for (Item.Category category : Item.Category.values()) {
+                        SelectionDialogRow selection = new SelectionDialogRow(category.name(), category.getImage());
+                        selectionList.add(selection);
+                    }
                 }
                 SelectDialogFragment selectStoreDialog = SelectDialogFragment.newInstance(selectionList);
                 selectStoreDialog.show(getSupportFragmentManager(), "SELECT_ITEM_DIALOG");
@@ -91,7 +101,7 @@ public class AddItemActivity extends AppCompatActivity
 
     @Override
     public void onBoughtToggled(boolean checked) {
-        selectCategoryTxvi.setText(checked ? "Select store" : "Select icon");
+        selectCategoryTxvi.setText(checked ? "Select store" : addItemFragment.getItemCategory().name());
     }
 
     @Override
