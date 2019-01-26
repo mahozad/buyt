@@ -8,6 +8,7 @@ import android.graphics.drawable.Animatable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -328,6 +329,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_bottom_home, menu);
+        synchronized (State.class) {
+            if (state == State.FINDING) {
+                menu.getItem(1).setIcon(R.drawable.ic_add);
+                menu.getItem(2).setIcon(R.drawable.ic_skip);
+            }
+        }
         if (newbie) {
             // Make plus icon glow a little bit if the user is a newbie!
             ((Animatable) menu.getItem(1).getIcon()).start();
@@ -408,13 +415,29 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onPause() {
         super.onPause();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(locationReceiver);
+//        LocalBroadcastManager.getInstance(this).unregisterReceiver(locationReceiver);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        synchronized (State.class) {
+            outState.putString("STATE", state.name());
+        }
         // save the application form and temp data to survive config changes and force-kills
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        synchronized (State.class) {
+            this.state = State.valueOf(savedInstanceState.getString("STATE"));
+            if (state == State.FINDING) {
+                mFab.setImageResource(R.drawable.avd_finding);
+                ((Animatable) mFab.getDrawable()).start();
+                mBottomAppBar.setNavigationIcon(R.drawable.ic_cancel);
+            }
+        }
     }
 
     @Override
@@ -434,7 +457,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopService(new Intent(this, GpsService.class));
+//        stopService(new Intent(this, GpsService.class));
         AppDatabase.destroyInstance();
     }
 
@@ -507,7 +530,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void shiftToFindingState() {
-        state = State.FINDING;
+        synchronized (State.class) {
+            state = State.FINDING;
+        }
 
         mFab.setImageResource(R.drawable.avd_buyt);
         ((Animatable) mFab.getDrawable()).start();
@@ -536,7 +561,9 @@ public class MainActivity extends AppCompatActivity
         mFab.setImageResource(R.drawable.avd_find_done);
         ((Animatable) mFab.getDrawable()).start();
 
-        state = State.SELECTING;
+        synchronized (State.class) {
+            state = State.SELECTING;
+        }
     }
 
     private void shiftToIdleState() {
