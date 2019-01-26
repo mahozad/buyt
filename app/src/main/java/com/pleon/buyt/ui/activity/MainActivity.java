@@ -407,18 +407,6 @@ public class MainActivity extends AppCompatActivity
                 registerReceiver(locationReceiver, new IntentFilter("LOCATION_INTENT"));
     }
 
-    /**
-     * Unregisters the location broadcast receiver.
-     * <p>
-     * Note that <b>Local</b> broadcast receivers can be registered only dynamically in code
-     * (like in this case) and not in the manifest file.
-     */
-    @Override
-    protected void onPause() {
-        super.onPause();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(locationReceiver);
-    }
-
     @Override
     public void onBackPressed() {
         synchronized (State.class) {
@@ -472,9 +460,14 @@ public class MainActivity extends AppCompatActivity
         super.onRequestPermissionsResult(reqCode, permissions, grantResults);
     }
 
+    /**
+     * Unregistering the broadcast receiver is done in this method instead of onPause() because
+     * we want to get the broadcast if app went to background and then again resumed.
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(locationReceiver);
         // if activity being destroyed because of back button (not because of config change)
         if (isFinishing()) {
             stopService(new Intent(this, GpsService.class));
