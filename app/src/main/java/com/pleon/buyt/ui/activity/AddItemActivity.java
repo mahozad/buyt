@@ -18,7 +18,6 @@ import com.pleon.buyt.viewmodel.MainViewModel;
 import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.ActionMenuView;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -35,9 +34,6 @@ public class AddItemActivity extends AppCompatActivity
 
         BottomAppBar mBottomAppBar = findViewById(R.id.bottom_bar);
         setSupportActionBar(mBottomAppBar);
-        ActionMenuView actionMenuView = findViewById(R.id.menu_view);
-        // delegate to activity method
-        actionMenuView.setOnMenuItemClickListener(this::onOptionsItemSelected);
 
         FragmentManager fragMgr = getSupportFragmentManager();
         addItemFragment = (AddItemFragment) fragMgr.findFragmentById(R.id.container_fragment_add_item);
@@ -55,15 +51,12 @@ public class AddItemActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        ActionMenuView actionMenuView = findViewById(R.id.menu_view);
-        Menu mainMenu = actionMenuView.getMenu();
-        getMenuInflater().inflate(R.menu.menu_add_item, mainMenu);
+        getMenuInflater().inflate(R.menu.menu_add_item, menu);
 
-        selectCategoryTxvi = mainMenu.findItem(R.id.action_item_category).getActionView().findViewById(R.id.select_store);
-
-        // Setting up "Choose store" action because it has custom layout
-        MenuItem item = mainMenu.findItem(R.id.action_item_category);
-        item.getActionView().setOnClickListener(v -> onOptionsItemSelected(item));
+        selectCategoryTxvi = menu.findItem(R.id.action_item_category).getActionView().findViewById(R.id.select_store);
+        // Setting up "Choose category" action because it has custom layout
+        MenuItem menuItem = menu.findItem(R.id.action_item_category);
+        menuItem.getActionView().setOnClickListener(v -> onOptionsItemSelected(menuItem));
 
         return true;
     }
@@ -71,9 +64,6 @@ public class AddItemActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_cancel:
-                finish();
-                break;
             case R.id.action_item_category:
                 // FIXME: initialize this only once
                 ArrayList<SelectionDialogRow> selectionList = new ArrayList<>(); // dialog requires ArrayList
@@ -92,6 +82,9 @@ public class AddItemActivity extends AppCompatActivity
                 }
                 SelectDialogFragment selectStoreDialog = SelectDialogFragment.newInstance(selectionList);
                 selectStoreDialog.show(getSupportFragmentManager(), "SELECT_ITEM_DIALOG");
+                break;
+            case android.R.id.home:
+                finish();
                 break;
             default:
                 return super.onOptionsItemSelected(item);

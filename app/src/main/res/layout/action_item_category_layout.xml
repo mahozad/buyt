@@ -10,9 +10,7 @@
     android:drawableStart="@drawable/ic_item_grocery"
     android:drawablePadding="8dp"
     android:focusable="true"
-    android:gravity="center_vertical"
+    android:gravity="start|center_vertical"
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
-    android:text="@string/item_cat_grocery">
-
-</androidx.appcompat.widget.AppCompatTextView>
+    android:text="@string/item_cat_grocery" />

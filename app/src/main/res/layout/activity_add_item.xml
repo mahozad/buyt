@@ -27,7 +27,6 @@
             app:layout_anchor="@id/bottom_bar"
             app:srcCompat="@drawable/ic_done" />
 
-        <!-- android:gravity="start" is for the icons (wrapped in ActionViewMenu) to align to left -->
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottom_bar"
             style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
@@ -35,18 +34,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:backgroundTint="#212121"
-            android:gravity="start"
             app:fabAlignmentMode="end"
-            app:fabCradleMargin="6dp">
-
-            <!-- container for action icons for aligning them on the left side. To align on the left
-                 set android:gravity="start" in the parent -->
-            <androidx.appcompat.widget.ActionMenuView
-                android:id="@+id/menu_view"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
-
-        </com.google.android.material.bottomappbar.BottomAppBar>
+            app:fabCradleMargin="6dp"
+            app:navigationIcon="@drawable/ic_cancel" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
