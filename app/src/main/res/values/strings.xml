@@ -15,8 +15,8 @@
     <string name="exit_button">EXIT</string>
     <string name="cancel_button">CANCEL</string>
     <string name="dialog_exit_title">Exit the app?</string>
-    <string name="dialog_exit_message">If you exit the app the finding process will be stopped.
-        You can instead press home button or recent apps button and keep Buyt running!</string>
+    <string name="dialog_exit_message">The buying process will be aborted if you exit the app.
+        You can instead press <i>home</i> button or <i>recent apps</i> button and return to Buyt later.</string>
 
     <string name="item_deleted_message">Item \"%1$s\" deleted</string>
     <string name="undo">UNDO</string>

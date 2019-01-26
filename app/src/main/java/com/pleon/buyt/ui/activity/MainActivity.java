@@ -410,7 +410,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         synchronized (State.class) {
-            if (state == State.FINDING) {
+            if (state == State.FINDING || state == State.SELECTING) {
                 ConfirmExitDialog confirmExitDialog = ConfirmExitDialog.newInstance();
                 confirmExitDialog.show(getSupportFragmentManager(), "CONFIRM_EXIT_DIALOG");
             } else {
