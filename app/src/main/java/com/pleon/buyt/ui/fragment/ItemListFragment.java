@@ -117,8 +117,8 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onStop() {
+        super.onStop();
         if (itemsReordered) {
             mainViewModel.updateItems(adapter.getItems());
             itemsReordered = false;
