@@ -8,7 +8,6 @@ import android.graphics.drawable.Animatable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -28,6 +27,7 @@ import com.pleon.buyt.model.Item;
 import com.pleon.buyt.model.Store;
 import com.pleon.buyt.model.WeekdayCost;
 import com.pleon.buyt.ui.dialog.Callback;
+import com.pleon.buyt.ui.dialog.ConfirmExitDialog;
 import com.pleon.buyt.ui.dialog.LocationOffDialogFragment;
 import com.pleon.buyt.ui.dialog.RationaleDialogFragment;
 import com.pleon.buyt.ui.dialog.SelectDialogFragment;
@@ -69,7 +69,7 @@ import static java.lang.Math.cos;
 import static java.util.Calendar.DATE;
 
 public class MainActivity extends AppCompatActivity
-        implements SelectDialogFragment.Callback, Callback {
+        implements SelectDialogFragment.Callback, ConfirmExitDialog.Callback, Callback {
 
     // the app can be described as both a t0do app and an expense manager and also a shopping list app
 
@@ -333,6 +333,7 @@ public class MainActivity extends AppCompatActivity
             if (state == State.FINDING) {
                 menu.getItem(1).setIcon(R.drawable.ic_add);
                 menu.getItem(2).setIcon(R.drawable.ic_skip);
+                menu.getItem(2).setTitle(R.string.skip);
             }
         }
         if (newbie) {
@@ -415,7 +416,24 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onPause() {
         super.onPause();
-//        LocalBroadcastManager.getInstance(this).unregisterReceiver(locationReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(locationReceiver);
+    }
+
+    @Override
+    public void onBackPressed() {
+        synchronized (State.class) {
+            if (state == State.FINDING) {
+                ConfirmExitDialog confirmExitDialog = ConfirmExitDialog.newInstance();
+                confirmExitDialog.show(getSupportFragmentManager(), "CONFIRM_EXIT_DIALOG");
+            } else {
+                super.onBackPressed();
+            }
+        }
+    }
+
+    @Override
+    public void onExitConfirmed() {
+        super.onBackPressed();
     }
 
     @Override
@@ -457,8 +475,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        stopService(new Intent(this, GpsService.class));
-        AppDatabase.destroyInstance();
+        // if activity being destroyed because of back button (not because of config change)
+        if (isFinishing()) {
+            stopService(new Intent(this, GpsService.class));
+            AppDatabase.destroyInstance();
+        }
     }
 
     @OnClick(R.id.fab)
