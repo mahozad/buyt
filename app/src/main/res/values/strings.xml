@@ -77,9 +77,8 @@
     <string name="store_cat_shoe_shop">Shoe shop</string>
     <string name="store_cat_confectionery">Confectionery</string>
 
-    <string name="quantity_unit">Unit</string>
-    <string name="quantity_kilogram">Kilogram</string>
-    <string name="quantity_gram">Gram</string>
-
+    <string name="quantity_unit">unit</string>
+    <string name="quantity_kilogram">kg</string>
+    <string name="quantity_gram">g</string>
 
 </resources>
