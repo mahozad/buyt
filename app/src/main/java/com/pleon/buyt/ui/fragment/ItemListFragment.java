@@ -116,6 +116,10 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
         snackbar.show();
     }
 
+    /**
+     * From multiple SO questions it seems that the onPause() is preferred to onStop()
+     * for persisting data.
+     */
     @Override
     public void onPause() {
         super.onPause();
