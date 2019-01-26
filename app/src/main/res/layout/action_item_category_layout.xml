@@ -7,12 +7,12 @@
     android:layout_height="match_parent"
     android:background="?attr/selectableItemBackgroundBorderless"
     android:clickable="true"
-    android:drawableStart="@drawable/ic_item_generic"
+    android:drawableStart="@drawable/ic_item_grocery"
     android:drawablePadding="8dp"
     android:focusable="true"
     android:gravity="center_vertical"
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
-    android:text="GROCERY">
+    android:text="@string/item_cat_grocery">
 
 </androidx.appcompat.widget.AppCompatTextView>

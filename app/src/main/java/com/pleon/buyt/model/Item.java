@@ -16,7 +16,7 @@ public class Item {
     // TODO: store the enum as a separate table in the database. see [https://softwareengineering.stackexchange.com/a/305153/311271]
     public enum Category {
 
-        GROCERY(R.string.item_cat_grocery, R.drawable.ic_item_generic),
+        GROCERY(R.string.item_cat_grocery, R.drawable.ic_item_grocery),
         BREAD(R.string.item_cat_bread, R.drawable.ic_item_bread),
         DAIRY(R.string.item_cat_dairy, R.drawable.ic_item_dairy),
         FRUIT(R.string.item_cat_fruit, R.drawable.ic_item_fruit),
