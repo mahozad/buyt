@@ -429,6 +429,9 @@ public class MainActivity extends AppCompatActivity
         super.onSaveInstanceState(outState);
         synchronized (State.class) {
             outState.putString("STATE", state.name());
+            if (state == State.SELECTING) {
+                // TODO: save found stores and selection status and restore them
+            }
         }
         // save the application form and temp data to survive config changes and force-kills
     }
