@@ -59,8 +59,6 @@ import butterknife.OnClick;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.location.LocationManager.GPS_PROVIDER;
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 import static com.getkeepsafe.taptargetview.TapTarget.forView;
 import static com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_CENTER;
 import static com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE;
@@ -213,6 +211,16 @@ public class MainActivity extends AppCompatActivity
 //    UI controllers such as activities and fragments are primarily intended to display UI data,
 //    react to user actions, or handle operating system communication, such as permission requests.
 
+    /**
+     * The broadcast receiver is registered in this method because of this quote: "Does the receiver
+     * need to know about the broadcast even when the activity isn't visible? For example,
+     * does it need to remember that something has happened, so that when the activity becomes
+     * visible, it can reflect the resulting state of affairs? Then you need to use
+     * onCreate()/onDestroy() to register/unregister. (Note there are other ways to implement
+     * this kind of functionality.)" See this answer: [https://stackoverflow.com/a/44526685/8583692]
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -228,6 +236,8 @@ public class MainActivity extends AppCompatActivity
                 mainViewModel.findNearStores(originCoordinates, NEAR_STORES_DISTANCE);
             }
         };
+        LocalBroadcastManager.getInstance(this).
+                registerReceiver(locationReceiver, new IntentFilter("LOCATION_INTENT"));
 
         newbie = getPreferences(MODE_PRIVATE).getBoolean("NEWBIE", true);
         if (newbie) {
@@ -278,7 +288,8 @@ public class MainActivity extends AppCompatActivity
             mainViewModel.getTotalWeekdayCosts(from, new Date().getTime()).observe(this, weekdayCosts -> {
                 if (weekdayCosts.size() == 0) {
 //                    chartContainer.setVisibility(GONE);
-                } /*else*/ {
+                } /*else*/
+                {
                     // TODO: retrieve the past year costs and just show the past week costs,
                     // if there is no cost in the past week, show costs for the past month,
                     // if there is no cost in the past month, show costs in the past year
@@ -392,19 +403,6 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    /**
-     * Registers the location broadcast receiver.
-     * <p>
-     * Note that Local broadcast receivers can be registered only dynamically in code
-     * (like in this case) and not in the manifest file.
-     */
-    @Override
-    protected void onResume() {
-        super.onResume();
-        LocalBroadcastManager.getInstance(this).
-                registerReceiver(locationReceiver, new IntentFilter("LOCATION_INTENT"));
-    }
-
     @Override
     public void onBackPressed() {
         synchronized (State.class) {
@@ -425,6 +423,7 @@ public class MainActivity extends AppCompatActivity
     /**
      * This method will not be called if the system determines that the current state will not
      * be resumed—for example, if the activity is closed by pressing the back button.
+     *
      * @param outState
      */
     @Override
@@ -468,13 +467,15 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * Unregistering the broadcast receiver is done in this method instead of onPause() because
-     * we want to get the broadcast if app went to background and then again resumed.
+     * we want to get the broadcast even if the app went to background and then again resumed.
+     * <p>
+     * See onCreate javadoc for mor info.
      */
     @Override
     protected void onDestroy() {
         super.onDestroy();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(locationReceiver);
-        // if activity being destroyed because of back button (not because of config change)
+        // if activity being destroyed is because of back button (not because of config change)
         if (isFinishing()) {
             stopService(new Intent(this, GpsService.class));
             AppDatabase.destroyInstance();
