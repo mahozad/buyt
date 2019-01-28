@@ -79,6 +79,8 @@ public class MainActivity extends AppCompatActivity
     // FIXME: The bug that sometimes occur when expanding an item (the bottom item jumps up one moment),
     // is produced when another item was swiped partially
 
+    // TODO: In onDestroy(), onPause() and... do the reverse things you did in onCreate(), onResume() and...
+
     /*
      * DONE: if the bottomAppBar is hidden (by scrolling) and then you expand an Item, the fab jumps up
      * The bug seems to have nothing to do with the expanding animation and persists even without that animation
