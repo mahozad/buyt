@@ -59,6 +59,8 @@ import butterknife.OnClick;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.location.LocationManager.GPS_PROVIDER;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.getkeepsafe.taptargetview.TapTarget.forView;
 import static com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_CENTER;
 import static com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE;
@@ -287,13 +289,12 @@ public class MainActivity extends AppCompatActivity
             long from = cal.getTime().getTime();
             mainViewModel.getTotalWeekdayCosts(from, new Date().getTime()).observe(this, weekdayCosts -> {
                 if (weekdayCosts.size() == 0) {
-//                    chartContainer.setVisibility(GONE);
-                } /*else*/
-                {
+                    chartContainer.setVisibility(GONE);
+                } else {
                     // TODO: retrieve the past year costs and just show the past week costs,
                     // if there is no cost in the past week, show costs for the past month,
                     // if there is no cost in the past month, show costs in the past year
-//                    chartContainer.setVisibility(VISIBLE);
+                    chartContainer.setVisibility(VISIBLE);
 
                     chart.reset(); // required (in case number of bars changed)
 

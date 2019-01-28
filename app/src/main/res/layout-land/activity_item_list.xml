@@ -12,11 +12,11 @@
         class="com.pleon.buyt.ui.fragment.ItemListFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="5dp"
-        app:layout_constraintBottom_toTopOf="@id/bar_container"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/chart_container"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_item_list" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/chart_container"
@@ -25,7 +25,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="66dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/fragment_items"
