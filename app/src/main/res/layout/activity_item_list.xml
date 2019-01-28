@@ -33,12 +33,14 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <FrameLayout
-            android:id="@+id/container_fragment_items"
+        <fragment
+            android:id="@+id/fragment_items"
+            class="com.pleon.buyt.ui.fragment.ItemListFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="bottom"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="8dp"
+            tools:layout="@layout/fragment_item_list" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

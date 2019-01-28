@@ -246,13 +246,13 @@ public class MainActivity extends AppCompatActivity
 
         // FragmentManager of an activity is responsible for calling the lifecycle methods of the fragments in its list.
         FragmentManager fragMgr = getSupportFragmentManager();
-        itemListFragment = (ItemListFragment) fragMgr.findFragmentById(R.id.container_fragment_items);
+        itemListFragment = (ItemListFragment) fragMgr.findFragmentById(R.id.fragment_items);
         // fragMgr saves the list of fragments when activity is destroyed and then retrieves them
         // so first we check if the fragment we want does not exist, then we create it
-        itemListFragment = ItemListFragment.newInstance();
-        fragMgr.beginTransaction()
-                .replace(R.id.container_fragment_items, itemListFragment)
-                .commit(); // TODO: commit vs commitNow?
+//        itemListFragment = ItemListFragment.newInstance();
+//        fragMgr.beginTransaction()
+//                .replace(R.id.container_fragment_items, itemListFragment)
+//                .commit(); // TODO: commit vs commitNow?
 
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         // observe() methods should be set only once (e.g. in activity onCreate() method) so if you
@@ -364,8 +364,6 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.action_reorder:
                 if (state == State.IDLE) {
-                    ItemListFragment itemListFragment = (ItemListFragment)
-                            getSupportFragmentManager().findFragmentById(R.id.container_fragment_items);
                     itemListFragment.toggleEditMode();
                 } else { // if state == FINDING
                     findingStateSkipped = true;
