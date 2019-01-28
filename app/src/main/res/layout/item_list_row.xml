@@ -53,7 +53,7 @@
     <!-- Foreground -->
     <!-- Note 1: that padding for the last item has been set in the recyclerView layout -->
     <!-- Note 2: for the bottom shadow of card to show (and not clipped by parent) set the
-    "app:cardUseCompatPadding" property to "true" -->
+    "app:cardUseCompatPadding" property to "true". This produces a little margin around the card -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardForeground"
         android:layout_width="match_parent"

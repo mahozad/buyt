@@ -277,12 +277,12 @@ public class MainActivity extends AppCompatActivity
             long from = cal.getTime().getTime();
             mainViewModel.getTotalWeekdayCosts(from, new Date().getTime()).observe(this, weekdayCosts -> {
                 if (weekdayCosts.size() == 0) {
-                    chartContainer.setVisibility(GONE);
-                } else {
+//                    chartContainer.setVisibility(GONE);
+                } /*else*/ {
                     // TODO: retrieve the past year costs and just show the past week costs,
                     // if there is no cost in the past week, show costs for the past month,
                     // if there is no cost in the past month, show costs in the past year
-                    chartContainer.setVisibility(VISIBLE);
+//                    chartContainer.setVisibility(VISIBLE);
 
                     chart.reset(); // required (in case number of bars changed)
 
@@ -422,6 +422,11 @@ public class MainActivity extends AppCompatActivity
         super.onBackPressed();
     }
 
+    /**
+     * This method will not be called if the system determines that the current state will not
+     * be resumed—for example, if the activity is closed by pressing the back button.
+     * @param outState
+     */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
