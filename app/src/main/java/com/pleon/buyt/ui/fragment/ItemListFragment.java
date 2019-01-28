@@ -117,12 +117,13 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
     }
 
     /**
-     * From multiple SO questions it seems that the onPause() is preferred to onStop()
-     * for persisting data.
+     * From Android 3.0 Honeycomb on, it is guaranteed that this method is called before
+     * the app process is killed. Also the onPause() method should be kept as
+     * light as possible so this method is the preferred place to update items.
      */
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onStop() {
+        super.onStop();
         if (itemsReordered) {
             mainViewModel.updateItems(adapter.getItems());
             itemsReordered = false;
