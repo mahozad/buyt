@@ -195,11 +195,10 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.chart_container) CardView chartContainer;
     @BindView(R.id.chart) BarChartView chart;
 
-    private List<Store> foundStores;
-
-    private Location location;
     // volatile because user clicking the fab and location may be found at the same time
     private volatile State state = State.IDLE;
+    private List<Store> foundStores;
+    private Location location;
     private LocationManager locationMgr;
     private BroadcastReceiver locationReceiver;
     private MainViewModel mainViewModel;
@@ -255,7 +254,6 @@ public class MainActivity extends AppCompatActivity
                             .textColor(R.color.colorPrimaryDark))
                     .start();
         }
-        getPreferences(MODE_PRIVATE).edit().putBoolean("NEWBIE", false).apply();
 
         setSupportActionBar(mBottomAppBar);
 
@@ -270,6 +268,12 @@ public class MainActivity extends AppCompatActivity
 //                .commit(); // TODO: commit vs commitNow?
 
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mainViewModel.getAllItems().observe(this, items -> {
+            if (newbie && items.size() > 0) {
+                getPreferences(MODE_PRIVATE).edit().putBoolean("NEWBIE", false).apply();
+                mBottomAppBar.getMenu().getItem(1).setIcon(R.drawable.ic_add);
+            }
+        });
 
         chart.setLabelsColor(ContextCompat.getColor(this, R.color.ic_launcher_background));
         chart.setXAxis(false);
