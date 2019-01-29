@@ -1,6 +1,7 @@
 package com.pleon.buyt.viewmodel;
 
 import android.app.Application;
+import android.location.Location;
 
 import com.pleon.buyt.database.repository.MainRepository;
 import com.pleon.buyt.database.repository.StoreRepository;
@@ -10,11 +11,14 @@ import com.pleon.buyt.model.Purchase;
 import com.pleon.buyt.model.Store;
 import com.pleon.buyt.model.WeekdayCost;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+
+import static java.lang.Math.cos;
 
 // The ViewModel's role is to provide data to the UI and survive configuration changes.
 // Every screen in the app (an activity with all its fragments) has one corresponding viewModel for itself.
@@ -26,8 +30,19 @@ import androidx.lifecycle.LiveData;
 // If you store a reference to the Activity in the ViewModel, you end up with references that point to the destroyed Activity. This is a memory leak.
 public class MainViewModel extends AndroidViewModel {
 
+    // equals 100m (6371km is the radius of the Earth)
+    private static final double NEAR_STORES_DISTANCE = cos(0.1 / 6371);
+
+    public enum State {
+        IDLE, FINDING, SELECTING
+    }
+
     private MainRepository mMainRepository;
     private StoreRepository mStoreRepository;
+    private volatile State state = State.IDLE;
+    private Location location;
+    private boolean findingStateSkipped;
+    private List<Store> foundStores = new ArrayList<>();
 
     // TODO: Use paging library architecture component
     private LiveData<List<Item>> mAllItems;
@@ -45,8 +60,8 @@ public class MainViewModel extends AndroidViewModel {
         return mAllItems;
     }
 
-    public LiveData<List<Store>> findNearStores(Coordinates origin, double maxDistance) {
-        return mMainRepository.findNearStores(origin, maxDistance);
+    public LiveData<List<Store>> findNearStores(Coordinates origin) {
+        return mMainRepository.findNearStores(origin, NEAR_STORES_DISTANCE);
     }
 
     public LiveData<List<Store>> getAllStores() {
@@ -79,5 +94,41 @@ public class MainViewModel extends AndroidViewModel {
 
     public void deleteItem(Item item) {
         mMainRepository.deleteItem(item);
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public boolean isFindingStateSkipped() {
+        return findingStateSkipped;
+    }
+
+    public void setFindingStateSkipped(boolean findingStateSkipped) {
+        this.findingStateSkipped = findingStateSkipped;
+    }
+
+    public void resetFoundStores() {
+        foundStores.clear();
+    }
+
+    public List<Store> getFoundStores() {
+        return foundStores;
+    }
+
+    public void setFoundStores(List<Store> foundStores) {
+        this.foundStores = foundStores;
     }
 }

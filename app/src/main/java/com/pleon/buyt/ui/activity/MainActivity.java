@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.Animatable;
-import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,7 +22,6 @@ import com.pleon.buyt.GpsService;
 import com.pleon.buyt.R;
 import com.pleon.buyt.database.AppDatabase;
 import com.pleon.buyt.model.Coordinates;
-import com.pleon.buyt.model.Item;
 import com.pleon.buyt.model.Store;
 import com.pleon.buyt.model.WeekdayCost;
 import com.pleon.buyt.ui.dialog.Callback;
@@ -35,6 +33,7 @@ import com.pleon.buyt.ui.dialog.SelectionDialogRow;
 import com.pleon.buyt.ui.fragment.BottomDrawerFragment;
 import com.pleon.buyt.ui.fragment.ItemListFragment;
 import com.pleon.buyt.viewmodel.MainViewModel;
+import com.pleon.buyt.viewmodel.MainViewModel.State;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -42,7 +41,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -65,7 +63,9 @@ import static com.getkeepsafe.taptargetview.TapTarget.forView;
 import static com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_CENTER;
 import static com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE;
 import static com.google.android.material.snackbar.Snackbar.LENGTH_SHORT;
-import static java.lang.Math.cos;
+import static com.pleon.buyt.viewmodel.MainViewModel.State.FINDING;
+import static com.pleon.buyt.viewmodel.MainViewModel.State.IDLE;
+import static com.pleon.buyt.viewmodel.MainViewModel.State.SELECTING;
 import static java.util.Calendar.DATE;
 
 public class MainActivity extends AppCompatActivity
@@ -169,10 +169,6 @@ public class MainActivity extends AppCompatActivity
 
     // TODO: new version of MaterialCardView will include a setCheckedIcon. check it out
 
-    // TODO: In case you are using Proguard, you will need to whitelist MPAndroidChart,
-    // which requires to add the following line to your Proguard configuration file:
-    //-keep class com.github.mikephil.charting.** { *; }
-
     // If want to replace a fragment as the whole activity pass android.R.id.content to fragment manager
     // My solution: to have both the top and bottom app bars create the activity with top app bar
     // and add a fragment that includes the bottom app bar in it in this activity
@@ -181,35 +177,24 @@ public class MainActivity extends AppCompatActivity
     // • make your fragments subclass "android.app.fragment" instead of the support one
     // • to get the fragment manager, call getFragmentManager() instead of getSupportFragment...
 
+    public static final String EXTRA_LOCATION = "com.pleon.buyt.extra.LOCATION";
+    public static final String EXTRA_ITEM_ORDER = "com.pleon.buyt.extra.ITEM_ORDER";
     private static final String TAG = "MainActivity";
-    private static final double NEAR_STORES_DISTANCE = cos(0.1 / 6371); // == 100m (6371km is the radius of the Earth)
     /**
      * Id to identify a location permission request.
      */
     private static final int REQUEST_LOCATION_PERMISSION = 1;
-    public static final String EXTRA_LOCATION = "com.pleon.buyt.extra.LOCATION";
-    public static final String EXTRA_ITEM_ORDER = "com.pleon.buyt.extra.ITEM_ORDER";
 
     @BindView(R.id.fab) FloatingActionButton mFab;
     @BindView(R.id.bottom_bar) BottomAppBar mBottomAppBar;
     @BindView(R.id.chart_container) CardView chartContainer;
     @BindView(R.id.chart) BarChartView chart;
 
-    // volatile because user clicking the fab and location may be found at the same time
-    private volatile State state = State.IDLE;
-    private List<Store> foundStores;
-    private Location location;
     private LocationManager locationMgr;
     private BroadcastReceiver locationReceiver;
-    private MainViewModel mainViewModel;
+    private MainViewModel viewModel;
     private ItemListFragment itemListFragment;
-    private boolean findingStateSkipped = false;
-    private Set<Item> selectedItems;
     private boolean newbie;
-
-    private enum State {
-        IDLE, FINDING, SELECTING
-    }
 
 //    UI controllers such as activities and fragments are primarily intended to display UI data,
 //    react to user actions, or handle operating system communication, such as permission requests.
@@ -234,10 +219,9 @@ public class MainActivity extends AppCompatActivity
 
         locationReceiver = new BroadcastReceiver() { // on location found
             public void onReceive(Context context, Intent intent) {
-                location = intent.getParcelableExtra("LOCATION");
-                Coordinates originCoordinates = new Coordinates(location);
-                mainViewModel.findNearStores(originCoordinates, NEAR_STORES_DISTANCE)
-                        .observe(MainActivity.this, stores -> onStoresFound(stores));
+                viewModel.setLocation(intent.getParcelableExtra("LOCATION"));
+                Coordinates here = new Coordinates(viewModel.getLocation());
+                viewModel.findNearStores(here).observe(MainActivity.this, stores -> onStoresFound(stores));
             }
         };
         LocalBroadcastManager.getInstance(this).
@@ -267,8 +251,8 @@ public class MainActivity extends AppCompatActivity
 //                .replace(R.id.container_fragment_items, itemListFragment)
 //                .commit(); // TODO: commit vs commitNow?
 
-        mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        mainViewModel.getAllItems().observe(this, items -> {
+        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        viewModel.getAllItems().observe(this, items -> {
             if (newbie && items.size() > 0) {
                 getPreferences(MODE_PRIVATE).edit().putBoolean("NEWBIE", false).apply();
                 mBottomAppBar.getMenu().getItem(1).setIcon(R.drawable.ic_add);
@@ -288,12 +272,12 @@ public class MainActivity extends AppCompatActivity
 
         // observe() methods should be set only once (e.g. in activity onCreate() method) so if you
         // call it every time you want some data, maybe you're doing something wrong
-        mainViewModel.getAllPurchases().observe(this, purchases -> {
+        viewModel.getAllPurchases().observe(this, purchases -> {
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
             cal.add(DATE, -7);
             long from = cal.getTime().getTime();
-            mainViewModel.getTotalWeekdayCosts(from, new Date().getTime()).observe(this, weekdayCosts -> {
+            viewModel.getTotalWeekdayCosts(from, new Date().getTime()).observe(this, weekdayCosts -> {
                 if (weekdayCosts.size() == 0) {
                     chartContainer.setVisibility(GONE);
                 } else {
@@ -347,12 +331,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_bottom_home, menu);
-        synchronized (State.class) {
-            if (state == State.FINDING) {
-                menu.getItem(1).setIcon(R.drawable.ic_add);
-                menu.getItem(2).setIcon(R.drawable.ic_skip);
-                menu.getItem(2).setTitle(R.string.skip);
-            }
+        if (viewModel.getState() == FINDING) {
+            menu.getItem(1).setIcon(R.drawable.ic_add);
+            menu.getItem(2).setIcon(R.drawable.ic_skip);
+            menu.getItem(2).setTitle(R.string.skip);
         }
         if (newbie) {
             // Make plus icon glow a little bit if the user is a newbie!
@@ -381,22 +363,22 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.action_reorder:
-                if (state == State.IDLE) {
+                if (viewModel.getState() == IDLE) {
                     itemListFragment.toggleEditMode();
                 } else { // if state == FINDING
-                    findingStateSkipped = true;
+                    viewModel.setFindingStateSkipped(true);
                     stopService(new Intent(this, GpsService.class));
-                    mainViewModel.getAllStores().observe(this, this::onStoresFound);
+                    viewModel.getAllStores().observe(this, this::onStoresFound);
                 }
                 break;
 
             /* If you use setSupportActionBar() to set up the BottomAppBar you can handle the
              * navigation menu click by checking if the menu item id equals android.R.id.home. */
             case android.R.id.home:
-                if (state == State.IDLE) {
+                if (viewModel.getState() == IDLE) {
                     BottomSheetDialogFragment bottomDrawerFragment = BottomDrawerFragment.newInstance();
                     bottomDrawerFragment.show(getSupportFragmentManager(), "alaki");
-                } else if (state == State.FINDING) { // then it is cancel button
+                } else if (viewModel.getState() == FINDING) { // then it is cancel button
                     stopService(new Intent(this, GpsService.class));
                     shiftToIdleState();
                 } else {
@@ -412,13 +394,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        synchronized (State.class) {
-            if (state == State.FINDING || state == State.SELECTING) {
-                ConfirmExitDialog confirmExitDialog = ConfirmExitDialog.newInstance();
-                confirmExitDialog.show(getSupportFragmentManager(), "CONFIRM_EXIT_DIALOG");
-            } else {
-                super.onBackPressed();
-            }
+        if (viewModel.getState() == FINDING || viewModel.getState() == SELECTING) {
+            ConfirmExitDialog confirmExitDialog = ConfirmExitDialog.newInstance();
+            confirmExitDialog.show(getSupportFragmentManager(), "CONFIRM_EXIT_DIALOG");
+        } else {
+            super.onBackPressed();
         }
     }
 
@@ -436,11 +416,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        synchronized (State.class) {
-            outState.putString("STATE", state.name());
-            if (state == State.SELECTING) {
-                // TODO: save found stores and selection status and restore them
-            }
+        outState.putString("STATE", viewModel.getState().name());
+        if (viewModel.getState() == SELECTING) {
+            // TODO: save found stores and selection status and restore them
         }
         // save the application form and temp data to survive config changes and force-kills
     }
@@ -448,13 +426,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        synchronized (State.class) {
-            this.state = State.valueOf(savedInstanceState.getString("STATE"));
-            if (state == State.FINDING) {
-                mFab.setImageResource(R.drawable.avd_finding);
-                ((Animatable) mFab.getDrawable()).start();
-                mBottomAppBar.setNavigationIcon(R.drawable.ic_cancel);
-            }
+        viewModel.setState(State.valueOf(savedInstanceState.getString("STATE")));
+        if (viewModel.getState() == FINDING) {
+            mFab.setImageResource(R.drawable.avd_finding);
+            ((Animatable) mFab.getDrawable()).start();
+            mBottomAppBar.setNavigationIcon(R.drawable.ic_cancel);
         }
     }
 
@@ -465,7 +441,7 @@ public class MainActivity extends AppCompatActivity
             if (grantResults.length > 0 && grantResults[0] == PERMISSION_GRANTED) {
                 findLocation();
             } else { // if permission denied
-                findingStateSkipped = true;
+                viewModel.setFindingStateSkipped(true);
                 shiftToSelectingState();
             }
         }
@@ -491,14 +467,14 @@ public class MainActivity extends AppCompatActivity
 
     @OnClick(R.id.fab)
     void onFabClick() {
-        if (state == State.IDLE) { // act as find
+        if (viewModel.getState() == IDLE) { // act as find
             if (itemListFragment.isCartEmpty()) {
                 showShortSnackbar(R.string.cart_empty_message);
             } else {
                 itemListFragment.clearSelectedItems(); // clear items of previous purchase
                 findLocation();
             }
-        } else if (state == State.SELECTING) { // act as done
+        } else if (viewModel.getState() == SELECTING) { // act as done
             if (itemListFragment.isSelectedEmpty()) {
                 showShortSnackbar(R.string.no_item_selected_message);
             } else {
@@ -522,9 +498,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void onStoresFound(List<Store> foundStores) {
-        this.foundStores = foundStores; // this seems to not change this.foundStores. Why?!
+        viewModel.setFoundStores(foundStores);
         if (foundStores.size() == 0) {
-            if (findingStateSkipped) {
+            if (viewModel.isFindingStateSkipped()) {
                 showIndefiniteSnackbar(R.string.no_store, R.string.ok);
                 shiftToIdleState();
             } else {
@@ -558,9 +534,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void shiftToFindingState() {
-        synchronized (State.class) {
-            state = State.FINDING;
-        }
+        viewModel.setState(FINDING);
 
         mFab.setImageResource(R.drawable.avd_buyt);
         ((Animatable) mFab.getDrawable()).start();
@@ -589,19 +563,19 @@ public class MainActivity extends AppCompatActivity
         mFab.setImageResource(R.drawable.avd_find_done);
         ((Animatable) mFab.getDrawable()).start();
 
-        synchronized (State.class) {
-            state = State.SELECTING;
-        }
+        viewModel.setState(SELECTING);
     }
 
     private void shiftToIdleState() {
-        foundStores = null;
-        findingStateSkipped = false; // reset the flag
+        // reset
+        viewModel.resetFoundStores();
+        viewModel.setFindingStateSkipped(false);
+
         itemListFragment.toggleItemsCheckbox(false);
 
         mBottomAppBar.setFabAlignmentMode(FAB_ALIGNMENT_MODE_CENTER);
 
-        if (state == State.FINDING) {
+        if (viewModel.getState() == FINDING) {
             mFab.setImageResource(R.drawable.avd_buyt_reverse);
         } else {
             mFab.setImageResource(R.drawable.avd_done_buyt);
@@ -624,7 +598,7 @@ public class MainActivity extends AppCompatActivity
         mBottomAppBar.getMenu().getItem(2).setTitle(R.string.reorder_items);
         ((Animatable) mBottomAppBar.getMenu().getItem(2).getIcon()).start();
 
-        state = State.IDLE; // this should be the last statement (because of the if above)
+        viewModel.setState(IDLE); // this should be the last statement (because of the if above)
     }
 
     /**
@@ -645,17 +619,16 @@ public class MainActivity extends AppCompatActivity
 
     public void buySelectedItems() {
         if (itemListFragment.validateSelectedItemsPrice()) {
-            selectedItems = itemListFragment.getSelectedItems();
-            if (foundStores == null || foundStores.size() == 0) {
+            if (viewModel.getFoundStores().size() == 0) {
                 Intent intent = new Intent(this, CreateStoreActivity.class);
-                intent.putExtra(EXTRA_LOCATION, location);
+                intent.putExtra(EXTRA_LOCATION, viewModel.getLocation());
                 startActivity(intent);
-                mainViewModel.getLatestCreatedStore().observe(this, this::completeBuy);
-            } else if (foundStores.size() == 1) {
-                completeBuy(foundStores.get(0));
+                viewModel.getLatestCreatedStore().observe(this, this::completeBuy);
+            } else if (viewModel.getFoundStores().size() == 1) {
+                completeBuy(viewModel.getFoundStores().get(0));
             } else { // show store selection dialog
                 ArrayList<SelectionDialogRow> selectionList = new ArrayList<>(); // dialog requires ArrayList
-                for (Store store : foundStores) {
+                for (Store store : viewModel.getFoundStores()) {
                     SelectionDialogRow selection = new SelectionDialogRow(store.getName(),/*store.getIcon()*/ R.drawable.ic_store);
                     selectionList.add(selection);
                 }
@@ -673,11 +646,11 @@ public class MainActivity extends AppCompatActivity
      */
     @Override
     public void onSelected(int index) {
-        completeBuy(foundStores.get(index));
+        completeBuy(viewModel.getFoundStores().get(index));
     }
 
     public void completeBuy(Store store) {
-        mainViewModel.buy(selectedItems, store);
+        viewModel.buy(itemListFragment.getSelectedItems(), store);
         shiftToIdleState();
     }
 
@@ -686,7 +659,7 @@ public class MainActivity extends AppCompatActivity
         mBottomAppBar.getMenu().getItem(1).setVisible(false);
         mBottomAppBar.setNavigationIcon(R.drawable.avd_nav_cancel);
         ((Animatable) mBottomAppBar.getNavigationIcon()).start();
-        findingStateSkipped = true;
+        viewModel.setFindingStateSkipped(true);
         shiftToSelectingState();
     }
 }
