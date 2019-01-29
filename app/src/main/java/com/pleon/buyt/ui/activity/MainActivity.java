@@ -237,7 +237,8 @@ public class MainActivity extends AppCompatActivity
             public void onReceive(Context context, Intent intent) {
                 location = intent.getParcelableExtra("LOCATION");
                 Coordinates originCoordinates = new Coordinates(location);
-                mainViewModel.findNearStores(originCoordinates, NEAR_STORES_DISTANCE);
+                mainViewModel.findNearStores(originCoordinates, NEAR_STORES_DISTANCE)
+                        .observe(MainActivity.this, stores -> onStoresFound(stores));
             }
         };
         LocalBroadcastManager.getInstance(this).
@@ -269,9 +270,6 @@ public class MainActivity extends AppCompatActivity
 //                .commit(); // TODO: commit vs commitNow?
 
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        // observe() methods should be set only once (e.g. in activity onCreate() method) so if you
-        // call it every time you want some data, maybe you're doing something wrong
-        mainViewModel.getNearStores().observe(this, this::onStoresFound);
 
         chart.setLabelsColor(ContextCompat.getColor(this, R.color.ic_launcher_background));
         chart.setXAxis(false);
@@ -284,6 +282,8 @@ public class MainActivity extends AppCompatActivity
         chart.setTopSpacing(-12);
         chart.setBorderSpacing(12);
 
+        // observe() methods should be set only once (e.g. in activity onCreate() method) so if you
+        // call it every time you want some data, maybe you're doing something wrong
         mainViewModel.getAllPurchases().observe(this, purchases -> {
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());

@@ -4,17 +4,17 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.pleon.buyt.database.AppDatabase;
+import com.pleon.buyt.database.SingleLiveEvent;
 import com.pleon.buyt.database.dao.StoreDao;
 import com.pleon.buyt.model.Store;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 public class StoreRepository {
 
     private static volatile StoreRepository sInstance;
     private static StoreDao mStoreDao;
-    private MutableLiveData<Store> mLatestCreatedStore = new MutableLiveData<>();
+    private SingleLiveEvent<Store> mLatestCreatedStore = new SingleLiveEvent<>();
 
     public static StoreRepository getInstance(Context appContext) {
         if (sInstance == null) {

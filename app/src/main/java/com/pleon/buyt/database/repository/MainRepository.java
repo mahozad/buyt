@@ -4,6 +4,7 @@ import android.app.Application;
 import android.os.AsyncTask;
 
 import com.pleon.buyt.database.AppDatabase;
+import com.pleon.buyt.database.SingleLiveEvent;
 import com.pleon.buyt.database.dao.ItemDao;
 import com.pleon.buyt.database.dao.PurchaseDao;
 import com.pleon.buyt.database.dao.StoreDao;
@@ -31,8 +32,9 @@ public class MainRepository { // TODO: make this class singleton
     private PurchaseDao mPurchaseDao;
     private LiveData<List<Item>> mAllItems;
     private LiveData<List<Purchase>> allPurchases;
-    private MutableLiveData<List<Store>> mNearStores;
-    private MutableLiveData<List<WeekdayCost>> totalWeekdayCosts;
+    private SingleLiveEvent<List<Store>> mNearStores;
+    private SingleLiveEvent<List<Store>> allStores;
+    private SingleLiveEvent<List<WeekdayCost>> totalWeekdayCosts;
 
     public MainRepository(Application application) {
         mItemDao = AppDatabase.getDatabase(application).itemDao();
@@ -40,8 +42,9 @@ public class MainRepository { // TODO: make this class singleton
         mPurchaseDao = AppDatabase.getDatabase(application).purchaseDao();
         mAllItems = mItemDao.getAll();
         allPurchases = mPurchaseDao.getAll();
-        mNearStores = new MutableLiveData<>();
-        totalWeekdayCosts = new MutableLiveData<>();
+        mNearStores = new SingleLiveEvent<>();
+        allStores = new SingleLiveEvent<>();
+        totalWeekdayCosts = new SingleLiveEvent<>();
     }
 
     // this does not need to be run in separate thread because it just returns LiveData
@@ -61,29 +64,18 @@ public class MainRepository { // TODO: make this class singleton
         new UpdateItemsTask(mItemDao, items).execute();
     }
 
-    public long insertStore(Store store) {
-        return mStoreDao.insert(store);
-    }
-
-    public long insertPurchase(Purchase purchase) {
-        return mPurchaseDao.insert(purchase);
-    }
-
     public void deleteItem(Item item) {
         new DeleteItemTask(mItemDao).execute(item);
     }
 
-    public LiveData<List<Store>> getNearStores() {
-        return mNearStores;
-    }
-
-    public void findNearStores(Coordinates origin, double maxDistance) {
+    public LiveData<List<Store>> findNearStores(Coordinates origin, double maxDistance) {
         new FindNearStoresAsyncTask(mStoreDao, origin, maxDistance, mNearStores).execute();
+        return mNearStores;
     }
 
     public LiveData<List<Store>> getAllStores() {
-        new GetAllStoresAsyncTask(mStoreDao, mNearStores).execute();
-        return mNearStores;
+        new GetAllStoresAsyncTask(mStoreDao, allStores).execute();
+        return allStores;
     }
 
     public LiveData<List<WeekdayCost>> getTotalWeekdayCosts(long from, long to) {
@@ -215,11 +207,11 @@ public class MainRepository { // TODO: make this class singleton
     private static class GetAllStoresAsyncTask extends AsyncTask<Void, Void, List<Store>> {
 
         private StoreDao mDao;
-        private MutableLiveData<List<Store>> mNearStores;
+        private MutableLiveData<List<Store>> allStores;
 
-        GetAllStoresAsyncTask(StoreDao mDao, MutableLiveData<List<Store>> mNearStores) {
+        GetAllStoresAsyncTask(StoreDao mDao, MutableLiveData<List<Store>> allStores) {
             this.mDao = mDao;
-            this.mNearStores = mNearStores;
+            this.allStores = allStores;
         }
 
         @Override
@@ -229,7 +221,7 @@ public class MainRepository { // TODO: make this class singleton
 
         @Override
         protected void onPostExecute(List<Store> stores) {
-            mNearStores.setValue(stores);
+            allStores.setValue(stores);
         }
     }
 
