@@ -25,8 +25,6 @@ import static androidx.core.app.NotificationCompat.PRIORITY_LOW;
 public class GpsService extends Service implements LocationListener {
 
     private static final String PROVIDER = GPS_PROVIDER;
-    private static final int INTERVAL = 0;
-    private static final float DISTANCE = 0;
 
     private LocationManager locationManager;
     private NotificationCompat.Builder notification;
@@ -70,7 +68,10 @@ public class GpsService extends Service implements LocationListener {
         super.onStartCommand(intent, flags, startId);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(PROVIDER, INTERVAL, DISTANCE, this);
+        // FIXME: Because the first gps fix does not have a good accuracy, it seems better to call
+        // requestLocationUpdates() and then in onLocationFound() check the accuracy and if it's
+        // good enough call removeUpdates() there
+        locationManager.requestSingleUpdate(PROVIDER, this, null);
 
         // If we get killed, after returning from here, don't restart
         return START_NOT_STICKY;
@@ -91,7 +92,6 @@ public class GpsService extends Service implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        locationManager.removeUpdates(this);
 
         // For broadcast receivers, the intent simply defines the announcement being broadcast
         Intent result = new Intent("LOCATION_INTENT");
