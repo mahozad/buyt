@@ -247,11 +247,11 @@ public class MainActivity extends AppCompatActivity
         if (newbie) {
             // show tap target for FAB
             new TapTargetSequence(this).targets(
-                    forView(findViewById(R.id.fab), "Tap here when you're ready")
+                    forView(findViewById(R.id.fab), "Tap here when you're near or in the store")
                             .outerCircleColor(R.color.colorAccent)
                             .targetCircleColor(android.R.color.background_light)
                             .transparentTarget(true)
-                            .textColor(R.color.colorPrimaryDark))
+                            .textColor(android.R.color.background_dark))
                     .start();
         }
 
