@@ -21,8 +21,8 @@ public interface PurchaseDao {
      * Gets List of total costs per each <b>day of week</b> for the given period.
      * <p>
      * <code>strftime()</code> gets date in seconds (<code>date/1000</code>), adapts it to user time
-     * (<code>'unixepoch', 'localtime'</code>) and then formats it as day of the week (<code>'%w'</code>
-     * which results in numbers from 0 to 6, with 0 meaning Sunday and so on).
+     * (<code>'unixepoch', 'localtime'</code>) and then formats it as day of week (<code>'%w'</code>
+     * resulting in numbers from 0 to 6, with 0 meaning Sunday and so on).
      * <p>
      * Do NOT change the order of 'unixepoch' and 'localtime'. Also note that since we save the date
      * as milliseconds in the database and epoch is in seconds, we divide the 'date' column by 1000.
