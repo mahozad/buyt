@@ -24,8 +24,8 @@ public interface PurchaseDao {
      * (<code>'unixepoch', 'localtime'</code>) and then formats it as day of week (<code>'%w'</code>
      * resulting in numbers from 0 to 6, with 0 meaning Sunday and so on).
      * <p>
-     * Do NOT change the order of 'unixepoch' and 'localtime'. Also note that since we save the date
-     * as milliseconds in the database and epoch is in seconds, we divide the 'date' column by 1000.
+     * Do NOT change the order of 'unixepoch' and 'localtime'. Also note that since the date is saved
+     * as milliseconds in the database, the date column is divided by 1000 to give seconds.
      * <p>
      * See sqlite strftime() docs <a href="https://www.sqlite.org/lang_datefunc.html">here</a>.
      *
