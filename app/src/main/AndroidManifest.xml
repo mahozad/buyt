@@ -19,16 +19,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.MainActivity">
+
+        <!-- android:windowSoftInputMode attribute is to prevent the bottom app bar to jump when keyboard appears-->
+        <activity
+            android:name=".ui.activity.MainActivity"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- android:windowSoftInputMode attribute is to prevent the bottom app bar to jump when keyboard appears-->
         <activity
             android:name=".ui.activity.AddItemActivity"
-            android:parentActivityName=".ui.activity.MainActivity" />
+            android:parentActivityName=".ui.activity.MainActivity"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity android:name=".ui.activity.CreateStoreActivity" />
 
         <service
