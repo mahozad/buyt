@@ -18,19 +18,25 @@ public interface PurchaseDao {
     long insert(Purchase purchase);
 
     /**
-     * Gets List of total costs per each <b>day of the week</b> between the given period.
+     * Gets List of total costs per each <b>day of week</b> for the given period.
      * <p>
-     * The %w in GROUP BY clause, groups the dates by day of the week (it results in numbers
-     * from 0 to 6, with 0 meaning sunday and so on).
+     * <code>strftime()</code> gets date in seconds (<code>date/1000</code>), adapts it to user time
+     * (<code>'unixepoch', 'localtime'</code>) and then formats it as day of the week (<code>'%w'</code>
+     * which results in numbers from 0 to 6, with 0 meaning Sunday and so on).
+     * <p>
+     * Do NOT change the order of 'unixepoch' and 'localtime'. Also note that since we save the date
+     * as milliseconds in the database and epoch is in seconds, we divide the 'date' column by 1000.
+     * <p>
+     * See sqlite strftime() docs <a href="https://www.sqlite.org/lang_datefunc.html">here</a>.
      *
      * @param from the starting date in milliseconds
      * @param to   the ending date in milliseconds
      * @return List of total costs per weekday
      */
-    @Query("SELECT strftime('%w', date/1000, 'unixepoch') as day, SUM(totalcost) as cost " +
+    @Query("SELECT strftime('%w', date/1000, 'unixepoch', 'localtime') as day, SUM(totalcost) as cost " +
             "FROM purchase " +
             "WHERE date BETWEEN :from AND :to " +
-            "GROUP BY strftime('%w', date/1000, 'unixepoch')" +
+            "GROUP BY strftime('%w', date/1000, 'unixepoch', 'localtime')" +
             "ORDER BY day")
     List<WeekdayCost> getCost(long from, long to);
 

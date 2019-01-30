@@ -12,9 +12,11 @@
       <w>rdgrp</w>
       <w>signum</w>
       <w>snackbar</w>
+      <w>strftime</w>
       <w>toman</w>
       <w>txinlt</w>
       <w>txvi</w>
+      <w>unixepoch</w>
     </words>
   </dictionary>
 </component>
