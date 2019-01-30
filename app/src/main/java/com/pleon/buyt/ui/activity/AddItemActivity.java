@@ -36,14 +36,14 @@ public class AddItemActivity extends AppCompatActivity
         setSupportActionBar(mBottomAppBar);
 
         FragmentManager fragMgr = getSupportFragmentManager();
-        addItemFragment = (AddItemFragment) fragMgr.findFragmentById(R.id.container_fragment_add_item);
-        if (addItemFragment == null) {
-            int itemOrder = getIntent().getIntExtra(MainActivity.EXTRA_ITEM_ORDER, 0);
-            addItemFragment = AddItemFragment.newInstance(itemOrder);
-            fragMgr.beginTransaction()
-                    .add(R.id.container_fragment_add_item, addItemFragment)
-                    .commit();
-        }
+        addItemFragment = (AddItemFragment) fragMgr.findFragmentById(R.id.fragment_add_item);
+//        if (addItemFragment == null) {
+//            int itemOrder = getIntent().getIntExtra(MainActivity.EXTRA_ITEM_ORDER, 0);
+//            addItemFragment = AddItemFragment.newInstance(itemOrder);
+//            fragMgr.beginTransaction()
+//                    .add(R.id.container_fragment_add_item, addItemFragment)
+//                    .commit();
+//        }
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(v -> addItemFragment.onDonePressed()); // notify fragment fab was clicked
