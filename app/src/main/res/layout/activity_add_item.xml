@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             app:fabSize="normal"
             app:layout_anchor="@id/bottom_bar"
+            app:maxImageSize="42dp"
             app:srcCompat="@drawable/ic_done" />
 
         <com.google.android.material.bottomappbar.BottomAppBar
