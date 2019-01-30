@@ -33,7 +33,6 @@ import com.pleon.buyt.ui.dialog.SelectionDialogRow;
 import com.pleon.buyt.ui.fragment.BottomDrawerFragment;
 import com.pleon.buyt.ui.fragment.ItemListFragment;
 import com.pleon.buyt.viewmodel.MainViewModel;
-import com.pleon.buyt.viewmodel.MainViewModel.State;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -43,6 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
@@ -332,9 +332,14 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_bottom_home, menu);
         if (viewModel.getState() == FINDING) {
-            menu.getItem(1).setIcon(R.drawable.ic_add);
+            mBottomAppBar.setNavigationIcon(R.drawable.ic_cancel);
             menu.getItem(2).setIcon(R.drawable.ic_skip);
             menu.getItem(2).setTitle(R.string.skip);
+        } else if (viewModel.getState() == SELECTING) {
+            mBottomAppBar.setNavigationIcon(R.drawable.ic_cancel);
+            menu.getItem(0).setIcon(viewModel.getStoreIcon()).setVisible(true);
+            menu.getItem(2).setVisible(false);
+            mBottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END); // this is because menu items go behind fab
         }
         if (newbie) {
             // Make plus icon glow a little bit if the user is a newbie!
@@ -408,29 +413,29 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * This method will not be called if the system determines that the current state will not
+     * This method will NOT be called if the system determines that the current state will not
      * be resumed—for example, if the activity is closed by pressing the back button.
      *
      * @param outState
      */
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("STATE", viewModel.getState().name());
-        if (viewModel.getState() == SELECTING) {
-            // TODO: save found stores and selection status and restore them
-        }
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         // save the application form and temp data to survive config changes and force-kills
+        super.onSaveInstanceState(outState);
+        if (viewModel.getState() == SELECTING) {
+            // TODO: save found stores and selection status
+        }
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        viewModel.setState(State.valueOf(savedInstanceState.getString("STATE")));
         if (viewModel.getState() == FINDING) {
             mFab.setImageResource(R.drawable.avd_finding);
             ((Animatable) mFab.getDrawable()).start();
-            mBottomAppBar.setNavigationIcon(R.drawable.ic_cancel);
+        } else if (viewModel.getState() == SELECTING) {
+            mFab.setImageResource(R.drawable.ic_done);
+            itemListFragment.toggleItemsCheckbox(true);
         }
     }
 
@@ -504,6 +509,7 @@ public class MainActivity extends AppCompatActivity
                 showIndefiniteSnackbar(R.string.no_store, R.string.ok);
                 shiftToIdleState();
             } else {
+                viewModel.setStoreIcon(R.drawable.ic_store_new); // to use on config change
                 mBottomAppBar.getMenu().getItem(0).setIcon(R.drawable.ic_store_new);
                 mBottomAppBar.getMenu().getItem(0).setVisible(true);
                 shiftToSelectingState();
@@ -512,8 +518,10 @@ public class MainActivity extends AppCompatActivity
             shiftToSelectingState();
             if (foundStores.size() == 1) {
                 int icon = foundStores.get(0).getCategory().getImageRes();
+                viewModel.setStoreIcon(icon); // to use on config change
                 mBottomAppBar.getMenu().getItem(0).setIcon(icon);
             } else {
+                viewModel.setStoreIcon(R.drawable.ic_store_multi); // to use on config change
                 mBottomAppBar.getMenu().getItem(0).setIcon(R.drawable.ic_store_multi);
             }
             mBottomAppBar.getMenu().getItem(0).setVisible(true);

@@ -15,9 +15,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import androidx.annotation.DrawableRes;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import static com.pleon.buyt.viewmodel.MainViewModel.State.IDLE;
 import static java.lang.Math.cos;
 
 // The ViewModel's role is to provide data to the UI and survive configuration changes.
@@ -39,10 +41,11 @@ public class MainViewModel extends AndroidViewModel {
 
     private MainRepository mMainRepository;
     private StoreRepository mStoreRepository;
-    private volatile State state = State.IDLE;
+    private volatile State state = IDLE;
     private Location location;
     private boolean findingStateSkipped;
     private List<Store> foundStores = new ArrayList<>();
+    @DrawableRes private int storeIcon;
 
     // TODO: Use paging library architecture component
     private LiveData<List<Item>> mAllItems;
@@ -130,5 +133,13 @@ public class MainViewModel extends AndroidViewModel {
 
     public void setFoundStores(List<Store> foundStores) {
         this.foundStores = foundStores;
+    }
+
+    public int getStoreIcon() {
+        return storeIcon;
+    }
+
+    public void setStoreIcon(int storeIcon) {
+        this.storeIcon = storeIcon;
     }
 }
