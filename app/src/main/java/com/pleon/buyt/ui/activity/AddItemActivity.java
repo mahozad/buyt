@@ -58,6 +58,10 @@ public class AddItemActivity extends AppCompatActivity
         MenuItem menuItem = menu.findItem(R.id.action_item_category);
         menuItem.getActionView().setOnClickListener(v -> onOptionsItemSelected(menuItem));
 
+        // FIXME: This statement was added to fix the menu item showing behind the fab.
+        // Remove it if you update the material library and see if it's fixed
+        ((BottomAppBar) findViewById(R.id.bottom_bar)).setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
+
         return true;
     }
 

@@ -32,7 +32,11 @@
                 android:drawableStart="@drawable/ic_cart"
                 android:drawablePadding="8dp"
                 android:inputType="text"
-                tools:text="Item name" />
+                tools:text="Item name">
+
+                <requestFocus />
+
+            </com.google.android.material.textfield.TextInputEditText>
 
         </com.google.android.material.textfield.TextInputLayout>
 
