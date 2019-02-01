@@ -219,13 +219,13 @@ public class MainActivity extends AppCompatActivity
 
         locationReceiver = new BroadcastReceiver() { // on location found
             public void onReceive(Context context, Intent intent) {
-                viewModel.setLocation(intent.getParcelableExtra("LOCATION"));
+                viewModel.setLocation(intent.getParcelableExtra(GpsService.EXTRA_LOCATION));
                 Coordinates here = new Coordinates(viewModel.getLocation());
                 viewModel.findNearStores(here).observe(MainActivity.this, stores -> onStoresFound(stores));
             }
         };
         LocalBroadcastManager.getInstance(this).
-                registerReceiver(locationReceiver, new IntentFilter("LOCATION_INTENT"));
+                registerReceiver(locationReceiver, new IntentFilter(GpsService.ACTION_LOCATION_EVENT));
 
         newbie = getPreferences(MODE_PRIVATE).getBoolean("NEWBIE", true);
         if (newbie) {
