@@ -22,6 +22,15 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import static android.location.LocationManager.GPS_PROVIDER;
 import static androidx.core.app.NotificationCompat.PRIORITY_LOW;
 
+/**
+ * We are not using WorkManager because if we want to run our task instantly
+ * without any delay and the task is initiated by the user and supposed to be completed even if
+ * the user exits the app (that means Guaranteed execution) then we have to use foreground services.
+ * <p>
+ * More importantly, because we request location even when the app is in background, and because of
+ * the limitation on number of background location requests in Android O (API 26) and higher,
+ * foreground services should be used as stated by the android developer site.
+ */
 public class GpsService extends Service implements LocationListener {
 
     private static final String PROVIDER = GPS_PROVIDER;
@@ -106,7 +115,6 @@ public class GpsService extends Service implements LocationListener {
     }
 
     //<editor-fold desc="Other LocationListener callbacks">
-
     @Override
     public void onProviderDisabled(String provider) {
     }
