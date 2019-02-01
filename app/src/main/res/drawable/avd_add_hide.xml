@@ -1,29 +1,29 @@
-<animated-vector
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt">
     <aapt:attr name="android:drawable">
         <vector
             android:name="vector"
             android:width="24dp"
             android:height="24dp"
+            android:tint="?attr/colorOnSurface"
             android:viewportWidth="24"
             android:viewportHeight="24">
             <path
                 android:name="path"
+                android:fillColor="#000"
                 android:pathData="M 18 13 L 13 13 L 13 18 C 13 18.55 12.55 19 12 19 C 11.45 19 11 18.55 11 18 L 11 13 L 6 13 C 5.45 13 5 12.55 5 12 C 5 11.45 5.45 11 6 11 L 11 11 L 11 6 C 11 5.45 11.45 5 12 5 C 12.55 5 13 5.45 13 6 L 13 11 L 18 11 C 18.55 11 19 11.45 19 12 C 19 12.55 18.55 13 18 13 Z"
-                android:fillColor="#fff"
-                android:strokeWidth="1"/>
+                android:strokeWidth="1" />
         </vector>
     </aapt:attr>
     <target android:name="path">
         <aapt:attr name="android:animation">
             <objectAnimator
-                android:propertyName="fillAlpha"
                 android:duration="500"
+                android:interpolator="@android:interpolator/fast_out_slow_in"
+                android:propertyName="fillAlpha"
                 android:valueFrom="1"
                 android:valueTo="0"
-                android:valueType="floatType"
-                android:interpolator="@android:interpolator/fast_out_slow_in"/>
+                android:valueType="floatType" />
         </aapt:attr>
     </target>
 </animated-vector>

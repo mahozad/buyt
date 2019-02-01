@@ -5,32 +5,33 @@
             android:name="vector"
             android:width="1000dp"
             android:height="1000dp"
+            android:tint="?attr/colorOnSurface"
             android:viewportWidth="1000"
             android:viewportHeight="1000">
             <path
-                android:name="path_2"
+                android:name="path_1"
                 android:pathData="M 555.058 500 C 637.901 500 705.058 432.843 705.058 350 C 705.058 267.157 637.901 200 555.058 200 L 295.251 350 Z"
                 android:strokeWidth="60"
-                android:strokeColor="#fff"
+                android:strokeColor="#000"
                 android:strokeLineCap="round"
                 android:strokeLineJoin="round" />
             <path
-                android:name="path_3"
-                android:fillAlpha="0.38"
-                android:fillColor="#fff"
-                android:pathData="M 500 355 C 482.768 355 466.223 361.853 454.038 374.038 C 441.853 386.223 435 402.768 435 420 C 435 437.232 441.853 453.777 454.038 465.962 C 466.223 478.147 482.768 485 500 485 C 517.232 485 533.777 478.147 545.962 465.962 C 558.147 453.777 565 437.232 565 420 C 565 402.768 558.147 386.223 545.962 374.038 C 533.777 361.853 517.232 355 500 355 Z"
-                android:strokeWidth="1" />
-            <path
-                android:name="path_4"
+                android:name="path_2"
                 android:pathData="M 295.098 350 L 295.098 650 L 554.905 800 C 637.748 800 704.905 732.843 704.905 650 C 704.905 567.157 637.748 500 554.905 500"
                 android:strokeWidth="60"
-                android:strokeColor="#fff"
+                android:strokeColor="#000"
                 android:strokeLineCap="round"
                 android:strokeLineJoin="round"
                 android:trimPathStart="1" />
+            <path
+                android:name="path_3"
+                android:fillAlpha="0.38"
+                android:fillColor="#000"
+                android:pathData="M 500 355 C 482.768 355 466.223 361.853 454.038 374.038 C 441.853 386.223 435 402.768 435 420 C 435 437.232 441.853 453.777 454.038 465.962 C 466.223 478.147 482.768 485 500 485 C 517.232 485 533.777 478.147 545.962 465.962 C 558.147 453.777 565 437.232 565 420 C 565 402.768 558.147 386.223 545.962 374.038 C 533.777 361.853 517.232 355 500 355 Z"
+                android:strokeWidth="1" />
         </vector>
     </aapt:attr>
-    <target android:name="path_2">
+    <target android:name="path_1">
         <aapt:attr name="android:animation">
             <set>
                 <objectAnimator
@@ -57,7 +58,7 @@
             </set>
         </aapt:attr>
     </target>
-    <target android:name="path_4">
+    <target android:name="path_2">
         <aapt:attr name="android:animation">
             <objectAnimator
                 android:duration="450"
