@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.graphics.drawable.Animatable;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -305,7 +306,7 @@ public class MainActivity extends AppCompatActivity
                     for (int i = 0; i < weekdayCosts.size(); i++) {
                         costs.put(weekdayCosts.get(i).getDay(), weekdayCosts.get(i).getCost());
                     }
-                    for (int i = 0; i < 7; i++) { // this loop cannot be integrated into the next one
+                    for (int i = 0; i < 7; i++) { // this loop cannot be integrated into those two loops
                         if (costs.get(i) == null) {
                             costs.put(i, 0L);
                         }
@@ -323,7 +324,7 @@ public class MainActivity extends AppCompatActivity
                     }
 
                     int[] colors = getResources().getIntArray(R.array.chartGradient);
-                    float[] steps = {0, 0.4f, 0.7f};
+                    float[] steps = {0, 0.4f, 0.8f};
                     barSet.setGradientColor(colors, steps);
 
                     chart.addData(barSet);
@@ -353,13 +354,6 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    /**
-     * Caution: If you use an intent to start a Service, ensure that your app is secure
-     * by using an explicit intent.
-     *
-     * @param item
-     * @return
-     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -382,7 +376,7 @@ public class MainActivity extends AppCompatActivity
                 }
                 break;
 
-            /* If you use setSupportActionBar() to set up the BottomAppBar you can handle the
+            /* If you use setSupportActionBar() to set up the BottomAppBar, you can handle the
              * navigation menu click by checking if the menu item id equals android.R.id.home. */
             case android.R.id.home:
                 if (viewModel.getState() == IDLE) {
