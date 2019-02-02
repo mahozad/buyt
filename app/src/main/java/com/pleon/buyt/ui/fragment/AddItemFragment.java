@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -23,6 +22,7 @@ import com.pleon.buyt.R;
 import com.pleon.buyt.model.Item;
 import com.pleon.buyt.model.Quantity;
 import com.pleon.buyt.model.Quantity.Unit;
+import com.pleon.buyt.model.Store;
 import com.pleon.buyt.ui.dialog.DatePickerFragment;
 
 import java.text.SimpleDateFormat;
@@ -54,6 +54,8 @@ public class AddItemFragment extends Fragment
 
         void onSubmit(Item item);
 
+        void onSubmit(Item item, Store store);
+
         void onBoughtToggled(boolean checked);
     }
 
@@ -78,7 +80,7 @@ public class AddItemFragment extends Fragment
 
     private Unbinder unbinder;
 
-    private long selectedStoreId;
+    private Store store;
 
     private static int LAST_ITEM_ORDER;
 
@@ -269,6 +271,10 @@ public class AddItemFragment extends Fragment
         return itemCategory;
     }
 
+    public void setStore(Store store) {
+        this.store = store;
+    }
+
     public void onDonePressed() {
         boolean validated = validateFields();
 
@@ -280,12 +286,17 @@ public class AddItemFragment extends Fragment
             if (!isEmpty(descriptionEdtx)) {
                 item.setDescription(descriptionEdtx.getText().toString());
             }
-            if (!isEmpty(priceEdtx)) {
+            if (isBoughtChecked() && !isEmpty(priceEdtx)) {
                 item.setTotalPrice(Long.parseLong(priceEdtx.getText().toString()));
             }
 
             item.setPosition(LAST_ITEM_ORDER);
-            callback.onSubmit(item);
+            if (isBoughtChecked()) {
+//                item.setCategory(); // TODO: set it to the category of the selected store
+                callback.onSubmit(item, store);
+            } else {
+                callback.onSubmit(item);
+            }
         }
     }
 

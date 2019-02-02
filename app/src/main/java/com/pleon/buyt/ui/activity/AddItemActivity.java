@@ -16,16 +16,20 @@ import com.pleon.buyt.ui.fragment.AddItemFragment;
 import com.pleon.buyt.viewmodel.MainViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
+
+import static java.util.Collections.singletonList;
 
 public class AddItemActivity extends AppCompatActivity
         implements AddItemFragment.Callback, SelectDialogFragment.Callback {
 
     private AddItemFragment addItemFragment;
     private TextView selectCategoryTxvi;
+    private List<Store> storeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,19 +77,23 @@ public class AddItemActivity extends AppCompatActivity
                 ArrayList<SelectionDialogRow> selectionList = new ArrayList<>(); // dialog requires ArrayList
                 if (addItemFragment.isBoughtChecked()) {
                     ViewModelProviders.of(this).get(MainViewModel.class).getAllStores().observe(this, stores -> {
+                        storeList = stores;
+                        selectionList.clear();
                         for (Store store : stores) {
                             SelectionDialogRow selection = new SelectionDialogRow(store.getName(), store.getCategory().getImageRes());
                             selectionList.add(selection);
                         }
+                        SelectDialogFragment selectStoreDialog = SelectDialogFragment.newInstance(selectionList);
+                        selectStoreDialog.show(getSupportFragmentManager(), "SELECT_ITEM_DIALOG");
                     });
                 } else {
                     for (Item.Category category : Item.Category.values()) {
                         SelectionDialogRow selection = new SelectionDialogRow(getString(category.getNameRes()), category.getImageRes());
                         selectionList.add(selection);
                     }
+                    SelectDialogFragment selectStoreDialog = SelectDialogFragment.newInstance(selectionList);
+                    selectStoreDialog.show(getSupportFragmentManager(), "SELECT_ITEM_DIALOG");
                 }
-                SelectDialogFragment selectStoreDialog = SelectDialogFragment.newInstance(selectionList);
-                selectStoreDialog.show(getSupportFragmentManager(), "SELECT_ITEM_DIALOG");
                 break;
             case android.R.id.home:
                 finish();
@@ -101,6 +109,7 @@ public class AddItemActivity extends AppCompatActivity
         selectCategoryTxvi.setText(checked ? getString(R.string.action_select_store) : getString(addItemFragment.getItemCategory().getNameRes()));
     }
 
+    // For regular item (not bought)
     @Override
     public void onSubmit(Item item) {
         MainViewModel mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
@@ -110,11 +119,34 @@ public class AddItemActivity extends AppCompatActivity
         finish();
     }
 
+    // For bought item
+    @Override
+    public void onSubmit(Item item, Store store) {
+        MainViewModel mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mainViewModel.addItem(item);
+        // FIXME: the item purchaseId is not set
+        mainViewModel.buy(singletonList(item), store);
+        // Calling finish() is safe here. We are sure that the item will be added to database,
+        // because it is executed in a separate thread.
+        finish();
+    }
+
     @Override
     public void onSelected(int index) {
-        Item.Category category = Item.Category.values()[index];
-        selectCategoryTxvi.setCompoundDrawablesRelativeWithIntrinsicBounds(category.getImageRes(), 0, 0, 0);
-        selectCategoryTxvi.setText(category.getNameRes());
-        addItemFragment.setItemCategory(category);
+        String name;
+        int imageRes;
+        if (addItemFragment.isBoughtChecked()) {
+            Store.Category category = Store.Category.values()[index];
+            imageRes = category.getImageRes();
+            name = storeList.get(index).getName();
+            addItemFragment.setStore(storeList.get(index));
+        } else {
+            Item.Category category = Item.Category.values()[index];
+            imageRes = category.getImageRes();
+            name = getResources().getString(category.getNameRes());
+            addItemFragment.setItemCategory(category);
+        }
+        selectCategoryTxvi.setCompoundDrawablesRelativeWithIntrinsicBounds(imageRes, 0, 0, 0);
+        selectCategoryTxvi.setText(name);
     }
 }

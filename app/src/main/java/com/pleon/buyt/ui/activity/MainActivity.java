@@ -512,7 +512,7 @@ public class MainActivity extends AppCompatActivity
                 shiftToIdleState();
             } else {
                 viewModel.setStoreIcon(R.drawable.ic_store_new); // to use on config change
-                mBottomAppBar.getMenu().getItem(0).setIcon(R.drawable.ic_store_new);
+                mBottomAppBar.getMenu().getItem(0).setIcon(viewModel.getStoreIcon());
                 mBottomAppBar.getMenu().getItem(0).setVisible(true);
                 shiftToSelectingState();
             }
@@ -524,7 +524,7 @@ public class MainActivity extends AppCompatActivity
                 mBottomAppBar.getMenu().getItem(0).setIcon(icon);
             } else {
                 viewModel.setStoreIcon(R.drawable.ic_store_multi); // to use on config change
-                mBottomAppBar.getMenu().getItem(0).setIcon(R.drawable.ic_store_multi);
+                mBottomAppBar.getMenu().getItem(0).setIcon(viewModel.getStoreIcon());
             }
             mBottomAppBar.getMenu().getItem(0).setVisible(true);
         }
