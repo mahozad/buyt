@@ -29,9 +29,9 @@
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_cart"
                 android:drawablePadding="8dp"
                 android:inputType="text"
+                app:drawableStartCompat="@drawable/ic_cart"
                 tools:text="Item name">
 
                 <requestFocus />
@@ -61,12 +61,12 @@
                     android:id="@+id/quantity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_quantity"
                     android:drawablePadding="8dp"
                     android:inputType="numberDecimal"
                     android:maxLength="8"
                     android:selectAllOnFocus="true"
                     android:text="@string/quantity_default_value"
+                    app:drawableStartCompat="@drawable/ic_quantity"
                     tools:text="Item quantity" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -131,8 +131,8 @@
                 android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_description"
                 android:drawablePadding="8dp"
+                app:drawableStartCompat="@drawable/ic_description"
                 tools:text="Item description (optional)" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -143,10 +143,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="8dp"
-            android:button="@drawable/avd_urgent_check"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:text="@string/urgent"
+            app:buttonCompat="@drawable/avd_urgent_check"
             app:layout_constraintStart_toStartOf="@+id/description_layout"
             app:layout_constraintTop_toBottomOf="@+id/description_layout" />
 
@@ -201,15 +201,15 @@
                     android:hint="Total price"
                     app:errorEnabled="true">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/price"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_price"
-                        android:drawablePadding="8dp"
-                        android:inputType="number"
-                        android:maxLength="13"
-                        tools:text="Item price" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="8dp"
+                    android:inputType="number"
+                    android:maxLength="13"
+                    app:drawableStartCompat="@drawable/ic_price"
+                    tools:text="Item price" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -233,17 +233,17 @@
                 android:hint="Date"
                 app:errorEnabled="true">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/date"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:drawableStart="@drawable/ic_calendar"
-                    android:drawablePadding="8dp"
-                    android:editable="false"
-                    android:focusable="true"
-                    android:text="Today"
-                    tools:text="Purchase date" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:drawablePadding="8dp"
+                android:editable="false"
+                android:focusable="true"
+                android:text="Today"
+                app:drawableStartCompat="@drawable/ic_calendar"
+                tools:text="Purchase date" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
