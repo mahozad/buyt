@@ -639,7 +639,7 @@ public class MainActivity extends AppCompatActivity
             } else { // show store selection dialog
                 ArrayList<SelectionDialogRow> selectionList = new ArrayList<>(); // dialog requires ArrayList
                 for (Store store : viewModel.getFoundStores()) {
-                    SelectionDialogRow selection = new SelectionDialogRow(store.getName(),/*store.getIcon()*/ R.drawable.ic_store);
+                    SelectionDialogRow selection = new SelectionDialogRow(store.getName(), store.getCategory().getImageRes());
                     selectionList.add(selection);
                 }
                 SelectDialogFragment selectStoreDialog = SelectDialogFragment.newInstance(selectionList);
