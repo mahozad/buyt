@@ -8,7 +8,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".ui.fragment.AddItemFragment">
 
         <com.google.android.material.textfield.TextInputLayout
@@ -175,31 +175,32 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider" />
 
-        <LinearLayout
-            android:id="@+id/bought_container"
+        <!-- To change visibility of multiple views together -->
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/bought_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="price_container,date_layout"
+            tools:visibility="visible" />
+
+        <!-- Container for price input and label (تومان, dollar) -->
+        <FrameLayout
+            android:id="@+id/price_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="@+id/description_layout"
-            app:layout_constraintStart_toStartOf="@+id/description_layout"
-            app:layout_constraintTop_toBottomOf="@id/bought"
-            tools:visibility="visible">
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@id/description_layout"
+            app:layout_constraintStart_toStartOf="@id/description_layout"
+            app:layout_constraintTop_toBottomOf="@id/bought">
 
-            <!-- Container for price input and label (تومان, dollar) -->
-            <FrameLayout
-                android:id="@+id/price_container"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/price_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/price_layout"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Total price"
-                    app:errorEnabled="true">
+                android:hint="Total price"
+                app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/price"
@@ -211,27 +212,30 @@
                     app:drawableStartCompat="@drawable/ic_price"
                     tools:text="Item price" />
 
-                </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|end"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="6dp"
-                    android:text="dollar" />
-
-            </FrameLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/date_layout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                android:layout_width="match_parent"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="24dp"
-                android:hint="Date"
-                app:errorEnabled="true">
+                android:layout_gravity="center|end"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="6dp"
+                android:text="dollar" />
+
+        </FrameLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/date_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="24dp"
+            android:hint="Date"
+            app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="@id/price_container"
+            app:layout_constraintStart_toStartOf="@id/price_container"
+            app:layout_constraintTop_toBottomOf="@id/price_container">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/date"
@@ -245,9 +249,7 @@
                 app:drawableStartCompat="@drawable/ic_calendar"
                 tools:text="Purchase date" />
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </LinearLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
