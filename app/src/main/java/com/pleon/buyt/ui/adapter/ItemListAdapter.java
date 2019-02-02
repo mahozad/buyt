@@ -101,6 +101,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
             holder.selectChBx.setChecked(selectedItems.contains(item));
             holder.descTxVi.setVisibility(item.isExpanded() ? VISIBLE : GONE);
             holder.delRevealView.setAlpha(0f); // for the case of undo of deleted item
+            holder.priceEdTx.setText(item.getTotalPrice() != 0 ? String.valueOf(item.getTotalPrice()) : "");
 
             if (selectionModeEnabled) {
                 holder.selectChBx.setVisibility(VISIBLE);
@@ -241,6 +242,9 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
             } else {
                 priceContainer.setVisibility(GONE);
                 selectedItems.remove(items.get(getAdapterPosition()));
+                Item item = items.get(getAdapterPosition());
+                item.setTotalPrice(0);
+                priceEdTx.getText().clear();
             }
         }
     }
