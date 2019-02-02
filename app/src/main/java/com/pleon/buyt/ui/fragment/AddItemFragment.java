@@ -30,6 +30,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.Group;
 import androidx.core.widget.CompoundButtonCompat;
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
@@ -69,7 +70,7 @@ public class AddItemFragment extends Fragment
     @BindView(R.id.bought) CheckBox boughtChbx;
     @BindView(R.id.price_layout) TextInputLayout priceTxinlt;
     @BindView(R.id.price) EditText priceEdtx;
-    @BindView(R.id.bought_container) LinearLayout boughtContainer;
+    @BindView(R.id.bought_group) Group boughtContainer;
     @BindView(R.id.date_layout) TextInputLayout dateTxinlt;
     @BindView(R.id.date) EditText dateEdtx;
 
