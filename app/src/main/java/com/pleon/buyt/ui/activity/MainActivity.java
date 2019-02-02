@@ -255,7 +255,7 @@ public class MainActivity extends AppCompatActivity
         viewModel.getAllItems().observe(this, items -> {
             if (newbie && items.size() > 0) {
                 getPreferences(MODE_PRIVATE).edit().putBoolean("NEWBIE", false).apply();
-                mBottomAppBar.getMenu().getItem(1).setIcon(R.drawable.ic_add);
+                mBottomAppBar.getMenu().getItem(1).setIcon(R.drawable.avd_add_hide);
             }
         });
 
@@ -332,11 +332,11 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_bottom_home, menu);
         if (viewModel.getState() == FINDING) {
-            mBottomAppBar.setNavigationIcon(R.drawable.ic_cancel);
-            menu.getItem(2).setIcon(R.drawable.ic_skip);
+            mBottomAppBar.setNavigationIcon(R.drawable.avd_cancel_nav);
+            menu.getItem(2).setIcon(R.drawable.avd_skip_reorder);
             menu.getItem(2).setTitle(R.string.skip);
         } else if (viewModel.getState() == SELECTING) {
-            mBottomAppBar.setNavigationIcon(R.drawable.ic_cancel);
+            mBottomAppBar.setNavigationIcon(R.drawable.avd_cancel_nav);
             menu.getItem(0).setIcon(viewModel.getStoreIcon()).setVisible(true);
             menu.getItem(2).setVisible(false);
             mBottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END); // this is because menu items go behind fab
