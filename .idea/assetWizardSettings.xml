@@ -64,8 +64,8 @@
                           <map>
                             <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_done" />
-                            <entry key="sourceFile" value="D:\Project\Design\03-Animated Icons\done.svg" />
+                            <entry key="outputName" value="ic_cancel" />
+                            <entry key="sourceFile" value="C:\Users\Mahdi\Desktop\vector.svg" />
                           </map>
                         </option>
                       </PersistentState>
