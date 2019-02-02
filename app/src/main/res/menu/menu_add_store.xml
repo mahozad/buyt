@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_cancel"
-        android:icon="@drawable/ic_cancel"
+        android:icon="@drawable/avd_cancel_nav"
         android:title="Cancel"
         app:showAsAction="always" />
 
