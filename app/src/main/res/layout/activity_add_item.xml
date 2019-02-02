@@ -44,7 +44,7 @@
             android:backgroundTint="#212121"
             app:fabAlignmentMode="end"
             app:fabCradleMargin="6dp"
-            app:navigationIcon="@drawable/ic_cancel" />
+            app:navigationIcon="@drawable/avd_cancel_nav" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -80,7 +80,7 @@
             app:fabAnimationMode="slide"
             app:fabCradleMargin="6dp"
             app:hideOnScroll="true"
-            app:navigationIcon="@drawable/ic_nav_menu" />
+            app:navigationIcon="@drawable/avd_nav_cancel" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
