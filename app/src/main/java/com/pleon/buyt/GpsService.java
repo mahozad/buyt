@@ -33,7 +33,7 @@ import static androidx.core.app.NotificationCompat.PRIORITY_LOW;
  */
 public class GpsService extends Service implements LocationListener {
 
-    public static final String ACTION_LOCATION_EVENT = "com.pleon.buyt.action.LOCATION_EVENT";
+    public static final String ACTION_LOCATION_EVENT = "com.pleon.buyt.broadcast.LOCATION_EVENT";
     public static final String EXTRA_LOCATION = "com.pleon.buyt.extra.LOCATION";
     private static final String PROVIDER = GPS_PROVIDER;
 
@@ -103,7 +103,7 @@ public class GpsService extends Service implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-
+        // TODO: Make the intent explicit by defining the receiver class instead of action
         // For broadcast receivers, the intent simply defines the announcement being broadcast
         Intent result = new Intent(ACTION_LOCATION_EVENT);
         result.putExtra(EXTRA_LOCATION, location);
