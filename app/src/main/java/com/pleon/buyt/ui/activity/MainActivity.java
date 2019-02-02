@@ -222,17 +222,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this); // unbind() is not required for activities
 
+        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         locationMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-        locationReceiver = new BroadcastReceiver() { // on location found
-            public void onReceive(Context context, Intent intent) {
-                viewModel.setLocation(intent.getParcelableExtra(GpsService.EXTRA_LOCATION));
-                Coordinates here = new Coordinates(viewModel.getLocation());
-                viewModel.findNearStores(here).observe(MainActivity.this, stores -> onStoresFound(stores));
-            }
-        };
-        LocalBroadcastManager.getInstance(this).
-                registerReceiver(locationReceiver, new IntentFilter(GpsService.ACTION_LOCATION_EVENT));
 
         newbie = getPreferences(MODE_PRIVATE).getBoolean("NEWBIE", true);
         if (newbie) {
@@ -245,6 +236,24 @@ public class MainActivity extends AppCompatActivity
                             .textColor(android.R.color.background_dark))
                     .start();
         }
+
+        locationReceiver = new BroadcastReceiver() { // on location found
+            public void onReceive(Context context, Intent intent) {
+                viewModel.setLocation(intent.getParcelableExtra(GpsService.EXTRA_LOCATION));
+                Coordinates here = new Coordinates(viewModel.getLocation());
+                viewModel.findNearStores(here).observe(MainActivity.this, stores -> onStoresFound(stores));
+            }
+        };
+        LocalBroadcastManager.getInstance(this).
+                registerReceiver(locationReceiver, new IntentFilter(GpsService.ACTION_LOCATION_EVENT));
+
+        // This is just to disable add icon glow animation after first added item
+        viewModel.getAllItems().observe(this, items -> {
+            if (newbie && items.size() > 0) {
+                getPreferences(MODE_PRIVATE).edit().putBoolean("NEWBIE", false).apply();
+                mBottomAppBar.getMenu().getItem(1).setIcon(R.drawable.avd_add_hide);
+            }
+        });
 
         setSupportActionBar(mBottomAppBar);
 
@@ -265,25 +274,6 @@ public class MainActivity extends AppCompatActivity
             itemListFragment = ((ItemListFragment) fragMgr.findFragmentById(R.id.fragment_items));
         }
 */
-
-        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        viewModel.getAllItems().observe(this, items -> {
-            if (newbie && items.size() > 0) {
-                getPreferences(MODE_PRIVATE).edit().putBoolean("NEWBIE", false).apply();
-                mBottomAppBar.getMenu().getItem(1).setIcon(R.drawable.avd_add_hide);
-            }
-        });
-
-        chart.setLabelsColor(ContextCompat.getColor(this, R.color.ic_launcher_background));
-        chart.setXAxis(false);
-        chart.setYAxis(false);
-        chart.setRoundCorners(3);
-        chart.setAxisLabelsSpacing(11);
-        chart.setFontSize(15);
-        chart.setBarSpacing(26);
-        // set the same as borderSpacing to remove wrong top spacing
-        chart.setTopSpacing(-12);
-        chart.setBorderSpacing(12);
 
         // observe() methods should be set only once (e.g. in activity onCreate() method) so if you
         // call it every time you want some data, maybe you're doing something wrong
@@ -430,9 +420,10 @@ public class MainActivity extends AppCompatActivity
     /**
      * This method will NOT be called if the system determines that the current state will not
      * be resumed—for example, if the activity is closed by pressing the back button.
-     *
+     * <p>
      * Note that state for any View with an 'android:id' attribute is automatically saved and
      * restored by the framework.
+     *
      * @param outState
      */
     @Override

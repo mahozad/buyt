@@ -19,6 +19,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible">
 
+        <!-- Set topSpacing the same as borderSpacing to fix wrong top margin -->
         <com.db.chart.view.BarChartView
             android:id="@+id/chart"
             android:layout_width="match_parent"
@@ -26,7 +27,15 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="12dp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="12dp"
+            app:chart_axis="false"
+            app:chart_axisBorderSpacing="6dp"
+            app:chart_axisLabelsSpacing="6dp"
+            app:chart_axisTopSpacing="-6dp"
+            app:chart_barSpacing="16dp"
+            app:chart_cornerRadius="3dp"
+            app:chart_fontSize="12sp"
+            app:chart_labelColor="?attr/colorOnSurface" />
 
     </com.google.android.material.card.MaterialCardView>
 
