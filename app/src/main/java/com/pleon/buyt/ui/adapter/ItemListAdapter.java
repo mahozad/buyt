@@ -108,7 +108,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
                 holder.expandDragBtn.setVisibility(INVISIBLE);
             } else {
                 holder.selectChBx.setVisibility(INVISIBLE);
-                holder.onItemSelected(selectionModeEnabled);
+                holder.priceContainer.setVisibility(GONE);
                 if (dragModeEnabled) {
                     holder.expandDragBtn.setImageResource(R.drawable.ic_drag_handle);
                     holder.expandDragBtn.setVisibility(VISIBLE);
