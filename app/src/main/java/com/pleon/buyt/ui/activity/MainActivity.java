@@ -73,6 +73,10 @@ public class MainActivity extends AppCompatActivity
 
     // the app can be described as both a t0do app and an expense manager and also a shopping list app
 
+    // TODO: Make separate free and paid version flavors for the app
+    // TODO: application with upgrade to paid option vs two separate free and paid flavors
+    // TODO: Limit the max buys in a day in free version to 5
+
     // FIXME: The bug that adding new items won't show in main screen is because of configuration change;
     // after config change the observer in fragment is no longer triggered no matter you again change the config or...
 
@@ -102,7 +106,10 @@ public class MainActivity extends AppCompatActivity
     // FIXME: Shift to idle state if the app is in finding state and all items are deleted meanwhile
     // FIXME: Slide-up bottom bar if it was hidden (because of scroll) and some items were deleted and
     // now cannot scroll to make it slide up again
+    // TODO: Use a ViewStub in AddItemFragment layout for the part that is not shown until bought is checked
     // TODO: Redesign the logo in 24 by 24 grid in inkscape to make it crisp (like standard icons)
+    // TODO: You can view a location in google map by starting an implicit activity with
+    // the ACTION_VIEW intent and URI schema of geo:...
     // TODO: disable swipe-to-delete when the state is not in IDLE
     // TODO: Show the found store (icon or name) in bottomAppBar when location found (selecting mode)
     // TODO: Make icons animation durations consistent
@@ -244,12 +251,20 @@ public class MainActivity extends AppCompatActivity
         // FragmentManager of an activity is responsible for calling the lifecycle methods of the fragments in its list.
         FragmentManager fragMgr = getSupportFragmentManager();
         itemListFragment = (ItemListFragment) fragMgr.findFragmentById(R.id.fragment_items);
-        // fragMgr saves the list of fragments when activity is destroyed and then retrieves them
-        // so first we check if the fragment we want does not exist, then we create it
-//        itemListFragment = ItemListFragment.newInstance();
-//        fragMgr.beginTransaction()
-//                .replace(R.id.container_fragment_items, itemListFragment)
-//                .commit(); // TODO: commit vs commitNow?
+
+/*
+        // If the activity is re-created due to a config change, any fragments added using the
+        // Fragment Manager will automatically be re-added. As a result, we only add a new fragment
+        // if this is not a configuration-change restart (by checking the savedInstanceState bundle)
+        if (savedInstanceState == null) {
+            itemListFragment = ItemListFragment.newInstance();
+            // call commit to add the fragment to the UI queue asynchronously, or
+            // commitNow (preferred) to block until the transaction is fully complete.
+            fragMgr.beginTransaction().add(R.id.fragment_items, itemListFragment).commitNow();
+        } else {
+            itemListFragment = ((ItemListFragment) fragMgr.findFragmentById(R.id.fragment_items));
+        }
+*/
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         viewModel.getAllItems().observe(this, items -> {
@@ -416,6 +431,8 @@ public class MainActivity extends AppCompatActivity
      * This method will NOT be called if the system determines that the current state will not
      * be resumed—for example, if the activity is closed by pressing the back button.
      *
+     * Note that state for any View with an 'android:id' attribute is automatically saved and
+     * restored by the framework.
      * @param outState
      */
     @Override
