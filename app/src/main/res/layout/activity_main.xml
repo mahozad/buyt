@@ -83,7 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:backgroundTint="#212121"
+            android:backgroundTint="?attr/colorControlNormal"
             app:fabAlignmentMode="center"
             app:fabAnimationMode="slide"
             app:fabCradleMargin="6dp"
