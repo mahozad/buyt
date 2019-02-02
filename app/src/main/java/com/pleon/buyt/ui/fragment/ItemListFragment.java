@@ -52,11 +52,6 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
         return new ItemListFragment();
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
     // Unlike Activities, in a Fragment you inflate the fragment's view in onCreateView() method.
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -89,8 +84,7 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
     @Override
     public void onSwiped(ViewHolder viewHolder, int direction) {
         // Backup the item for undo purpose
-        int itemIndex = viewHolder.getAdapterPosition();
-        Item item = adapter.getItem(itemIndex);
+        Item item = adapter.getItem(viewHolder.getAdapterPosition());
 
         item.setFlaggedForDeletion(true);
         mainViewModel.updateItems(singletonList(item));
@@ -108,7 +102,7 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
         snackbar.addCallback(new BaseCallback<Snackbar>() {
             public void onDismissed(Snackbar transientBottomBar, int event) {
                 if (event != DISMISS_EVENT_ACTION) { // If dismiss wasn't because of "UNDO"...
-                    // ... Then delete the item completely from database
+                    // ... then delete the item completely from database
                     mainViewModel.deleteItem(item);
                 }
             }
@@ -163,7 +157,7 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
         for (Item item : adapter.getSelectedItems()) {
             if (item.getTotalPrice() == 0) {
                 int itemIndex = adapter.getItems().indexOf(item); // FIXME: maybe heavy operation
-                View itemView = adapter.recyclerView.getLayoutManager().findViewByPosition(itemIndex);
+                View itemView = itemRecyclerView.getLayoutManager().findViewByPosition(itemIndex);
                 TextInputLayout priceLayout = itemView.findViewById(R.id.price_layout);
                 priceLayout.setError("price cannot be empty");
                 validated = false;

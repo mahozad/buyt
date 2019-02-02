@@ -48,16 +48,18 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
 
     private Context context;
     private List<Item> items;
-    public RecyclerView recyclerView;
+    private RecyclerView recyclerView;
     private boolean dragModeEnabled = false;
     private boolean selectionModeEnabled = false;
     private final Set<Item> selectedItems = new HashSet<>();
+    private NumberFormat numberFormat;
 
     private ItemTouchHelper itemTouchHelper;
 
     public ItemListAdapter(Context context, ItemTouchHelper itemTouchHelper) {
         this.context = context;
         this.itemTouchHelper = itemTouchHelper;
+        this.numberFormat = NumberFormat.getInstance();
         // setHasStableIds is an optimization hint that you give to the RecyclerView
         // and tell it "when I provide a ViewHolder, its id is unique and will not change."
         setHasStableIds(true);
@@ -88,12 +90,13 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
+        // keep this method as lightweight as possible as it is called for every row
         if (items != null) {
             Item item = items.get(position);
             holder.categoryImgVi.setImageResource(item.getCategory().getImageRes());
             holder.nameTxVi.setText(item.getName());
             holder.descTxVi.setText(item.getDescription());
-            holder.quantityTxVi.setText(NumberFormat.getInstance().format(item.getQuantity().getQuantity()) + " " + context.getString(item.getQuantity().getUnit().getNameRes()));
+            holder.quantityTxVi.setText(numberFormat.format(item.getQuantity().getQuantity()) + " " + context.getString(item.getQuantity().getUnit().getNameRes()));
             holder.urgentImgVi.setVisibility(item.isUrgent() ? VISIBLE : INVISIBLE);
             holder.selectChBx.setChecked(selectedItems.contains(item));
             holder.descTxVi.setVisibility(item.isExpanded() ? VISIBLE : GONE);
@@ -120,10 +123,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
 
     @Override
     public int getItemCount() {
-        if (items == null) {
-            return 0;
-        }
-        return items.size();
+        return items == null ? 0 : items.size();
     }
 
     // setHasStableIds() should also be set (in e.g. constructor). This is an optimization hint that you
@@ -233,9 +233,9 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
         }
 
         @OnCheckedChanged(R.id.selectCheckBox)
-        void onItemSelected(boolean isChecked) {
+        void onItemSelected(boolean checked) {
             beginDelayedTransition(recyclerView, new ChangeBounds().setDuration(200));
-            if (isChecked) {
+            if (checked) {
                 priceContainer.setVisibility(VISIBLE);
                 selectedItems.add(items.get(getAdapterPosition()));
             } else {

@@ -150,7 +150,7 @@
             app:layout_constraintStart_toStartOf="@+id/description_layout"
             app:layout_constraintTop_toBottomOf="@+id/description_layout" />
 
-        <!-- a divider -->
+        <!-- A divider -->
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
@@ -169,11 +169,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
-            android:buttonTint="#ffffff"
+            android:buttonTint="#fff"
             android:paddingStart="4dp"
+            android:paddingEnd="4dp"
             android:text="Bought"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider" />
+            app:layout_constraintTop_toBottomOf="@id/divider" />
 
         <!-- To change visibility of multiple views together -->
         <androidx.constraintlayout.widget.Group
