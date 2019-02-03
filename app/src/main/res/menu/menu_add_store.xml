@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/action_cancel"
-        android:icon="@drawable/avd_cancel_nav"
-        android:title="Cancel"
-        app:showAsAction="always" />
 
     <!-- app:actionLayout sets a custom layout for this item (to show icon and text together) -->
     <item

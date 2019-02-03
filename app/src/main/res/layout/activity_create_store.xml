@@ -34,16 +34,8 @@
             android:backgroundTint="#212121"
             android:gravity="start"
             app:fabAlignmentMode="end"
-            app:fabCradleMargin="6dp">
-
-            <!-- container for action icons for aligning them on the left side. To align on the left
-                 set android:gravity="start" in the parent -->
-            <androidx.appcompat.widget.ActionMenuView
-                android:id="@+id/menu_view"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
-
-        </com.google.android.material.bottomappbar.BottomAppBar>
+            app:fabCradleMargin="6dp"
+            app:navigationIcon="@drawable/avd_cancel_nav" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
