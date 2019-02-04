@@ -411,33 +411,42 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
+     * {@link androidx.lifecycle.ViewModel ViewModels} only survive configuration changes but
+     * not process kills. On the other hand, {@link #onSaveInstanceState(Bundle)} method is called
+     * for both configuration changes and process kills. So because we have ViewModel in our app,
+     * here this method is used to save data just for the case of <b>process kills</b>.
+     * <p>
      * This method will NOT be called if the system determines that the current state will not
-     * be resumed—for example, if the activity is closed by pressing the back button.
+     * be resumed—for example, if the activity is closed by pressing the back button or if it calls
+     * {@link #finish()}.
      * <p>
      * Note that state for any View with an 'android:id' attribute is automatically saved and
-     * restored by the framework.
+     * restored by the framework (hence the call to {@code super.onSaveInstanceState()} method).
      *
      * @param outState
      */
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-        // save the application form and temp data to survive config changes and force-kills
         super.onSaveInstanceState(outState);
+
+        /*outState.putSerializable("STATE", viewModel.getState());
+        // because in finding state the app runs a foreground service, no need to store its data
         if (viewModel.getState() == SELECTING) {
-            // TODO: save found stores and selection status
-        }
+            outState.putParcelable("LOCATION", viewModel.getLocation());
+        }*/
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        if (viewModel.getState() == FINDING) {
-            mFab.setImageResource(R.drawable.avd_finding);
-            ((Animatable) mFab.getDrawable()).start();
-        } else if (viewModel.getState() == SELECTING) {
+
+        /*viewModel.setState((MainViewModel.State) savedInstanceState.getSerializable("STATE"));
+        if (viewModel.getState() == SELECTING && *//* if called because of process kill *//*) {
             mFab.setImageResource(R.drawable.ic_done);
             itemListFragment.toggleItemsCheckbox(true);
-        }
+            Location location = savedInstanceState.getParcelable("LOCATION");
+            viewModel.findNearStores(new Coordinates(location)).observe(this, viewModel::setFoundStores);
+        }*/
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.pleon.buyt.viewmodel;
 
 import android.app.Application;
 import android.location.Location;
+import android.os.Bundle;
 
 import com.pleon.buyt.database.repository.MainRepository;
 import com.pleon.buyt.database.repository.StoreRepository;
@@ -16,6 +17,7 @@ import java.util.Collection;
 import java.util.List;
 
 import androidx.annotation.DrawableRes;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
@@ -30,6 +32,12 @@ import static java.lang.Math.cos;
 // Warning: Never pass context into ViewModel instances. Do not store Activity, Fragment, or View instances or their Context in the ViewModel.
 // For example, an Activity can be destroyed and created many times during the lifecycle of a ViewModel as the device is rotated.
 // If you store a reference to the Activity in the ViewModel, you end up with references that point to the destroyed Activity. This is a memory leak.
+
+/**
+ * {@link androidx.lifecycle.ViewModel ViewModels} only survive configuration changes and not
+ * force-kills. So to survive process stops, implement
+ * {@link  AppCompatActivity#onSaveInstanceState(Bundle)} method in your activity/fragment.
+ */
 public class MainViewModel extends AndroidViewModel {
 
     // equals 100m (6371km is the radius of the Earth)
