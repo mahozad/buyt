@@ -30,6 +30,9 @@ import static androidx.core.app.NotificationCompat.PRIORITY_LOW;
  * More importantly, because we request location even when the app is in background, and because of
  * the limitation on number of background location requests in Android O (API 26) and higher,
  * foreground services should be used as stated by the android developer site.
+ * <p>
+ * See <a href="https://android-developers.googleblog.com/2018/10/modern-background-execution-in-android.html">
+ * this post</a> for more information.
  */
 public class GpsService extends Service implements LocationListener {
 
@@ -38,33 +41,33 @@ public class GpsService extends Service implements LocationListener {
     private static final String PROVIDER = GPS_PROVIDER;
 
     private LocationManager locationManager;
-    private NotificationCompat.Builder notification;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("default", "YOUR_CHANNEL_NAME", NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setDescription("YOUR_NOTIFICATION_CHANNEL_DISCRIPTION");
+            NotificationChannel channel = new NotificationChannel("default", "BUYT", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("BUYT Channel");
             ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
-
-            Intent notificationIntent = new Intent(this, MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-
-            // If you want to remove the notification when service stopped, see onDestroy() below
-            notification = new NotificationCompat.Builder(this, "default")
-                    .setSmallIcon(R.drawable.ic_buyt)
-                    .setOngoing(true)
-                    .setPriority(PRIORITY_LOW) // set to MIN to hide the icon in notification bar
-                    .setContentTitle("My Awesome App")
-                    .setContentText("Doing some work...")
-                    .setContentIntent(pendingIntent);
-
-            // note that apps targeting android P (API level 28) or later must declare the permission
-            // Manifest.permission.FOREGROUND_SERVICE in order to use startForeground()
-            startForeground(12421, notification.build());
         }
+
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+
+        // If you want to remove the notification when service stopped, see onDestroy() below
+        NotificationCompat.Builder notification =
+                new NotificationCompat.Builder(this, "default")
+                        .setSmallIcon(R.drawable.ic_buyt)
+                        .setOngoing(true)
+                        .setPriority(PRIORITY_LOW) // set to MIN to hide the icon in notification bar
+                        .setContentTitle("Finding location")
+                        .setContentText("Determining the store...")
+                        .setContentIntent(pendingIntent);
+
+        // note that apps targeting android P (API level 28) or later must declare the permission
+        // Manifest.permission.FOREGROUND_SERVICE in order to use startForeground()
+        startForeground(12421, notification.build());
     }
 
     @Override
@@ -89,19 +92,6 @@ public class GpsService extends Service implements LocationListener {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        if (locationManager != null) {
-            locationManager.removeUpdates(this);
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            stopForeground(false); // here notification can be removed as well
-        }
-    }
-
-    @Override
     public void onLocationChanged(Location location) {
         // TODO: Make the intent explicit by defining the receiver class instead of action
         // For broadcast receivers, the intent simply defines the announcement being broadcast
@@ -109,9 +99,7 @@ public class GpsService extends Service implements LocationListener {
         result.putExtra(EXTRA_LOCATION, location);
         LocalBroadcastManager.getInstance(this).sendBroadcast(result);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notification.setContentTitle("Location found");
-        }
+//      notification.setContentTitle("Location found");
 
         stopSelf();
     }
@@ -128,6 +116,18 @@ public class GpsService extends Service implements LocationListener {
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
     }
-
     //</editor-fold>
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (locationManager != null) {
+            locationManager.removeUpdates(this);
+        }
+
+//      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        stopForeground(false); // here notification can be removed as well
+//      }
+    }
 }
