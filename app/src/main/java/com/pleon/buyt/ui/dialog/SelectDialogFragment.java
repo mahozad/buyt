@@ -1,7 +1,6 @@
 package com.pleon.buyt.ui.dialog;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,9 +28,13 @@ public class SelectDialogFragment extends AppCompatDialogFragment implements Sto
     }
 
     private AlertDialog dialog;
-    private Callback callback;
+    private static Callback callback;
 
-    public static SelectDialogFragment newInstance(ArrayList<SelectionDialogRow> list) {
+    public static SelectDialogFragment newInstance(Callback callback, ArrayList<SelectionDialogRow> list) {
+        // FIXME: callback should be set in the onAttach() method, but because the context passed to it
+        // is the containing activity and not the containing fragment, we passed it here
+        SelectDialogFragment.callback = callback;
+
         SelectDialogFragment fragment = new SelectDialogFragment();
         Bundle args = new Bundle();
         args.putSerializable("LIST", list);
@@ -90,15 +93,15 @@ public class SelectDialogFragment extends AppCompatDialogFragment implements Sto
         dialog.getButton(BUTTON_POSITIVE).setEnabled(true);
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof Callback) {
-            callback = (Callback) context;
-        } else {
-            throw new RuntimeException(context.toString() + " must implement Callback");
-        }
-    }
+//    @Override
+//    public void onAttach(Context context) {
+//        super.onAttach(context);
+//        if (context instanceof Callback) {
+//            callback = (Callback) context;
+//        } else {
+//            throw new RuntimeException(context.toString() + " must implement Callback");
+//        }
+//    }
 
     @Override
     public void onDetach() {

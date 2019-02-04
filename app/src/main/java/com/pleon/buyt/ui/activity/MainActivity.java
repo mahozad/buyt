@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.graphics.drawable.Animatable;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -262,19 +261,19 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragMgr = getSupportFragmentManager();
         itemListFragment = (ItemListFragment) fragMgr.findFragmentById(R.id.fragment_items);
 
-/*
-        // If the activity is re-created due to a config change, any fragments added using the
-        // Fragment Manager will automatically be re-added. As a result, we only add a new fragment
-        // if this is not a configuration-change restart (by checking the savedInstanceState bundle)
-        if (savedInstanceState == null) {
-            itemListFragment = ItemListFragment.newInstance();
-            // call commit to add the fragment to the UI queue asynchronously, or
-            // commitNow (preferred) to block until the transaction is fully complete.
-            fragMgr.beginTransaction().add(R.id.fragment_items, itemListFragment).commitNow();
-        } else {
-            itemListFragment = ((ItemListFragment) fragMgr.findFragmentById(R.id.fragment_items));
-        }
-*/
+        /*
+         * // If the activity is re-created due to a config change, any fragments added using the
+         * // Fragment Manager will automatically be re-added. As a result, we only add a new fragment
+         * // if this is not a configuration-change restart (by checking the savedInstanceState bundle)
+         * if (savedInstanceState == null) {
+         *     itemListFragment = ItemListFragment.newInstance();
+         *     // call commit to add the fragment to the UI queue asynchronously, or
+         *     // commitNow (preferred) to block until the transaction is fully complete.
+         *     fragMgr.beginTransaction().add(R.id.fragment_items, itemListFragment).commitNow();
+         * } else {
+         *     itemListFragment = ((ItemListFragment) fragMgr.findFragmentById(R.id.fragment_items));
+         * }
+         */
 
         // observe() methods should be set only once (e.g. in activity onCreate() method) so if you
         // call it every time you want some data, maybe you're doing something wrong
@@ -376,8 +375,8 @@ public class MainActivity extends AppCompatActivity
                 }
                 break;
 
-            /* If you use setSupportActionBar() to set up the BottomAppBar, you can handle the
-             * navigation menu click by checking if the menu item id equals android.R.id.home. */
+            /* If setSupportActionBar() is used to set up the BottomAppBar, navigation menu item
+             * can be identified by checking if the id of menu item equals android.R.id.home. */
             case android.R.id.home:
                 if (viewModel.getState() == IDLE) {
                     BottomSheetDialogFragment bottomDrawerFragment = BottomDrawerFragment.newInstance();
@@ -642,7 +641,7 @@ public class MainActivity extends AppCompatActivity
                     SelectionDialogRow selection = new SelectionDialogRow(store.getName(), store.getCategory().getImageRes());
                     selectionList.add(selection);
                 }
-                SelectDialogFragment selectStoreDialog = SelectDialogFragment.newInstance(selectionList);
+                SelectDialogFragment selectStoreDialog = SelectDialogFragment.newInstance(this, selectionList);
                 selectStoreDialog.show(getSupportFragmentManager(), "SELECT_STORE_DIALOG");
                 // next this::completeBuy() is called
             }

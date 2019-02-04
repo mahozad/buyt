@@ -8,6 +8,9 @@ import android.graphics.drawable.DrawableContainer.DrawableContainerState;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -15,6 +18,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
@@ -24,15 +28,21 @@ import com.pleon.buyt.model.Quantity;
 import com.pleon.buyt.model.Quantity.Unit;
 import com.pleon.buyt.model.Store;
 import com.pleon.buyt.ui.dialog.DatePickerFragment;
+import com.pleon.buyt.ui.dialog.SelectDialogFragment;
+import com.pleon.buyt.ui.dialog.SelectionDialogRow;
+import com.pleon.buyt.viewmodel.MainViewModel;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.Group;
 import androidx.core.widget.CompoundButtonCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
@@ -46,8 +56,12 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static butterknife.OnTextChanged.Callback.AFTER_TEXT_CHANGED;
 
+/**
+ * This fragment requires a Toolbar as it needs to inflate and use a menu item for selection of
+ * store category. So the activities using this fragment must have a Toolbar set.
+ */
 public class AddItemFragment extends Fragment
-        implements DatePickerDialog.OnDateSetListener,
+        implements SelectDialogFragment.Callback, DatePickerDialog.OnDateSetListener,
         com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog.OnDateSetListener {
 
     public interface Callback {
@@ -55,11 +69,7 @@ public class AddItemFragment extends Fragment
         void onSubmit(Item item);
 
         void onSubmit(Item item, Store store);
-
-        void onBoughtToggled(boolean checked);
     }
-
-    private Callback callback;
 
     @BindView(R.id.name_layout) TextInputLayout nameTxInLt;
     @BindView(R.id.name) EditText nameEdtx;
@@ -76,13 +86,14 @@ public class AddItemFragment extends Fragment
     @BindView(R.id.date_layout) TextInputLayout dateTxinlt;
     @BindView(R.id.date) EditText dateEdtx;
 
-    private Item.Category itemCategory = Item.Category.GROCERY;
-
-    private Unbinder unbinder;
-
-    private Store store;
-
     private static int LAST_ITEM_ORDER;
+
+    private Item.Category itemCategory = Item.Category.GROCERY;
+    private Callback callback;
+    private TextView selectCategoryTxvi;
+    private List<Store> storeList;
+    private Unbinder unbinder;
+    private Store store;
 
     public AddItemFragment() {
         // Required empty constructor
@@ -110,6 +121,7 @@ public class AddItemFragment extends Fragment
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_item, container, false);
         unbinder = ButterKnife.bind(this, view); // unbind() is required only for Fragments
+        setHasOptionsMenu(true); // for the onCreateOptionsMenu() method to be called
 
         for (RadioButton unitRdbtn : unitRdbtns) {
             // disable by default (because quantity input is not focused yet)
@@ -119,9 +131,56 @@ public class AddItemFragment extends Fragment
         return view;
     }
 
+    /**
+     * For this method to be called, it is required that setHasOptionsMenu() has been set.
+     * <p>
+     * Note that the containing activity must have a Toolbar set so this fragment can inflate and
+     * use its own menu item.
+     *
+     * @param menu
+     * @param inflater
+     */
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_add_item, menu);
+
+        selectCategoryTxvi = menu.findItem(R.id.action_item_category).getActionView().findViewById(R.id.select_store);
+        // Setting up "Choose category" action because it has custom layout
+        MenuItem menuItem = menu.findItem(R.id.action_item_category);
+        menuItem.getActionView().setOnClickListener(v -> onOptionsItemSelected(menuItem));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_item_category) {
+            // FIXME: initialize this only once
+            ArrayList<SelectionDialogRow> selectionList = new ArrayList<>(); // dialog requires ArrayList
+            if (isBoughtChecked()) {
+                ViewModelProviders.of(this).get(MainViewModel.class).getAllStores().observe(this, stores -> {
+                    storeList = stores;
+                    selectionList.clear();
+                    for (Store store : stores) {
+                        SelectionDialogRow selection = new SelectionDialogRow(store.getName(), store.getCategory().getImageRes());
+                        selectionList.add(selection);
+                    }
+                    SelectDialogFragment selectStoreDialog = SelectDialogFragment.newInstance(this, selectionList);
+                    selectStoreDialog.show(getActivity().getSupportFragmentManager(), "SELECT_ITEM_DIALOG");
+                });
+            } else {
+                for (Item.Category category : Item.Category.values()) {
+                    SelectionDialogRow selection = new SelectionDialogRow(getString(category.getNameRes()), category.getImageRes());
+                    selectionList.add(selection);
+                }
+                SelectDialogFragment selectStoreDialog = SelectDialogFragment.newInstance(this, selectionList);
+                selectStoreDialog.show(getActivity().getSupportFragmentManager(), "SELECT_ITEM_DIALOG");
+            }
+        }
+        return true;
+    }
+
     // FIXME: If date picker dialog is shown (at least once) and a configuration change happens
     // (e.g. screen rotation), then the date picker is shown. This problem seems to have nothing
-    // to do with the following two method calling each other.
+    // to do with the following two methods calling each other.
 
     /**
      * DatePickerDialog.show() for persian calendar is passed getActivity().getFragmentManager()
@@ -160,7 +219,7 @@ public class AddItemFragment extends Fragment
         }
     }
 
-    // For result of Persian date picker
+    // On result of Persian date picker
     @Override
     public void onDateSet(com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         PersianCalendar cal = new PersianCalendar();
@@ -171,7 +230,7 @@ public class AddItemFragment extends Fragment
         dateEdtx.setText(dateFormat.format(cal.getTime()));
     }
 
-    // For result of Gregorian date picker
+    // On result of Gregorian date picker
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         Calendar cal = Calendar.getInstance();
@@ -189,9 +248,9 @@ public class AddItemFragment extends Fragment
     }
 
     @OnCheckedChanged(R.id.bought)
-    void onBoughtToggled(boolean isChecked) {
-        callback.onBoughtToggled(isChecked);
-        boughtContainer.setVisibility(isChecked ? VISIBLE : GONE);
+    void onBoughtToggled(boolean checked) {
+        selectCategoryTxvi.setText(checked ? getString(R.string.action_select_store) : getString(itemCategory.getNameRes()));
+        boughtContainer.setVisibility(checked ? VISIBLE : GONE);
     }
 
     @OnFocusChange(R.id.quantity)
@@ -259,20 +318,8 @@ public class AddItemFragment extends Fragment
         unbinder.unbind();
     }
 
-    public boolean isBoughtChecked() {
+    private boolean isBoughtChecked() {
         return boughtChbx.isChecked();
-    }
-
-    public void setItemCategory(Item.Category category) {
-        this.itemCategory = category;
-    }
-
-    public Item.Category getItemCategory() {
-        return itemCategory;
-    }
-
-    public void setStore(Store store) {
-        this.store = store;
     }
 
     public void onDonePressed() {
@@ -282,6 +329,7 @@ public class AddItemFragment extends Fragment
             String name = nameEdtx.getText().toString();
             Quantity quantity = getQuantity();
             Item item = new Item(name, quantity, urgentChbx.isChecked(), boughtChbx.isChecked(), itemCategory);
+            item.setPosition(LAST_ITEM_ORDER);
 
             if (!isEmpty(descriptionEdtx)) {
                 item.setDescription(descriptionEdtx.getText().toString());
@@ -290,7 +338,6 @@ public class AddItemFragment extends Fragment
                 item.setTotalPrice(Long.parseLong(priceEdtx.getText().toString()));
             }
 
-            item.setPosition(LAST_ITEM_ORDER);
             if (isBoughtChecked()) {
 //                item.setCategory(); // TODO: set it to the category of the selected store
                 callback.onSubmit(item, store);
@@ -298,6 +345,25 @@ public class AddItemFragment extends Fragment
                 callback.onSubmit(item);
             }
         }
+    }
+
+    @Override
+    public void onSelected(int index) {
+        String name;
+        int imageRes;
+        if (isBoughtChecked()) {
+            Store.Category category = Store.Category.values()[index];
+            imageRes = category.getImageRes();
+            name = storeList.get(index).getName();
+            store = storeList.get(index);
+        } else {
+            Item.Category category = Item.Category.values()[index];
+            imageRes = category.getImageRes();
+            name = getResources().getString(category.getNameRes());
+            itemCategory = category;
+        }
+        selectCategoryTxvi.setCompoundDrawablesRelativeWithIntrinsicBounds(imageRes, 0, 0, 0);
+        selectCategoryTxvi.setText(name);
     }
 
     private boolean validateFields() {
