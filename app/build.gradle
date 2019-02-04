@@ -40,19 +40,19 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0-alpha01'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha01'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha02'
     implementation 'androidx.room:room-runtime:2.1.0-alpha04'
     annotationProcessor 'androidx.room:room-compiler:2.1.0-alpha04'
     // ViewModel and LiveData
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha01'
-    implementation 'androidx.lifecycle:lifecycle-common-java8:2.1.0-alpha01'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha02'
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.1.0-alpha02'
     /* for inspecting the database and network in Chrome. In Iran, use VPN due to sanctions.*/
     debugImplementation 'com.facebook.stetho:stetho:1.5.0'
     debugImplementation 'com.facebook.stetho:stetho-js-rhino:1.5.0'
     /* The AndroidX version of 'com.android.support:design'
                              * Another support library that adds support for material components such as NavigationDrawer,
                              * SnackBar, FAB and Tab for older android versions. */
-    implementation 'com.google.android.material:material:1.1.0-alpha02'
+    implementation 'com.google.android.material:material:1.1.0-alpha03'
     /* library to show tap targets */
     implementation 'com.getkeepsafe.taptargetview:taptargetview:1.12.0'
     /* // another tap target library
