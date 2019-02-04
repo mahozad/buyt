@@ -340,10 +340,9 @@ public class AddItemFragment extends Fragment
         String name;
         int imageRes;
         if (isBoughtChecked()) {
-            Store.Category category = Store.Category.values()[index];
-            imageRes = category.getImageRes();
-            name = storeList.get(index).getName();
             store = storeList.get(index);
+            name = store.getName();
+            imageRes = store.getCategory().getImageRes();
         } else {
             Item.Category category = Item.Category.values()[index];
             imageRes = category.getImageRes();
