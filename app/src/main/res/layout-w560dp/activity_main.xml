@@ -47,7 +47,7 @@
             app:chart_axisTopSpacing="-6dp"
             app:chart_barSpacing="14dp"
             app:chart_cornerRadius="3dp"
-            app:chart_fontSize="12sp"
+            app:chart_fontSize="11sp"
             app:chart_labelColor="?attr/colorOnSurface" />
 
     </com.google.android.material.card.MaterialCardView>
