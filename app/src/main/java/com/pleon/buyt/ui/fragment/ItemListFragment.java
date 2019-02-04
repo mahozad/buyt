@@ -102,7 +102,13 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
         snackbar.addCallback(new BaseCallback<Snackbar>() {
             public void onDismissed(Snackbar transientBottomBar, int event) {
                 if (event != DISMISS_EVENT_ACTION) { // If dismiss wasn't because of "UNDO"...
-                    // ... then delete the item completely from database
+                    // ... then delete the item from database and update order of below items
+                    for (int i = item.getPosition(); i < adapter.getItems().size(); i++) {
+                        adapter.getItem(i).setPosition(adapter.getItem(i).getPosition() - 1);
+                    }
+                    mainViewModel.updateItems(adapter.getItems());
+                    // This should be the last statement because by deleting the item, the observer
+                    // is notified and adapter is given the old items with their old positions
                     mainViewModel.deleteItem(item);
                 }
             }

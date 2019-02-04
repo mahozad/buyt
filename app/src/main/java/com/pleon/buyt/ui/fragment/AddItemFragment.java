@@ -27,6 +27,7 @@ import com.pleon.buyt.model.Item;
 import com.pleon.buyt.model.Quantity;
 import com.pleon.buyt.model.Quantity.Unit;
 import com.pleon.buyt.model.Store;
+import com.pleon.buyt.ui.activity.MainActivity;
 import com.pleon.buyt.ui.dialog.DatePickerFragment;
 import com.pleon.buyt.ui.dialog.SelectDialogFragment;
 import com.pleon.buyt.ui.dialog.SelectionDialogRow;
@@ -86,35 +87,22 @@ public class AddItemFragment extends Fragment
     @BindView(R.id.date_layout) TextInputLayout dateTxinlt;
     @BindView(R.id.date) EditText dateEdtx;
 
-    private static int LAST_ITEM_ORDER;
-
     private Item.Category itemCategory = Item.Category.GROCERY;
     private Callback callback;
     private TextView selectCategoryTxvi;
     private List<Store> storeList;
     private Unbinder unbinder;
     private Store store;
+    private int itemOrder;
 
     public AddItemFragment() {
         // Required empty constructor
     }
 
-    public static AddItemFragment newInstance(int nextItemOrder) {
-        AddItemFragment fragment = new AddItemFragment();
-
-        Bundle args = new Bundle();
-        args.putInt("NEXT_ITEM_ORDER", nextItemOrder);
-        fragment.setArguments(args);
-
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            LAST_ITEM_ORDER = getArguments().getInt("NEXT_ITEM_ORDER");
-        }
+        itemOrder = getActivity().getIntent().getIntExtra(MainActivity.EXTRA_ITEM_ORDER, 0);
     }
 
     @Override
@@ -329,7 +317,7 @@ public class AddItemFragment extends Fragment
             String name = nameEdtx.getText().toString();
             Quantity quantity = getQuantity();
             Item item = new Item(name, quantity, urgentChbx.isChecked(), boughtChbx.isChecked(), itemCategory);
-            item.setPosition(LAST_ITEM_ORDER);
+            item.setPosition(itemOrder);
 
             if (!isEmpty(descriptionEdtx)) {
                 item.setDescription(descriptionEdtx.getText().toString());
