@@ -18,7 +18,7 @@
                 android:strokeLineJoin="round" />
             <path
                 android:name="path_2"
-                android:pathData="M NaN NaN M 252.083 535.583 L 393.75 677.25 L 475.292 595.75 L 520.542 550.458 L 747.917 323.084 L NaN NaN L 393.75 677.25 L 455.667 615.375 L 482.25 588.792 L 747.917 323.083"
+                android:pathData="M 252.083 535.583 L 393.75 677.25 L 475.292 595.75 L 520.542 550.458 L 747.917 323.084 L 393.75 677.25 L 455.667 615.375 L 482.25 588.792 L 747.917 323.083"
                 android:strokeWidth="60"
                 android:strokeColor="#000"
                 android:strokeLineCap="round"
