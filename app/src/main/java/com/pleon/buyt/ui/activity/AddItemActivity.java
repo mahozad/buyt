@@ -54,25 +54,38 @@ public class AddItemActivity extends AppCompatActivity implements AddItemFragmen
         return true;
     }
 
-    // For regular item (not bought)
+    /**
+     * Called for adding regular (not bought) item.
+     * <p>
+     * Calling finish() in this method is safe because insertion of item is run in an
+     * {@link android.os.AsyncTask AsyncTask} which is responsible for finishing its job in
+     * any case (even if the activity is destroyed).
+     *
+     * @param item
+     */
     @Override
     public void onSubmit(Item item) {
         MainViewModel mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         mainViewModel.addItem(item);
-        // Calling finish() is safe here. We are sure that the item will be added to database,
-        // because it is executed in a separate thread.
         finish();
     }
 
-    // For bought item
+    /**
+     * Called for adding bought item.
+     * <p>
+     * Calling finish() in this method is safe because database operations are run in an
+     * {@link android.os.AsyncTask AsyncTask} which is responsible for finishing its job in
+     * any case (even if the activity is destroyed).
+     *
+     * @param item
+     * @param store
+     */
     @Override
     public void onSubmit(Item item, Store store) {
         MainViewModel mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         mainViewModel.addItem(item);
         // FIXME: the item purchaseId is not set
         mainViewModel.buy(singletonList(item), store);
-        // Calling finish() is safe here. We are sure that the item will be added to database,
-        // because it is executed in a separate thread in ViewModel.
         finish();
     }
 }

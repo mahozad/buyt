@@ -62,11 +62,16 @@ public class CreateStoreActivity extends AppCompatActivity implements CreateStor
         return true;
     }
 
+    /**
+     * Calling finish() in this method is safe because insertion of store is run in an
+     * {@link android.os.AsyncTask AsyncTask} which is responsible for finishing its job in
+     * any case (even if the activity is destroyed).
+     *
+     * @param store
+     */
     @Override
     public void onSubmit(Store store) {
         ViewModelProviders.of(this).get(StoreViewModel.class).insertForObserver(store);
-        // Calling finish() is safe here. We are sure that the item will be added to
-        // database because it is executed in a separate thread in ViewModel.
         finish();
     }
 }
