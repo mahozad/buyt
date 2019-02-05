@@ -368,7 +368,9 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.action_reorder:
                 if (viewModel.getState() == IDLE) {
-                    itemListFragment.toggleEditMode();
+                    if (!itemListFragment.isCartEmpty()) {
+                        itemListFragment.toggleEditMode();
+                    }
                 } else { // if state == FINDING
                     viewModel.setFindingStateSkipped(true);
                     stopService(new Intent(this, GpsService.class));
