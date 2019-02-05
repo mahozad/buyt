@@ -113,7 +113,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
                     holder.expandDragBtn.setImageResource(R.drawable.ic_drag_handle);
                     holder.expandDragBtn.setVisibility(VISIBLE);
                 } else if (item.getDescription() != null) {
-                    holder.expandDragBtn.setImageResource(R.drawable.avd_expand);
+                    holder.expandDragBtn.setImageResource(item.isExpanded() ? R.drawable.avd_collapse : R.drawable.avd_expand);
                     holder.expandDragBtn.setVisibility(VISIBLE);
                 } else {
                     holder.expandDragBtn.setVisibility(INVISIBLE);
