@@ -12,6 +12,8 @@ import com.pleon.buyt.model.Store;
 import com.pleon.buyt.ui.fragment.AddItemFragment;
 import com.pleon.buyt.viewmodel.MainViewModel;
 
+import java.util.Date;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
@@ -21,11 +23,14 @@ import static java.util.Collections.singletonList;
 public class AddItemActivity extends AppCompatActivity implements AddItemFragment.Callback {
 
     private AddItemFragment addItemFragment;
+    private MainViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
+
+        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
         BottomAppBar mBottomAppBar = findViewById(R.id.bottom_bar);
         setSupportActionBar(mBottomAppBar); // This MUST be set as AddItemFragment needs ActionBar.
@@ -65,13 +70,12 @@ public class AddItemActivity extends AppCompatActivity implements AddItemFragmen
      */
     @Override
     public void onSubmit(Item item) {
-        MainViewModel mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        mainViewModel.addItem(item);
+        viewModel.addItem(item);
         finish();
     }
 
     /**
-     * Called for adding bought item.
+     * Called for adding purchased item.
      * <p>
      * Calling finish() in this method is safe because database operations are run in an
      * {@link android.os.AsyncTask AsyncTask} which is responsible for finishing its job in
@@ -81,11 +85,10 @@ public class AddItemActivity extends AppCompatActivity implements AddItemFragmen
      * @param store
      */
     @Override
-    public void onSubmit(Item item, Store store) {
-        MainViewModel mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        mainViewModel.addItem(item);
-        // FIXME: the item purchaseId is not set
-        mainViewModel.buy(singletonList(item), store);
+    public void onSubmit(Item item, Store store, Date purchaseDate) {
+        viewModel.addItem(item);
+        // FIXME: purchaseId is not set for the item
+        viewModel.buy(singletonList(item), store, purchaseDate);
         finish();
     }
 }

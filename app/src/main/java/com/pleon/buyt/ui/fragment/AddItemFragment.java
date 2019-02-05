@@ -1,6 +1,5 @@
 package com.pleon.buyt.ui.fragment;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.ColorDrawable;
@@ -21,6 +20,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog;
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
 import com.pleon.buyt.R;
 import com.pleon.buyt.model.Item;
@@ -33,9 +33,11 @@ import com.pleon.buyt.ui.dialog.SelectDialogFragment;
 import com.pleon.buyt.ui.dialog.SelectionDialogRow;
 import com.pleon.buyt.viewmodel.MainViewModel;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -52,6 +54,7 @@ import butterknife.OnClick;
 import butterknife.OnFocusChange;
 import butterknife.OnTextChanged;
 import butterknife.Unbinder;
+import ir.huri.jcal.JalaliCalendar;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -62,14 +65,14 @@ import static butterknife.OnTextChanged.Callback.AFTER_TEXT_CHANGED;
  * store category. So the activities using this fragment must have a Toolbar set.
  */
 public class AddItemFragment extends Fragment
-        implements SelectDialogFragment.Callback, DatePickerDialog.OnDateSetListener,
+        implements SelectDialogFragment.Callback, android.app.DatePickerDialog.OnDateSetListener,
         com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog.OnDateSetListener {
 
     public interface Callback {
 
         void onSubmit(Item item);
 
-        void onSubmit(Item item, Store store);
+        void onSubmit(Item item, Store store, Date purchaseDate);
     }
 
     @BindView(R.id.name_layout) TextInputLayout nameTxInLt;
@@ -93,6 +96,7 @@ public class AddItemFragment extends Fragment
     private List<Store> storeList;
     private Unbinder unbinder;
     private Store store;
+    private Date purchaseDate;
     private int itemOrder;
 
     public AddItemFragment() {
@@ -185,6 +189,15 @@ public class AddItemFragment extends Fragment
                     .newInstance(this, persianCal.getPersianYear(), persianCal.getPersianMonth(), persianCal.getPersianDay());
             datePicker.setThemeDark(true); // if you want to change colors see colors.xml
             datePicker.show(getActivity().getFragmentManager(), "DATE_PICKER");
+
+//            new com.alirezaafkar.sundatepicker.DatePicker.Builder()
+//                    .id(23455)
+//                    .minDate(1380,1,1)
+//                    .maxDate(1400,1,1)
+//                    .date(1,1,1397)
+//                    .build(this)
+//                    .show(getActivity().getSupportFragmentManager(), "ASDDD");
+
         } else {
             new DatePickerFragment().show(getChildFragmentManager(), "DATE_PICKER");
         }
@@ -208,14 +221,31 @@ public class AddItemFragment extends Fragment
     }
 
     // On result of Persian date picker
-    @Override
-    public void onDateSet(com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        PersianCalendar cal = new PersianCalendar();
-        cal.set(year, monthOfYear, dayOfMonth);
 
-        String myFormat = "yyyy/MM/dd";
-        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
-        dateEdtx.setText(dateFormat.format(cal.getTime()));
+    /**
+     * Because we want all the dates in the database to be in same format, we convert the given
+     * persian date to Gregorian.
+     * <p>
+     * This way all of our dates in the database are uniformed and if needed, we can format them
+     * however we want at runtime; for example to show date in Persian format we can do this:<br>
+     * <code>Locale locale = new Locale("fa_IR@calendar=persian");</code><br>
+     * <code>DateFormat.getDateInstance(DateFormat.LONG, locale).format(date)</code>
+     *
+     * @param view
+     * @param year
+     * @param month
+     * @param day
+     */
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int month, int day) {
+        // PersianCalendar cal = new PersianCalendar();
+        // cal.set(year, month, day);
+
+        JalaliCalendar jalaliCalendar = new JalaliCalendar(year, ++month, day);
+        purchaseDate = jalaliCalendar.toGregorian().getTime();
+
+        Locale locale = new Locale("fa_IR@calendar=persian");
+        dateEdtx.setText(DateFormat.getDateInstance(DateFormat.LONG, locale).format(purchaseDate));
     }
 
     // On result of Gregorian date picker
@@ -223,10 +253,11 @@ public class AddItemFragment extends Fragment
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         Calendar cal = Calendar.getInstance();
         cal.set(year, month, dayOfMonth);
+        purchaseDate = cal.getTime();
 
-        String myFormat = "MM/dd/yyyy";
-        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
-        dateEdtx.setText(dateFormat.format(cal.getTime()));
+        String format = "MM/dd/yyyy";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.US);
+        dateEdtx.setText(dateFormat.format(purchaseDate));
     }
 
     @OnCheckedChanged(R.id.urgent)
@@ -328,7 +359,7 @@ public class AddItemFragment extends Fragment
 
             if (isBoughtChecked()) {
 //                item.setCategory(); // TODO: set it to the category of the selected store
-                callback.onSubmit(item, store);
+                callback.onSubmit(item, store, purchaseDate);
             } else {
                 callback.onSubmit(item);
             }

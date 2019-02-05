@@ -14,6 +14,7 @@ import com.pleon.buyt.model.WeekdayCost;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.DrawableRes;
@@ -87,8 +88,8 @@ public class MainViewModel extends AndroidViewModel {
         mMainRepository.updateItems(items);
     }
 
-    public void buy(Collection<Item> items, Store store) {
-        mMainRepository.buy(items, store);
+    public void buy(Collection<Item> items, Store store, Date purchaseDate) {
+        mMainRepository.buy(items, store, purchaseDate);
     }
 
     public LiveData<Store> getLatestCreatedStore() {

@@ -83,8 +83,8 @@ public class MainRepository { // TODO: make this class singleton
         return totalWeekdayCosts;
     }
 
-    public void buy(Collection<Item> items, Store store) {
-        new BuyAsyncTask(items, store, mItemDao, mStoreDao, mPurchaseDao).execute();
+    public void buy(Collection<Item> items, Store store, Date purchaseDate) {
+        new BuyAsyncTask(items, store, purchaseDate, mItemDao, mStoreDao, mPurchaseDao).execute();
     }
 
     private static class AddItemTask extends AsyncTask<Item, Void, Void> {
@@ -141,14 +141,16 @@ public class MainRepository { // TODO: make this class singleton
         private PurchaseDao mPurchaseDao;
         private ItemDao mItemDao;
         private StoreDao mStoreDao;
+        private Date purchaseDate;
 
-        BuyAsyncTask(Collection<Item> items, Store store, ItemDao mItemDao,
+        BuyAsyncTask(Collection<Item> items, Store store, Date purchaseDate, ItemDao mItemDao,
                      StoreDao mStoreDao, PurchaseDao mPurchaseDao) {
             this.items = items;
             this.store = store;
-            this.mPurchaseDao = mPurchaseDao;
+            this.purchaseDate = purchaseDate;
             this.mItemDao = mItemDao;
             this.mStoreDao = mStoreDao;
+            this.mPurchaseDao = mPurchaseDao;
         }
 
         @Override
@@ -162,7 +164,7 @@ public class MainRepository { // TODO: make this class singleton
             for (Item item : items) {
                 totalCost += item.getTotalPrice();
             }
-            Purchase purchase = new Purchase(storeId, new Date(), totalCost);
+            Purchase purchase = new Purchase(storeId, purchaseDate, totalCost);
             long purchaseId = mPurchaseDao.insert(purchase);
 
             for (Item item : items) {

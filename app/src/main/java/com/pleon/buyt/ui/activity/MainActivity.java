@@ -667,7 +667,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void completeBuy(Store store) {
-        viewModel.buy(itemListFragment.getSelectedItems(), store);
+        viewModel.buy(itemListFragment.getSelectedItems(), store, new Date());
         shiftToIdleState();
     }
 
