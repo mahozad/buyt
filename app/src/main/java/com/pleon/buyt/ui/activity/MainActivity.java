@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity
     // TODO: Dark material colors: https://stackoverflow.com/q/36915508
     // TODO: for the item list to only one item be expanded see https://stackoverflow.com/q/27203817/8583692
     // FIXME: Correct all names and ids according to best practices
+    // FIXME: Fix the query for chart data to start from the beginning of the first day (instead of just -7 days)
     // DONE: Use butter knife to declare activity views and view handlers
     // TODO: Enable the user to disable location rationale dialog and always enter stores manually
     // TODO: What is Spherical Law of Cosines? (for locations)
