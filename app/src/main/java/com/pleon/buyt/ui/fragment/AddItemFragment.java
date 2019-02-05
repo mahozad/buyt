@@ -66,7 +66,9 @@ import static butterknife.OnTextChanged.Callback.AFTER_TEXT_CHANGED;
  */
 public class AddItemFragment extends Fragment
         implements SelectDialogFragment.Callback, android.app.DatePickerDialog.OnDateSetListener,
-        com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog.OnDateSetListener {
+        com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog.OnDateSetListener
+        /*,DateSetListener*/ {
+
 
     public interface Callback {
 
@@ -192,9 +194,10 @@ public class AddItemFragment extends Fragment
 
 //            new com.alirezaafkar.sundatepicker.DatePicker.Builder()
 //                    .id(23455)
-//                    .minDate(1380,1,1)
-//                    .maxDate(1400,1,1)
-//                    .date(1,1,1397)
+//                    .minDate(1380, 1, 1)
+//                    .maxDate(1400, 1, 1)
+////                    .date(1, 1, 1397)
+////                    .theme()
 //                    .build(this)
 //                    .show(getActivity().getSupportFragmentManager(), "ASDDD");
 
