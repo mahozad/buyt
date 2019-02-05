@@ -439,14 +439,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-
-        /*viewModel.setState((MainViewModel.State) savedInstanceState.getSerializable("STATE"));
-        if (viewModel.getState() == SELECTING && *//* if called because of process kill *//*) {
+        if (viewModel.getState() == FINDING) {
+            mFab.setImageResource(R.drawable.avd_finding);
+            ((Animatable) mFab.getDrawable()).start();
+        } else if (viewModel.getState() == SELECTING) {
             mFab.setImageResource(R.drawable.ic_done);
             itemListFragment.toggleItemsCheckbox(true);
-            Location location = savedInstanceState.getParcelable("LOCATION");
-            viewModel.findNearStores(new Coordinates(location)).observe(this, viewModel::setFoundStores);
-        }*/
+        }
     }
 
     @Override
