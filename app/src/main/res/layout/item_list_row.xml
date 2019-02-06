@@ -61,10 +61,10 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         app:cardUseCompatPadding="true"
-        app:rippleColor="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:rippleColor="@android:color/transparent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -88,7 +88,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="8dp"
-                android:textSize="18sp"
+                android:maxLength="20"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toStartOf="@id/urgentIcon"
                 app:layout_constraintStart_toEndOf="@id/categoryIcon"
                 app:layout_constraintTop_toTopOf="@id/categoryIcon"
@@ -155,6 +156,7 @@
                 android:layout_marginStart="2dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="2dp"
+                android:paddingBottom="2dp"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -196,6 +198,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:textSize="13sp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/expandCheckBoxContainer"
