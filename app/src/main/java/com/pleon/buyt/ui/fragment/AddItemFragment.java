@@ -33,7 +33,6 @@ import com.pleon.buyt.ui.dialog.SelectDialogFragment;
 import com.pleon.buyt.ui.dialog.SelectionDialogRow;
 import com.pleon.buyt.viewmodel.MainViewModel;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -248,8 +247,10 @@ public class AddItemFragment extends Fragment
         JalaliCalendar jalaliCalendar = new JalaliCalendar(year, ++month, day);
         purchaseDate = jalaliCalendar.toGregorian().getTime();
 
-        Locale locale = new Locale("fa_IR@calendar=persian");
-        dateEdtx.setText(DateFormat.getDateInstance(DateFormat.LONG, locale).format(purchaseDate));
+        String date = String.format(getResources().getConfiguration().locale, "%d %s %d",
+                jalaliCalendar.getDay(), jalaliCalendar.getMonthString(), jalaliCalendar.getYear());
+
+        dateEdtx.setText(date);
     }
 
     // On result of Gregorian date picker
