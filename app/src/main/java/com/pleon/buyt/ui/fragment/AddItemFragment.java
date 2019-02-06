@@ -304,25 +304,31 @@ public class AddItemFragment extends Fragment
 
     @OnTextChanged(value = R.id.name, callback = AFTER_TEXT_CHANGED)
     void onNameChanged() {
-        nameTxInLt.setCounterEnabled(nameEdtx.getText().toString().length() > nameTxInLt.getCounterMaxLength() * 0.66);
         nameTxInLt.setError(null); // clear error if exists
+        setCounterEnabledIfInputLengthEnough(nameTxInLt);
     }
 
     @OnTextChanged(value = R.id.quantity, callback = AFTER_TEXT_CHANGED)
     void onQuantityChanged() {
         quantityTxinlt.setError(null); // clear error if exists
         setColorOfAllUnitsForEnabledState(R.color.colorPrimary);
+        setCounterEnabledIfInputLengthEnough(quantityTxinlt);
     }
 
     @OnTextChanged(value = R.id.description, callback = AFTER_TEXT_CHANGED)
     void onDescriptionChanged() {
-        boolean showCounter = descriptionEdtx.getText().toString().length() > descriptionTxInLt.getCounterMaxLength() * 0.66;
-        descriptionTxInLt.setCounterEnabled(showCounter);
+        setCounterEnabledIfInputLengthEnough(descriptionTxInLt);
     }
 
     @OnTextChanged(value = R.id.price, callback = AFTER_TEXT_CHANGED)
     void onPriceChanged() {
         priceTxinlt.setError(null); // clear error if exists
+        setCounterEnabledIfInputLengthEnough(priceTxinlt);
+    }
+
+    private void setCounterEnabledIfInputLengthEnough(TextInputLayout layout) {
+        int inputLength = layout.getEditText().getText().toString().length();
+        layout.setCounterEnabled(inputLength > layout.getCounterMaxLength() * 0.66);
     }
 
     @Override

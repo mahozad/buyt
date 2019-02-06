@@ -58,6 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/quantity_hint"
+                app:counterMaxLength="8"
                 app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -208,6 +209,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Total price"
+                app:counterMaxLength="15"
                 app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -217,7 +219,7 @@
                     android:drawablePadding="8dp"
                     android:imeOptions="flagNoFullscreen"
                     android:inputType="number"
-                    android:maxLength="13"
+                    android:maxLength="15"
                     app:drawableStartCompat="@drawable/ic_price"
                     tools:text="Item price" />
 
