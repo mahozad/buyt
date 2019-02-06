@@ -305,15 +305,19 @@ public class AddItemFragment extends Fragment
 
     @OnTextChanged(value = R.id.name, callback = AFTER_TEXT_CHANGED)
     void onNameChanged() {
-        nameTxInLt.setError(null); // clear error if exists
-        setCounterEnabledIfInputLengthEnough(nameTxInLt);
+        if (!nameEdtx.getText().toString().isEmpty()) { // to preserve error with config change
+            nameTxInLt.setError(null); // clear error if exists
+            setCounterEnabledIfInputLengthEnough(nameTxInLt);
+        }
     }
 
     @OnTextChanged(value = R.id.quantity, callback = AFTER_TEXT_CHANGED)
     void onQuantityChanged() {
-        quantityTxinlt.setError(null); // clear error if exists
+        if (!nameEdtx.getText().toString().isEmpty()) { // to preserve error with config change
+            quantityTxinlt.setError(null); // clear error if exists
+            setCounterEnabledIfInputLengthEnough(quantityTxinlt);
+        }
         setColorOfAllUnitsForEnabledState(R.color.colorPrimary);
-        setCounterEnabledIfInputLengthEnough(quantityTxinlt);
     }
 
     @OnTextChanged(value = R.id.description, callback = AFTER_TEXT_CHANGED)
@@ -323,8 +327,10 @@ public class AddItemFragment extends Fragment
 
     @OnTextChanged(value = R.id.price, callback = AFTER_TEXT_CHANGED)
     void onPriceChanged() {
-        priceTxinlt.setError(null); // clear error if exists
-        setCounterEnabledIfInputLengthEnough(priceTxinlt);
+        if (!nameEdtx.getText().toString().isEmpty()) { // to preserve error with config change
+            priceTxinlt.setError(null); // clear error if exists
+            setCounterEnabledIfInputLengthEnough(priceTxinlt);
+        }
     }
 
     private void setCounterEnabledIfInputLengthEnough(TextInputLayout layout) {
