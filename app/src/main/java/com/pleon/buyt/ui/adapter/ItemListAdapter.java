@@ -99,7 +99,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
             holder.quantityTxVi.setText(numberFormat.format(item.getQuantity().getQuantity()) + " " + context.getString(item.getQuantity().getUnit().getNameRes()));
             holder.urgentImgVi.setVisibility(item.isUrgent() ? VISIBLE : INVISIBLE);
             holder.selectChBx.setChecked(selectedItems.contains(item));
-            holder.descTxVi.setVisibility(item.isExpanded() ? VISIBLE : GONE);
+            holder.descTxVi.setVisibility(selectionModeEnabled || !item.isExpanded() ? GONE : VISIBLE);
             holder.delRevealView.setAlpha(0f); // for the case of undo of deleted item
             holder.priceEdTx.setText(item.getTotalPrice() != 0 ? String.valueOf(item.getTotalPrice()) : "");
 
