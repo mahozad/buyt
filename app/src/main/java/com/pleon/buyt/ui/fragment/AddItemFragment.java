@@ -313,7 +313,7 @@ public class AddItemFragment extends Fragment
 
     @OnTextChanged(value = R.id.quantity, callback = AFTER_TEXT_CHANGED)
     void onQuantityChanged() {
-        if (!nameEdtx.getText().toString().isEmpty()) { // to preserve error with config change
+        if (!quantityEdtx.getText().toString().isEmpty()) { // to preserve error with config change
             quantityTxinlt.setError(null); // clear error if exists
             setCounterEnabledIfInputLengthEnough(quantityTxinlt);
         }
@@ -327,7 +327,7 @@ public class AddItemFragment extends Fragment
 
     @OnTextChanged(value = R.id.price, callback = AFTER_TEXT_CHANGED)
     void onPriceChanged() {
-        if (!nameEdtx.getText().toString().isEmpty()) { // to preserve error with config change
+        if (!priceEdtx.getText().toString().isEmpty()) { // to preserve error with config change
             priceTxinlt.setError(null); // clear error if exists
             setCounterEnabledIfInputLengthEnough(priceTxinlt);
         }
