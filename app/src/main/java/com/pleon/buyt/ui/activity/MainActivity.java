@@ -44,6 +44,7 @@ import java.util.TreeMap;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.Guideline;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
@@ -195,6 +196,7 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.bottom_bar) BottomAppBar mBottomAppBar;
     @BindView(R.id.chart_container) CardView chartContainer;
     @BindView(R.id.chart) BarChartView chart;
+    @BindView(R.id.guideline) Guideline guideline;
 
     private LocationManager locationMgr;
     private BroadcastReceiver locationReceiver;
@@ -280,11 +282,13 @@ public class MainActivity extends AppCompatActivity
             viewModel.getTotalWeekdayCosts().observe(this, weekdayCosts -> {
                 if (weekdayCosts.size() == 0) {
                     chartContainer.setVisibility(GONE);
+                    guideline.setGuidelinePercent(0);
                 } else {
                     // TODO: retrieve the past year costs and just show the past week costs,
                     // if there is no cost in the past week, show costs for the past month,
                     // if there is no cost in the past month, show costs in the past year
                     chartContainer.setVisibility(VISIBLE);
+                    guideline.setGuidelinePercent(0.4f);
 
                     chart.reset(); // required (in case number of bars changed)
 

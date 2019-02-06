@@ -9,35 +9,51 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/chart_container"
         android:layout_width="0dp"
-        android:layout_height="192dp"
+        android:layout_height="0dp"
         android:layout_marginStart="11dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="11dp"
         android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/toggleChart"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="10dp"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_expand" />
 
         <!-- Set topSpacing the same as borderSpacing to fix wrong top margin -->
         <com.db.chart.view.BarChartView
             android:id="@+id/chart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="12dp"
+            android:layout_margin="12dp"
             app:chart_axis="false"
             app:chart_axisBorderSpacing="6dp"
             app:chart_axisLabelsSpacing="6dp"
-            app:chart_axisTopSpacing="-6dp"
-            app:chart_barSpacing="16dp"
-            app:chart_cornerRadius="3dp"
+            app:chart_axisTopSpacing="-12dp"
+            app:chart_barBackgroundColor="#2d2d2d"
+            app:chart_barSpacing="@dimen/chart_bar_spacing"
+            app:chart_cornerRadius="12dp"
             app:chart_fontSize="11sp"
             app:chart_labelColor="?attr/colorOnSurface" />
 
     </com.google.android.material.card.MaterialCardView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.4" />
 
     <fragment
         android:id="@+id/fragment_items"
@@ -48,7 +64,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chart_container"
+        app:layout_constraintTop_toBottomOf="@id/guideline"
         tools:layout="@layout/fragment_item_list" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

@@ -18,6 +18,13 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/fragment_item_list" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.4" />
+
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/chart_container"
         android:layout_width="0dp"
@@ -44,9 +51,10 @@
             app:chart_axis="false"
             app:chart_axisBorderSpacing="6dp"
             app:chart_axisLabelsSpacing="6dp"
-            app:chart_axisTopSpacing="-6dp"
-            app:chart_barSpacing="14dp"
-            app:chart_cornerRadius="3dp"
+            app:chart_axisTopSpacing="-12dp"
+            app:chart_barBackgroundColor="#2d2d2d"
+            app:chart_barSpacing="20dp"
+            app:chart_cornerRadius="12dp"
             app:chart_fontSize="11sp"
             app:chart_labelColor="?attr/colorOnSurface" />
 
