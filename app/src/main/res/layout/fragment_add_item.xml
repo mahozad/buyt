@@ -30,6 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawablePadding="8dp"
+                android:imeOptions="flagNoFullscreen"
                 android:inputType="text"
                 app:drawableStartCompat="@drawable/ic_cart"
                 tools:text="Item name">
@@ -62,6 +63,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawablePadding="8dp"
+                    android:imeOptions="flagNoFullscreen"
                     android:inputType="numberDecimal"
                     android:maxLength="8"
                     android:selectAllOnFocus="true"
@@ -132,6 +134,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawablePadding="8dp"
+                android:imeOptions="flagNoFullscreen"
                 app:drawableStartCompat="@drawable/ic_description"
                 tools:text="Item description (optional)" />
 
@@ -208,6 +211,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawablePadding="8dp"
+                    android:imeOptions="flagNoFullscreen"
                     android:inputType="number"
                     android:maxLength="13"
                     app:drawableStartCompat="@drawable/ic_price"
