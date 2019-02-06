@@ -83,6 +83,7 @@ public class AddItemFragment extends Fragment
     @BindView(R.id.quantity) EditText quantityEdtx;
     @BindView(R.id.radio_group) RadioGroup unitRdgrp;
     @BindViews({R.id.unit, R.id.kilogram, R.id.gram}) RadioButton[] unitRdbtns;
+    @BindView(R.id.description_layout) TextInputLayout descriptionTxInLt;
     @BindView(R.id.description) EditText descriptionEdtx;
     @BindView(R.id.urgent) CheckBox urgentChbx;
     @BindView(R.id.bought) CheckBox boughtChbx;
@@ -303,6 +304,7 @@ public class AddItemFragment extends Fragment
 
     @OnTextChanged(value = R.id.name, callback = AFTER_TEXT_CHANGED)
     void onNameChanged() {
+        nameTxInLt.setCounterEnabled(nameEdtx.getText().toString().length() > nameTxInLt.getCounterMaxLength() * 0.66);
         nameTxInLt.setError(null); // clear error if exists
     }
 
@@ -310,6 +312,12 @@ public class AddItemFragment extends Fragment
     void onQuantityChanged() {
         quantityTxinlt.setError(null); // clear error if exists
         setColorOfAllUnitsForEnabledState(R.color.colorPrimary);
+    }
+
+    @OnTextChanged(value = R.id.description, callback = AFTER_TEXT_CHANGED)
+    void onDescriptionChanged() {
+        boolean showCounter = descriptionEdtx.getText().toString().length() > descriptionTxInLt.getCounterMaxLength() * 0.66;
+        descriptionTxInLt.setCounterEnabled(showCounter);
     }
 
     @OnTextChanged(value = R.id.price, callback = AFTER_TEXT_CHANGED)

@@ -20,6 +20,7 @@
             android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
             android:hint="@string/name_hint"
+            app:counterMaxLength="12"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,6 +33,7 @@
                 android:drawablePadding="8dp"
                 android:imeOptions="flagNoFullscreen"
                 android:inputType="text"
+                android:maxLength="12"
                 app:drawableStartCompat="@drawable/ic_cart"
                 tools:text="Item name">
 
@@ -125,6 +127,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="@string/description_hint"
+            app:counterMaxLength="20"
             app:layout_constraintEnd_toEndOf="@id/quantity_container"
             app:layout_constraintStart_toStartOf="@id/quantity_container"
             app:layout_constraintTop_toBottomOf="@id/quantity_container">
@@ -135,6 +138,7 @@
                 android:layout_height="wrap_content"
                 android:drawablePadding="8dp"
                 android:imeOptions="flagNoFullscreen"
+                android:maxLength="20"
                 app:drawableStartCompat="@drawable/ic_description"
                 tools:text="Item description (optional)" />
 
