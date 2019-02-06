@@ -273,7 +273,9 @@ public class AddItemFragment extends Fragment
 
     @OnCheckedChanged(R.id.bought)
     void onBoughtToggled(boolean checked) {
-        selectCategoryTxvi.setText(checked ? getString(R.string.action_select_store) : getString(itemCategory.getNameRes()));
+        if (selectCategoryTxvi != null) { // to fix bug on config change
+            selectCategoryTxvi.setText(checked ? getString(R.string.action_select_store) : getString(itemCategory.getNameRes()));
+        }
         boughtContainer.setVisibility(checked ? VISIBLE : GONE);
     }
 
