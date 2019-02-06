@@ -29,17 +29,15 @@ public interface PurchaseDao {
      * <p>
      * See sqlite strftime() docs <a href="https://www.sqlite.org/lang_datefunc.html">here</a>.
      *
-     * @param from the starting date in milliseconds
-     * @param to   the ending date in milliseconds
      * @return List of total costs per weekday
      */
-    @Query("SELECT strftime('%w', date/1000, 'unixepoch', 'localtime') as day," +
-            "SUM(totalcost) as cost " +
+    @Query("SELECT strftime('%w', date/1000, 'unixepoch', 'localtime') as day, SUM(totalcost) as cost " +
             "FROM purchase " +
-            "WHERE date BETWEEN :from AND :to " +
-            "GROUP BY strftime('%w', date/1000, 'unixepoch', 'localtime')" +
+            "WHERE date BETWEEN strftime('%s','now', 'localtime', 'start of day', '-7 days') * 1000 " +
+            "               AND strftime('%s','now', 'localtime') * 1000 " +
+            "GROUP BY strftime('%w', date/1000, 'unixepoch', 'localtime') " +
             "ORDER BY day")
-    List<WeekdayCost> getCost(long from, long to);
+    List<WeekdayCost> getCost();
 
     @Query("SELECT * FROM purchase")
     LiveData<List<Purchase>> getAll();

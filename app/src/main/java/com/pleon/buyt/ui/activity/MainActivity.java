@@ -36,7 +36,6 @@ import com.pleon.buyt.viewmodel.MainViewModel;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -66,7 +65,6 @@ import static com.google.android.material.snackbar.Snackbar.LENGTH_SHORT;
 import static com.pleon.buyt.viewmodel.MainViewModel.State.FINDING;
 import static com.pleon.buyt.viewmodel.MainViewModel.State.IDLE;
 import static com.pleon.buyt.viewmodel.MainViewModel.State.SELECTING;
-import static java.util.Calendar.DATE;
 
 public class MainActivity extends AppCompatActivity
         implements SelectDialogFragment.Callback, ConfirmExitDialog.Callback, Callback {
@@ -279,11 +277,7 @@ public class MainActivity extends AppCompatActivity
         // observe() methods should be set only once (e.g. in activity onCreate() method) so if you
         // call it every time you want some data, maybe you're doing something wrong
         viewModel.getAllPurchases().observe(this, purchases -> {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(new Date());
-            cal.add(DATE, -7);
-            long from = cal.getTime().getTime();
-            viewModel.getTotalWeekdayCosts(from, new Date().getTime()).observe(this, weekdayCosts -> {
+            viewModel.getTotalWeekdayCosts().observe(this, weekdayCosts -> {
                 if (weekdayCosts.size() == 0) {
                     chartContainer.setVisibility(GONE);
                 } else {

@@ -78,8 +78,8 @@ public class MainRepository { // TODO: make this class singleton
         return allStores;
     }
 
-    public LiveData<List<WeekdayCost>> getTotalWeekdayCosts(long from, long to) {
-        new GetCostTask(mPurchaseDao, totalWeekdayCosts).execute(from, to);
+    public LiveData<List<WeekdayCost>> getTotalWeekdayCosts() {
+        new GetCostTask(mPurchaseDao, totalWeekdayCosts).execute();
         return totalWeekdayCosts;
     }
 
@@ -227,7 +227,7 @@ public class MainRepository { // TODO: make this class singleton
         }
     }
 
-    private static class GetCostTask extends AsyncTask<Long, Void, List<WeekdayCost>> {
+    private static class GetCostTask extends AsyncTask<Void, Void, List<WeekdayCost>> {
 
         private PurchaseDao purchaseDao;
         private MutableLiveData<List<WeekdayCost>> totalWeekdayCosts;
@@ -238,8 +238,8 @@ public class MainRepository { // TODO: make this class singleton
         }
 
         @Override
-        protected List<WeekdayCost> doInBackground(Long... endpoints) {
-            return purchaseDao.getCost(endpoints[0], endpoints[1]);
+        protected List<WeekdayCost> doInBackground(Void... voids) {
+            return purchaseDao.getCost();
         }
 
         @Override

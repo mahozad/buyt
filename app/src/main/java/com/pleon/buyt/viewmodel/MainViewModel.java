@@ -96,8 +96,8 @@ public class MainViewModel extends AndroidViewModel {
         return mStoreRepository.getLatestCreatedStore();
     }
 
-    public LiveData<List<WeekdayCost>> getTotalWeekdayCosts(long from, long to) {
-        return mMainRepository.getTotalWeekdayCosts(from, to);
+    public LiveData<List<WeekdayCost>> getTotalWeekdayCosts() {
+        return mMainRepository.getTotalWeekdayCosts();
     }
 
     public LiveData<List<Purchase>> getAllPurchases() {
