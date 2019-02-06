@@ -277,6 +277,7 @@ public class AddItemFragment extends Fragment
             selectCategoryTxvi.setText(checked ? getString(R.string.action_select_store) : getString(itemCategory.getNameRes()));
         }
         boughtContainer.setVisibility(checked ? VISIBLE : GONE);
+        priceTxinlt.setError(null);
     }
 
     @OnFocusChange(R.id.quantity)
