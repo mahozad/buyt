@@ -71,14 +71,6 @@ public class AddItemFragment extends Fragment
         implements SelectDialogFragment.Callback, android.app.DatePickerDialog.OnDateSetListener,
         com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog.OnDateSetListener {
 
-
-    public interface Callback {
-
-        void onSubmit(Item item);
-
-        void onSubmitPurchasedItem(Item item, Store store, Date purchaseDate);
-    }
-
     @BindView(R.id.name_layout) TextInputLayout nameTxInLt;
     @BindView(R.id.name) EditText nameEdtx;
     @BindView(R.id.quantity_layout) TextInputLayout quantityTxinlt;
@@ -95,12 +87,13 @@ public class AddItemFragment extends Fragment
     @BindView(R.id.date_layout) TextInputLayout dateTxinlt;
     @BindView(R.id.date) EditText dateEdtx;
 
-    @ColorRes private int colorError; // this color varies based on the theme
     @ColorRes private int colorOnSurface; // this color varies based on the theme
+    @ColorRes private int colorError; // this color varies based on the theme
+
     private Callback callback;
-    private TextView selectCategoryTxvi;
-    private Unbinder unbinder;
     private AddItemViewModel viewModel;
+    private Unbinder unbinder;
+    private TextView selectCategoryTxvi;
 
     public AddItemFragment() {
         // Required empty constructor
@@ -484,5 +477,12 @@ public class AddItemFragment extends Fragment
 
     private boolean isEmpty(@NonNull EditText editText) {
         return editText.getText().toString().trim().length() == 0;
+    }
+
+    public interface Callback {
+
+        void onSubmit(Item item);
+
+        void onSubmitPurchasedItem(Item item, Store store, Date purchaseDate);
     }
 }
