@@ -32,6 +32,7 @@ import com.pleon.buyt.ui.activity.MainActivity;
 import com.pleon.buyt.ui.dialog.DatePickerFragment;
 import com.pleon.buyt.ui.dialog.SelectDialogFragment;
 import com.pleon.buyt.ui.dialog.SelectionDialogRow;
+import com.pleon.buyt.viewmodel.AddItemViewModel;
 import com.pleon.buyt.viewmodel.MainViewModel;
 
 import java.text.SimpleDateFormat;
@@ -98,14 +99,10 @@ public class AddItemFragment extends Fragment
 
     @ColorRes private int colorError; // this color varies based on the theme
     @ColorRes private int colorOnSurface; // this color varies based on the theme
-    private Item.Category itemCategory = Item.Category.GROCERY;
     private Callback callback;
     private TextView selectCategoryTxvi;
-    private List<Store> storeList;
     private Unbinder unbinder;
-    private Store store;
-    private Date purchaseDate = new Date();
-    private int itemOrder;
+    private AddItemViewModel viewModel;
 
     public AddItemFragment() {
         // Required empty constructor
@@ -115,7 +112,9 @@ public class AddItemFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        itemOrder = getActivity().getIntent().getIntExtra(MainActivity.EXTRA_ITEM_ORDER, 0);
+        viewModel = ViewModelProviders.of(this).get(AddItemViewModel.class);
+
+        viewModel.setItemOrder(getActivity().getIntent().getIntExtra(MainActivity.EXTRA_ITEM_ORDER, 0));
 
         TypedValue typedValue = new TypedValue();
         getContext().getTheme().resolveAttribute(R.attr.colorError, typedValue, true);
@@ -165,7 +164,7 @@ public class AddItemFragment extends Fragment
             ArrayList<SelectionDialogRow> selectionList = new ArrayList<>(); // dialog requires ArrayList
             if (isBoughtChecked()) {
                 ViewModelProviders.of(this).get(MainViewModel.class).getAllStores().observe(this, stores -> {
-                    storeList = stores;
+                    viewModel.setStoreList(stores);
                     selectionList.clear();
                     for (Store store : stores) {
                         SelectionDialogRow selection = new SelectionDialogRow(store.getName(), store.getCategory().getImageRes());
@@ -269,7 +268,7 @@ public class AddItemFragment extends Fragment
         // cal.set(year, month, day);
 
         JalaliCalendar jalaliCalendar = new JalaliCalendar(year, ++month, day);
-        purchaseDate = jalaliCalendar.toGregorian().getTime();
+        viewModel.setPurchaseDate(jalaliCalendar.toGregorian().getTime());
 
         String date = String.format(getResources().getConfiguration().locale, "%d %s %d",
                 jalaliCalendar.getDay(), jalaliCalendar.getMonthString(), jalaliCalendar.getYear());
@@ -282,11 +281,11 @@ public class AddItemFragment extends Fragment
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         Calendar cal = Calendar.getInstance();
         cal.set(year, month, dayOfMonth);
-        purchaseDate = cal.getTime();
+        viewModel.setPurchaseDate(cal.getTime());
 
         String format = "MM/dd/yyyy";
         SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.US);
-        dateEdtx.setText(dateFormat.format(purchaseDate));
+        dateEdtx.setText(dateFormat.format(viewModel.getPurchaseDate()));
     }
 
     @OnCheckedChanged(R.id.urgent)
@@ -298,7 +297,7 @@ public class AddItemFragment extends Fragment
     @OnCheckedChanged(R.id.bought)
     void onBoughtToggled(boolean checked) {
         if (selectCategoryTxvi != null) { // to fix bug on config change
-            selectCategoryTxvi.setText(checked ? getString(R.string.action_select_store) : getString(itemCategory.getNameRes()));
+            selectCategoryTxvi.setText(checked ? getString(R.string.action_select_store) : getString(viewModel.getItemCategory().getNameRes()));
             selectCategoryTxvi.setTextColor(ContextCompat.getColor(getContext(), colorOnSurface));
             @DrawableRes int icon = checked ? R.drawable.avd_store_error : R.drawable.ic_item_grocery;
             selectCategoryTxvi.setCompoundDrawablesRelativeWithIntrinsicBounds(icon, 0, 0, 0);
@@ -401,8 +400,8 @@ public class AddItemFragment extends Fragment
         if (validated) {
             String name = nameEdtx.getText().toString();
             Quantity quantity = getQuantity();
-            Item item = new Item(name, quantity, urgentChbx.isChecked(), boughtChbx.isChecked(), itemCategory);
-            item.setPosition(itemOrder);
+            Item item = new Item(name, quantity, urgentChbx.isChecked(), boughtChbx.isChecked(), viewModel.getItemCategory());
+            item.setPosition(viewModel.getItemOrder());
 
             if (!isEmpty(descriptionEdtx)) {
                 item.setDescription(descriptionEdtx.getText().toString());
@@ -425,14 +424,14 @@ public class AddItemFragment extends Fragment
         String name;
         int imageRes;
         if (isBoughtChecked()) {
-            store = storeList.get(index);
-            name = store.getName();
-            imageRes = store.getCategory().getImageRes();
+            viewModel.setStore(viewModel.getStoreList().get(index));
+            name = viewModel.getStore().getName();
+            imageRes = viewModel.getStore().getCategory().getImageRes();
         } else {
             Item.Category category = Item.Category.values()[index];
             imageRes = category.getImageRes();
             name = getResources().getString(category.getNameRes());
-            itemCategory = category;
+            viewModel.setItemCategory(category);
         }
         selectCategoryTxvi.setCompoundDrawablesRelativeWithIntrinsicBounds(imageRes, 0, 0, 0);
         selectCategoryTxvi.setTextColor(ContextCompat.getColor(getContext(), colorOnSurface));
@@ -455,8 +454,9 @@ public class AddItemFragment extends Fragment
             priceTxinlt.setError("Price should be specified");
             validated = false;
         }
-        if (isBoughtChecked() && store == null) {
+        if (isBoughtChecked() && viewModel.getStore() == null) {
             selectCategoryTxvi.setTextColor(ContextCompat.getColor(getContext(), colorError));
+            selectCategoryTxvi.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.avd_store_error, 0, 0, 0);
             ((Animatable) selectCategoryTxvi.getCompoundDrawablesRelative()[0]).start();
             validated = false;
         }
