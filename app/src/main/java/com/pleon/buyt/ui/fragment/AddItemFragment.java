@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.DrawableContainer.DrawableContainerState;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -40,6 +41,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.Group;
 import androidx.core.widget.CompoundButtonCompat;
@@ -92,6 +94,7 @@ public class AddItemFragment extends Fragment
     @BindView(R.id.date_layout) TextInputLayout dateTxinlt;
     @BindView(R.id.date) EditText dateEdtx;
 
+    @ColorRes private int colorError; // this color varies based on the theme
     private Item.Category itemCategory = Item.Category.GROCERY;
     private Callback callback;
     private TextView selectCategoryTxvi;
@@ -108,7 +111,12 @@ public class AddItemFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         itemOrder = getActivity().getIntent().getIntExtra(MainActivity.EXTRA_ITEM_ORDER, 0);
+
+        TypedValue typedValue = new TypedValue();
+        getContext().getTheme().resolveAttribute(R.attr.colorError, typedValue, true);
+        colorError = typedValue.resourceId;
     }
 
     @Override
@@ -286,7 +294,7 @@ public class AddItemFragment extends Fragment
         for (RadioButton unitButton : unitRdbtns) {
             unitButton.setEnabled(hasFocus);
         }
-        int color = R.color.colorError;
+        int color = colorError;
         if (hasFocus && quantityTxinlt.getError() == null) {
             color = R.color.colorPrimary;
         } else if (!hasFocus && quantityTxinlt.getError() == null) {
@@ -420,7 +428,7 @@ public class AddItemFragment extends Fragment
         }
         if (isEmpty(quantityEdtx)) {
             quantityTxinlt.setError("Quantity should be specified");
-            setColorOfAllUnitsForEnabledState(R.color.colorError);
+            setColorOfAllUnitsForEnabledState(colorError);
             validated = false;
         }
         if (boughtChbx.isChecked() && isEmpty(priceEdtx)) {
