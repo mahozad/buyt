@@ -21,7 +21,7 @@
     <target android:name="path">
         <aapt:attr name="android:animation">
             <objectAnimator
-                android:duration="300"
+                android:duration="0"
                 android:interpolator="@android:interpolator/fast_out_slow_in"
                 android:propertyName="fillColor"
                 android:valueFrom="?attr/colorOnSurface"
