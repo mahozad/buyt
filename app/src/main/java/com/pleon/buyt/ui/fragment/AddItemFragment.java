@@ -286,7 +286,7 @@ public class AddItemFragment extends Fragment
         for (RadioButton unitButton : unitRdbtns) {
             unitButton.setEnabled(hasFocus);
         }
-        int color = R.color.error;
+        int color = R.color.colorError;
         if (hasFocus && quantityTxinlt.getError() == null) {
             color = R.color.colorPrimary;
         } else if (!hasFocus && quantityTxinlt.getError() == null) {
@@ -420,7 +420,7 @@ public class AddItemFragment extends Fragment
         }
         if (isEmpty(quantityEdtx)) {
             quantityTxinlt.setError("Quantity should be specified");
-            setColorOfAllUnitsForEnabledState(R.color.error);
+            setColorOfAllUnitsForEnabledState(R.color.colorError);
             validated = false;
         }
         if (boughtChbx.isChecked() && isEmpty(priceEdtx)) {

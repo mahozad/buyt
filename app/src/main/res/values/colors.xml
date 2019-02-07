@@ -9,7 +9,8 @@
     <color name="mdtp_accent_color">@color/colorPrimary</color>
     <color name="mdtp_accent_color_dark">@color/colorPrimaryDark</color>
 
-    <color name="error">#c26c7a</color>
+    <!-- using ?attr/colorError gives error in code. for light theme it is #b00020 -->
+    <color name="colorError">#c26c7a</color>
     <color name="ic_launcher_background">#FFFFFF</color>
     <color name="card_background">#282828</color>
     <color name="unfocused">#6E6E6E</color>

@@ -86,7 +86,6 @@
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:backgroundTint="@color/colorPrimary"
             app:fabSize="normal"
             app:layout_anchor="@id/bottom_bar"
             app:maxImageSize="42dp"
@@ -95,7 +94,6 @@
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottom_bar"
-            style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -103,7 +101,6 @@
             app:fabAlignmentMode="center"
             app:fabAnimationMode="slide"
             app:fabCradleMargin="6dp"
-            app:hideOnScroll="true"
             app:navigationIcon="@drawable/avd_nav_cancel" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

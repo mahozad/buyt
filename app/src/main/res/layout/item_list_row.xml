@@ -36,7 +36,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
                 android:alpha="0"
-                android:background="@color/error" />
+                android:background="?attr/colorError" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/delete_icon"
