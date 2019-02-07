@@ -87,4 +87,7 @@
     <string name="quantity_kilogram">kg</string>
     <string name="quantity_gram">g</string>
 
+    <!-- Change title of persian date picker from "بیخیال" to this -->
+    <string name="mdtp_cancel" translatable="false">لغو</string>
+
 </resources>
