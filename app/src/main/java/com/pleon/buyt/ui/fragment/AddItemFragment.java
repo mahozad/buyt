@@ -150,6 +150,15 @@ public class AddItemFragment extends Fragment
         inflater.inflate(R.menu.menu_add_item, menu);
 
         selectCategoryTxvi = menu.findItem(R.id.action_item_category).getActionView().findViewById(R.id.select_store);
+
+        if (viewModel.getStore() != null) {
+            selectCategoryTxvi.setText(viewModel.getStore().getName());
+            selectCategoryTxvi.setCompoundDrawablesRelativeWithIntrinsicBounds(viewModel.getStore().getCategory().getImageRes(), 0, 0, 0);
+        } else if (boughtChbx.isChecked()) {
+            selectCategoryTxvi.setText(R.string.action_select_store);
+            selectCategoryTxvi.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_store, 0, 0, 0);
+        }
+
         // Setting up "Choose category" action because it has custom layout
         MenuItem menuItem = menu.findItem(R.id.action_item_category);
         menuItem.getActionView().setOnClickListener(v -> onOptionsItemSelected(menuItem));
