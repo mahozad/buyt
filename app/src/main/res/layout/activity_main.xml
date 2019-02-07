@@ -30,7 +30,6 @@
             android:visibility="gone"
             app:srcCompat="@drawable/ic_expand" />
 
-        <!-- Set topSpacing the same as borderSpacing to fix wrong top margin -->
         <com.db.chart.view.BarChartView
             android:id="@+id/chart"
             android:layout_width="match_parent"
