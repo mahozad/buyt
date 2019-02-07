@@ -7,7 +7,7 @@
     <!-- colors for persian date picker (if you want to switch dark/light theme, set it in code:
      timePickerDialog.setThemeDark(true);) -->
     <color name="mdtp_accent_color">@color/colorPrimary</color>
-    <color name="mdtp_accent_color_dark">#f00</color>
+    <color name="mdtp_accent_color_dark">@color/colorPrimaryDark</color>
     <color name="mdtp_button_color">#fff</color>
     <color name="mdtp_date_picker_year_selector">#fff</color>
     <!-- Other mdtp_... colors -->
