@@ -104,7 +104,7 @@ public class AddItemFragment extends Fragment
     private List<Store> storeList;
     private Unbinder unbinder;
     private Store store;
-    private Date purchaseDate;
+    private Date purchaseDate = new Date();
     private int itemOrder;
 
     public AddItemFragment() {
