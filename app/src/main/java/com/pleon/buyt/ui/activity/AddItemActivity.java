@@ -85,7 +85,7 @@ public class AddItemActivity extends AppCompatActivity implements AddItemFragmen
      * @param store
      */
     @Override
-    public void onSubmit(Item item, Store store, Date purchaseDate) {
+    public void onSubmitPurchasedItem(Item item, Store store, Date purchaseDate) {
         viewModel.addItem(item);
         // FIXME: purchaseId is not set for the item
         viewModel.buy(singletonList(item), store, purchaseDate);

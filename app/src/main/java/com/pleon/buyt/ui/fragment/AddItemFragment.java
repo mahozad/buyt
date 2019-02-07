@@ -39,7 +39,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import androidx.annotation.ColorRes;
@@ -70,15 +69,14 @@ import static butterknife.OnTextChanged.Callback.AFTER_TEXT_CHANGED;
  */
 public class AddItemFragment extends Fragment
         implements SelectDialogFragment.Callback, android.app.DatePickerDialog.OnDateSetListener,
-        com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog.OnDateSetListener
-        /*,DateSetListener*/ {
+        com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog.OnDateSetListener {
 
 
     public interface Callback {
 
         void onSubmit(Item item);
 
-        void onSubmit(Item item, Store store, Date purchaseDate);
+        void onSubmitPurchasedItem(Item item, Store store, Date purchaseDate);
     }
 
     @BindView(R.id.name_layout) TextInputLayout nameTxInLt;
@@ -412,7 +410,7 @@ public class AddItemFragment extends Fragment
 
             if (isBoughtChecked()) {
 //                item.setCategory(); // TODO: set it to the category of the selected store
-                callback.onSubmit(item, store, purchaseDate);
+                callback.onSubmitPurchasedItem(item, viewModel.getStore(), viewModel.getPurchaseDate());
             } else {
                 callback.onSubmit(item);
             }
