@@ -198,8 +198,18 @@ public class AddItemFragment extends Fragment
             com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog datePicker = com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
                     .newInstance(this, persianCal.getPersianYear(), persianCal.getPersianMonth(), persianCal.getPersianDay());
             datePicker.setThemeDark(true); // if you want to change colors see colors.xml
+
+            PersianCalendar[] selectableDays = new PersianCalendar[10];
+            for (int i = 0; i < selectableDays.length; i++) {
+                PersianCalendar selectableDay = new PersianCalendar();
+                selectableDay.addPersianDate(Calendar.DAY_OF_YEAR, -i);
+                selectableDays[i] = selectableDay;
+            }
+            datePicker.setSelectableDays(selectableDays);
+
             datePicker.show(getActivity().getFragmentManager(), "DATE_PICKER");
 
+            // Another persian date picker
 //            new com.alirezaafkar.sundatepicker.DatePicker.Builder()
 //                    .id(23455)
 //                    .minDate(1380, 1, 1)
