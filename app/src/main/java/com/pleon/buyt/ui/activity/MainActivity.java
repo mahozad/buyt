@@ -359,9 +359,6 @@ public class MainActivity extends AppCompatActivity
                 Intent intent = new Intent(this, AddItemActivity.class);
                 intent.putExtra(EXTRA_ITEM_ORDER, itemListFragment.getNextItemPosition());
                 startActivity(intent);
-
-                // View chartView = findViewById(R.id.container_fragment_chart);
-                // chartView.setVisibility(View.GONE); // TODO: maybe replacing the fragment is a better practice
                 break;
 
             case R.id.action_reorder:
