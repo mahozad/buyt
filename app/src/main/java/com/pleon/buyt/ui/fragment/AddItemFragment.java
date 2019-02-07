@@ -42,8 +42,10 @@ import java.util.List;
 import java.util.Locale;
 
 import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.Group;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.CompoundButtonCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -95,6 +97,7 @@ public class AddItemFragment extends Fragment
     @BindView(R.id.date) EditText dateEdtx;
 
     @ColorRes private int colorError; // this color varies based on the theme
+    @ColorRes private int colorOnSurface; // this color varies based on the theme
     private Item.Category itemCategory = Item.Category.GROCERY;
     private Callback callback;
     private TextView selectCategoryTxvi;
@@ -117,6 +120,9 @@ public class AddItemFragment extends Fragment
         TypedValue typedValue = new TypedValue();
         getContext().getTheme().resolveAttribute(R.attr.colorError, typedValue, true);
         colorError = typedValue.resourceId;
+
+        getContext().getTheme().resolveAttribute(R.attr.colorOnSurface, typedValue, true);
+        colorOnSurface = typedValue.resourceId;
     }
 
     @Override
@@ -293,6 +299,9 @@ public class AddItemFragment extends Fragment
     void onBoughtToggled(boolean checked) {
         if (selectCategoryTxvi != null) { // to fix bug on config change
             selectCategoryTxvi.setText(checked ? getString(R.string.action_select_store) : getString(itemCategory.getNameRes()));
+            selectCategoryTxvi.setTextColor(ContextCompat.getColor(getContext(), colorOnSurface));
+            @DrawableRes int icon = checked ? R.drawable.avd_store_error : R.drawable.ic_item_grocery;
+            selectCategoryTxvi.setCompoundDrawablesRelativeWithIntrinsicBounds(icon, 0, 0, 0);
         }
         boughtContainer.setVisibility(checked ? VISIBLE : GONE);
         priceTxinlt.setError(null);
@@ -426,6 +435,7 @@ public class AddItemFragment extends Fragment
             itemCategory = category;
         }
         selectCategoryTxvi.setCompoundDrawablesRelativeWithIntrinsicBounds(imageRes, 0, 0, 0);
+        selectCategoryTxvi.setTextColor(ContextCompat.getColor(getContext(), colorOnSurface));
         selectCategoryTxvi.setText(name);
     }
 
@@ -443,6 +453,11 @@ public class AddItemFragment extends Fragment
         }
         if (boughtChbx.isChecked() && isEmpty(priceEdtx)) {
             priceTxinlt.setError("Price should be specified");
+            validated = false;
+        }
+        if (isBoughtChecked() && store == null) {
+            selectCategoryTxvi.setTextColor(ContextCompat.getColor(getContext(), colorError));
+            ((Animatable) selectCategoryTxvi.getCompoundDrawablesRelative()[0]).start();
             validated = false;
         }
 
