@@ -304,6 +304,9 @@ public class AddItemFragment extends Fragment
         }
         boughtContainer.setVisibility(checked ? VISIBLE : GONE);
         priceTxinlt.setError(null);
+        if (!checked) {
+            viewModel.setStore(null);
+        }
     }
 
     @OnFocusChange(R.id.quantity)
