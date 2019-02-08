@@ -369,7 +369,7 @@ public class MainActivity extends AppCompatActivity
             lineChart.setLabelsFormat(moneyFormat);
 
             int[] colors2 = getResources().getIntArray(R.array.lineChartGradient);
-            float[] steps2 = {0.1f, 0.4f, 0.8f};
+            float[] steps2 = {0.0f, 0.5f, 1.0f};
             dataSet.setGradientFill(colors2, steps2);
             lineChart.addData(dataSet);
             lineChart.setXLabels(NONE);

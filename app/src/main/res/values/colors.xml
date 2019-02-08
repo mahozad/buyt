@@ -17,9 +17,6 @@
     <color name="unfocused">#6E6E6E</color>
 
     <array name="chartGradient">
-        <!--<item>#1C7a00</item>-->
-        <!--<item>#259600</item>-->
-        <!--<item>@color/colorPrimary</item>-->
         <item>#01259600</item>
         <item>#45259600</item>
         <item>#CC259600</item>
@@ -28,7 +25,7 @@
     <array name="lineChartGradient">
         <item>#CC259600</item>
         <item>#41259600</item>
-        <item>@android:color/transparent</item>
+        <item>#01259600</item>
     </array>
 
 </resources>
