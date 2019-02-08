@@ -200,9 +200,10 @@ public class AddItemFragment extends Fragment
     void onDateClicked() {
         if (getActivity().getResources().getConfiguration().locale.getDisplayName().equals("فارسی (ایران)")) {
             PersianCalendar persianCal = new PersianCalendar();
-            com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog datePicker = com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
+            DatePickerDialog datePicker = DatePickerDialog
                     .newInstance(this, persianCal.getPersianYear(), persianCal.getPersianMonth(), persianCal.getPersianDay());
             datePicker.setThemeDark(true); // if you want to change colors see colors.xml
+            datePicker.setRetainInstance(true);
 
             PersianCalendar[] selectableDays = new PersianCalendar[10];
             for (int i = 0; i < selectableDays.length; i++) {
@@ -225,7 +226,9 @@ public class AddItemFragment extends Fragment
 //                    .show(getActivity().getSupportFragmentManager(), "ASDDD");
 
         } else {
-            new DatePickerFragment().show(getChildFragmentManager(), "DATE_PICKER");
+            DatePickerFragment datePicker = new DatePickerFragment();
+//            datePicker.setRetainInstance(true);
+            datePicker.show(getChildFragmentManager(), "DATE_PICKER");
         }
     }
 
