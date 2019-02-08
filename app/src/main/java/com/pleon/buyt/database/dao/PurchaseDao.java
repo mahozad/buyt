@@ -31,13 +31,21 @@ public interface PurchaseDao {
      *
      * @return List of total costs per weekday
      */
-    @Query("SELECT strftime('%w', date/1000, 'unixepoch', 'localtime') as day, SUM(totalcost) as cost " +
+    @Query("SELECT strftime('%w', date/1000, 'unixepoch', 'localtime') AS day, SUM(totalcost) AS cost " +
             "FROM purchase " +
             "WHERE date BETWEEN strftime('%s','now', 'localtime', 'start of day', '-7 days') * 1000 " +
             "               AND strftime('%s','now', 'localtime') * 1000 " +
-            "GROUP BY strftime('%w', date/1000, 'unixepoch', 'localtime') " +
+            "GROUP BY day " +
             "ORDER BY day")
-    List<WeekdayCost> getCost();
+    List<WeekdayCost> getWeekdayCosts();
+
+    @Query("SELECT SUM(totalCost) AS cost " +
+            "FROM purchase " +
+            "WHERE date BETWEEN strftime('%s','now', 'localtime', 'start of day', '-30 days') * 1000 " +
+            "               AND strftime('%s','now', 'localtime') * 1000 " +
+            "GROUP BY strftime('%j', date/1000, 'unixepoch', 'localtime') " +
+            "ORDER BY strftime('%j', date/1000, 'unixepoch', 'localtime')")
+    List<Long> getLast30DayCosts();
 
     @Query("SELECT * FROM purchase")
     LiveData<List<Purchase>> getAll();

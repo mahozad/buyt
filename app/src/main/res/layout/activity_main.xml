@@ -20,21 +20,23 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible">
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/toggleChart"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="right"
-            android:layout_marginTop="4dp"
-            android:layout_marginRight="10dp"
-            android:visibility="gone"
-            app:srcCompat="@drawable/ic_expand" />
+            android:layout_width="48dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_horizontal|top"
+            android:layout_marginTop="2dp"
+            android:text="@null"
+            app:buttonCompat="@drawable/avd_toggle_chart_1" />
 
         <com.db.chart.view.BarChartView
             android:id="@+id/chart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="12dp"
             app:chart_axis="false"
             app:chart_axisBorderSpacing="6dp"
             app:chart_axisLabelsSpacing="6dp"
@@ -45,7 +47,38 @@
             app:chart_fontSize="11sp"
             app:chart_labelColor="?attr/colorOnSurface" />
 
+        <TextView
+            android:id="@+id/lineChartCaption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="6dp"
+            android:text="last 30 days"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="11sp"
+            android:visibility="gone" />
+
     </com.google.android.material.card.MaterialCardView>
+
+    <com.db.chart.view.LineChartView
+        android:id="@+id/lineChart"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="42dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="20dp"
+        android:elevation="2dp"
+        android:visibility="visible"
+        app:chart_axis="false"
+        app:chart_axisLabelsSpacing="12dp"
+        app:chart_fontSize="11sp"
+        app:chart_labelColor="?attr/colorOnSurface"
+        app:layout_constraintBottom_toTopOf="@id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
