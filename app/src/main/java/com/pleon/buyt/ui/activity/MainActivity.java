@@ -370,11 +370,7 @@ public class MainActivity extends AppCompatActivity
 
             LineSet dataSet = new LineSet();
             for (int i = now - 15; i <= now; i++) {
-                if (dayToCostMap.containsKey(i)) {
-                    dataSet.addPoint("" + i, dayToCostMap.get(i));
-                } else {
-                    dataSet.addPoint("" + i, 0);
-                }
+                dataSet.addPoint("" + i, dayToCostMap.containsKey(i) ? dayToCostMap.get(i) : 0);
             }
 
 //            dataSet.setDotsColor(ContextCompat.getColor(this, R.color.colorAccent));
