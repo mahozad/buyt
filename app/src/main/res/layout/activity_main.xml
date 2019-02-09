@@ -29,6 +29,7 @@
             android:text="@null"
             app:buttonCompat="@drawable/avd_toggle_chart_1" />
 
+        <!-- app:chart_barBackgroundColor="#2d2d2d" -->
         <com.db.chart.view.BarChartView
             android:id="@+id/chart"
             android:layout_width="match_parent"
@@ -41,7 +42,6 @@
             app:chart_axisBorderSpacing="6dp"
             app:chart_axisLabelsSpacing="6dp"
             app:chart_axisTopSpacing="-12dp"
-            app:chart_barBackgroundColor="#2d2d2d"
             app:chart_barSpacing="@dimen/chart_bar_spacing"
             app:chart_cornerRadius="12dp"
             app:chart_fontSize="11sp"
@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
             android:layout_marginBottom="6dp"
-            android:text="last 30 days"
+            android:text="۱۵ روز گذشته"
             android:textColor="?attr/colorOnSurface"
             android:textSize="11sp"
             android:visibility="gone" />
@@ -65,11 +65,12 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="42dp"
+        android:layout_marginTop="38dp"
         android:layout_marginEnd="12dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="18dp"
         android:elevation="2dp"
-        android:visibility="visible"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         app:chart_axis="false"
         app:chart_axisLabelsSpacing="12dp"
         app:chart_fontSize="11sp"

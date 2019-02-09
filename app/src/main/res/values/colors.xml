@@ -17,8 +17,8 @@
     <color name="unfocused">#6E6E6E</color>
 
     <array name="chartGradient">
-        <item>#01259600</item>
-        <item>#45259600</item>
+        <item>#00259600</item>
+        <item>#41259600</item>
         <item>#CC259600</item>
     </array>
 

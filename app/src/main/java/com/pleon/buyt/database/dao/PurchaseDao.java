@@ -33,19 +33,21 @@ public interface PurchaseDao {
      */
     @Query("SELECT strftime('%w', date/1000, 'unixepoch', 'localtime') AS day, SUM(totalcost) AS cost " +
             "FROM purchase " +
-            "WHERE date BETWEEN strftime('%s','now', 'localtime', 'start of day', '-7 days') * 1000 " +
+            "WHERE date BETWEEN strftime('%s','now', 'localtime', 'start of day', '-7 days') * 1000" +
             "               AND strftime('%s','now', 'localtime') * 1000 " +
             "GROUP BY day " +
-            "ORDER BY day")
+            "ORDER BY day ")
     List<WeekdayCost> getWeekdayCosts();
 
-    @Query("SELECT SUM(totalCost) AS cost " +
+    @Query("SELECT * FROM (SELECT strftime('%J', date/1000, 'unixepoch', 'localtime') AS day, SUM(totalCost) AS cost " +
             "FROM purchase " +
-            "WHERE date BETWEEN strftime('%s','now', 'localtime', 'start of day', '-30 days') * 1000 " +
+            "WHERE date BETWEEN strftime('%s','now', 'localtime', 'start of day', '-30 days') * 1000" +
             "               AND strftime('%s','now', 'localtime') * 1000 " +
-            "GROUP BY strftime('%j', date/1000, 'unixepoch', 'localtime') " +
-            "ORDER BY strftime('%j', date/1000, 'unixepoch', 'localtime')")
-    List<Long> getLast30DayCosts();
+            "GROUP BY day " +
+            "UNION ALL " +
+            "SELECT strftime('%J', 'now', 'localtime') AS day, -1 AS cost) " +
+            "ORDER BY day ")
+    List<WeekdayCost> getLast30DayCosts();
 
     @Query("SELECT * FROM purchase")
     LiveData<List<Purchase>> getAll();

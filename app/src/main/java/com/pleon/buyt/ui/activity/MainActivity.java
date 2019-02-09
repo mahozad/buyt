@@ -41,6 +41,7 @@ import com.pleon.buyt.viewmodel.MainViewModel;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -341,7 +342,7 @@ public class MainActivity extends AppCompatActivity
                 }
 
                 int[] colors = getResources().getIntArray(R.array.chartGradient);
-                float[] steps = {0, 0.4f, 0.8f};
+                float[] steps = {0.05f, 0.5f, 1.0f};
                 barSet.setGradientColor(colors, steps);
 
                 barChart.addData(barSet);
@@ -353,13 +354,34 @@ public class MainActivity extends AppCompatActivity
     private void show30DayCosts() {
         viewModel.getLast30DaysCosts().observe(this, costs -> {
             lineChart.reset();
-            LineSet dataSet = new LineSet();
-            for (int i = 0; i < costs.size(); i++) {
-                dataSet.addPoint("Day " + i, costs.get(i));
+
+            int now = 0;
+            for (WeekdayCost cost : costs) {
+                if (cost.getCost() == -1) {
+                    now = cost.getDay();
+                    costs.remove(cost);
+                }
             }
-            dataSet.setSmooth(true);
+
+            Map<Integer, Long> dayToCostMap = new HashMap<>();
+            for (WeekdayCost cost : costs) {
+                dayToCostMap.put(cost.getDay(), cost.getCost());
+            }
+
+            LineSet dataSet = new LineSet();
+            for (int i = now - 15; i <= now; i++) {
+                if (dayToCostMap.containsKey(i)) {
+                    dataSet.addPoint("" + i, dayToCostMap.get(i));
+                } else {
+                    dataSet.addPoint("" + i, 0);
+                }
+            }
+
+//            dataSet.setDotsColor(ContextCompat.getColor(this, R.color.colorAccent));
+//            dataSet.setDotsRadius(2);
+            dataSet.setSmooth(false); // TODO: Add an options in settings for the user to toggle this
             dataSet.setColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
-            dataSet.setThickness(4);
+            dataSet.setThickness(2.5f);
 
             DecimalFormat moneyFormat = new DecimalFormat("\u00A4##,###");
             if (getResources().getConfiguration().locale.getDisplayName().equals("فارسی (ایران)")) {

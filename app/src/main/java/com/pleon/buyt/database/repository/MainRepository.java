@@ -35,7 +35,7 @@ public class MainRepository { // TODO: make this class singleton
     private SingleLiveEvent<List<Store>> mNearStores;
     private SingleLiveEvent<List<Store>> allStores;
     private SingleLiveEvent<List<WeekdayCost>> weekdayCosts;
-    private SingleLiveEvent<List<Long>> last30DayCosts;
+    private SingleLiveEvent<List<WeekdayCost>> last30DayCosts;
 
     public MainRepository(Application application) {
         mItemDao = AppDatabase.getDatabase(application).itemDao();
@@ -85,7 +85,7 @@ public class MainRepository { // TODO: make this class singleton
         return weekdayCosts;
     }
 
-    public LiveData<List<Long>> getLast30DayCosts() {
+    public LiveData<List<WeekdayCost>> getLast30DayCosts() {
         new Get30dayCostsTask(mPurchaseDao, last30DayCosts).execute();
         return last30DayCosts;
     }
@@ -255,23 +255,23 @@ public class MainRepository { // TODO: make this class singleton
         }
     }
 
-    private static class Get30dayCostsTask extends AsyncTask<Void, Void, List<Long>> {
+    private static class Get30dayCostsTask extends AsyncTask<Void, Void, List<WeekdayCost>> {
 
         private PurchaseDao purchaseDao;
-        private MutableLiveData<List<Long>> last30DayCosts;
+        private MutableLiveData<List<WeekdayCost>> last30DayCosts;
 
-        Get30dayCostsTask(PurchaseDao purchaseDao, MutableLiveData<List<Long>> last30DayCosts) {
+        Get30dayCostsTask(PurchaseDao purchaseDao, MutableLiveData<List<WeekdayCost>> last30DayCosts) {
             this.purchaseDao = purchaseDao;
             this.last30DayCosts = last30DayCosts;
         }
 
         @Override
-        protected List<Long> doInBackground(Void... voids) {
+        protected List<WeekdayCost> doInBackground(Void... voids) {
             return purchaseDao.getLast30DayCosts();
         }
 
         @Override
-        protected void onPostExecute(List<Long> costs) {
+        protected void onPostExecute(List<WeekdayCost> costs) {
             last30DayCosts.setValue(costs);
         }
     }
