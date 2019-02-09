@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Buyt</string>
+    <string name="app_name">بایت</string>
     <string name="menu_hint_add_item">افزودن کالا</string>
     <string name="input_hint_name">نام</string>
     <string name="input_hint_price">قیمت کل</string>
