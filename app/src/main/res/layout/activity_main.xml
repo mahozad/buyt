@@ -119,6 +119,7 @@
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:backgroundTint="@color/colorPrimary"
             app:fabSize="normal"
             app:layout_anchor="@id/bottom_bar"
             app:maxImageSize="42dp"
