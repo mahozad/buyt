@@ -11,6 +11,7 @@
 
     <application
         android:name=".BuytApplication"
-        tools:replace="android:name" />
+        tools:replace="android:name"
+        android:fullBackupContent="@xml/backup_descriptor" />
 
 </manifest>
