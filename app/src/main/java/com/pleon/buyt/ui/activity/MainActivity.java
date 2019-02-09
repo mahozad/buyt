@@ -421,7 +421,7 @@ public class MainActivity extends AppCompatActivity
         if (viewModel.getState() == FINDING) {
             mBottomAppBar.setNavigationIcon(R.drawable.avd_cancel_nav);
             menu.getItem(2).setIcon(R.drawable.avd_skip_reorder);
-            menu.getItem(2).setTitle(R.string.skip);
+            menu.getItem(2).setTitle(R.string.menu_hint_skip_finding);
         } else if (viewModel.getState() == SELECTING) {
             mBottomAppBar.setNavigationIcon(R.drawable.avd_cancel_nav);
             menu.getItem(0).setIcon(viewModel.getStoreIcon()).setVisible(true);
@@ -564,14 +564,14 @@ public class MainActivity extends AppCompatActivity
     void onFabClick() {
         if (viewModel.getState() == IDLE) { // act as find
             if (itemListFragment.isCartEmpty()) {
-                showShortSnackbar(R.string.cart_empty_message);
+                showShortSnackbar(R.string.snackbar_message_cart_empty);
             } else {
                 itemListFragment.clearSelectedItems(); // clear items of previous purchase
                 findLocation();
             }
         } else if (viewModel.getState() == SELECTING) { // act as done
             if (itemListFragment.isSelectedEmpty()) {
-                showShortSnackbar(R.string.no_item_selected_message);
+                showShortSnackbar(R.string.snackbar_message_no_item_selected);
             } else {
                 buySelectedItems();
             }
@@ -596,7 +596,7 @@ public class MainActivity extends AppCompatActivity
         viewModel.setFoundStores(foundStores);
         if (foundStores.size() == 0) {
             if (viewModel.isFindingStateSkipped()) {
-                showIndefiniteSnackbar(R.string.no_store, R.string.ok);
+                showIndefiniteSnackbar(R.string.snackbar_message_no_store_found, android.R.string.ok);
                 shiftToIdleState();
             } else {
                 viewModel.setStoreIcon(R.drawable.ic_store_new); // to use on config change
@@ -644,7 +644,7 @@ public class MainActivity extends AppCompatActivity
 //        mBottomAppBar.getMenu().getItem(0).setVisible(false);
 
         mBottomAppBar.getMenu().getItem(2).setIcon(R.drawable.avd_reorder_skip);
-        mBottomAppBar.getMenu().getItem(2).setTitle(R.string.skip);
+        mBottomAppBar.getMenu().getItem(2).setTitle(R.string.menu_hint_skip_finding);
         ((Animatable) mBottomAppBar.getMenu().getItem(2).getIcon()).start();
 
         // Make sure the bottomAppBar is not hidden and make it not hide on scroll
@@ -693,7 +693,7 @@ public class MainActivity extends AppCompatActivity
 
         mBottomAppBar.getMenu().getItem(2).setVisible(true);
         mBottomAppBar.getMenu().getItem(2).setIcon(R.drawable.avd_skip_reorder);
-        mBottomAppBar.getMenu().getItem(2).setTitle(R.string.reorder_items);
+        mBottomAppBar.getMenu().getItem(2).setTitle(R.string.menu_hint_reorder_items);
         ((Animatable) mBottomAppBar.getMenu().getItem(2).getIcon()).start();
 
         viewModel.setState(IDLE); // this should be the last statement (because of the if above)

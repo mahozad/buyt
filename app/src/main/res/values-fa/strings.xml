@@ -1,30 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Buyt</string>
-    <string name="price_hint">قیمت کل محصول</string>
-    <string name="price_suffix">تومان</string>
-    <string name="item_name">نام:</string>
-    <string name="item_price">قیمت:</string>
-    <string name="name_hint">نام</string>
-    <string name="item_price_hint">قیمت</string>
-    <string name="go_to_settings">برو به تنظیمات</string>
-    <string name="item_deleted_message">آیتم %1$s حذف شد</string>
-    <string name="undo">لغو</string>
-    <string name="cart_empty_message">آیتمی برای خریدن موجود نیست</string>
-    <string name="no_item_selected_message">آیتمی انتخاب نشده است</string>
-    <string name="add_item">افزودن آیتم</string>
-    <string name="add">افزودن</string>
-    <string name="quantity_default_value">۱</string>
-    <string name="quantity_hint">مقدار</string>
-    <string name="description_hint">توضیحات (اختیاری)</string>
-    <string name="urgent">ضروری</string>
-    <string name="fri">ج</string>
-    <string name="sat">ش</string>
-    <string name="thu">پ</string>
-    <string name="wed">چ</string>
-    <string name="tue">س</string>
-    <string name="mon">د</string>
-    <string name="sun">ی</string>
+    <string name="menu_hint_add_item">افزودن کالا</string>
+    <string name="input_hint_name">نام</string>
+    <string name="input_hint_price">قیمت کل</string>
+    <string name="input_hint_total_price">قیمت کل محصول</string>
+    <string name="input_def_purchase_date">امروز</string>
+    <string name="input_suffix_price">تومان</string>
+    <string name="dialog_action_go_to_settings">برو به تنظیمات</string>
+    <string name="snackbar_message_item_deleted">آیتم %1$s حذف شد</string>
+    <string name="snackbar_action_undo">لغو</string>
+    <string name="snackbar_message_cart_empty">آیتمی برای خریدن موجود نیست</string>
+    <string name="snackbar_message_no_item_selected">آیتمی انتخاب نشده است</string>
+    <string name="input_def_quantity">۱</string>
+    <string name="input_hint_quantity">مقدار</string>
+    <string name="input_hint_description">توضیحات (اختیاری)</string>
+    <string name="checkbox_urgent">ضروری</string>
+    <string name="weekday_friday">ج</string>
+    <string name="weekday_saturday">ش</string>
+    <string name="weekday_thursday">پ</string>
+    <string name="weekday_wednesday">چ</string>
+    <string name="weekday_tuesday">س</string>
+    <string name="weekday_monday">د</string>
+    <string name="weekday_sunday">ی</string>
     <string name="item_cat_grocery">خواروبار</string>
     <string name="item_cat_bread">نان</string>
     <string name="store_cat_grocery_store">سوپری</string>
@@ -32,4 +30,27 @@
     <string name="quantity_unit">عدد</string>
     <string name="quantity_kilogram">کیلوگرم</string>
     <string name="quantity_gram">گرم</string>
+    <string name="dialog_title_location_permission">مکان غیرفعال</string>
+    <string name="dialog_title_location_off">مکان خاموش</string>
+    <string name="dialog_action_skip">اکنون نه</string>
+    <string name="dialog_action_exit">خروج</string>
+    <string name="dialog_title_exit">خروج از برنامه؟</string>
+    <string name="dialog_message_exit">در صورت خروج از برنامه، پروسه‌ی خرید متوقف خواهد شد.</string>
+    <string name="snackbar_message_no_store_found">مغازه‌ای ذخیره نشده است! نیازمند مکان</string>
+    <string name="menu_hint_skip_finding">لغو جستجو</string>
+    <string name="menu_hint_reorder_items">تغییر ترتیب کالاها</string>
+    <string name="menu_title_select_store">انتخاب مغازه</string>
+
+    <string name="dialog_message_location_permission">مجوز شناسایی موقعیت مکانی داده نشده است.
+در صورت دسترسی، بایت به صورت خودکار مغازه را شناسایی خواهد کرد.
+می‌توانید در تنظیمات سیستم از قسمت <big><i>مجوزها</i></big> دسترسی به مکان را فعال نمایید.</string>
+
+    <string name="dialog_message_location_off">حسگر مکان خاموش است. با روشن کردن آن (در حالت دقت زیاد)،
+        بایت به صورت خودکار مغازه را شناسایی خواهد کرد.</string>
+    <string name="menu_title_store_category">دسته‌بندی</string>
+    <string name="chart_caption_period">۱۵ روز گذشته</string>
+    <string name="checkbox_purchased">خریداری‌شده</string>
+    <string name="input_hint_purchase_date">تاریخ خرید</string>
+    <string name="input_hint_store_name">نام</string>
+
 </resources>

@@ -19,13 +19,13 @@ public class WeekdayCost {
         /**
          * Do NOT reorder the days. This is the order that is returned by sqlite (PurchaseDao).
          */
-        SUNDAY(R.string.sun),
-        MONDAY(R.string.mon),
-        TUESDAY(R.string.tue),
-        WEDNESDAY(R.string.wed),
-        THURSDAY(R.string.thu),
-        FRIDAY(R.string.fri),
-        SATURDAY(R.string.sat);
+        SUNDAY(R.string.weekday_sunday),
+        MONDAY(R.string.weekday_monday),
+        TUESDAY(R.string.weekday_tuesday),
+        WEDNESDAY(R.string.weekday_wednesday),
+        THURSDAY(R.string.weekday_thursday),
+        FRIDAY(R.string.weekday_friday),
+        SATURDAY(R.string.weekday_saturday);
 
         private int nameStringRes;
         public static int[] internationalOrder = {1, 2, 3, 4, 5, 6, 0};

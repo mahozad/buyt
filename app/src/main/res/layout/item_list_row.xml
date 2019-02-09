@@ -168,7 +168,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/price_hint"
+                    android:hint="@string/input_hint_total_price"
                     app:errorEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -179,7 +179,7 @@
                         android:inputType="number"
                         android:maxLength="13"
                         app:drawableStartCompat="@drawable/ic_price"
-                        tools:text="@string/price_hint" />
+                        tools:text="@string/input_hint_total_price" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -189,7 +189,7 @@
                     android:layout_gravity="top|end"
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="16dp"
-                    android:text="@string/price_suffix" />
+                    android:text="@string/input_suffix_price" />
 
             </FrameLayout>
 

@@ -94,8 +94,8 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
 
     private void showUndoSnackbar(Item item) {
         Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.snackBarContainer),
-                getString(R.string.item_deleted_message, item.getName()), LENGTH_LONG);
-        snackbar.setAction(getString(R.string.undo), v -> {
+                getString(R.string.snackbar_message_item_deleted, item.getName()), LENGTH_LONG);
+        snackbar.setAction(getString(R.string.snackbar_action_undo), v -> {
             item.setFlaggedForDeletion(false);
             mainViewModel.updateItems(singletonList(item));
         });

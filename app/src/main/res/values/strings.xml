@@ -1,53 +1,48 @@
 <resources>
     <string name="app_name">Buyt</string>
-    <string name="add_item">Add item</string>
-    <string name="add">ADD</string>
-    <string name="item_name">Name: </string>
-    <string name="item_price">Price: </string>
-    <string name="name_hint">Name</string>
-    <string name="quantity_hint">Quantity</string>
-    <string name="quantity_default_value">1</string>
-    <string name="item_price_hint">Price</string>
-    <string name="location_permission_title">Location disabled</string>
-    <string name="location_turn_on_title">GPS disabled</string>
-    <string name="go_to_settings">GO TO SETTINGS</string>
-    <string name="not_now">SKIP</string>
-    <string name="exit_button">EXIT</string>
-    <string name="cancel_button">CANCEL</string>
-    <string name="dialog_exit_title">Exit the app?</string>
-    <string name="dialog_exit_message">The buying process will be aborted if you exit the app.
-        You can instead press <i>home</i> button or <i>recent apps</i> button and return to Buyt later.</string>
+    <string name="input_hint_name">Name</string>
+    <string name="input_hint_quantity">Quantity</string>
+    <string name="input_hint_description">Description (optional)</string>
+    <string name="input_hint_price">Total price</string>
+    <string name="input_hint_purchase_date">Purchase date</string>
+    <string name="input_hint_total_price">Item total price</string>
+    <string name="input_def_quantity">1</string>
+    <string name="input_suffix_price">dollar</string>
+    <string name="dialog_title_location_permission">Location denied</string>
+    <string name="dialog_title_location_off">Location off</string>
+    <string name="dialog_title_exit">Exit the app?</string>
+    <string name="dialog_message_exit">The buying process will be aborted if you exit the app.</string>
+    <string name="dialog_action_go_to_settings">Go to Settings</string>
+    <string name="dialog_action_skip">Not now</string>
+    <string name="dialog_action_exit">Exit</string>
+    <string name="snackbar_message_item_deleted">Item \"%1$s\" deleted</string>
+    <string name="snackbar_action_undo">UNDO</string>
+    <string name="snackbar_message_cart_empty">No item to buy</string>
+    <string name="snackbar_message_no_item_selected">No item selected</string>
+    <string name="snackbar_message_no_store_found">No saved store! Location needed</string>
+    <string name="menu_hint_add_item">Add item</string>
+    <string name="menu_hint_skip_finding">Skip finding</string>
+    <string name="menu_hint_reorder_items">Reorder items</string>
+    <string name="menu_title_select_store">Select store</string>
 
-    <string name="item_deleted_message">Item \"%1$s\" deleted</string>
-    <string name="undo">UNDO</string>
-    <string name="cart_empty_message">No item to buy</string>
-    <string name="no_item_selected_message">No item selected</string>
-    <string name="no_store">No saved store! Location needed</string>
-    <string name="ok">OK</string>
-    <string name="skip">Skip</string>
-    <string name="reorder_items">Reorder items</string>
-    <string name="action_select_store">Select store</string>
-
-    <string name="location_permission_rationale">It seems you have revoked location permission.
+    <string name="dialog_message_location_permission">"It seems you have revoked location permission.
         If granted, you do not have to manually specify the store for each purchase.
-        The permission could be toggled on in <big><i>\'Permissions\'</i></big> section of the app settings.
+        The permission could be toggled on in <big><i>Permissions</i></big> section of the app settings.
     </string>
 
-    <string name="location_turn_on_rationale">Location is off. Toggle it on
+    <string name="dialog_message_location_off">Location is off. Toggle it on
         (in high precision mode) so you do not have to manually specify the store for each purchase.
     </string>
-    <string name="price_hint">Item total price</string>
-    <string name="price_suffix">dollar</string>
-    <string name="description_hint">Description (optional)</string>
-    <string name="urgent">Urgent</string>
 
-    <string name="sun">Sun</string>
-    <string name="mon">Mon</string>
-    <string name="tue">Tue</string>
-    <string name="wed">Wed</string>
-    <string name="thu">Thu</string>
-    <string name="fri">Fri</string>
-    <string name="sat">Sat</string>
+    <string name="checkbox_urgent">Urgent</string>
+
+    <string name="weekday_sunday">Sun</string>
+    <string name="weekday_monday">Mon</string>
+    <string name="weekday_tuesday">Tue</string>
+    <string name="weekday_wednesday">Wed</string>
+    <string name="weekday_thursday">Thu</string>
+    <string name="weekday_friday">Fri</string>
+    <string name="weekday_saturday">Sat</string>
 
     <string name="item_cat_grocery">Grocery</string>
     <string name="item_cat_bread">Bread</string>
@@ -89,5 +84,10 @@
 
     <!-- Change title of persian date picker from "بیخیال" to this -->
     <string name="mdtp_cancel" translatable="false">لغو</string>
+    <string name="menu_title_store_category">Category</string>
+    <string name="chart_caption_period">Last 15 days</string>
+    <string name="checkbox_purchased">Bought</string>
+    <string name="input_def_purchase_date">Today</string>
+    <string name="input_hint_store_name">Name</string>
 
 </resources>

@@ -44,18 +44,18 @@ public class RationaleDialogFragment extends AppCompatDialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog dialog = new MaterialAlertDialogBuilder(getContext())
                 .setIcon(R.drawable.ic_location_off)
-                .setPositiveButton(getString(R.string.go_to_settings), (d, which) -> {
+                .setPositiveButton(getString(R.string.dialog_action_go_to_settings), (d, which) -> {
                     Intent intent = new Intent(ACTION_APPLICATION_DETAILS_SETTINGS);
                     Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
                     intent.setData(uri);
                     startActivity(intent);
                 })
-                .setNegativeButton(getString(R.string.not_now), (d, which) -> callback.onEnableLocationDenied())
+                .setNegativeButton(getString(R.string.dialog_action_skip), (d, which) -> callback.onEnableLocationDenied())
                 .create();
 
         // getText is to preserve html formats
-        dialog.setTitle(R.string.location_permission_title);
-        dialog.setMessage(getText(R.string.location_permission_rationale));
+        dialog.setTitle(R.string.dialog_title_location_permission);
+        dialog.setMessage(getText(R.string.dialog_message_location_permission));
         dialog.setCancelable(false); // Prevent dialog from getting dismissed on back key pressed
         dialog.setCanceledOnTouchOutside(false);
         return dialog;

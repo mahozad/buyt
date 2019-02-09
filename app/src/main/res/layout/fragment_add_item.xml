@@ -19,7 +19,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
-            android:hint="@string/name_hint"
+            android:hint="@string/input_hint_name"
             app:counterMaxLength="12"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
@@ -57,7 +57,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/quantity_hint"
+                android:hint="@string/input_hint_quantity"
                 app:counterMaxLength="8"
                 app:errorEnabled="true">
 
@@ -70,7 +70,7 @@
                     android:inputType="numberDecimal"
                     android:maxLength="8"
                     android:selectAllOnFocus="true"
-                    android:text="@string/quantity_default_value"
+                    android:text="@string/input_def_quantity"
                     app:drawableStartCompat="@drawable/ic_quantity"
                     tools:text="Item quantity" />
 
@@ -127,7 +127,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="@string/description_hint"
+            android:hint="@string/input_hint_description"
             app:counterMaxLength="20"
             app:layout_constraintEnd_toEndOf="@id/quantity_container"
             app:layout_constraintStart_toStartOf="@id/quantity_container"
@@ -153,7 +153,7 @@
             android:layout_marginTop="8dp"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-            android:text="@string/urgent"
+            android:text="@string/checkbox_urgent"
             app:buttonCompat="@drawable/avd_urgent_check"
             app:layout_constraintStart_toStartOf="@+id/description_layout"
             app:layout_constraintTop_toBottomOf="@+id/description_layout" />
@@ -180,7 +180,7 @@
             android:buttonTint="#fff"
             android:paddingStart="4dp"
             android:paddingEnd="4dp"
-            android:text="Bought"
+            android:text="@string/checkbox_purchased"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider" />
 
@@ -208,7 +208,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Total price"
+                android:hint="@string/input_hint_price"
                 app:counterMaxLength="15"
                 app:errorEnabled="true">
 
@@ -231,7 +231,7 @@
                 android:layout_gravity="center|end"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="6dp"
-                android:text="dollar" />
+                android:text="@string/input_suffix_price" />
 
         </FrameLayout>
 
@@ -242,7 +242,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="24dp"
-            android:hint="Date"
+            android:hint="@string/input_hint_purchase_date"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="@id/price_container"
             app:layout_constraintStart_toStartOf="@id/price_container"
@@ -256,7 +256,7 @@
                 android:drawablePadding="8dp"
                 android:editable="false"
                 android:focusable="true"
-                android:text="Today"
+                android:text="@string/input_def_purchase_date"
                 app:drawableStartCompat="@drawable/ic_calendar"
                 tools:text="Purchase date" />
 

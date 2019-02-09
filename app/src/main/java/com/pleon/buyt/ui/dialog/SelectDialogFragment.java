@@ -73,11 +73,11 @@ public class SelectDialogFragment extends AppCompatDialogFragment implements Sto
 
         dialog = new AlertDialog.Builder(getActivity())
                 .setView(customView).setTitle("TITLE")
-                .setPositiveButton("OK", (d, which) -> {
+                .setPositiveButton(android.R.string.ok, (d, which) -> {
                     int selectedIndex = adapter.getSelectedIndex();
                     callback.onSelected(selectedIndex);
                 })
-                .setNegativeButton("CANCEL", (d, which) -> {
+                .setNegativeButton(android.R.string.cancel, (d, which) -> {
                     // cancel
                 }).create();
 

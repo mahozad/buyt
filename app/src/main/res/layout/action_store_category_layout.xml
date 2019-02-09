@@ -13,7 +13,7 @@
     android:gravity="center_vertical"
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
-    android:text="Change icon"
+    android:text="@string/menu_title_store_category"
     app:drawableStartCompat="@drawable/ic_store">
 
 </androidx.appcompat.widget.AppCompatTextView>

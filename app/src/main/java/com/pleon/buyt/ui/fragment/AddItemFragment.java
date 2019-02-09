@@ -148,7 +148,7 @@ public class AddItemFragment extends Fragment
             selectCategoryTxvi.setText(viewModel.getStore().getName());
             selectCategoryTxvi.setCompoundDrawablesRelativeWithIntrinsicBounds(viewModel.getStore().getCategory().getImageRes(), 0, 0, 0);
         } else if (boughtChbx.isChecked()) {
-            selectCategoryTxvi.setText(R.string.action_select_store);
+            selectCategoryTxvi.setText(R.string.menu_title_select_store);
             selectCategoryTxvi.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_store, 0, 0, 0);
         }
 
@@ -300,7 +300,7 @@ public class AddItemFragment extends Fragment
     @OnCheckedChanged(R.id.bought)
     void onBoughtToggled(boolean checked) {
         if (selectCategoryTxvi != null) { // to fix bug on config change
-            selectCategoryTxvi.setText(checked ? getString(R.string.action_select_store) : getString(viewModel.getItemCategory().getNameRes()));
+            selectCategoryTxvi.setText(checked ? getString(R.string.menu_title_select_store) : getString(viewModel.getItemCategory().getNameRes()));
             selectCategoryTxvi.setTextColor(ContextCompat.getColor(getContext(), colorOnSurface));
             @DrawableRes int icon = checked ? R.drawable.avd_store_error : R.drawable.ic_item_grocery;
             selectCategoryTxvi.setCompoundDrawablesRelativeWithIntrinsicBounds(icon, 0, 0, 0);

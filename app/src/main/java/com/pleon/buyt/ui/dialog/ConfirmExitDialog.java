@@ -44,13 +44,13 @@ public class ConfirmExitDialog extends AppCompatDialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog dialog = new MaterialAlertDialogBuilder(getContext())
 //                .setIcon(R.drawable.ic_location_off)
-                .setPositiveButton(getString(R.string.exit_button), (d, which) -> callback.onExitConfirmed())
-                .setNegativeButton(getString(R.string.cancel_button), (dialog1, which) -> {
+                .setPositiveButton(getString(R.string.dialog_action_exit), (d, which) -> callback.onExitConfirmed())
+                .setNegativeButton(getString(android.R.string.cancel), (dialog1, which) -> {
                 })
                 .create();
 
-        dialog.setTitle(R.string.dialog_exit_title);
-        dialog.setMessage(getText(R.string.dialog_exit_message));
+        dialog.setTitle(R.string.dialog_title_exit);
+        dialog.setMessage(getText(R.string.dialog_message_exit));
         dialog.setCancelable(false); // Prevent dialog from getting dismissed on back key pressed
         dialog.setCanceledOnTouchOutside(false);
         return dialog;

@@ -29,12 +29,12 @@
     <item
         android:id="@+id/action_add"
         android:icon="@drawable/avd_add_glow"
-        android:title="@string/add_item"
+        android:title="@string/menu_hint_add_item"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/action_reorder"
         android:icon="@drawable/avd_reorder_skip"
-        android:title="@string/reorder_items"
+        android:title="@string/menu_hint_reorder_items"
         app:showAsAction="always" />
 </menu>
