@@ -450,16 +450,16 @@ public class AddItemFragment extends Fragment
         boolean validated = true;
 
         if (isEmpty(nameEdtx)) {
-            nameTxInLt.setError("Name cannot be empty");
+            nameTxInLt.setError(getString(R.string.input_error_name));
             validated = false;
         }
         if (isEmpty(quantityEdtx)) {
-            quantityTxinlt.setError("Quantity should be specified");
+            quantityTxinlt.setError(getString(R.string.input_error_quantity));
             setColorOfAllUnitsForEnabledState(colorError);
             validated = false;
         }
         if (boughtChbx.isChecked() && isEmpty(priceEdtx)) {
-            priceTxinlt.setError("Price should be specified");
+            priceTxinlt.setError(getString(R.string.input_error_price));
             validated = false;
         }
         if (isBoughtChecked() && viewModel.getStore() == null) {
