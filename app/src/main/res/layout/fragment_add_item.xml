@@ -58,7 +58,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/input_hint_quantity"
-                app:counterMaxLength="8"
                 app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -68,7 +67,7 @@
                     android:drawablePadding="8dp"
                     android:imeOptions="flagNoFullscreen"
                     android:inputType="numberDecimal"
-                    android:maxLength="8"
+                    android:maxLength="7"
                     android:selectAllOnFocus="true"
                     android:text="@string/input_def_quantity"
                     app:drawableStartCompat="@drawable/ic_quantity"
@@ -209,7 +208,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/input_hint_price"
-                app:counterMaxLength="17"
                 app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText

@@ -119,6 +119,7 @@ public class AddItemFragment extends Fragment implements DatePickerDialog.OnDate
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_item, container, false);
         unbinder = ButterKnife.bind(this, view); // unbind() is required only for Fragments
+
         setHasOptionsMenu(true); // for the onCreateOptionsMenu() method to be called
 
         for (RadioButton unitRdbtn : unitRdbtns) {
@@ -354,7 +355,6 @@ public class AddItemFragment extends Fragment implements DatePickerDialog.OnDate
     void onQuantityChanged() {
         if (!quantityEdtx.getText().toString().isEmpty()) { // to prevent error with config change
             quantityTxinlt.setError(null); // clear error if exists
-            setCounterEnabledIfInputLong(quantityTxinlt);
         }
         setColorOfAllUnitsForEnabledState(R.color.colorPrimary);
     }
