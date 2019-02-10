@@ -6,8 +6,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.DrawableContainer.DrawableContainerState;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,6 +28,7 @@ import com.pleon.buyt.model.Item;
 import com.pleon.buyt.model.Quantity;
 import com.pleon.buyt.model.Quantity.Unit;
 import com.pleon.buyt.model.Store;
+import com.pleon.buyt.ui.NumberInputWatcher;
 import com.pleon.buyt.ui.activity.MainActivity;
 import com.pleon.buyt.ui.dialog.DatePickerFragment;
 import com.pleon.buyt.ui.dialog.SelectDialogFragment;
@@ -37,7 +36,6 @@ import com.pleon.buyt.ui.dialog.SelectionDialogRow;
 import com.pleon.buyt.viewmodel.AddItemViewModel;
 import com.pleon.buyt.viewmodel.MainViewModel;
 
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -70,9 +68,8 @@ import static butterknife.OnTextChanged.Callback.AFTER_TEXT_CHANGED;
  * This fragment requires a Toolbar as it needs to inflate and use a menu item for selection of
  * store category. So the activities using this fragment must have a Toolbar set.
  */
-public class AddItemFragment extends Fragment
-        implements SelectDialogFragment.Callback, android.app.DatePickerDialog.OnDateSetListener,
-        DatePickerDialog.OnDateSetListener, TextWatcher {
+public class AddItemFragment extends Fragment implements DatePickerDialog.OnDateSetListener,
+        SelectDialogFragment.Callback, android.app.DatePickerDialog.OnDateSetListener {
 
     @BindView(R.id.name_layout) TextInputLayout nameTxInLt;
     @BindView(R.id.name) EditText nameEdtx;
@@ -97,8 +94,6 @@ public class AddItemFragment extends Fragment
     private AddItemViewModel viewModel;
     private Unbinder unbinder;
     private TextView selectCategoryTxvi;
-    private DecimalFormat priceFormat;
-    private String priceSuffix;
 
     public AddItemFragment() {
         // Required empty constructor
@@ -118,9 +113,6 @@ public class AddItemFragment extends Fragment
 
         getContext().getTheme().resolveAttribute(R.attr.colorOnSurface, typedValue, true);
         colorOnSurface = typedValue.resourceId;
-
-        priceFormat = new DecimalFormat("#,###");
-        priceSuffix = " " + getString(R.string.input_suffix_price);
     }
 
     @Override
@@ -134,7 +126,9 @@ public class AddItemFragment extends Fragment
             unitRdbtn.setEnabled(false);
         }
 
-        priceEdtx.addTextChangedListener(this);
+        String priceSuffix = getString(R.string.input_suffix_price);
+        priceEdtx.addTextChangedListener(new NumberInputWatcher(priceTxinlt, priceEdtx, priceSuffix));
+        quantityEdtx.addTextChangedListener(new NumberInputWatcher(quantityTxinlt, quantityEdtx, null));
 
         return view;
     }
@@ -352,7 +346,7 @@ public class AddItemFragment extends Fragment
     void onNameChanged() {
         if (!nameEdtx.getText().toString().isEmpty()) { // to prevent error with config change
             nameTxInLt.setError(null); // clear error if exists
-            setCounterEnabledIfInputLengthEnough(nameTxInLt);
+            setCounterEnabledIfInputLong(nameTxInLt);
         }
     }
 
@@ -360,17 +354,17 @@ public class AddItemFragment extends Fragment
     void onQuantityChanged() {
         if (!quantityEdtx.getText().toString().isEmpty()) { // to prevent error with config change
             quantityTxinlt.setError(null); // clear error if exists
-            setCounterEnabledIfInputLengthEnough(quantityTxinlt);
+            setCounterEnabledIfInputLong(quantityTxinlt);
         }
         setColorOfAllUnitsForEnabledState(R.color.colorPrimary);
     }
 
     @OnTextChanged(value = R.id.description, callback = AFTER_TEXT_CHANGED)
     void onDescriptionChanged() {
-        setCounterEnabledIfInputLengthEnough(descriptionTxInLt);
+        setCounterEnabledIfInputLong(descriptionTxInLt);
     }
 
-    private void setCounterEnabledIfInputLengthEnough(TextInputLayout layout) {
+    private void setCounterEnabledIfInputLong(TextInputLayout layout) {
         int inputLength = layout.getEditText().getText().toString().length();
         layout.setCounterEnabled(inputLength > layout.getCounterMaxLength() * 0.66);
     }
@@ -485,34 +479,6 @@ public class AddItemFragment extends Fragment
 
     private boolean isEmpty(@NonNull EditText editText) {
         return editText.getText().toString().trim().length() == 0;
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-        priceTxinlt.setError(null); // clear error if exists
-
-        priceEdtx.removeTextChangedListener(this);
-        String numberString = priceEdtx.getText().toString().replaceAll("[^\\d]", "");
-        if (numberString.isEmpty()) {
-            priceEdtx.setText(priceSuffix);
-            priceEdtx.setSelection(0);
-        } else {
-            priceEdtx.setText(priceFormat.format(Long.parseLong(numberString)) + priceSuffix);
-            priceEdtx.setSelection(priceEdtx.getText().length() - priceSuffix.length());
-        }
-        priceEdtx.addTextChangedListener(this);
-
-        setCounterEnabledIfInputLengthEnough(priceTxinlt);
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
     }
 
     public interface Callback {
