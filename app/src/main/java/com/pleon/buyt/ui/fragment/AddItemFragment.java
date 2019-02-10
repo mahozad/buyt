@@ -409,7 +409,7 @@ public class AddItemFragment extends Fragment implements DatePickerDialog.OnDate
                 item.setDescription(descriptionEdtx.getText().toString());
             }
             if (isBoughtChecked() && !isEmpty(priceEdtx)) {
-                item.setTotalPrice(Long.parseLong(priceEdtx.getText().toString()));
+                item.setTotalPrice(Long.parseLong(priceEdtx.getText().toString().replaceAll("[^\\d]", "")));
             }
 
             if (isBoughtChecked()) {
@@ -467,7 +467,7 @@ public class AddItemFragment extends Fragment implements DatePickerDialog.OnDate
     }
 
     private Quantity getQuantity() {
-        long quantity = Long.parseLong(quantityEdtx.getText().toString());
+        long quantity = Long.parseLong(quantityEdtx.getText().toString().replaceAll("[^\\d]", ""));
 
         int idOfSelectedUnit = unitRdgrp.getCheckedRadioButtonId();
         RadioButton SelectedUnit = getView().findViewById(idOfSelectedUnit);
