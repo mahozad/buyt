@@ -91,8 +91,8 @@ public class AddItemFragment extends Fragment implements DatePickerDialog.OnDate
     @ColorRes private int colorError; // this color varies based on the theme
 
     private Callback callback;
-    private AddItemViewModel viewModel;
     private Unbinder unbinder;
+    private AddItemViewModel viewModel;
     private TextView selectCategoryTxvi;
 
     public AddItemFragment() {
