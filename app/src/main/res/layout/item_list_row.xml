@@ -177,19 +177,11 @@
                         android:layout_height="wrap_content"
                         android:drawablePadding="8dp"
                         android:inputType="number"
-                        android:maxLength="13"
+                        android:maxLength="17"
                         app:drawableStartCompat="@drawable/ic_price"
                         tools:text="@string/input_hint_total_price" />
 
                 </com.google.android.material.textfield.TextInputLayout>
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top|end"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="16dp"
-                    android:text="@string/input_suffix_price" />
 
             </FrameLayout>
 

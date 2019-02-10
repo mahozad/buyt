@@ -17,6 +17,7 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.pleon.buyt.R;
 import com.pleon.buyt.model.Item;
+import com.pleon.buyt.ui.NumberInputWatcher;
 import com.pleon.buyt.ui.adapter.ItemListAdapter.ItemHolder;
 
 import java.text.NumberFormat;
@@ -191,6 +192,9 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
         ItemHolder(View itemView) {
             super(itemView); // the view (row layout) for the item
             ButterKnife.bind(this, itemView); // unbind() is required only for Fragments
+
+            String suffix = context.getString(R.string.input_suffix_price);
+            priceEdTx.addTextChangedListener(new NumberInputWatcher(priceTxInLt, priceEdTx, suffix));
         }
 
         @OnTouch(R.id.expandDragButton)
@@ -225,7 +229,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
 
         @OnTextChanged(R.id.price)
         void onPriceChanged() {
-            String priceString = priceEdTx.getText().toString();
+            String priceString = priceEdTx.getText().toString().replaceAll("[^\\d]", "");
             if (!priceString.isEmpty()) {
                 long price = parseLong(priceString);
                 Item item = items.get(getAdapterPosition());
