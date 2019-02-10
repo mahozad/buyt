@@ -7,7 +7,7 @@
     <string name="input_hint_purchase_date">Purchase date</string>
     <string name="input_hint_total_price">Item total price</string>
     <string name="input_def_quantity">1</string>
-    <string name="input_suffix_price">dollar</string>
+    <string name="input_suffix_price">" dollar"</string>
     <string name="dialog_title_location_permission">Location denied</string>
     <string name="dialog_title_location_off">Location off</string>
     <string name="dialog_title_exit">Exit the app?</string>

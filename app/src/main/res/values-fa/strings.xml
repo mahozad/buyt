@@ -6,12 +6,12 @@
     <string name="input_hint_price">قیمت کل</string>
     <string name="input_hint_total_price">قیمت کل محصول</string>
     <string name="input_def_purchase_date">امروز</string>
-    <string name="input_suffix_price">تومان</string>
+    <string name="input_suffix_price">" تومان"</string>
     <string name="dialog_action_go_to_settings">برو به تنظیمات</string>
     <string name="snackbar_message_item_deleted">آیتم %1$s حذف شد</string>
     <string name="snackbar_action_undo">لغو</string>
-    <string name="snackbar_message_cart_empty">آیتمی برای خریدن موجود نیست</string>
-    <string name="snackbar_message_no_item_selected">آیتمی انتخاب نشده است</string>
+    <string name="snackbar_message_cart_empty">کالایی برای خریدن موجود نیست</string>
+    <string name="snackbar_message_no_item_selected">کالایی انتخاب نشده است</string>
     <string name="input_def_quantity">۱</string>
     <string name="input_hint_quantity">مقدار</string>
     <string name="input_hint_description">توضیحات (اختیاری)</string>
