@@ -19,7 +19,7 @@
     <string name="snackbar_action_undo">UNDO</string>
     <string name="snackbar_message_cart_empty">No item to buy</string>
     <string name="snackbar_message_no_item_selected">No item selected</string>
-    <string name="snackbar_message_no_store_found">No saved store! Location needed</string>
+    <string name="snackbar_message_no_store_found">No saved store! Cannot skip.</string>
     <string name="menu_hint_add_item">Add item</string>
     <string name="menu_hint_skip_finding">Skip finding</string>
     <string name="menu_hint_reorder_items">Reorder items</string>

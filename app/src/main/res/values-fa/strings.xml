@@ -36,8 +36,8 @@
     <string name="dialog_action_exit">خروج</string>
     <string name="dialog_title_exit">خروج از برنامه؟</string>
     <string name="dialog_message_exit">در صورت خروج از برنامه، پروسه‌ی خرید متوقف خواهد شد.</string>
-    <string name="snackbar_message_no_store_found">مغازه‌ای ذخیره نشده است! نیازمند مکان</string>
-    <string name="menu_hint_skip_finding">لغو جستجو</string>
+    <string name="snackbar_message_no_store_found">مغازه‌ای از قبل ذخیره نشده است!</string>
+    <string name="menu_hint_skip_finding">رد کردن جستجو</string>
     <string name="menu_hint_reorder_items">تغییر ترتیب کالاها</string>
     <string name="menu_title_select_store">انتخاب مغازه</string>
 
