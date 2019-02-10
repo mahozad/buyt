@@ -114,7 +114,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/item_quantity"
                 app:layout_constraintEnd_toStartOf="@id/expandCheckBoxContainer"
                 app:layout_constraintTop_toTopOf="@id/item_name"
-                app:srcCompat="@drawable/ic_urgent" />
+                app:srcCompat="@drawable/avd_urgent_uncheck" />
 
             <FrameLayout
                 android:id="@+id/expandCheckBoxContainer"
