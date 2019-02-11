@@ -24,6 +24,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog;
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
 import com.pleon.buyt.R;
+import com.pleon.buyt.model.Category;
 import com.pleon.buyt.model.Item;
 import com.pleon.buyt.model.Quantity;
 import com.pleon.buyt.model.Quantity.Unit;
@@ -151,7 +152,7 @@ public class AddItemFragment extends Fragment implements DatePickerDialog.OnDate
 
         if (viewModel.getStore() != null) {
             selectCategoryTxvi.setText(viewModel.getStore().getName());
-            selectCategoryTxvi.setCompoundDrawablesRelativeWithIntrinsicBounds(viewModel.getStore().getCategory().getImageRes(), 0, 0, 0);
+            selectCategoryTxvi.setCompoundDrawablesRelativeWithIntrinsicBounds(viewModel.getStore().getCategory().getStoreImageRes(), 0, 0, 0);
         } else if (boughtChbx.isChecked()) {
             selectCategoryTxvi.setText(R.string.menu_title_select_store);
             selectCategoryTxvi.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_store, 0, 0, 0);
@@ -172,14 +173,14 @@ public class AddItemFragment extends Fragment implements DatePickerDialog.OnDate
                     viewModel.setStoreList(stores);
                     selectionList.clear();
                     for (Store store : stores) {
-                        SelectionDialogRow selection = new SelectionDialogRow(store.getName(), store.getCategory().getImageRes());
+                        SelectionDialogRow selection = new SelectionDialogRow(store.getName(), store.getCategory().getStoreImageRes());
                         selectionList.add(selection);
                     }
                     SelectDialogFragment selectStoreDialog = SelectDialogFragment.newInstance(this, selectionList);
                     selectStoreDialog.show(getActivity().getSupportFragmentManager(), "SELECT_ITEM_DIALOG");
                 });
             } else {
-                for (Item.Category category : Item.Category.values()) {
+                for (Category category : Category.values()) {
                     SelectionDialogRow selection = new SelectionDialogRow(getString(category.getNameRes()), category.getImageRes());
                     selectionList.add(selection);
                 }
@@ -305,7 +306,7 @@ public class AddItemFragment extends Fragment implements DatePickerDialog.OnDate
     @OnCheckedChanged(R.id.bought)
     void onBoughtToggled(boolean checked) {
         if (selectCategoryTxvi != null) { // to fix bug on config change
-            selectCategoryTxvi.setText(checked ? getString(R.string.menu_title_select_store) : getString(viewModel.getItemCategory().getNameRes()));
+            selectCategoryTxvi.setText(checked ? getString(R.string.menu_title_select_store) : getString(viewModel.getCategory().getNameRes()));
             selectCategoryTxvi.setTextColor(ContextCompat.getColor(getContext(), colorOnSurface));
             @DrawableRes int icon = checked ? R.drawable.avd_store_error : R.drawable.ic_item_grocery;
             selectCategoryTxvi.setCompoundDrawablesRelativeWithIntrinsicBounds(icon, 0, 0, 0);
@@ -402,7 +403,7 @@ public class AddItemFragment extends Fragment implements DatePickerDialog.OnDate
         if (validated) {
             String name = nameEdtx.getText().toString();
             Quantity quantity = getQuantity();
-            Item item = new Item(name, quantity, urgentChbx.isChecked(), boughtChbx.isChecked(), viewModel.getItemCategory());
+            Item item = new Item(name, quantity, urgentChbx.isChecked(), boughtChbx.isChecked(), viewModel.getCategory());
             item.setPosition(viewModel.getItemOrder());
 
             if (!isEmpty(descriptionEdtx)) {
@@ -413,7 +414,7 @@ public class AddItemFragment extends Fragment implements DatePickerDialog.OnDate
             }
 
             if (isBoughtChecked()) {
-//                item.setCategory(); // TODO: set it to the category of the selected store
+                item.setCategory(viewModel.getStore().getCategory());
                 callback.onSubmitPurchasedItem(item, viewModel.getStore(), viewModel.getPurchaseDate());
             } else {
                 callback.onSubmit(item);
@@ -428,11 +429,11 @@ public class AddItemFragment extends Fragment implements DatePickerDialog.OnDate
         if (isBoughtChecked()) {
             viewModel.setStore(viewModel.getStoreList().get(index));
             name = viewModel.getStore().getName();
-            imageRes = viewModel.getStore().getCategory().getImageRes();
+            imageRes = viewModel.getStore().getCategory().getStoreImageRes();
         } else {
-            Item.Category category = Item.Category.values()[index];
-            imageRes = category.getImageRes();
+            Category category = Category.values()[index];
             name = getResources().getString(category.getNameRes());
+            imageRes = category.getImageRes();
             viewModel.setItemCategory(category);
         }
         selectCategoryTxvi.setCompoundDrawablesRelativeWithIntrinsicBounds(imageRes, 0, 0, 0);

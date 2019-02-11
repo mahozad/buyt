@@ -1,6 +1,6 @@
 package com.pleon.buyt.viewmodel;
 
-import com.pleon.buyt.model.Item;
+import com.pleon.buyt.model.Category;
 import com.pleon.buyt.model.Store;
 
 import java.util.Date;
@@ -10,17 +10,17 @@ import androidx.lifecycle.ViewModel;
 
 public class AddItemViewModel extends ViewModel {
 
-    private Item.Category itemCategory = Item.Category.GROCERY;
+    private Category itemCategory = Category.GROCERY;
     private List<Store> storeList;
     private Store store;
     private Date purchaseDate = new Date();
     private int itemOrder;
 
-    public Item.Category getItemCategory() {
+    public Category getCategory() {
         return itemCategory;
     }
 
-    public void setItemCategory(Item.Category itemCategory) {
+    public void setItemCategory(Category itemCategory) {
         this.itemCategory = itemCategory;
     }
 

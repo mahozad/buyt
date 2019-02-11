@@ -607,7 +607,7 @@ public class MainActivity extends AppCompatActivity
         } else {
             shiftToSelectingState();
             if (foundStores.size() == 1) {
-                int icon = foundStores.get(0).getCategory().getImageRes();
+                int icon = foundStores.get(0).getCategory().getStoreImageRes();
                 viewModel.setStoreIcon(icon); // to use on config change
                 mBottomAppBar.getMenu().getItem(0).setIcon(icon);
             } else {
@@ -727,7 +727,7 @@ public class MainActivity extends AppCompatActivity
             } else { // show store selection dialog
                 ArrayList<SelectionDialogRow> selectionList = new ArrayList<>(); // dialog requires ArrayList
                 for (Store store : viewModel.getFoundStores()) {
-                    SelectionDialogRow selection = new SelectionDialogRow(store.getName(), store.getCategory().getImageRes());
+                    SelectionDialogRow selection = new SelectionDialogRow(store.getName(), store.getCategory().getStoreImageRes());
                     selectionList.add(selection);
                 }
                 SelectDialogFragment selectStoreDialog = SelectDialogFragment.newInstance(this, selectionList);

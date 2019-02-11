@@ -1,29 +1,18 @@
 package com.pleon.buyt.database.converter;
 
-import com.pleon.buyt.model.Item;
-import com.pleon.buyt.model.Store;
+import com.pleon.buyt.model.Category;
 
 import androidx.room.TypeConverter;
 
 public class CategoryConverter {
 
     @TypeConverter
-    public static Item.Category convertToItemCategory(String name) {
-        return Item.Category.valueOf(name);
+    public static Category convertToItemCategory(String name) {
+        return Category.valueOf(name);
     }
 
     @TypeConverter
-    public static String convertToItemCategoryName(Item.Category category) {
-        return category.name();
-    }
-
-    @TypeConverter
-    public static Store.Category convertToStoreCategory(String name) {
-        return Store.Category.valueOf(name);
-    }
-
-    @TypeConverter
-    public static String convertToStoreCategoryName(Store.Category category) {
+    public static String convertToItemCategoryName(Category category) {
         return category.name();
     }
 }

@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.pleon.buyt.R;
+import com.pleon.buyt.model.Category;
 import com.pleon.buyt.model.Coordinates;
 import com.pleon.buyt.model.Store;
 import com.pleon.buyt.ui.dialog.SelectDialogFragment;
@@ -42,7 +43,7 @@ public class CreateStoreFragment extends Fragment implements SelectDialogFragmen
 
     private Unbinder unbinder;
     private Callback callback;
-    private Store.Category storeCategory = Store.Category.GENERIC;
+    private Category storeCategory = Category.GROCERY;
     private TextView selectCategoryTxvi;
 
     public CreateStoreFragment() {
@@ -92,8 +93,8 @@ public class CreateStoreFragment extends Fragment implements SelectDialogFragmen
         if (item.getItemId() == R.id.action_store_category) {
             // FIXME: initialize this only once
             ArrayList<SelectionDialogRow> selectionList = new ArrayList<>(); // dialog requires ArrayList
-            for (Store.Category category : Store.Category.values()) {
-                SelectionDialogRow selection = new SelectionDialogRow(getString(category.getNameRes()), category.getImageRes());
+            for (Category category : Category.values()) {
+                SelectionDialogRow selection = new SelectionDialogRow(getString(category.getStoreNameRes()), category.getStoreImageRes());
                 selectionList.add(selection);
             }
             SelectDialogFragment selectStoreDialog = SelectDialogFragment.newInstance(this, selectionList);
@@ -128,9 +129,9 @@ public class CreateStoreFragment extends Fragment implements SelectDialogFragmen
 
     @Override
     public void onSelected(int index) {
-        selectCategoryTxvi.setCompoundDrawablesRelativeWithIntrinsicBounds(Store.Category.values()[index].getImageRes(), 0, 0, 0);
-        selectCategoryTxvi.setText(Store.Category.values()[index].getNameRes());
-        storeCategory = Store.Category.values()[index];
+        selectCategoryTxvi.setCompoundDrawablesRelativeWithIntrinsicBounds(Category.values()[index].getStoreImageRes(), 0, 0, 0);
+        selectCategoryTxvi.setText(Category.values()[index].getStoreNameRes());
+        storeCategory = Category.values()[index];
     }
 
     // FIXME: These methods are duplicate (from AddItemFragment). Refactor them
