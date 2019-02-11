@@ -9,13 +9,17 @@ import com.google.android.material.snackbar.BaseTransientBottomBar.BaseCallback;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.pleon.buyt.R;
+import com.pleon.buyt.model.Category;
 import com.pleon.buyt.model.Item;
 import com.pleon.buyt.ui.TouchHelperCallback;
 import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener;
 import com.pleon.buyt.ui.adapter.ItemListAdapter;
 import com.pleon.buyt.viewmodel.MainViewModel;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import androidx.annotation.NonNull;
@@ -178,5 +182,19 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
 
     public int getNextItemPosition() {
         return adapter.getItemCount();
+    }
+
+    public void sortStoreItemsFirst(Category category) {
+        List<Item> sortedItems = new ArrayList<>();
+        Iterator<Item> iterator = adapter.getItems().iterator();
+        while (iterator.hasNext()) {
+            Item item = iterator.next();
+            if (item.getCategory() == category) {
+                sortedItems.add(item);
+                iterator.remove();
+            }
+        }
+        sortedItems.addAll(adapter.getItems());
+        adapter.setItems(sortedItems);
     }
 }

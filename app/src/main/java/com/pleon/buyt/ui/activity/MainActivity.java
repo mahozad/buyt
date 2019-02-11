@@ -610,6 +610,7 @@ public class MainActivity extends AppCompatActivity
                 int icon = foundStores.get(0).getCategory().getStoreImageRes();
                 viewModel.setStoreIcon(icon); // to use on config change
                 mBottomAppBar.getMenu().getItem(0).setIcon(icon);
+                itemListFragment.sortStoreItemsFirst(foundStores.get(0).getCategory());
             } else {
                 viewModel.setStoreIcon(R.drawable.ic_store_multi); // to use on config change
                 mBottomAppBar.getMenu().getItem(0).setIcon(viewModel.getStoreIcon());
