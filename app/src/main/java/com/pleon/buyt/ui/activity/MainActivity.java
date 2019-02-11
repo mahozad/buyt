@@ -461,7 +461,7 @@ public class MainActivity extends AppCompatActivity
             case android.R.id.home:
                 if (viewModel.getState() == IDLE) {
                     BottomSheetDialogFragment bottomDrawerFragment = BottomDrawerFragment.newInstance();
-                    bottomDrawerFragment.show(getSupportFragmentManager(), "alaki");
+                    bottomDrawerFragment.show(getSupportFragmentManager(), "BOTTOM_SHEET");
                 } else if (viewModel.getState() == FINDING) { // then it is cancel button
                     stopService(new Intent(this, GpsService.class));
                     shiftToIdleState();

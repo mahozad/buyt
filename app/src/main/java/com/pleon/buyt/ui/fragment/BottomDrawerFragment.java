@@ -14,9 +14,10 @@ import com.pleon.buyt.R;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class BottomDrawerFragment extends BottomSheetDialogFragment implements NavigationView.OnNavigationItemSelectedListener {
+public class BottomDrawerFragment extends BottomSheetDialogFragment
+        implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String TAG = "Sheet";
+    private static final String TAG = "SHEET";
 
     public static BottomDrawerFragment newInstance() {
         return new BottomDrawerFragment();

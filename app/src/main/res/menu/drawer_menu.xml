@@ -2,16 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="none">
         <item
-            android:id="@+id/nav1"
-            android:icon="@drawable/ic_buyt"
-            android:title="Alaki" />
+            android:id="@+id/states"
+            android:icon="@drawable/ic_chart"
+            android:title="@string/nav_statistics" />
         <item
-            android:id="@+id/nav2"
-            android:icon="@drawable/ic_buyt"
-            android:title="Palaki" />
+            android:id="@+id/stores"
+            android:icon="@drawable/ic_store"
+            android:title="@string/nav_stores" />
         <item
-            android:id="@+id/nav3"
-            android:icon="@drawable/ic_done"
-            android:title="Nalaki" />
+            android:id="@+id/settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/nav_settings" />
     </group>
 </menu>
