@@ -7,6 +7,6 @@
     <item
         android:id="@+id/action_toggle_period"
         android:icon="@drawable/ic_period"
-        android:title="Toggle period"
+        android:title="Change period"
         app:showAsAction="always" />
 </menu>
