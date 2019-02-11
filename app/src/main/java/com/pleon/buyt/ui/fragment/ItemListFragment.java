@@ -52,10 +52,6 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
         // Required empty constructor
     }
 
-    public static ItemListFragment newInstance() {
-        return new ItemListFragment();
-    }
-
     // Unlike Activities, in a Fragment you inflate the fragment's view in onCreateView() method.
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
