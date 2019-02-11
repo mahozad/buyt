@@ -1,7 +1,7 @@
 package com.pleon.buyt.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.pleon.buyt.R;
+import com.pleon.buyt.ui.activity.StatesActivity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,7 +35,18 @@ public class BottomDrawerFragment extends BottomSheetDialogFragment
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        Log.i(TAG, "onNavigationItemSelected: salam");
+        switch (menuItem.getItemId()) {
+            case R.id.states:
+                Intent intent = new Intent(getContext(), StatesActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.stores:
+                break;
+
+            case R.id.settings:
+                break;
+        }
         return true;
     }
 }

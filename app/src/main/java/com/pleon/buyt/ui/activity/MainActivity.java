@@ -9,14 +9,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.CheckBox;
-import android.widget.TextView;
 
-import com.db.chart.animation.Animation;
-import com.db.chart.model.BarSet;
-import com.db.chart.model.LineSet;
-import com.db.chart.view.BarChartView;
-import com.db.chart.view.LineChartView;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -27,7 +20,6 @@ import com.pleon.buyt.R;
 import com.pleon.buyt.database.AppDatabase;
 import com.pleon.buyt.model.Coordinates;
 import com.pleon.buyt.model.Store;
-import com.pleon.buyt.model.WeekdayCost;
 import com.pleon.buyt.ui.dialog.Callback;
 import com.pleon.buyt.ui.dialog.ConfirmExitDialog;
 import com.pleon.buyt.ui.dialog.LocationOffDialogFragment;
@@ -38,35 +30,24 @@ import com.pleon.buyt.ui.fragment.BottomDrawerFragment;
 import com.pleon.buyt.ui.fragment.ItemListFragment;
 import com.pleon.buyt.viewmodel.MainViewModel;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.Guideline;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.widget.CompoundButtonCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.location.LocationManager.GPS_PROVIDER;
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-import static com.db.chart.renderer.AxisRenderer.LabelPosition.NONE;
 import static com.getkeepsafe.taptargetview.TapTarget.forView;
 import static com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_CENTER;
 import static com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE;
@@ -202,12 +183,12 @@ public class MainActivity extends AppCompatActivity
 
     @BindView(R.id.fab) FloatingActionButton mFab;
     @BindView(R.id.bottom_bar) BottomAppBar mBottomAppBar;
-    @BindView(R.id.chart_container) CardView chartContainer;
-    @BindView(R.id.toggleChart) CheckBox chartToggle;
-    @BindView(R.id.chart) BarChartView barChart;
-    @BindView(R.id.lineChart) LineChartView lineChart;
-    @BindView(R.id.lineChartCaption) TextView lineChartCaption;
-    @BindView(R.id.guideline) Guideline guideline;
+//    @BindView(R.id.chart_container) CardView chartContainer;
+//    @BindView(R.id.toggleChart) CheckBox chartToggle;
+//    @BindView(R.id.chart) BarChartView barChart;
+//    @BindView(R.id.lineChart) LineChartView lineChart;
+//    @BindView(R.id.lineChartCaption) TextView lineChartCaption;
+//    @BindView(R.id.guideline) Guideline guideline;
 
     private LocationManager locationMgr;
     private BroadcastReceiver locationReceiver;
@@ -289,131 +270,131 @@ public class MainActivity extends AppCompatActivity
 
         // observe() methods should be set only once (e.g. in activity onCreate() method) so if you
         // call it every time you want some data, maybe you're doing something wrong
-        viewModel.getAllPurchases().observe(this, purchases -> {
-            if (chartToggle.isChecked()) {
-                show30DayCosts();
-            } else {
-                show7DayCosts();
-            }
-        });
+//        viewModel.getAllPurchases().observe(this, purchases -> {
+//            if (chartToggle.isChecked()) {
+//                show30DayCosts();
+//            } else {
+//                show7DayCosts();
+//            }
+//        });
     }
 
-    private void show7DayCosts() {
-        viewModel.getTotalWeekdayCosts().observe(this, weekdayCosts -> {
-            if (weekdayCosts.size() == 0) {
-                chartContainer.setVisibility(GONE);
-                guideline.setGuidelinePercent(0);
-            } else {
-                // TODO: retrieve the past year costs and just show the past week costs,
-                // if there is no cost in the past week, show costs for the past month,
-                // if there is no cost in the past month, show costs in the past year
-                chartContainer.setVisibility(VISIBLE);
-                guideline.setGuidelinePercent(0.4f);
+//    private void show7DayCosts() {
+//        viewModel.getTotalWeekdayCosts().observe(this, weekdayCosts -> {
+//            if (weekdayCosts.size() == 0) {
+//                chartContainer.setVisibility(GONE);
+//                guideline.setGuidelinePercent(0);
+//            } else {
+//                // TODO: retrieve the past year costs and just show the past week costs,
+//                // if there is no cost in the past week, show costs for the past month,
+//                // if there is no cost in the past month, show costs in the past year
+//                chartContainer.setVisibility(VISIBLE);
+//                guideline.setGuidelinePercent(0.4f);
+//
+//                barChart.reset(); // required (in case number of bars changed)
+//
+//                DecimalFormat moneyFormat = new DecimalFormat("\u00A4##,###");
+//                if (getResources().getConfiguration().locale.getDisplayName().equals("فارسی (ایران)")) {
+//                    // for Farsi, \u00A4 is ریال but we want something else (e.g. ت)
+//                    moneyFormat = new DecimalFormat("##,### ت");
+//                }
+//                barChart.setLabelsFormat(moneyFormat);
+//
+//                BarSet barSet = new BarSet();
+//                Map<Integer, Long> costs = new TreeMap<>();
+//                for (int i = 0; i < weekdayCosts.size(); i++) {
+//                    costs.put(weekdayCosts.get(i).getDay(), weekdayCosts.get(i).getCost());
+//                }
+//                for (int i = 0; i < 7; i++) { // this loop cannot be integrated into those two loops
+//                    if (costs.get(i) == null) {
+//                        costs.put(i, 0L);
+//                    }
+//                }
+//                for (int i = 0; i < 7; i++) {
+//                    int dayIndex;
+//                    // FIXME: .locale is deprecated
+//                    if (getResources().getConfiguration().locale.getDisplayName().equals("فارسی (ایران)")) {
+//                        dayIndex = WeekdayCost.Days.iranianOrder[i];
+//                    } else {
+//                        dayIndex = WeekdayCost.Days.internationalOrder[i];
+//                    }
+//                    String day = getString(WeekdayCost.Days.values()[dayIndex].getNameStringRes());
+//                    barSet.addBar(day, costs.get(dayIndex));
+//                }
+//
+//                int[] colors = getResources().getIntArray(R.array.chartGradient);
+//                float[] steps = {0.05f, 0.5f, 1.0f};
+//                barSet.setGradientColor(colors, steps);
+//
+//                barChart.addData(barSet);
+//                barChart.show(new Animation(500));
+//            }
+//        });
+//    }
 
-                barChart.reset(); // required (in case number of bars changed)
+//    private void show30DayCosts() {
+//        viewModel.getLast30DaysCosts().observe(this, costs -> {
+//            lineChart.reset();
+//
+//            int now = 0;
+//            for (WeekdayCost cost : costs) {
+//                if (cost.getCost() == -1) {
+//                    now = cost.getDay();
+//                    costs.remove(cost);
+//                }
+//            }
+//
+//            Map<Integer, Long> dayToCostMap = new HashMap<>();
+//            for (WeekdayCost cost : costs) {
+//                dayToCostMap.put(cost.getDay(), cost.getCost());
+//            }
+//
+//            LineSet dataSet = new LineSet();
+//            for (int i = now - 15; i <= now; i++) {
+//                dataSet.addPoint("" + i, dayToCostMap.containsKey(i) ? dayToCostMap.get(i) : 0);
+//            }
+//
+////            dataSet.setDotsColor(ContextCompat.getColor(this, R.color.colorAccent));
+////            dataSet.setDotsRadius(2);
+//            dataSet.setSmooth(false); // TODO: Add an options in settings for the user to toggle this
+//            dataSet.setColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+//            dataSet.setThickness(2.5f);
+//
+//            DecimalFormat moneyFormat = new DecimalFormat("\u00A4##,###");
+//            if (getResources().getConfiguration().locale.getDisplayName().equals("فارسی (ایران)")) {
+//                // for Farsi, \u00A4 is ریال but we want something else (e.g. ت)
+//                moneyFormat = new DecimalFormat("##,### ت");
+//            }
+//            lineChart.setLabelsFormat(moneyFormat);
+//
+//            int[] colors2 = getResources().getIntArray(R.array.lineChartGradient);
+//            float[] steps2 = {0.0f, 0.5f, 1.0f};
+//            dataSet.setGradientFill(colors2, steps2);
+//            lineChart.addData(dataSet);
+//            lineChart.setXLabels(NONE);
+//            lineChart.show(new Animation(500));
+//        });
+//    }
 
-                DecimalFormat moneyFormat = new DecimalFormat("\u00A4##,###");
-                if (getResources().getConfiguration().locale.getDisplayName().equals("فارسی (ایران)")) {
-                    // for Farsi, \u00A4 is ریال but we want something else (e.g. ت)
-                    moneyFormat = new DecimalFormat("##,### ت");
-                }
-                barChart.setLabelsFormat(moneyFormat);
-
-                BarSet barSet = new BarSet();
-                Map<Integer, Long> costs = new TreeMap<>();
-                for (int i = 0; i < weekdayCosts.size(); i++) {
-                    costs.put(weekdayCosts.get(i).getDay(), weekdayCosts.get(i).getCost());
-                }
-                for (int i = 0; i < 7; i++) { // this loop cannot be integrated into those two loops
-                    if (costs.get(i) == null) {
-                        costs.put(i, 0L);
-                    }
-                }
-                for (int i = 0; i < 7; i++) {
-                    int dayIndex;
-                    // FIXME: .locale is deprecated
-                    if (getResources().getConfiguration().locale.getDisplayName().equals("فارسی (ایران)")) {
-                        dayIndex = WeekdayCost.Days.iranianOrder[i];
-                    } else {
-                        dayIndex = WeekdayCost.Days.internationalOrder[i];
-                    }
-                    String day = getString(WeekdayCost.Days.values()[dayIndex].getNameStringRes());
-                    barSet.addBar(day, costs.get(dayIndex));
-                }
-
-                int[] colors = getResources().getIntArray(R.array.chartGradient);
-                float[] steps = {0.05f, 0.5f, 1.0f};
-                barSet.setGradientColor(colors, steps);
-
-                barChart.addData(barSet);
-                barChart.show(new Animation(500));
-            }
-        });
-    }
-
-    private void show30DayCosts() {
-        viewModel.getLast30DaysCosts().observe(this, costs -> {
-            lineChart.reset();
-
-            int now = 0;
-            for (WeekdayCost cost : costs) {
-                if (cost.getCost() == -1) {
-                    now = cost.getDay();
-                    costs.remove(cost);
-                }
-            }
-
-            Map<Integer, Long> dayToCostMap = new HashMap<>();
-            for (WeekdayCost cost : costs) {
-                dayToCostMap.put(cost.getDay(), cost.getCost());
-            }
-
-            LineSet dataSet = new LineSet();
-            for (int i = now - 15; i <= now; i++) {
-                dataSet.addPoint("" + i, dayToCostMap.containsKey(i) ? dayToCostMap.get(i) : 0);
-            }
-
-//            dataSet.setDotsColor(ContextCompat.getColor(this, R.color.colorAccent));
-//            dataSet.setDotsRadius(2);
-            dataSet.setSmooth(false); // TODO: Add an options in settings for the user to toggle this
-            dataSet.setColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
-            dataSet.setThickness(2.5f);
-
-            DecimalFormat moneyFormat = new DecimalFormat("\u00A4##,###");
-            if (getResources().getConfiguration().locale.getDisplayName().equals("فارسی (ایران)")) {
-                // for Farsi, \u00A4 is ریال but we want something else (e.g. ت)
-                moneyFormat = new DecimalFormat("##,### ت");
-            }
-            lineChart.setLabelsFormat(moneyFormat);
-
-            int[] colors2 = getResources().getIntArray(R.array.lineChartGradient);
-            float[] steps2 = {0.0f, 0.5f, 1.0f};
-            dataSet.setGradientFill(colors2, steps2);
-            lineChart.addData(dataSet);
-            lineChart.setXLabels(NONE);
-            lineChart.show(new Animation(500));
-        });
-    }
-
-    @OnCheckedChanged(R.id.toggleChart)
-    void onToggleChartClick(boolean checked) {
-        if (checked) {
-            lineChart.reset(); // to fix previous chart blink
-            chartToggle.setButtonDrawable(R.drawable.avd_toggle_chart_1);
-            barChart.setVisibility(GONE);
-            lineChart.setVisibility(VISIBLE);
-            lineChartCaption.setVisibility(VISIBLE);
-            show30DayCosts();
-        } else {
-            barChart.reset(); // to fix previous chart blink
-            chartToggle.setButtonDrawable(R.drawable.avd_toggle_chart_2);
-            barChart.setVisibility(VISIBLE);
-            lineChart.setVisibility(GONE);
-            lineChartCaption.setVisibility(GONE);
-            show7DayCosts();
-        }
-        ((Animatable) CompoundButtonCompat.getButtonDrawable(chartToggle)).start();
-    }
+//    @OnCheckedChanged(R.id.toggleChart)
+//    void onToggleChartClick(boolean checked) {
+//        if (checked) {
+//            lineChart.reset(); // to fix previous chart blink
+//            chartToggle.setButtonDrawable(R.drawable.avd_toggle_chart_1);
+//            barChart.setVisibility(GONE);
+//            lineChart.setVisibility(VISIBLE);
+//            lineChartCaption.setVisibility(VISIBLE);
+//            show30DayCosts();
+//        } else {
+//            barChart.reset(); // to fix previous chart blink
+//            chartToggle.setButtonDrawable(R.drawable.avd_toggle_chart_2);
+//            barChart.setVisibility(VISIBLE);
+//            lineChart.setVisibility(GONE);
+//            lineChartCaption.setVisibility(GONE);
+//            show7DayCosts();
+//        }
+//        ((Animatable) CompoundButtonCompat.getButtonDrawable(chartToggle)).start();
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

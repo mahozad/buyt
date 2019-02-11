@@ -6,87 +6,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/chart_container"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="11dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="11dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/guideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible">
+    <!--<com.google.android.material.card.MaterialCardView-->
+        <!--android:id="@+id/chart_container"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_marginStart="11dp"-->
+        <!--android:layout_marginTop="12dp"-->
+        <!--android:layout_marginEnd="11dp"-->
+        <!--android:visibility="gone"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHeight_percent="0.4"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--tools:visibility="visible">-->
 
-        <androidx.appcompat.widget.AppCompatCheckBox
-            android:id="@+id/toggleChart"
-            android:layout_width="48dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center_horizontal|top"
-            android:layout_marginTop="2dp"
-            android:text="@null"
-            app:buttonCompat="@drawable/avd_toggle_chart_1" />
+        <!--<androidx.appcompat.widget.AppCompatCheckBox-->
+            <!--android:id="@+id/toggleChart"-->
+            <!--android:layout_width="48dp"-->
+            <!--android:layout_height="24dp"-->
+            <!--android:layout_gravity="center_horizontal|top"-->
+            <!--android:layout_marginTop="2dp"-->
+            <!--android:text="@null"-->
+            <!--app:buttonCompat="@drawable/avd_toggle_chart_1" />-->
 
-        <!-- app:chart_barBackgroundColor="#2d2d2d" -->
-        <com.db.chart.view.BarChartView
-            android:id="@+id/chart"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="12dp"
-            app:chart_axis="false"
-            app:chart_axisBorderSpacing="6dp"
-            app:chart_axisLabelsSpacing="6dp"
-            app:chart_axisTopSpacing="-12dp"
-            app:chart_barSpacing="@dimen/chart_bar_spacing"
-            app:chart_cornerRadius="12dp"
-            app:chart_fontSize="11sp"
-            app:chart_labelColor="?attr/colorOnSurface" />
+        <!--&lt;!&ndash; app:chart_barBackgroundColor="#2d2d2d" &ndash;&gt;-->
+        <!--<com.db.chart.view.BarChartView-->
+            <!--android:id="@+id/chart"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginStart="12dp"-->
+            <!--android:layout_marginTop="24dp"-->
+            <!--android:layout_marginEnd="12dp"-->
+            <!--android:layout_marginBottom="12dp"-->
+            <!--app:chart_axis="false"-->
+            <!--app:chart_axisBorderSpacing="6dp"-->
+            <!--app:chart_axisLabelsSpacing="6dp"-->
+            <!--app:chart_axisTopSpacing="-12dp"-->
+            <!--app:chart_barSpacing="@dimen/chart_bar_spacing"-->
+            <!--app:chart_cornerRadius="12dp"-->
+            <!--app:chart_fontSize="11sp"-->
+            <!--app:chart_labelColor="?attr/colorOnSurface" />-->
 
-        <TextView
-            android:id="@+id/lineChartCaption"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginBottom="6dp"
-            android:text="@string/chart_caption_period"
-            android:textColor="?attr/colorOnSurface"
-            android:textSize="11sp"
-            android:visibility="gone" />
-
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.db.chart.view.LineChartView
-        android:id="@+id/lineChart"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="38dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="18dp"
-        android:elevation="2dp"
-        android:paddingTop="4dp"
-        android:paddingBottom="6dp"
-        app:chart_axis="false"
-        app:chart_axisLabelsSpacing="12dp"
-        app:chart_fontSize="11sp"
-        app:chart_labelColor="?attr/colorOnSurface"
-        app:chart_labels="inside"
-        app:layout_constraintBottom_toTopOf="@id/guideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.4" />
+    <!--</com.google.android.material.card.MaterialCardView>-->
 
     <fragment
         android:id="@+id/fragment_items"
@@ -97,7 +58,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline"
+        app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/fragment_item_list" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

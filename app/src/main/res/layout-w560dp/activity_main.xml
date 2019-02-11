@@ -80,7 +80,7 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.db.chart.view.LineChartView
-        android:id="@+id/lineChart"
+        android:id="@+id/chart"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="0dp"

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activity.StatesActivity">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/chart_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.db.chart.view.LineChartView
+            android:id="@+id/chart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="16dp"
+            android:paddingBottom="24dp"
+            app:chart_axis="false"
+            app:chart_axisLabelsSpacing="12dp"
+            app:chart_fontSize="12sp"
+            app:chart_labelColor="?attr/colorOnSurface"
+            app:chart_labels="inside"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/lineChartCaption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="8dp"
+            android:text="@string/chart_caption_period"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="12sp" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/bar_container"
+        android:layout_width="match_parent"
+        android:layout_height="86dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <!-- Set app:tint to null to preserve the icon color -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:backgroundTint="@color/colorPrimary"
+            app:fabSize="normal"
+            app:layout_anchor="@id/bottom_bar"
+            app:maxImageSize="42dp"
+            app:rippleColor="@android:color/transparent"
+            app:srcCompat="@drawable/ic_filter"
+            app:tint="@null" />
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottom_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:backgroundTint="#181818"
+            app:fabAlignmentMode="center"
+            app:fabAnimationMode="slide"
+            app:fabCradleMargin="6dp"
+            app:navigationIcon="@drawable/avd_cancel_nav" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

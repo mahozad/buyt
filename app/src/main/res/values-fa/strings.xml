@@ -55,7 +55,7 @@
     <string name="input_error_name">نام نمی‌تواند خالی باشد</string>
     <string name="input_error_quantity">مقدار باید مشخص شود</string>
     <string name="input_error_price">قیمت باید مشخص شود</string>
-    <string name="nav_statistics">آمار و داده‌ها</string>
+    <string name="nav_states">آمار و داده‌ها</string>
     <string name="nav_stores">مغازه‌ها</string>
     <string name="nav_settings">تنظیمات</string>
 
