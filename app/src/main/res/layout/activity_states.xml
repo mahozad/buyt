@@ -36,12 +36,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/lineChartCaption"
+            android:id="@+id/chartCaption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
             android:layout_marginBottom="8dp"
-            android:text="@string/chart_caption_period"
+            android:text="@string/chart_caption"
             android:textColor="?attr/colorOnSurface"
             android:textSize="12sp" />
 
