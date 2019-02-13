@@ -279,8 +279,9 @@ public class AddItemFragment extends Fragment implements DatePickerDialog.OnDate
         JalaliCalendar jalaliCalendar = new JalaliCalendar(year, ++month, day);
         viewModel.setPurchaseDate(jalaliCalendar.toGregorian().getTime());
 
-        String date = String.format(getResources().getConfiguration().locale, "%d %s %d",
-                jalaliCalendar.getDay(), jalaliCalendar.getMonthString(), jalaliCalendar.getYear());
+        String date = String.format(getResources().getConfiguration().locale,
+                "%s %d %s %d", jalaliCalendar.getDayOfWeekString(), jalaliCalendar.getDay(),
+                jalaliCalendar.getMonthString(), jalaliCalendar.getYear());
 
         dateEdtx.setText(date);
     }
