@@ -24,6 +24,8 @@
             android:id="@+id/chart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="1dp"
             android:paddingTop="16dp"
             android:paddingBottom="24dp"
             app:chart_axis="false"
@@ -185,7 +187,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="Average item type per purchase:"
+                android:text="Average item type count per purchase:"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
@@ -207,6 +209,7 @@
         android:id="@+id/bar_container"
         android:layout_width="match_parent"
         android:layout_height="86dp"
+        android:elevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <!-- Set app:tint to null to preserve the icon color -->
