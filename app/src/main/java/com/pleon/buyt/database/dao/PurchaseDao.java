@@ -1,54 +1,101 @@
 package com.pleon.buyt.database.dao;
 
+import com.pleon.buyt.model.Category;
+import com.pleon.buyt.model.DailyCost;
 import com.pleon.buyt.model.Purchase;
-import com.pleon.buyt.model.WeekdayCost;
+import com.pleon.buyt.model.Statistics;
+import com.pleon.buyt.model.Store;
 
 import java.util.List;
 
-import androidx.lifecycle.LiveData;
+import androidx.annotation.Nullable;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 
-// In DAOs, we specify SQL queries and associate them with method calls
+import static androidx.room.RoomWarnings.CURSOR_MISMATCH;
+
 @Dao
-public interface PurchaseDao {
+public abstract class PurchaseDao {
+
+    private static final String PERIOD_CLAUSE =
+            " date >= strftime('%s', 'now', 'localtime', 'start of day', -:period || ' days') ";
 
     @Insert
-    long insert(Purchase purchase);
+    public abstract long insert(Purchase purchase);
 
     /**
-     * Gets List of total costs per each <b>day of week</b> for the given period.
-     * <p>
-     * <code>strftime()</code> gets date in seconds (<code>date/1000</code>), adapts it to user time
-     * (<code>'unixepoch', 'localtime'</code>) and then formats it as day of week (<code>'%w'</code>
-     * resulting in numbers from 0 to 6, with 0 meaning Sunday and so on).
-     * <p>
-     * Do NOT change the order of 'unixepoch' and 'localtime'. Also note that since the date is saved
-     * as milliseconds in the database, the date column is divided by 1000 to give seconds.
-     * <p>
-     * See sqlite strftime() docs <a href="https://www.sqlite.org/lang_datefunc.html">here</a>.
-     *
-     * @return List of total costs per weekday
+     * Annotating a method with @Transaction makes sure that all database operations you’re
+     * executing in that method will be run inside one transaction.
+     * The transaction will fail when an exception is thrown in the method body.
      */
-    @Query("SELECT strftime('%w', date/1000, 'unixepoch', 'localtime') AS day, SUM(totalcost) AS cost " +
-            "FROM purchase " +
-            "WHERE date BETWEEN strftime('%s','now', 'localtime', 'start of day', '-7 days') * 1000" +
-            "               AND strftime('%s','now', 'localtime') * 1000 " +
-            "GROUP BY day " +
-            "ORDER BY day ")
-    List<WeekdayCost> getWeekdayCosts();
+    @Transaction
+    public Statistics getStats(int period, @Nullable Category filter) {
+        Statistics statistics = new Statistics();
+        statistics.setDailyCosts(getDailyCosts(period, filter));
+        statistics.setAveragePurchaseCost(getAveragePurchaseCost(period, filter));
+        statistics.setCategory(getMostPurchasedCategory(period));
+        statistics.setTotalPurchaseCost(getTotalPurchaseCost(period, filter));
 
-    @Query("SELECT * FROM (SELECT strftime('%J', date/1000, 'unixepoch', 'localtime') AS day, SUM(totalCost) AS cost " +
-            "FROM purchase " +
-            "WHERE date BETWEEN strftime('%s','now', 'localtime', 'start of day', '-30 days') * 1000" +
-            "               AND strftime('%s','now', 'localtime') * 1000 " +
+        return statistics;
+    }
+
+    @Query("select category from purchase natural join item where" + PERIOD_CLAUSE +
+            "group by category " +
+            "order by count(category) desc " +
+            "limit 1;")
+    abstract Category getMostPurchasedCategory(int period);
+
+    @Query("select sum(totalCost) from purchase natural join item where" + PERIOD_CLAUSE +
+            "      and (:filter is null or category = :filter)")
+    abstract long getTotalPurchaseCost(int period, Category filter);
+
+    @Query("select strftime('%w', date, 'unixepoch', 'localtime') AS day " +
+            "from purchase natural join item " +
+            "where" + PERIOD_CLAUSE + "and (:filter is null or category = :filter) " +
+            "group by day " +
+            "limit 1;")
+    abstract int getWeekdayWithMaxPurchaseCount(int period, Category filter);
+
+    @Query("select strftime('%w', date, 'unixepoch', 'localtime') AS day " +
+            "from purchase natural join item " +
+            "where" + PERIOD_CLAUSE + "and (:filter is null or category = :filter) " +
+            "group by day " +
+            "limit 1;")
+    abstract int getWeekdayWithMinPurchaseCount(int period, Category filter);
+
+    @Query("select avg(totalCost) from purchase natural join item " +
+            "where" + PERIOD_CLAUSE + "and (:filter is null or category = :filter)")
+    abstract long getAveragePurchaseCost(int period, Category filter);
+
+    @SuppressWarnings(CURSOR_MISMATCH)
+    @Query("select store.*, count(purchase.storeId) from purchase natural join store " +
+            "where" + PERIOD_CLAUSE + "and (:filter is null or category = :filter) " +
+            "group by purchase.storeId " +
+            "order by count(purchase.storeId) desc " +
+            "limit 1;")
+    abstract Store getStoreIdWithMaxPurchases(int period, Category filter);
+
+    @Query("select max(totalCost) from purchase natural join item " +
+            "where" + PERIOD_CLAUSE + "and (:filter is null or category = :filter)")
+    abstract long getMaxPurchaseCost(int period, Category filter);
+
+    @Query("select min(totalCost) from purchase natural join item " +
+            "where" + PERIOD_CLAUSE + "and (:filter is null or category = :filter)")
+    abstract long getMinPurchaseCost(int period, Category filter);
+
+    @Query("select strftime('%j', date, 'unixepoch', 'localtime') AS day, avg(totalCost) " +
+            "from purchase natural join item " +
+            "where" + PERIOD_CLAUSE + "and (:filter is null or category = :filter)" +
+            "group by day")
+    abstract long getAverageDailyPurchaseCost(int period, Category filter);
+
+    @Query("SELECT strftime('%j', date, 'unixepoch', 'localtime') AS day, SUM(totalCost) AS cost " +
+            "FROM purchase natural join item " +
+            "where" + PERIOD_CLAUSE + "and (:filter is null or category = :filter)" +
             "GROUP BY day " +
             "UNION ALL " +
-            "SELECT strftime('%J', 'now', 'localtime') AS day, -1 AS cost) " +
-            "ORDER BY day ")
-    List<WeekdayCost> getLast30DayCosts();
-
-    @Query("SELECT * FROM purchase")
-    LiveData<List<Purchase>> getAll();
+            "SELECT strftime('%j', 'now', 'localtime') AS day, -1 AS cost")
+    abstract List<DailyCost> getDailyCosts(int period, Category filter);
 }
