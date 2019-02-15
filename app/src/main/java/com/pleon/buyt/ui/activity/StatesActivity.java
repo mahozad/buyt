@@ -1,5 +1,6 @@
 package com.pleon.buyt.ui.activity;
 
+import android.graphics.drawable.Animatable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,11 +10,16 @@ import com.db.chart.animation.Animation;
 import com.db.chart.model.LineSet;
 import com.db.chart.view.LineChartView;
 import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pleon.buyt.R;
+import com.pleon.buyt.model.Category;
 import com.pleon.buyt.model.DailyCost;
+import com.pleon.buyt.ui.dialog.SelectDialogFragment;
+import com.pleon.buyt.ui.dialog.SelectionDialogRow;
 import com.pleon.buyt.viewmodel.StatisticsViewModel;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,18 +29,22 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.db.chart.renderer.AxisRenderer.LabelPosition.NONE;
 
-public class StatesActivity extends AppCompatActivity {
+public class StatesActivity extends AppCompatActivity implements SelectDialogFragment.Callback {
 
     private static final String TAG = "STATES";
 
     @BindView(R.id.bottom_bar) BottomAppBar bottomAppBar;
+    @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.chart) LineChartView lineChart;
     @BindView(R.id.chartCaption) TextView chartCaption;
 
     private StatisticsViewModel viewModel;
+    private ArrayList<SelectionDialogRow> filterList;
+    private MenuItem filterMenuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,14 +58,37 @@ public class StatesActivity extends AppCompatActivity {
         String caption = getString(R.string.chart_caption, viewModel.getPeriod().length);
         chartCaption.setText(caption);
 
+        filterList = new ArrayList<>();
+        filterList.add(new SelectionDialogRow(getString(R.string.no_filter), R.drawable.ic_filter));
+        for (Category category : Category.values()) {
+            filterList.add(new SelectionDialogRow(category.name(), category.getImageRes()));
+        }
+
+        showAnalytics();
+    }
+
+    @OnClick(R.id.fab)
+    void onFabClick() {
+        viewModel.togglePeriod();
+        String caption = getString(R.string.chart_caption, viewModel.getPeriod().length);
+        fab.setImageResource(viewModel.getPeriod().getImageRes());
+        ((Animatable) fab.getDrawable()).start();
+        chartCaption.setText(caption);
         showAnalytics();
     }
 
     private void showAnalytics() {
         viewModel.getStatistics().observe(this, statistics -> {
             showGraph(statistics.getDailyCosts());
-            TextView view = findViewById(R.id.textView);
-            view.setText(statistics.getAveragePurchaseCost() + "");
+
+            TextView totalSpending = findViewById(R.id.textView3);
+            totalSpending.setText(statistics.getTotalPurchaseCost() + "");
+
+            TextView averagePurchaseCost = findViewById(R.id.textView);
+            averagePurchaseCost.setText(statistics.getAveragePurchaseCost() + "");
+
+            TextView mostPurchasedCategory = findViewById(R.id.textView13);
+            mostPurchasedCategory.setText(statistics.getMostPurchasedCategory() + "");
         });
     }
 
@@ -104,17 +137,17 @@ public class StatesActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_bottom_states, menu);
+        filterMenuItem = menu.getItem(0);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_toggle_period:
-                viewModel.togglePeriod();
-                String caption = getString(R.string.chart_caption, viewModel.getPeriod().length);
-                chartCaption.setText(caption);
-                showAnalytics();
+            case R.id.action_filter:
+                SelectDialogFragment dialog = SelectDialogFragment
+                        .newInstance(this, R.string.dialog_title_select_filter, filterList);
+                dialog.show(getSupportFragmentManager(), "SELECTION_DIALOG");
                 break;
             case android.R.id.home:
                 finish();
@@ -123,5 +156,16 @@ public class StatesActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+    @Override
+    public void onSelected(int index) {
+        if (filterList.get(index).getName().equals(getString(R.string.no_filter))) {
+            viewModel.setFilter(null);
+        } else {
+            viewModel.setFilter(Category.valueOf(filterList.get(index).getName()));
+        }
+        filterMenuItem.setIcon(filterList.get(index).getImage());
+        showAnalytics();
     }
 }

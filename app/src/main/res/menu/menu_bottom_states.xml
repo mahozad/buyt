@@ -5,8 +5,8 @@
     tools:context=".ui.activity.MainActivity">
 
     <item
-        android:id="@+id/action_toggle_period"
-        android:icon="@drawable/ic_period"
-        android:title="Change period"
+        android:id="@+id/action_filter"
+        android:icon="@drawable/ic_filter"
+        android:title="Filter by category"
         app:showAsAction="always" />
 </menu>
