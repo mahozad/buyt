@@ -508,6 +508,8 @@ public class MainActivity extends AppCompatActivity
             mFab.setImageResource(R.drawable.ic_done);
             itemListFragment.toggleItemsCheckbox(true);
         }
+
+        // menu items should be restored in onCreateOptionsMenu()
     }
 
     @Override
