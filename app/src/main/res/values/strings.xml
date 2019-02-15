@@ -85,7 +85,7 @@
     <!-- Change title of persian date picker from "بیخیال" to this -->
     <string name="mdtp_cancel" translatable="false">لغو</string>
     <string name="menu_title_store_category">Category</string>
-    <string name="chart_caption">Last 15 days</string>
+    <string name="chart_caption">Last %1$d days</string>
     <string name="checkbox_purchased">Bought</string>
     <string name="input_def_purchase_date">Today</string>
     <string name="input_hint_store_name">Name</string>

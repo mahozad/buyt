@@ -28,8 +28,11 @@ import static com.db.chart.renderer.AxisRenderer.LabelPosition.NONE;
 
 public class StatesActivity extends AppCompatActivity {
 
+    private static final String TAG = "STATES";
+
     @BindView(R.id.bottom_bar) BottomAppBar bottomAppBar;
     @BindView(R.id.chart) LineChartView lineChart;
+    @BindView(R.id.chartCaption) TextView chartCaption;
 
     private StatisticsViewModel viewModel;
 
@@ -41,6 +44,9 @@ public class StatesActivity extends AppCompatActivity {
 
         setSupportActionBar(bottomAppBar);
         viewModel = ViewModelProviders.of(this).get(StatisticsViewModel.class);
+
+        String caption = getString(R.string.chart_caption, viewModel.getPeriod().length);
+        chartCaption.setText(caption);
 
         showAnalytics();
     }
@@ -70,7 +76,7 @@ public class StatesActivity extends AppCompatActivity {
         }
 
         LineSet dataSet = new LineSet();
-        for (int i = now - viewModel.getPeriod().length; i <= now; i++) {
+        for (int i = now - viewModel.getPeriod().length + 1; i <= now; i++) {
             dataSet.addPoint("" + i, dayToCostMap.containsKey(i) ? dayToCostMap.get(i) : 0);
         }
 
@@ -106,6 +112,8 @@ public class StatesActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_toggle_period:
                 viewModel.togglePeriod();
+                String caption = getString(R.string.chart_caption, viewModel.getPeriod().length);
+                chartCaption.setText(caption);
                 showAnalytics();
                 break;
             case android.R.id.home:

@@ -16,7 +16,7 @@ public class StatisticsViewModel extends AndroidViewModel {
 
     public enum Period {
 
-        NARROW(14), MEDIUM(30), EXTENDED(60), WIDE(90);
+        NARROW(15), MEDIUM(30), EXTENDED(60), WIDE(90);
 
         public int length;
 

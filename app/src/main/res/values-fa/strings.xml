@@ -48,7 +48,7 @@
     <string name="dialog_message_location_off">حسگر مکان خاموش است. با روشن کردن آن (در حالت دقت زیاد)،
         بایت به صورت خودکار مغازه را شناسایی خواهد کرد.</string>
     <string name="menu_title_store_category">دسته‌بندی</string>
-    <string name="chart_caption">۱۵ روز گذشته</string>
+    <string name="chart_caption">%1$d روز گذشته</string>
     <string name="checkbox_purchased">خریداری‌شده</string>
     <string name="input_hint_purchase_date">تاریخ خرید</string>
     <string name="input_hint_store_name">نام</string>
