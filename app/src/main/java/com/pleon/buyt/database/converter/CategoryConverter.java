@@ -13,6 +13,6 @@ public class CategoryConverter {
 
     @TypeConverter
     public static String convertToItemCategoryName(Category category) {
-        return category.name();
+        return category != null ? category.name() : null;
     }
 }
