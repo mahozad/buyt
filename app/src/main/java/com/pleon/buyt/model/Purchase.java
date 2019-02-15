@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey;
 public class Purchase {
 
     @PrimaryKey(autoGenerate = true)
-    private long id;
+    private long purchaseId;
 
     @ForeignKey(entity = Store.class, parentColumns = "id", childColumns = "storeId")
     private long storeId;
@@ -25,12 +25,12 @@ public class Purchase {
         this.totalCost = totalCost;
     }
 
-    public long getId() {
-        return id;
+    public long getPurchaseId() {
+        return purchaseId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setPurchaseId(long purchaseId) {
+        this.purchaseId = purchaseId;
     }
 
     public long getStoreId() {

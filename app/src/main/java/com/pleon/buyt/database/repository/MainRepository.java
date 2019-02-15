@@ -162,7 +162,7 @@ public class MainRepository { // TODO: make this class singleton
 
         @Override
         protected Void doInBackground(Void... voids) {
-            long storeId = store.getId();
+            long storeId = store.getStoreId();
             if (storeId == 0) { // then this is a new Store so persist it
                 storeId = mStoreDao.insert(store);
             }

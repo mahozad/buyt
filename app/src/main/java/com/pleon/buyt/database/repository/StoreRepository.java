@@ -56,7 +56,7 @@ public class StoreRepository {
         protected Store doInBackground(Store... stores) {
             // returns id of the new inserted store
             long storeId = mAsyncTaskDao.insert(stores[0]);
-            stores[0].setId(storeId);
+            stores[0].setStoreId(storeId);
             return stores[0];
         }
 

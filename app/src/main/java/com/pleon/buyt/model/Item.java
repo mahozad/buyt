@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey;
 public class Item {
 
     @PrimaryKey(autoGenerate = true)
-    private long id; // TODO: change type of id here to int?
+    private long itemId; // TODO: change type of id here to int?
     @ForeignKey(entity = Purchase.class, parentColumns = "id", childColumns = "purchaseId")
     private long purchaseId;
 
@@ -39,12 +39,12 @@ public class Item {
         this.category = category;
     }
 
-    public long getId() {
-        return id;
+    public long getItemId() {
+        return itemId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setItemId(long itemId) {
+        this.itemId = itemId;
     }
 
     public long getPurchaseId() {

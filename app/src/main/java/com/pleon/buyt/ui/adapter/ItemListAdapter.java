@@ -132,7 +132,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
     // give to the RecyclerView and tell it "when I provide a ViewHolder, its id is unique and won't change."
     @Override
     public long getItemId(int position) {
-        return items.get(position).getId();
+        return items.get(position).getItemId();
     }
 
     public List<Item> getItems() {

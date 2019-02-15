@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey;
 public class Store {
 
     @PrimaryKey(autoGenerate = true)
-    private long id;
+    private long storeId;
 
     @Embedded
     private Coordinates location;
@@ -23,12 +23,12 @@ public class Store {
         this.category = category;
     }
 
-    public long getId() {
-        return id;
+    public long getStoreId() {
+        return storeId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setStoreId(long storeId) {
+        this.storeId = storeId;
     }
 
     public Coordinates getLocation() {
