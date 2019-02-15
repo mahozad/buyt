@@ -4,11 +4,12 @@ import java.util.List;
 
 public class Statistics {
 
-    private long averagePurchaseCost;
     private long totalPurchaseCost;
+    private Category mostPurchasedCategory;
+    private long averagePurchaseCost;
+    private Store storeWithMaxPurchases;
     private long maxPurchaseCost;
     private long minPurchaseCost;
-    private Category category;
     private List<DailyCost> dailyCosts;
 
     public long getAveragePurchaseCost() {
@@ -27,12 +28,12 @@ public class Statistics {
         this.totalPurchaseCost = totalPurchaseCost;
     }
 
-    public Category getCategory() {
-        return category;
+    public Category getMostPurchasedCategory() {
+        return mostPurchasedCategory;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setMostPurchasedCategory(Category category) {
+        this.mostPurchasedCategory = category;
     }
 
     public List<DailyCost> getDailyCosts() {
@@ -41,5 +42,33 @@ public class Statistics {
 
     public void setDailyCosts(List<DailyCost> dailyCosts) {
         this.dailyCosts = dailyCosts;
+    }
+
+    public long getMaxPurchaseCost() {
+        return maxPurchaseCost;
+    }
+
+    public void setMaxPurchaseCost(long maxPurchaseCost) {
+        this.maxPurchaseCost = maxPurchaseCost;
+    }
+
+    public Store getStoreWithMaxPurchases() {
+        return storeWithMaxPurchases;
+    }
+
+    public void setStoreWithMaxPurchases(Store storeWithMaxPurchases) {
+        this.storeWithMaxPurchases = storeWithMaxPurchases;
+    }
+
+    @Override
+    public String toString() {
+        return "Statistics{" +
+                "totalPurchaseCost=" + totalPurchaseCost +
+                ", mostPurchasedCategory=" + mostPurchasedCategory +
+                ", averagePurchaseCost=" + averagePurchaseCost +
+                ", storeWithMaxPurchases=" + storeWithMaxPurchases.getStoreId() +
+                ", maxPurchaseCost=" + maxPurchaseCost +
+                ", minPurchaseCost=" + minPurchaseCost +
+                '}';
     }
 }
