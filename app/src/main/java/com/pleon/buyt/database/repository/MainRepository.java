@@ -127,17 +127,13 @@ public class MainRepository { // TODO: make this class singleton
                 storeId = mStoreDao.insert(store);
             }
 
-            long totalCost = 0;
-            for (Item item : items) {
-                totalCost += item.getTotalPrice();
-            }
-            Purchase purchase = new Purchase(storeId, purchaseDate, totalCost);
+            Purchase purchase = new Purchase(storeId, purchaseDate);
             long purchaseId = mPurchaseDao.insert(purchase);
-
             for (Item item : items) {
                 item.setPurchaseId(purchaseId);
                 item.setBought(true);
             }
+
             mItemDao.updateAll(items);
 
             return null;
