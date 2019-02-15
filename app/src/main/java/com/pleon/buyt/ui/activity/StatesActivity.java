@@ -67,6 +67,16 @@ public class StatesActivity extends AppCompatActivity implements SelectDialogFra
         showAnalytics();
     }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        fab.setImageResource(viewModel.getPeriod().getImageRes());
+        ((Animatable) fab.getDrawable()).start();
+
+        // menu items should be restored in onCreateOptionsMenu()
+    }
+
     @OnClick(R.id.fab)
     void onFabClick() {
         viewModel.togglePeriod();
@@ -137,7 +147,11 @@ public class StatesActivity extends AppCompatActivity implements SelectDialogFra
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_bottom_states, menu);
+
         filterMenuItem = menu.getItem(0);
+        filterMenuItem.setIcon(viewModel.getFilter() == null ?
+                R.drawable.ic_filter : viewModel.getFilter().getImageRes());
+
         return true;
     }
 
