@@ -4,7 +4,7 @@ import com.pleon.buyt.R;
 
 import androidx.annotation.StringRes;
 
-public class WeekdayCost {
+public class DailyCost {
 
     /**
      * According to international standard ISO 8601, Monday is the first day of the week.
@@ -43,7 +43,7 @@ public class WeekdayCost {
     private int day;
     private long cost;
 
-    public WeekdayCost(int day, long cost) {
+    public DailyCost(int day, long cost) {
         this.day = day;
         this.cost = cost;
     }

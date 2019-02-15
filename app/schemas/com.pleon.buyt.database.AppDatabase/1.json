@@ -2,15 +2,15 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "119cff68feac5dd4138d7329b7353ebc",
+    "identityHash": "1ccc7e713a6dc2400df84d55f7915788",
     "entities": [
       {
         "tableName": "Item",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `purchaseId` INTEGER NOT NULL, `name` TEXT, `description` TEXT, `urgent` INTEGER NOT NULL, `bought` INTEGER NOT NULL, `category` TEXT, `totalPrice` INTEGER NOT NULL, `position` INTEGER NOT NULL, `flaggedForDeletion` INTEGER NOT NULL, `quantity` INTEGER, `unit` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`itemId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `purchaseId` INTEGER NOT NULL, `name` TEXT, `description` TEXT, `urgent` INTEGER NOT NULL, `bought` INTEGER NOT NULL, `category` TEXT, `totalPrice` INTEGER NOT NULL, `position` INTEGER NOT NULL, `flaggedForDeletion` INTEGER NOT NULL, `quantity` INTEGER, `unit` TEXT)",
         "fields": [
           {
-            "fieldPath": "id",
-            "columnName": "id",
+            "fieldPath": "itemId",
+            "columnName": "itemId",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -83,7 +83,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "itemId"
           ],
           "autoGenerate": true
         },
@@ -92,11 +92,11 @@
       },
       {
         "tableName": "Store",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `category` TEXT, `latitude` REAL, `longitude` REAL, `cosLat` REAL, `sinLat` REAL, `cosLng` REAL, `sinLng` REAL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`storeId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `category` TEXT, `latitude` REAL, `longitude` REAL, `cosLat` REAL, `sinLat` REAL, `cosLng` REAL, `sinLng` REAL)",
         "fields": [
           {
-            "fieldPath": "id",
-            "columnName": "id",
+            "fieldPath": "storeId",
+            "columnName": "storeId",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -151,7 +151,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "storeId"
           ],
           "autoGenerate": true
         },
@@ -170,11 +170,11 @@
       },
       {
         "tableName": "Purchase",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `storeId` INTEGER NOT NULL, `totalCost` INTEGER NOT NULL, `date` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`purchaseId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `storeId` INTEGER NOT NULL, `totalCost` INTEGER NOT NULL, `date` INTEGER)",
         "fields": [
           {
-            "fieldPath": "id",
-            "columnName": "id",
+            "fieldPath": "purchaseId",
+            "columnName": "purchaseId",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -199,7 +199,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "purchaseId"
           ],
           "autoGenerate": true
         },
@@ -210,7 +210,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"119cff68feac5dd4138d7329b7353ebc\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"1ccc7e713a6dc2400df84d55f7915788\")"
     ]
   }
 }

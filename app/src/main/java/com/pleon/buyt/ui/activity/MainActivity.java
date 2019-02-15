@@ -314,11 +314,11 @@ public class MainActivity extends AppCompatActivity
 //                    int dayIndex;
 //                    // FIXME: .locale is deprecated
 //                    if (getResources().getConfiguration().locale.getDisplayName().equals("فارسی (ایران)")) {
-//                        dayIndex = WeekdayCost.Days.iranianOrder[i];
+//                        dayIndex = DailyCost.Days.iranianOrder[i];
 //                    } else {
-//                        dayIndex = WeekdayCost.Days.internationalOrder[i];
+//                        dayIndex = DailyCost.Days.internationalOrder[i];
 //                    }
-//                    String day = getString(WeekdayCost.Days.values()[dayIndex].getNameStringRes());
+//                    String day = getString(DailyCost.Days.values()[dayIndex].getNameStringRes());
 //                    barSet.addBar(day, costs.get(dayIndex));
 //                }
 //
@@ -337,7 +337,7 @@ public class MainActivity extends AppCompatActivity
 //            lineChart.reset();
 //
 //            int now = 0;
-//            for (WeekdayCost cost : costs) {
+//            for (DailyCost cost : costs) {
 //                if (cost.getCost() == -1) {
 //                    now = cost.getDay();
 //                    costs.remove(cost);
@@ -345,7 +345,7 @@ public class MainActivity extends AppCompatActivity
 //            }
 //
 //            Map<Integer, Long> dayToCostMap = new HashMap<>();
-//            for (WeekdayCost cost : costs) {
+//            for (DailyCost cost : costs) {
 //                dayToCostMap.put(cost.getDay(), cost.getCost());
 //            }
 //
