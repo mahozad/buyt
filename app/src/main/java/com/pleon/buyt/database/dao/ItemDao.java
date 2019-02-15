@@ -23,9 +23,6 @@ public interface ItemDao {
             "ORDER BY urgent DESC, position ASC")
     LiveData<List<Item>> getAll();
 
-    @Query("SELECT * FROM Item WHERE id= :id")
-    Item getById(int id);
-
     @Query("SELECT count(*) FROM Item")
     long getCount();
 
@@ -39,13 +36,4 @@ public interface ItemDao {
 
     @Delete
     void delete(Item item);
-
-    /* Annotating a method with @Transaction makes sure that all database operations you’re
-    executing in that method will be run inside one transaction.
-    The transaction will fail when an exception is thrown in the method body. */
-    /* @Transaction
-    void updateData(List<Item> items) {
-        deleteAllUsers();
-        insertAll(users);
-    } */
 }
