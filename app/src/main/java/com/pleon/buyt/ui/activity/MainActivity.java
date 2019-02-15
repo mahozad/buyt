@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity
     // FIXME: Update position field of items if an item is deleted
     // DONE: Add ability to cancel completely when in input price mode
     // TODO: Add option in settings to enable/disable showing urgent items at top of the list
-    // TODO: Add a button (custom view) at the end of StoreListAdapter to create a new Store
+    // TODO: Add a button (custom view) at the end of SelectionListAdapter to create a new Store
     // TODO: Add option in settings to disable/enable store confirmation (only one near store found)
     // TODO: Add option in settings to disable/enable price confirmation dialog
     // TODO: Add a separator (e.g. comma) in every 3 digits of price and other numeric fields
@@ -712,7 +712,8 @@ public class MainActivity extends AppCompatActivity
                     SelectionDialogRow selection = new SelectionDialogRow(store.getName(), store.getCategory().getStoreImageRes());
                     selectionList.add(selection);
                 }
-                SelectDialogFragment selectStoreDialog = SelectDialogFragment.newInstance(this, selectionList);
+                SelectDialogFragment selectStoreDialog = SelectDialogFragment
+                        .newInstance(this, R.string.dialog_title_select_store, selectionList);
                 selectStoreDialog.show(getSupportFragmentManager(), "SELECT_STORE_DIALOG");
                 // next this::completeBuy() is called
             }

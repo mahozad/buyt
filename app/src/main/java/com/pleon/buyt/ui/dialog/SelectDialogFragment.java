@@ -6,13 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.pleon.buyt.R;
-import com.pleon.buyt.ui.adapter.StoreListAdapter;
+import com.pleon.buyt.ui.adapter.SelectionListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,7 +22,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 import static android.content.DialogInterface.BUTTON_POSITIVE;
 
 // DialogFragment is just another Fragment
-public class SelectDialogFragment extends AppCompatDialogFragment implements StoreListAdapter.Callback {
+public class SelectDialogFragment extends AppCompatDialogFragment implements SelectionListAdapter.Callback {
 
     public interface Callback {
         void onSelected(int index);
@@ -30,7 +31,8 @@ public class SelectDialogFragment extends AppCompatDialogFragment implements Sto
     private AlertDialog dialog;
     private static Callback callback;
 
-    public static SelectDialogFragment newInstance(Callback callback, ArrayList<SelectionDialogRow> list) {
+    public static SelectDialogFragment newInstance(Callback callback, @StringRes int title,
+                                                   ArrayList<SelectionDialogRow> list) {
         // FIXME: callback should be set in the onAttach() method, but because the context passed to it
         // is the containing activity and not the containing fragment, we passed it here
         SelectDialogFragment.callback = callback;
@@ -39,6 +41,8 @@ public class SelectDialogFragment extends AppCompatDialogFragment implements Sto
         Bundle args = new Bundle();
         args.putSerializable("LIST", list);
         fragment.setArguments(args);
+        args.putInt("TITLE", title);
+
         return fragment;
     }
 
@@ -61,9 +65,9 @@ public class SelectDialogFragment extends AppCompatDialogFragment implements Sto
     @SuppressWarnings("unchecked")
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View customView = inflater.inflate(R.layout.fragment_store_list, null);
+        View customView = inflater.inflate(R.layout.fragment_selection_list, null);
 
-        StoreListAdapter adapter = new StoreListAdapter(getActivity().getApplicationContext(), this);
+        SelectionListAdapter adapter = new SelectionListAdapter(getActivity().getApplicationContext(), this);
         adapter.setList((List<SelectionDialogRow>) getArguments().getSerializable("LIST"));
 
         RecyclerView storeRecyclerView = customView.findViewById(R.id.storeList);
@@ -72,7 +76,7 @@ public class SelectDialogFragment extends AppCompatDialogFragment implements Sto
         ((SimpleItemAnimator) storeRecyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
 
         dialog = new AlertDialog.Builder(getActivity())
-                .setView(customView).setTitle("TITLE")
+                .setView(customView).setTitle(getString(getArguments().getInt("TITLE")))
                 .setPositiveButton(android.R.string.ok, (d, which) -> {
                     int selectedIndex = adapter.getSelectedIndex();
                     callback.onSelected(selectedIndex);

@@ -97,7 +97,8 @@ public class CreateStoreFragment extends Fragment implements SelectDialogFragmen
                 SelectionDialogRow selection = new SelectionDialogRow(getString(category.getStoreNameRes()), category.getStoreImageRes());
                 selectionList.add(selection);
             }
-            SelectDialogFragment selectStoreDialog = SelectDialogFragment.newInstance(this, selectionList);
+            SelectDialogFragment selectStoreDialog = SelectDialogFragment
+                    .newInstance(this, R.string.dialog_title_select_cat, selectionList);
             selectStoreDialog.show(getActivity().getSupportFragmentManager(), "SELECT_STORE_DIALOG");
         }
         return true;

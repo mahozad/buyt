@@ -27,6 +27,6 @@ see this very good explanation: https://stackoverflow.com/a/41495370/8583692
         android:paddingBottom="8dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:context=".ui.dialog.SelectDialogFragment"
-        tools:listitem="@layout/store_list_row" />
+        tools:listitem="@layout/selection_list_row" />
 
 </FrameLayout>

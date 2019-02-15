@@ -10,6 +10,7 @@
     <string name="input_suffix_price">" dollar"</string>
     <string name="dialog_title_location_permission">Location denied</string>
     <string name="dialog_title_location_off">Location off</string>
+    <string name="dialog_title_select_filter">Select filter</string>
     <string name="dialog_title_exit">Exit the app?</string>
     <string name="dialog_message_exit">The buying process will be aborted if you exit the app.</string>
     <string name="dialog_action_go_to_settings">Go to Settings</string>
@@ -95,5 +96,8 @@
     <string name="nav_states">States</string>
     <string name="nav_stores">Stores</string>
     <string name="nav_settings">Settings</string>
+    <string name="no_filter">No filter</string>
+    <string name="dialog_title_select_store">Select store</string>
+    <string name="dialog_title_select_cat">Select category</string>
 
 </resources>

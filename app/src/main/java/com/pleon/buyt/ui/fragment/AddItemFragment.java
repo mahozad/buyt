@@ -176,7 +176,8 @@ public class AddItemFragment extends Fragment implements DatePickerDialog.OnDate
                         SelectionDialogRow selection = new SelectionDialogRow(store.getName(), store.getCategory().getStoreImageRes());
                         selectionList.add(selection);
                     }
-                    SelectDialogFragment selectStoreDialog = SelectDialogFragment.newInstance(this, selectionList);
+                    SelectDialogFragment selectStoreDialog = SelectDialogFragment
+                            .newInstance(this, R.string.dialog_title_select_store, selectionList);
                     selectStoreDialog.show(getActivity().getSupportFragmentManager(), "SELECT_ITEM_DIALOG");
                 });
             } else {
@@ -184,7 +185,8 @@ public class AddItemFragment extends Fragment implements DatePickerDialog.OnDate
                     SelectionDialogRow selection = new SelectionDialogRow(getString(category.getNameRes()), category.getImageRes());
                     selectionList.add(selection);
                 }
-                SelectDialogFragment selectStoreDialog = SelectDialogFragment.newInstance(this, selectionList);
+                SelectDialogFragment selectStoreDialog = SelectDialogFragment
+                        .newInstance(this, R.string.dialog_title_select_cat, selectionList);
                 selectStoreDialog.show(getActivity().getSupportFragmentManager(), "SELECT_ITEM_DIALOG");
             }
         }

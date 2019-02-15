@@ -9,7 +9,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.pleon.buyt.R;
-import com.pleon.buyt.ui.adapter.StoreListAdapter.StoreHolder;
+import com.pleon.buyt.ui.adapter.SelectionListAdapter.StoreHolder;
 import com.pleon.buyt.ui.dialog.SelectionDialogRow;
 
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.List;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
-public class StoreListAdapter extends Adapter<StoreHolder> {
+public class SelectionListAdapter extends Adapter<StoreHolder> {
 
     private List<SelectionDialogRow> list;
     private Context mContext;
@@ -25,7 +25,7 @@ public class StoreListAdapter extends Adapter<StoreHolder> {
     private int selectedIndex = -1;
     private boolean callbackNotified = false;
 
-    public StoreListAdapter(Context context, Callback callback) {
+    public SelectionListAdapter(Context context, Callback callback) {
         this.mContext = context;
         this.callback = callback;
     }
@@ -33,7 +33,7 @@ public class StoreListAdapter extends Adapter<StoreHolder> {
     @Override
     public StoreHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.store_list_row, parent, false);
+                .inflate(R.layout.selection_list_row, parent, false);
         return new StoreHolder(itemView);
     }
 

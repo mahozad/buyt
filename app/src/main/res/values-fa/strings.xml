@@ -58,5 +58,9 @@
     <string name="nav_states">آمار و داده‌ها</string>
     <string name="nav_stores">مغازه‌ها</string>
     <string name="nav_settings">تنظیمات</string>
+    <string name="no_filter">No filter</string>
+    <string name="dialog_title_select_filter">Select filter</string>
+    <string name="dialog_title_select_store">Select store</string>
+    <string name="dialog_title_select_cat">Select category</string>
 
 </resources>
