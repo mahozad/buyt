@@ -37,7 +37,7 @@ dependencies {
                              * you don't have to add ONE big library (and include unwanted libs) and make your apk huge.
                              * The following library for example adds support for ActionBar, AppCompatActivity and
                              * some other for devices down to api v7. */
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha02'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0-alpha01'
     implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha02'
