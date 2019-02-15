@@ -15,15 +15,9 @@
     <color name="ic_launcher_background">#FFFFFF</color>
     <color name="unfocused">#6E6E6E</color>
 
-    <array name="chartGradient">
-        <item>#00259600</item>
-        <item>#4D259600</item>
-        <item>#CC259600</item>
-    </array>
-
     <array name="lineChartGradient">
         <item>#CC259600</item>
-        <item>#41259600</item>
+        <item>#40259600</item>
         <item>#01259600</item>
     </array>
 
