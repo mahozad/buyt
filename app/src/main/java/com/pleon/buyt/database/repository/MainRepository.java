@@ -12,7 +12,6 @@ import com.pleon.buyt.model.Coordinates;
 import com.pleon.buyt.model.Item;
 import com.pleon.buyt.model.Purchase;
 import com.pleon.buyt.model.Store;
-import com.pleon.buyt.model.WeekdayCost;
 
 import java.util.Collection;
 import java.util.Date;
@@ -31,31 +30,21 @@ public class MainRepository { // TODO: make this class singleton
     private StoreDao mStoreDao;
     private PurchaseDao mPurchaseDao;
     private LiveData<List<Item>> mAllItems;
-    private LiveData<List<Purchase>> allPurchases;
     private SingleLiveEvent<List<Store>> mNearStores;
     private SingleLiveEvent<List<Store>> allStores;
-    private SingleLiveEvent<List<WeekdayCost>> weekdayCosts;
-    private SingleLiveEvent<List<WeekdayCost>> last30DayCosts;
 
     public MainRepository(Application application) {
         mItemDao = AppDatabase.getDatabase(application).itemDao();
         mStoreDao = AppDatabase.getDatabase(application).storeDao();
         mPurchaseDao = AppDatabase.getDatabase(application).purchaseDao();
         mAllItems = mItemDao.getAll();
-        allPurchases = mPurchaseDao.getAll();
         mNearStores = new SingleLiveEvent<>();
         allStores = new SingleLiveEvent<>();
-        weekdayCosts = new SingleLiveEvent<>();
-        last30DayCosts = new SingleLiveEvent<>();
     }
 
     // this does not need to be run in separate thread because it just returns LiveData
     public LiveData<List<Item>> getAllItems() {
         return mAllItems;
-    }
-
-    public LiveData<List<Purchase>> getAllPurchases() {
-        return allPurchases;
     }
 
     public void insertItem(Item item) {
@@ -78,16 +67,6 @@ public class MainRepository { // TODO: make this class singleton
     public LiveData<List<Store>> getAllStores() {
         new GetAllStoresAsyncTask(mStoreDao, allStores).execute();
         return allStores;
-    }
-
-    public LiveData<List<WeekdayCost>> getWeekdayCosts() {
-        new GetWeekdayCostsTask(mPurchaseDao, weekdayCosts).execute();
-        return weekdayCosts;
-    }
-
-    public LiveData<List<WeekdayCost>> getLast30DayCosts() {
-        new Get30dayCostsTask(mPurchaseDao, last30DayCosts).execute();
-        return last30DayCosts;
     }
 
     public void buy(Collection<Item> items, Store store, Date purchaseDate) {
@@ -231,48 +210,6 @@ public class MainRepository { // TODO: make this class singleton
         @Override
         protected void onPostExecute(List<Store> stores) {
             allStores.setValue(stores);
-        }
-    }
-
-    private static class GetWeekdayCostsTask extends AsyncTask<Void, Void, List<WeekdayCost>> {
-
-        private PurchaseDao purchaseDao;
-        private MutableLiveData<List<WeekdayCost>> totalWeekdayCosts;
-
-        GetWeekdayCostsTask(PurchaseDao purchaseDao, MutableLiveData<List<WeekdayCost>> totalWeekdayCosts) {
-            this.purchaseDao = purchaseDao;
-            this.totalWeekdayCosts = totalWeekdayCosts;
-        }
-
-        @Override
-        protected List<WeekdayCost> doInBackground(Void... voids) {
-            return purchaseDao.getWeekdayCosts();
-        }
-
-        @Override
-        protected void onPostExecute(List<WeekdayCost> costs) {
-            totalWeekdayCosts.setValue(costs);
-        }
-    }
-
-    private static class Get30dayCostsTask extends AsyncTask<Void, Void, List<WeekdayCost>> {
-
-        private PurchaseDao purchaseDao;
-        private MutableLiveData<List<WeekdayCost>> last30DayCosts;
-
-        Get30dayCostsTask(PurchaseDao purchaseDao, MutableLiveData<List<WeekdayCost>> last30DayCosts) {
-            this.purchaseDao = purchaseDao;
-            this.last30DayCosts = last30DayCosts;
-        }
-
-        @Override
-        protected List<WeekdayCost> doInBackground(Void... voids) {
-            return purchaseDao.getLast30DayCosts();
-        }
-
-        @Override
-        protected void onPostExecute(List<WeekdayCost> costs) {
-            last30DayCosts.setValue(costs);
         }
     }
 }
