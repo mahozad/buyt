@@ -47,10 +47,6 @@ public class MainRepository { // TODO: make this class singleton
         return mAllItems;
     }
 
-    public void insertItem(Item item) {
-        new AddItemTask(mItemDao).execute(item);
-    }
-
     public void updateItems(Collection<Item> items) {
         new UpdateItemsTask(mItemDao, items).execute();
     }
@@ -71,21 +67,6 @@ public class MainRepository { // TODO: make this class singleton
 
     public void buy(Collection<Item> items, Store store, Date purchaseDate) {
         new BuyAsyncTask(items, store, purchaseDate, mItemDao, mStoreDao, mPurchaseDao).execute();
-    }
-
-    private static class AddItemTask extends AsyncTask<Item, Void, Void> {
-
-        private ItemDao itemDao;
-
-        AddItemTask(ItemDao itemDao) {
-            this.itemDao = itemDao;
-        }
-
-        @Override
-        protected Void doInBackground(Item... items) {
-            itemDao.insert(items[0]);
-            return null;
-        }
     }
 
     private static class DeleteItemTask extends AsyncTask<Item, Void, Void> {

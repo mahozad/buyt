@@ -76,10 +76,6 @@ public class MainViewModel extends AndroidViewModel {
         return mMainRepository.getAllStores();
     }
 
-    public void addItem(Item item) {
-        mMainRepository.insertItem(item);
-    }
-
     public void updateItems(Collection<Item> items) {
         mMainRepository.updateItems(items);
     }

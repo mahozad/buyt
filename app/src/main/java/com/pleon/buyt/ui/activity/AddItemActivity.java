@@ -10,7 +10,7 @@ import com.pleon.buyt.R;
 import com.pleon.buyt.model.Item;
 import com.pleon.buyt.model.Store;
 import com.pleon.buyt.ui.fragment.AddItemFragment;
-import com.pleon.buyt.viewmodel.MainViewModel;
+import com.pleon.buyt.viewmodel.AddItemViewModel;
 
 import java.util.Date;
 
@@ -18,19 +18,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
-import static java.util.Collections.singletonList;
-
 public class AddItemActivity extends AppCompatActivity implements AddItemFragment.Callback {
 
     private AddItemFragment addItemFragment;
-    private MainViewModel viewModel;
+    private AddItemViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
 
-        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(AddItemViewModel.class);
 
         BottomAppBar mBottomAppBar = findViewById(R.id.bottom_bar);
         setSupportActionBar(mBottomAppBar); // This MUST be set as AddItemFragment needs ActionBar.
@@ -86,9 +84,7 @@ public class AddItemActivity extends AppCompatActivity implements AddItemFragmen
      */
     @Override
     public void onSubmitPurchasedItem(Item item, Store store, Date purchaseDate) {
-        viewModel.addItem(item);
-        // FIXME: purchaseId is not set for the item
-        viewModel.buy(singletonList(item), store, purchaseDate);
+        viewModel.addPurchasedItem(item, store, purchaseDate);
         finish();
     }
 }

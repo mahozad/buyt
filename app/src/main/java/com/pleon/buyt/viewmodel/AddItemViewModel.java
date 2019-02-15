@@ -1,20 +1,38 @@
 package com.pleon.buyt.viewmodel;
 
+import android.app.Application;
+
+import com.pleon.buyt.database.repository.AddItemRepository;
 import com.pleon.buyt.model.Category;
+import com.pleon.buyt.model.Item;
 import com.pleon.buyt.model.Store;
 
 import java.util.Date;
 import java.util.List;
 
-import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.AndroidViewModel;
 
-public class AddItemViewModel extends ViewModel {
+public class AddItemViewModel extends AndroidViewModel {
 
+    private AddItemRepository repository;
     private Category itemCategory = Category.GROCERY;
     private List<Store> storeList;
     private Store store;
     private Date purchaseDate = new Date();
     private int itemOrder;
+
+    public AddItemViewModel(Application application) {
+        super(application);
+        repository = new AddItemRepository(application);
+    }
+
+    public void addItem(Item item) {
+        repository.addItem(item);
+    }
+
+    public void addPurchasedItem(Item item, Store store, Date purchaseDate) {
+        repository.addPurchasedItem(item, store, purchaseDate);
+    }
 
     public Category getCategory() {
         return itemCategory;
