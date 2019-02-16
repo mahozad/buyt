@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.graphics.drawable.Animatable;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -232,6 +233,9 @@ public class MainActivity extends AppCompatActivity
 
         locationReceiver = new BroadcastReceiver() { // on location found
             public void onReceive(Context context, Intent intent) {
+                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                v.vibrate(150); // FIXME: Deprecated method
+
                 viewModel.setLocation(intent.getParcelableExtra(GpsService.EXTRA_LOCATION));
                 Coordinates here = new Coordinates(viewModel.getLocation());
                 viewModel.findNearStores(here).observe(MainActivity.this, stores -> onStoresFound(stores));
