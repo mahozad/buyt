@@ -58,7 +58,7 @@ public class GpsService extends Service implements LocationListener {
         // If you want to remove the notification when service stopped, see onDestroy() below
         NotificationCompat.Builder notification =
                 new NotificationCompat.Builder(this, "default")
-                        .setSmallIcon(R.drawable.ic_buyt)
+                        .setSmallIcon(R.drawable.ic_buyt_notification)
                         .setOngoing(true)
                         .setPriority(PRIORITY_LOW) // set to MIN to hide the icon in notification bar
                         .setContentTitle("Finding location")

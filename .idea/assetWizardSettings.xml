@@ -63,10 +63,9 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="autoMirrored" value="true" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_period" />
-                            <entry key="sourceFile" value="C:\Users\Mahdi\Desktop\period.svg" />
+                            <entry key="outputName" value="ic_buyt_notification" />
+                            <entry key="sourceFile" value="C:\Users\Mahdi\Desktop\logo flat.svg" />
                           </map>
                         </option>
                       </PersistentState>
