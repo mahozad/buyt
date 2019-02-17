@@ -1,6 +1,21 @@
 apply plugin: 'com.android.application'
 
 android {
+
+    signingConfigs {
+        buyt {
+            storeFile file(project.findProperty('signing.storeFilePath') as String ?: "$rootProject.projectDir/${System.getenv('SIGNING_STORE_FILE_PATH')}")
+            keyAlias project.findProperty('signing.keyAlias') as String ?: System.getenv('SIGNING_KEY_ALIAS')
+            keyPassword project.findProperty('signing.keyPassword') as String ?: System.getenv('SIGNING_KEY_PASSWORD')
+            storePassword project.findProperty('signing.storePassword') as String ?: System.getenv('SIGNING_STORE_PASSWORD')
+        }
+    }
+
+    buildToolsVersion '28.0.3'
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     compileSdkVersion 28
     defaultConfig {
         // specifies default settings that will be shared across all different product flavors
@@ -16,16 +31,23 @@ android {
             }
         }
     }
+
+    lintOptions {
+        // Disable lint checking for errors
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
     buildTypes { // defines multiple different build types-typically debug and release
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            shrinkResources true
+            // 'proguard-android-optimize.txt' reduces size more than 'proguard-android.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.buyt
         }
-    }
-    buildToolsVersion '28.0.3'
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
