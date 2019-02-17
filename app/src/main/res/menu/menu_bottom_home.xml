@@ -6,22 +6,14 @@
 
     <item
         android:id="@+id/action_change_store"
-        android:icon="@drawable/ic_store"
         android:title="%d stores found"
         android:visible="false"
         app:showAsAction="always">
 
         <menu>
             <item
-                android:id="@+id/profile"
-                android:icon="@drawable/ic_calendar"
-                android:orderInCategory="100"
-                android:title="Found store" />
-
-            <item
-                android:id="@+id/asdfg"
-                android:icon="@drawable/avd_add_hide"
-                android:orderInCategory="100"
+                android:id="@+id/action_add_store"
+                android:icon="@drawable/ic_add_store"
                 android:title="Add new store" />
         </menu>
     </item>
