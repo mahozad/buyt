@@ -454,9 +454,8 @@ public class MainActivity extends AppCompatActivity
                         itemListFragment.toggleEditMode();
                     }
                 } else { // if state == FINDING
-                    viewModel.setFindingStateSkipped(true);
                     stopService(new Intent(this, GpsService.class));
-                    viewModel.getAllStores().observe(this, this::onStoresFound);
+                    skipFinding();
                 }
                 break;
 
@@ -542,11 +541,19 @@ public class MainActivity extends AppCompatActivity
             if (grantResults.length > 0 && grantResults[0] == PERMISSION_GRANTED) {
                 findLocation();
             } else { // if permission denied
-                viewModel.setFindingStateSkipped(true);
-                shiftToSelectingState();
+                skipFinding();
             }
         }
         super.onRequestPermissionsResult(reqCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onEnableLocationDenied() {
+        skipFinding();
+    }
+
+    private void skipFinding() {
+        viewModel.getAllStores().observe(this, this::onStoresFound);
     }
 
     /**
@@ -647,9 +654,6 @@ public class MainActivity extends AppCompatActivity
         mBottomAppBar.setNavigationIcon(R.drawable.avd_nav_cancel);
         ((Animatable) mBottomAppBar.getNavigationIcon()).start();
 
-//        ((Animatable) mBottomAppBar.getMenu().getItem(0).getIcon()).start();
-//        mBottomAppBar.getMenu().getItem(0).setVisible(false);
-
         mBottomAppBar.getMenu().getItem(2).setIcon(R.drawable.avd_reorder_skip);
         mBottomAppBar.getMenu().getItem(2).setTitle(R.string.menu_hint_skip_finding);
         ((Animatable) mBottomAppBar.getMenu().getItem(2).getIcon()).start();
@@ -672,37 +676,24 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void shiftToIdleState() {
-        // reset
+        if (viewModel.getState() == FINDING || viewModel.getState() == SELECTING) {
+            itemListFragment.toggleItemsCheckbox(false);
+
+            mFab.setImageResource(viewModel.getState() == FINDING ?
+                    R.drawable.avd_buyt_reverse : R.drawable.avd_done_buyt);
+            ((Animatable) mFab.getDrawable()).start();
+
+            mBottomAppBar.setFabAlignmentMode(FAB_ALIGNMENT_MODE_CENTER);
+            mBottomAppBar.setNavigationIcon(R.drawable.avd_cancel_nav);
+            ((Animatable) mBottomAppBar.getNavigationIcon()).start();
+            mBottomAppBar.getMenu().getItem(0).setVisible(false);
+            mBottomAppBar.getMenu().getItem(2).setVisible(true);
+            mBottomAppBar.getMenu().getItem(2).setIcon(R.drawable.avd_skip_reorder);
+            mBottomAppBar.getMenu().getItem(2).setTitle(R.string.menu_hint_reorder_items);
+            ((Animatable) mBottomAppBar.getMenu().getItem(2).getIcon()).start();
+        }
         viewModel.resetFoundStores();
         viewModel.setFindingStateSkipped(false);
-
-        itemListFragment.toggleItemsCheckbox(false);
-
-        mBottomAppBar.setFabAlignmentMode(FAB_ALIGNMENT_MODE_CENTER);
-
-        if (viewModel.getState() == FINDING) {
-            mFab.setImageResource(R.drawable.avd_buyt_reverse);
-        } else {
-            mFab.setImageResource(R.drawable.avd_done_buyt);
-        }
-        ((Animatable) mFab.getDrawable()).start();
-
-        mBottomAppBar.setNavigationIcon(R.drawable.avd_cancel_nav);
-        ((Animatable) mBottomAppBar.getNavigationIcon()).start();
-
-        mBottomAppBar.setHideOnScroll(true);
-
-        mBottomAppBar.getMenu().getItem(0).setVisible(false);
-
-//        mBottomAppBar.getMenu().getItem(1).setVisible(true);
-//        mBottomAppBar.getMenu().getItem(1).setIcon(R.drawable.avd_add_show);
-//        ((Animatable) mBottomAppBar.getMenu().getItem(1).getIcon()).start();
-
-        mBottomAppBar.getMenu().getItem(2).setVisible(true);
-        mBottomAppBar.getMenu().getItem(2).setIcon(R.drawable.avd_skip_reorder);
-        mBottomAppBar.getMenu().getItem(2).setTitle(R.string.menu_hint_reorder_items);
-        ((Animatable) mBottomAppBar.getMenu().getItem(2).getIcon()).start();
-
         viewModel.setState(IDLE); // this should be the last statement (because of the if above)
     }
 
@@ -758,14 +749,5 @@ public class MainActivity extends AppCompatActivity
     public void completeBuy(Store store) {
         viewModel.buy(itemListFragment.getSelectedItems(), store, new Date());
         shiftToIdleState();
-    }
-
-    @Override
-    public void onEnableLocationDenied() {
-        mBottomAppBar.getMenu().getItem(1).setVisible(false);
-        mBottomAppBar.setNavigationIcon(R.drawable.avd_nav_cancel);
-        ((Animatable) mBottomAppBar.getNavigationIcon()).start();
-        viewModel.setFindingStateSkipped(true);
-        shiftToSelectingState();
     }
 }
