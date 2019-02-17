@@ -213,8 +213,24 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        Mapbox.getInstance(this, getString(R.string.mapbox_access_token));
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this); // unbind() is not required for activities
+
+//        MapView mapView = findViewById(R.id.mapView);
+//        mapView.onCreate(savedInstanceState);
+//        mapView.getMapAsync(mapboxMap -> {
+//                    LatLng latLng = new LatLng(31.861131, 54.391704);
+//                    CameraPosition position = new CameraPosition.Builder()
+//                            .target(latLng).zoom(14).tilt(20).build();
+//                    mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position));
+//                    mapboxMap.addMarker(new MarkerOptions().position(latLng));
+//                    mapboxMap.setStyle(Style.DARK, style -> {
+//                        // Map is set up and the style has loaded. Now you can add data or make other map adjustments
+//                    });
+//                }
+//        );
+
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         locationMgr = (LocationManager) getSystemService(LOCATION_SERVICE);

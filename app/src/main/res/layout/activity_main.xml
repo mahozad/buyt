@@ -49,6 +49,12 @@
 
     <!--</com.google.android.material.card.MaterialCardView>-->
 
+    <!--<com.mapbox.mapboxsdk.maps.MapView-->
+        <!--android:id="@+id/mapView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--/>-->
+
     <fragment
         android:id="@+id/fragment_items"
         class="com.pleon.buyt.ui.fragment.ItemListFragment"
