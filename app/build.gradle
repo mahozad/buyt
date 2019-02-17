@@ -23,13 +23,24 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0"
+        versionName "0.9.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions { // Tell Room to export database schema info to keep a history of it
             annotationProcessorOptions {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
+
+// The Gradle resource shrinker removes only resources that are not referenced by your app code,
+// which means it will not remove alternative resources for different device configurations.
+// If necessary, you can use the Android Gradle plugin's resConfigs property to
+// remove alternative resource files that your app does not need.
+// For example, if you are using a library that includes language resources (such as AppCompat or
+// Google Play Services), then your APK includes all translated language strings for the messages
+// in those libraries whether the rest of your app is translated to the same languages or not.
+// If you'd like to keep only the languages that your app officially supports, you can specify those
+// languages using the resConfig property. Any resources for languages not specified are removed.
+        resConfigs "en", "fa"
     }
 
     lintOptions {
