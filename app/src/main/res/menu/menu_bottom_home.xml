@@ -5,7 +5,6 @@
     tools:context=".ui.activity.MainActivity">
 
     <item
-        android:id="@+id/action_change_store"
         android:title="%d stores found"
         android:visible="false"
         app:showAsAction="always">
