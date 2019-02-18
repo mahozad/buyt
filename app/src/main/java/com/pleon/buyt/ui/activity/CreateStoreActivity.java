@@ -1,6 +1,5 @@
 package com.pleon.buyt.ui.activity;
 
-import android.location.Location;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,21 +24,11 @@ public class CreateStoreActivity extends AppCompatActivity implements CreateStor
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_store);
 
-        Bundle extras = getIntent().getExtras();
-        Location location = (extras != null) ?
-                getIntent().getParcelableExtra(MainActivity.EXTRA_LOCATION) : null;
-
-        setSupportActionBar(findViewById(R.id.bottom_bar)); // This MUST be set as CreateStoreFragment needs ActionBar.
+        // This MUST be set as CreateStoreFragment needs ActionBar.
+        setSupportActionBar(findViewById(R.id.bottom_bar));
 
         FragmentManager fragMgr = getSupportFragmentManager();
-        createStoreFragment = (CreateStoreFragment) fragMgr.findFragmentById(R.id.createStoreContainer);
-
-        if (createStoreFragment == null) {
-            createStoreFragment = CreateStoreFragment.newInstance(location);
-            fragMgr.beginTransaction()
-                    .add(R.id.createStoreContainer, createStoreFragment)
-                    .commit();
-        }
+        createStoreFragment = (CreateStoreFragment) fragMgr.findFragmentById(R.id.fragment_create_store);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(v -> createStoreFragment.onDonePressed());

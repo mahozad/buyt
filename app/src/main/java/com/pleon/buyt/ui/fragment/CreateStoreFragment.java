@@ -23,10 +23,13 @@ import com.pleon.buyt.ui.dialog.SelectionDialogRow;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+
+import static com.pleon.buyt.model.Category.GROCERY;
 
 /**
  * This fragment requires a Toolbar as it needs to inflate and use a menu item for selection of
@@ -34,36 +37,47 @@ import butterknife.Unbinder;
  */
 public class CreateStoreFragment extends Fragment implements SelectDialogFragment.Callback {
 
-    public interface Callback {
-        void onSubmit(Store store);
-    }
+    public static final String EXTRA_LOCATION = "com.pleon.buyt.extra.LOCATION";
 
     @BindView(R.id.name_layout) TextInputLayout nameTxInLt;
     @BindView(R.id.name) EditText nameEdtx;
 
     private Unbinder unbinder;
     private Callback callback;
-    private Category storeCategory = Category.GROCERY;
+    private Location location;
+    private Category storeCategory = GROCERY;
     private TextView selectCategoryTxvi;
 
     public CreateStoreFragment() {
         // Required empty constructor
     }
 
-    public static CreateStoreFragment newInstance(Location storeLocation) {
-        Bundle args = new Bundle();
-        args.putParcelable("LOCATION", storeLocation);
-
-        CreateStoreFragment fragment = new CreateStoreFragment();
-        fragment.setArguments(args);
-
-        return fragment;
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        location = getActivity().getIntent().getParcelableExtra(EXTRA_LOCATION);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_store, container, false);
+//        Mapbox.getInstance(getContext(), getString(R.string.mapbox_access_token)); // should be called before inflation
         unbinder = ButterKnife.bind(this, view); // unbind() is required only for Fragments
+
+//        MapView mapView = view.findViewById(R.id.mapView);
+//        mapView.onCreate(savedInstanceState);
+//        mapView.getMapAsync(mapboxMap -> {
+//                    LatLng latLng = new LatLng(location);
+//                    CameraPosition position = new CameraPosition.Builder()
+//                            .target(latLng).zoom(14).tilt(20).build();
+//                    mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position));
+//                    mapboxMap.addMarker(new MarkerOptions().position(latLng));
+//                    mapboxMap.setStyle(Style.DARK, style -> {
+//                        // Map is set up and the style has loaded. Now you can add data or make other map adjustments
+//                    });
+//                }
+//        );
+
         setHasOptionsMenu(true); // for the onCreateOptionsMenu() method to be called
 
         return view;
@@ -105,7 +119,7 @@ public class CreateStoreFragment extends Fragment implements SelectDialogFragmen
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof Callback) {
             callback = (Callback) context;
@@ -123,10 +137,9 @@ public class CreateStoreFragment extends Fragment implements SelectDialogFragmen
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // set the bindings to null (frees up memory)
+        // set the bindings to null (to free up memory)
         unbinder.unbind();
     }
-
 
     @Override
     public void onSelected(int index) {
@@ -139,9 +152,11 @@ public class CreateStoreFragment extends Fragment implements SelectDialogFragmen
 
     public void onDonePressed() {
         if (validateFields()) {
-            Coordinates coordinates = new Coordinates(getArguments().getParcelable("LOCATION"));
+            Coordinates coordinates = new Coordinates(location);
+
             String name = nameEdtx.getText().toString();
             Store store = new Store(coordinates, name, storeCategory);
+
             callback.onSubmit(store);
         }
     }
@@ -156,5 +171,9 @@ public class CreateStoreFragment extends Fragment implements SelectDialogFragmen
 
     private boolean isEmpty(@NonNull EditText editText) {
         return editText.getText().toString().trim().length() == 0;
+    }
+
+    public interface Callback {
+        void onSubmit(Store store);
     }
 }

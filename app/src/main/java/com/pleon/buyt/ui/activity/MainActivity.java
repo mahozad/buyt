@@ -28,6 +28,7 @@ import com.pleon.buyt.ui.dialog.RationaleDialogFragment;
 import com.pleon.buyt.ui.dialog.SelectDialogFragment;
 import com.pleon.buyt.ui.dialog.SelectionDialogRow;
 import com.pleon.buyt.ui.fragment.BottomDrawerFragment;
+import com.pleon.buyt.ui.fragment.CreateStoreFragment;
 import com.pleon.buyt.ui.fragment.ItemListFragment;
 import com.pleon.buyt.viewmodel.MainViewModel;
 
@@ -177,7 +178,6 @@ public class MainActivity extends AppCompatActivity
     // • make your fragments subclass "android.app.fragment" instead of the support one
     // • to get the fragment manager, call getFragmentManager() instead of getSupportFragment...
 
-    public static final String EXTRA_LOCATION = "com.pleon.buyt.extra.LOCATION";
     public static final String EXTRA_ITEM_ORDER = "com.pleon.buyt.extra.ITEM_ORDER";
     private static final String TAG = "MainActivity";
     /**
@@ -717,7 +717,7 @@ public class MainActivity extends AppCompatActivity
         if (itemListFragment.validateSelectedItemsPrice()) {
             if (viewModel.getFoundStores().size() == 0) {
                 Intent intent = new Intent(this, CreateStoreActivity.class);
-                intent.putExtra(EXTRA_LOCATION, viewModel.getLocation());
+                intent.putExtra(CreateStoreFragment.EXTRA_LOCATION, viewModel.getLocation());
                 startActivity(intent);
                 viewModel.getLatestCreatedStore().observe(this, this::completeBuy);
             } else if (viewModel.getFoundStores().size() == 1) {
