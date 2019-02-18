@@ -51,7 +51,7 @@
     <string name="chart_caption">%1$d روز گذشته</string>
     <string name="checkbox_purchased">خریداری‌شده</string>
     <string name="input_hint_purchase_date">تاریخ خرید</string>
-    <string name="input_hint_store_name">نام</string>
+    <string name="input_hint_store_name">نام مغازه یا فروشگاه</string>
     <string name="input_error_name">نام نمی‌تواند خالی باشد</string>
     <string name="input_error_quantity">مقدار باید مشخص شود</string>
     <string name="input_error_price">قیمت باید مشخص شود</string>

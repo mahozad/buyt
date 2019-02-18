@@ -89,7 +89,7 @@
     <string name="chart_caption">Last %1$d days</string>
     <string name="checkbox_purchased">Bought</string>
     <string name="input_def_purchase_date">Today</string>
-    <string name="input_hint_store_name">Name</string>
+    <string name="input_hint_store_name">Store name</string>
     <string name="input_error_name">Name cannot be empty</string>
     <string name="input_error_quantity">Quantity should be specified</string>
     <string name="input_error_price">Price should be specified</string>
