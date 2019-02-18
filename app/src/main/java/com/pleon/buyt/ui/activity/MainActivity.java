@@ -622,6 +622,7 @@ public class MainActivity extends AppCompatActivity
                 showIndefiniteSnackbar(R.string.snackbar_message_no_store_found, android.R.string.ok);
                 shiftToIdleState();
             } else {
+                mBottomAppBar.getMenu().findItem(R.id.action_add_store).setVisible(false); // no need because create store screen will be shown
                 viewModel.setStoreIcon(R.drawable.ic_store_new); // to use on config change
                 mBottomAppBar.getMenu().getItem(0).setIcon(viewModel.getStoreIcon());
                 mBottomAppBar.getMenu().getItem(0).setVisible(true);
@@ -697,6 +698,7 @@ public class MainActivity extends AppCompatActivity
         viewModel.resetFoundStores();
         viewModel.setShouldCompletePurchase(false);
         viewModel.setFindingStateSkipped(false);
+        mBottomAppBar.getMenu().findItem(R.id.action_add_store).setVisible(true);
         viewModel.setState(IDLE); // this should be the last statement (because of the if above)
     }
 
