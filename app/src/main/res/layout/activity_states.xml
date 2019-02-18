@@ -91,10 +91,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="8dp"
                 android:text="Max purcahse cost:"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView14" />
+                app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
             <TextView
                 android:id="@+id/textView5"
@@ -228,6 +228,25 @@
                 android:layout_marginStart="8dp"
                 android:text="TextView"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView16"
+                app:layout_constraintStart_toEndOf="@+id/barrier" />
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Number of purchases:"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+            <TextView
+                android:id="@+id/textView18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="TextView"
+                app:layout_constraintBaseline_toBaselineOf="@+id/textView15"
                 app:layout_constraintStart_toEndOf="@+id/barrier" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
