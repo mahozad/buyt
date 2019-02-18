@@ -28,7 +28,7 @@ public class MainRepository { // TODO: make this class singleton
 
     private ItemDao mItemDao;
     private StoreDao mStoreDao;
-    private PurchaseDao mPurchaseDao;
+    private PurchaseDao purchaseDao;
     private LiveData<List<Item>> mAllItems;
     private SingleLiveEvent<List<Store>> mNearStores;
     private SingleLiveEvent<List<Store>> allStores;
@@ -36,7 +36,7 @@ public class MainRepository { // TODO: make this class singleton
     public MainRepository(Application application) {
         mItemDao = AppDatabase.getDatabase(application).itemDao();
         mStoreDao = AppDatabase.getDatabase(application).storeDao();
-        mPurchaseDao = AppDatabase.getDatabase(application).purchaseDao();
+        purchaseDao = AppDatabase.getDatabase(application).purchaseDao();
         mAllItems = mItemDao.getAll();
         mNearStores = new SingleLiveEvent<>();
         allStores = new SingleLiveEvent<>();
@@ -66,7 +66,7 @@ public class MainRepository { // TODO: make this class singleton
     }
 
     public void buy(Collection<Item> items, Store store, Date purchaseDate) {
-        new BuyAsyncTask(items, store, purchaseDate, mItemDao, mStoreDao, mPurchaseDao).execute();
+        new BuyAsyncTask(items, store, purchaseDate, mItemDao, purchaseDao).execute();
     }
 
     private static class DeleteItemTask extends AsyncTask<Item, Void, Void> {
@@ -105,36 +105,27 @@ public class MainRepository { // TODO: make this class singleton
 
         private Collection<Item> items;
         private Store store;
-        private PurchaseDao mPurchaseDao;
-        private ItemDao mItemDao;
-        private StoreDao mStoreDao;
+        private PurchaseDao purchaseDao;
+        private ItemDao itemDao;
         private Date purchaseDate;
 
-        BuyAsyncTask(Collection<Item> items, Store store, Date purchaseDate, ItemDao mItemDao,
-                     StoreDao mStoreDao, PurchaseDao mPurchaseDao) {
+        BuyAsyncTask(Collection<Item> items, Store store, Date purchaseDate, ItemDao itemDao, PurchaseDao purchaseDao) {
             this.items = items;
             this.store = store;
             this.purchaseDate = purchaseDate;
-            this.mItemDao = mItemDao;
-            this.mStoreDao = mStoreDao;
-            this.mPurchaseDao = mPurchaseDao;
+            this.itemDao = itemDao;
+            this.purchaseDao = purchaseDao;
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            long storeId = store.getStoreId();
-            if (storeId == 0) { // then this is a new Store so persist it
-                storeId = mStoreDao.insert(store);
-            }
-
-            Purchase purchase = new Purchase(storeId, purchaseDate);
-            long purchaseId = mPurchaseDao.insert(purchase);
+            Purchase purchase = new Purchase(store.getStoreId(), purchaseDate);
+            long purchaseId = purchaseDao.insert(purchase);
             for (Item item : items) {
                 item.setPurchaseId(purchaseId);
                 item.setBought(true);
             }
-
-            mItemDao.updateAll(items);
+            itemDao.updateAll(items);
 
             return null;
         }

@@ -5,7 +5,6 @@ import android.location.Location;
 import android.os.Bundle;
 
 import com.pleon.buyt.database.repository.MainRepository;
-import com.pleon.buyt.database.repository.StoreRepository;
 import com.pleon.buyt.model.Coordinates;
 import com.pleon.buyt.model.Item;
 import com.pleon.buyt.model.Store;
@@ -47,11 +46,11 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     private MainRepository mMainRepository;
-    private StoreRepository mStoreRepository;
     private volatile State state = IDLE;
     private Location location;
     private boolean findingStateSkipped;
     private List<Store> foundStores = new ArrayList<>();
+    private boolean shouldCompletePurchase;
     @DrawableRes private int storeIcon;
 
     // TODO: Use paging library architecture component
@@ -60,7 +59,6 @@ public class MainViewModel extends AndroidViewModel {
     public MainViewModel(Application application) {
         super(application);
         mMainRepository = new MainRepository(application);
-        mStoreRepository = StoreRepository.getInstance(application);
         mAllItems = mMainRepository.getAllItems();
     }
 
@@ -82,10 +80,6 @@ public class MainViewModel extends AndroidViewModel {
 
     public void buy(Collection<Item> items, Store store, Date purchaseDate) {
         mMainRepository.buy(items, store, purchaseDate);
-    }
-
-    public LiveData<Store> getLatestCreatedStore() {
-        return mStoreRepository.getLatestCreatedStore();
     }
 
     public void deleteItem(Item item) {
@@ -126,6 +120,14 @@ public class MainViewModel extends AndroidViewModel {
 
     public void setFoundStores(List<Store> foundStores) {
         this.foundStores = foundStores;
+    }
+
+    public boolean shouldCompletePurchase() {
+        return shouldCompletePurchase;
+    }
+
+    public void setShouldCompletePurchase(boolean shouldCompletePurchase) {
+        this.shouldCompletePurchase = shouldCompletePurchase;
     }
 
     public int getStoreIcon() {

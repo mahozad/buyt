@@ -14,7 +14,7 @@ public class StoreRepository {
 
     private static volatile StoreRepository sInstance;
     private static StoreDao mStoreDao;
-    private SingleLiveEvent<Store> mLatestCreatedStore = new SingleLiveEvent<>();
+    private SingleLiveEvent<Store> createdStore = new SingleLiveEvent<>();
 
     public static StoreRepository getInstance(Context appContext) {
         if (sInstance == null) {
@@ -28,33 +28,29 @@ public class StoreRepository {
         return sInstance;
     }
 
-    public void insert(Store store, boolean publishRequired) {
-        new InsertAsyncTask(mStoreDao, this, publishRequired).execute(store);
-    }
-
-    public LiveData<Store> getLatestCreatedStore() {
-        return mLatestCreatedStore;
+    public LiveData<Store> insert(Store store/*, boolean publishRequired*/) {
+        new InsertAsyncTask(mStoreDao, this/*, publishRequired*/).execute(store);
+        return createdStore;
     }
 
     private void setLatestCreatedStore(Store store) {
-        mLatestCreatedStore.setValue(store);
+        createdStore.setValue(store);
     }
 
     private static class InsertAsyncTask extends AsyncTask<Store, Void, Store> {
 
         private StoreDao mAsyncTaskDao;
         private StoreRepository delegate;
-        private boolean publishRequired;
+        // private boolean publishRequired;
 
-        InsertAsyncTask(StoreDao mAsyncTaskDao, StoreRepository delegate, boolean publishRequired) {
+        InsertAsyncTask(StoreDao mAsyncTaskDao, StoreRepository delegate/*, boolean publishRequired*/) {
             this.mAsyncTaskDao = mAsyncTaskDao;
             this.delegate = delegate;
-            this.publishRequired = publishRequired;
+            // this.publishRequired = publishRequired;
         }
 
         @Override
         protected Store doInBackground(Store... stores) {
-            // returns id of the new inserted store
             long storeId = mAsyncTaskDao.insert(stores[0]);
             stores[0].setStoreId(storeId);
             return stores[0];
@@ -62,9 +58,9 @@ public class StoreRepository {
 
         @Override
         protected void onPostExecute(Store store) {
-            if (publishRequired) {
-                delegate.setLatestCreatedStore(store);
-            }
+        // if (publishRequired) {
+            delegate.setLatestCreatedStore(store);
+        // }
         }
     }
 }

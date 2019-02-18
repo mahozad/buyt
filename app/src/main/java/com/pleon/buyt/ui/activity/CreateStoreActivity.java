@@ -1,5 +1,6 @@
 package com.pleon.buyt.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,7 +10,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pleon.buyt.R;
 import com.pleon.buyt.model.Store;
 import com.pleon.buyt.ui.fragment.CreateStoreFragment;
-import com.pleon.buyt.viewmodel.StoreViewModel;
+import com.pleon.buyt.viewmodel.CreateStoreViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -17,6 +18,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 public class CreateStoreActivity extends AppCompatActivity implements CreateStoreFragment.Callback {
 
+    private CreateStoreViewModel viewModel;
     private CreateStoreFragment createStoreFragment;
 
     @Override
@@ -26,6 +28,8 @@ public class CreateStoreActivity extends AppCompatActivity implements CreateStor
 
         // This MUST be set as CreateStoreFragment needs ActionBar.
         setSupportActionBar(findViewById(R.id.bottom_bar));
+
+        viewModel = ViewModelProviders.of(this).get(CreateStoreViewModel.class);
 
         FragmentManager fragMgr = getSupportFragmentManager();
         createStoreFragment = (CreateStoreFragment) fragMgr.findFragmentById(R.id.fragment_create_store);
@@ -60,7 +64,9 @@ public class CreateStoreActivity extends AppCompatActivity implements CreateStor
      */
     @Override
     public void onSubmit(Store store) {
-        ViewModelProviders.of(this).get(StoreViewModel.class).insertForObserver(store);
-        finish();
+        viewModel.addStore(store).observe(this, insertedStore -> {
+            setResult(RESULT_OK, new Intent().putExtra("STORE", insertedStore));
+            finish();
+        });
     }
 }

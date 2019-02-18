@@ -37,6 +37,7 @@ import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -60,6 +61,8 @@ import static com.pleon.buyt.viewmodel.MainViewModel.State.SELECTING;
 
 public class MainActivity extends AppCompatActivity
         implements SelectDialogFragment.Callback, ConfirmExitDialog.Callback, Callback {
+
+    public static final int CREATE_STORE_REQUEST_CODE = 1;
 
     // the app can be described as both a t0do app and an expense manager and also a shopping list app
 
@@ -459,6 +462,12 @@ public class MainActivity extends AppCompatActivity
                 }
                 break;
 
+            case R.id.action_add_store:
+                viewModel.setShouldCompletePurchase(false);
+                Intent intentt = new Intent(this, CreateStoreActivity.class);
+                intentt.putExtra(CreateStoreFragment.EXTRA_LOCATION, viewModel.getLocation());
+                startActivityForResult(intentt, CREATE_STORE_REQUEST_CODE);
+                break;
             /* If setSupportActionBar() is used to set up the BottomAppBar, navigation menu item
              * can be identified by checking if the id of menu item equals android.R.id.home. */
             case android.R.id.home:
@@ -553,6 +562,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void skipFinding() {
+        // TODO: disable bottom bar R.id.action_add_store because we skipped gps and do not have store location
         viewModel.getAllStores().observe(this, this::onStoresFound);
     }
 
@@ -619,15 +629,7 @@ public class MainActivity extends AppCompatActivity
             }
         } else {
             shiftToSelectingState();
-            if (foundStores.size() == 1) {
-                int icon = foundStores.get(0).getCategory().getStoreImageRes();
-                viewModel.setStoreIcon(icon); // to use on config change
-                mBottomAppBar.getMenu().getItem(0).setIcon(icon);
-                itemListFragment.sortStoreItemsFirst(foundStores.get(0).getCategory());
-            } else {
-                viewModel.setStoreIcon(R.drawable.ic_store_multi); // to use on config change
-                mBottomAppBar.getMenu().getItem(0).setIcon(viewModel.getStoreIcon());
-            }
+            setStoreMenuItemIcon(viewModel.getFoundStores());
             mBottomAppBar.getMenu().getItem(0).setVisible(true);
         }
     }
@@ -693,6 +695,7 @@ public class MainActivity extends AppCompatActivity
             ((Animatable) mBottomAppBar.getMenu().getItem(2).getIcon()).start();
         }
         viewModel.resetFoundStores();
+        viewModel.setShouldCompletePurchase(false);
         viewModel.setFindingStateSkipped(false);
         viewModel.setState(IDLE); // this should be the last statement (because of the if above)
     }
@@ -716,10 +719,10 @@ public class MainActivity extends AppCompatActivity
     public void buySelectedItems() {
         if (itemListFragment.validateSelectedItemsPrice()) {
             if (viewModel.getFoundStores().size() == 0) {
+                viewModel.setShouldCompletePurchase(true);
                 Intent intent = new Intent(this, CreateStoreActivity.class);
                 intent.putExtra(CreateStoreFragment.EXTRA_LOCATION, viewModel.getLocation());
-                startActivity(intent);
-                viewModel.getLatestCreatedStore().observe(this, this::completeBuy);
+                startActivityForResult(intent, CREATE_STORE_REQUEST_CODE);
             } else if (viewModel.getFoundStores().size() == 1) {
                 completeBuy(viewModel.getFoundStores().get(0));
             } else { // show store selection dialog
@@ -732,6 +735,32 @@ public class MainActivity extends AppCompatActivity
                         .newInstance(this, R.string.dialog_title_select_store, selectionList);
                 selectStoreDialog.show(getSupportFragmentManager(), "SELECT_STORE_DIALOG");
                 // next this::completeBuy() is called
+            }
+        }
+    }
+
+    private void setStoreMenuItemIcon(List<Store> stores) {
+        if (stores.size() == 1) {
+            int icon = stores.get(0).getCategory().getStoreImageRes();
+            viewModel.setStoreIcon(icon); // to use on config change
+            mBottomAppBar.getMenu().getItem(0).setIcon(icon);
+            itemListFragment.sortStoreItemsFirst(stores.get(0).getCategory());
+        } else {
+            viewModel.setStoreIcon(R.drawable.ic_store_multi); // to use on config change
+            mBottomAppBar.getMenu().getItem(0).setIcon(viewModel.getStoreIcon());
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CREATE_STORE_REQUEST_CODE && resultCode == RESULT_OK) {
+            Store store = (Store) data.getSerializableExtra("STORE");
+            if (viewModel.shouldCompletePurchase()) {
+                completeBuy(store);
+            } else {
+                viewModel.getFoundStores().add(store);
+                setStoreMenuItemIcon(viewModel.getFoundStores());
             }
         }
     }
