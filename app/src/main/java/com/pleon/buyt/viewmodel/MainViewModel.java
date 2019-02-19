@@ -51,6 +51,7 @@ public class MainViewModel extends AndroidViewModel {
     private boolean findingStateSkipped;
     private List<Store> foundStores = new ArrayList<>();
     private boolean shouldCompletePurchase;
+    private boolean shouldAnimateNavIcon;
     @DrawableRes private int storeIcon;
 
     // TODO: Use paging library architecture component
@@ -128,6 +129,14 @@ public class MainViewModel extends AndroidViewModel {
 
     public void setShouldCompletePurchase(boolean shouldCompletePurchase) {
         this.shouldCompletePurchase = shouldCompletePurchase;
+    }
+
+    public boolean shouldAnimateNavIcon() {
+        return shouldAnimateNavIcon;
+    }
+
+    public void setShouldAnimateNavIcon(boolean shouldAnimateNavIcon) {
+        this.shouldAnimateNavIcon = shouldAnimateNavIcon;
     }
 
     public int getStoreIcon() {

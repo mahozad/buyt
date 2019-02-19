@@ -550,6 +550,7 @@ public class MainActivity extends AppCompatActivity
             if (grantResults.length > 0 && grantResults[0] == PERMISSION_GRANTED) {
                 findLocation();
             } else { // if permission denied
+                viewModel.setShouldAnimateNavIcon(true);
                 skipFinding();
             }
         }
@@ -558,6 +559,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onEnableLocationDenied() {
+        viewModel.setShouldAnimateNavIcon(true);
         skipFinding();
     }
 
@@ -669,6 +671,10 @@ public class MainActivity extends AppCompatActivity
     private void shiftToSelectingState() {
         itemListFragment.toggleItemsCheckbox(true);
 
+        if (viewModel.shouldAnimateNavIcon()) {
+            mBottomAppBar.setNavigationIcon(R.drawable.avd_nav_cancel);
+            ((Animatable) mBottomAppBar.getNavigationIcon()).start();
+        }
         mBottomAppBar.getMenu().getItem(2).setVisible(false);
         mBottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
 
@@ -697,6 +703,7 @@ public class MainActivity extends AppCompatActivity
         }
         viewModel.resetFoundStores();
         viewModel.setShouldCompletePurchase(false);
+        viewModel.setShouldAnimateNavIcon(false);
         viewModel.setFindingStateSkipped(false);
         mBottomAppBar.getMenu().findItem(R.id.action_add_store).setVisible(true);
         viewModel.setState(IDLE); // this should be the last statement (because of the if above)
