@@ -565,6 +565,7 @@ public class MainActivity extends AppCompatActivity
 
     private void skipFinding() {
         // TODO: disable bottom bar R.id.action_add_store because we skipped gps and do not have store location
+        viewModel.setFindingStateSkipped(true);
         viewModel.getAllStores().observe(this, this::onStoresFound);
     }
 
