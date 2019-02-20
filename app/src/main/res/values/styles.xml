@@ -5,6 +5,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorSecondary">@color/colorPrimary</item>
+        <item name="colorSurface">#283028</item>
 
         <!-- To use normal parent themes above (without .NoActionBar) -->
         <item name="windowActionBar">false</item>
