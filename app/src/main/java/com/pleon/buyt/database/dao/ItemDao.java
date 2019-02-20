@@ -36,4 +36,7 @@ public interface ItemDao {
 
     @Delete
     void delete(Item item);
+
+    @Query("SELECT DISTINCT name from item")
+    LiveData<String[]> getItemNames();
 }

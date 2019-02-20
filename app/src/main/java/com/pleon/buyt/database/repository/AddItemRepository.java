@@ -12,14 +12,18 @@ import com.pleon.buyt.model.Store;
 
 import java.util.Date;
 
+import androidx.lifecycle.LiveData;
+
 public class AddItemRepository {
 
     private ItemDao itemDao;
     private PurchaseDao purchaseDao;
+    private LiveData<String[]> itemNames;
 
     public AddItemRepository(Application application) {
         itemDao = AppDatabase.getDatabase(application).itemDao();
         purchaseDao = AppDatabase.getDatabase(application).purchaseDao();
+        itemNames = itemDao.getItemNames();
     }
 
     public void addItem(Item item) {
@@ -28,6 +32,10 @@ public class AddItemRepository {
 
     public void addPurchasedItem(Item item, Store store, Date purchaseDate) {
         new AddPurchasedItemTask(itemDao, purchaseDao, store, purchaseDate).execute(item);
+    }
+
+    public LiveData<String[]> getItemNames() {
+        return itemNames;
     }
 
     private static class AddItemTask extends AsyncTask<Item, Void, Void> {

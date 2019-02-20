@@ -13,6 +13,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -73,7 +75,7 @@ public class AddItemFragment extends Fragment implements DatePickerDialog.OnDate
         SelectDialogFragment.Callback, android.app.DatePickerDialog.OnDateSetListener {
 
     @BindView(R.id.name_layout) TextInputLayout nameTxInLt;
-    @BindView(R.id.name) EditText nameEdtx;
+    @BindView(R.id.name) AutoCompleteTextView nameAuTx;
     @BindView(R.id.quantity_layout) TextInputLayout quantityTxinlt;
     @BindView(R.id.quantity) EditText quantityEdtx;
     @BindView(R.id.radio_group) RadioGroup unitRdgrp;
@@ -127,6 +129,13 @@ public class AddItemFragment extends Fragment implements DatePickerDialog.OnDate
             // disable by default (because quantity input is not focused yet)
             unitRdbtn.setEnabled(false);
         }
+
+        // Set up auto complete for item name
+        viewModel.getItemNames().observe(getViewLifecycleOwner(), names -> {
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
+                    android.R.layout.simple_dropdown_item_1line, names);
+            nameAuTx.setAdapter(adapter);
+        });
 
         String priceSuffix = getString(R.string.input_suffix_price);
         priceEdtx.addTextChangedListener(new NumberInputWatcher(priceTxinlt, priceEdtx, priceSuffix));
@@ -349,7 +358,7 @@ public class AddItemFragment extends Fragment implements DatePickerDialog.OnDate
 
     @OnTextChanged(value = R.id.name, callback = AFTER_TEXT_CHANGED)
     void onNameChanged() {
-        if (!nameEdtx.getText().toString().isEmpty()) { // to prevent error with config change
+        if (!nameAuTx.getText().toString().isEmpty()) { // to prevent error with config change
             nameTxInLt.setError(null); // clear error if exists
             setCounterEnabledIfInputLong(nameTxInLt);
         }
@@ -404,7 +413,7 @@ public class AddItemFragment extends Fragment implements DatePickerDialog.OnDate
         boolean validated = validateFields();
 
         if (validated) {
-            String name = nameEdtx.getText().toString();
+            String name = nameAuTx.getText().toString();
             Quantity quantity = getQuantity();
             Item item = new Item(name, quantity, urgentChbx.isChecked(), boughtChbx.isChecked(), viewModel.getCategory());
             item.setPosition(viewModel.getItemOrder());
@@ -447,7 +456,7 @@ public class AddItemFragment extends Fragment implements DatePickerDialog.OnDate
     private boolean validateFields() {
         boolean validated = true;
 
-        if (isEmpty(nameEdtx)) {
+        if (isEmpty(nameAuTx)) {
             nameTxInLt.setError(getString(R.string.input_error_name));
             validated = false;
         }

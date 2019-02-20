@@ -26,8 +26,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/name"
+                style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawablePadding="8dp"
@@ -39,7 +40,7 @@
 
                 <requestFocus />
 
-            </com.google.android.material.textfield.TextInputEditText>
+            </androidx.appcompat.widget.AppCompatAutoCompleteTextView>
 
         </com.google.android.material.textfield.TextInputLayout>
 

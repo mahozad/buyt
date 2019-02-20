@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
 public class AddItemViewModel extends AndroidViewModel {
 
@@ -24,6 +25,10 @@ public class AddItemViewModel extends AndroidViewModel {
     public AddItemViewModel(Application application) {
         super(application);
         repository = new AddItemRepository(application);
+    }
+
+    public LiveData<String[]> getItemNames() {
+        return repository.getItemNames();
     }
 
     public void addItem(Item item) {
