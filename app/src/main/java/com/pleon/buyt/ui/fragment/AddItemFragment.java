@@ -178,7 +178,7 @@ public class AddItemFragment extends Fragment implements DatePickerDialog.OnDate
             // FIXME: initialize this only once
             ArrayList<SelectionDialogRow> selectionList = new ArrayList<>(); // dialog requires ArrayList
             if (isBoughtChecked()) {
-                ViewModelProviders.of(this).get(MainViewModel.class).getAllStores().observe(this, stores -> {
+                ViewModelProviders.of(this).get(MainViewModel.class).getAllStores().observe(getViewLifecycleOwner(), stores -> {
                     viewModel.setStoreList(stores);
                     selectionList.clear();
                     for (Store store : stores) {
