@@ -7,12 +7,12 @@ import androidx.room.TypeConverter;
 public class DateConverter {
 
     @TypeConverter
-    public static Date convertToDate(Long timestamp) {
-        return new Date(timestamp * 1000); // multiply by 1000 to make it milliseconds
+    public static Date fromTimestamp(Long value) {
+        return value == null ? null : new Date(value * 1_000); // multiply by 1000 to make it milliseconds
     }
 
     @TypeConverter
-    public static Long convertToTimestamp(Date date) {
-        return date.getTime() / 1000; // divide by 1000 to store as seconds
+    public static Long toTimestamp(Date date) {
+        return date == null ? null : date.getTime() / 1_000; // divide by 1000 to store as seconds
     }
 }
