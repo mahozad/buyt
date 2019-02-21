@@ -32,12 +32,16 @@ public abstract class PurchaseDao {
     @Transaction
     public Statistics getStats(int period, @Nullable Category filter) {
         Statistics statistics = new Statistics();
+
         statistics.setDailyCosts(getDailyCosts(period, filter));
+        statistics.setTotalPurchaseCost(getTotalPurchaseCost(period, filter));
         statistics.setAveragePurchaseCost(getAveragePurchaseCost(period, filter));
         statistics.setMostPurchasedCategory(getMostPurchasedCategory(period));
-        statistics.setTotalPurchaseCost(getTotalPurchaseCost(period, filter));
-        statistics.setStoreWithMaxPurchases(getStoreWithMaxPurchases(period, filter));
+        statistics.setNumberOfPurchases(getNumberOfPurchases(period, filter));
         statistics.setMaxPurchaseCost(getMaxPurchaseCost(period, filter));
+        statistics.setMinPurchaseCost(getMinPurchaseCost(period, filter));
+        statistics.setWeekdayWithMaxPurchases(getWeekdayWithMaxPurchaseCount(period, filter));
+        statistics.setStoreWithMaxPurchaseCount(getStoreWithMaxPurchaseCount(period, filter));
 
         return statistics;
     }
@@ -52,19 +56,17 @@ public abstract class PurchaseDao {
             "limit 1;")
     abstract Category getMostPurchasedCategory(int period);
 
-    @Query("select strftime('%w', date, 'unixepoch', 'localtime') AS day " +
+    @Query("select count(Distinct purchaseId) from purchase natural join item " +
+            "where" + PERIOD_CLAUSE + "and (:filter is null or category = :filter)")
+    abstract int getNumberOfPurchases(int period, Category filter);
+
+    @Query("select strftime('%w', date, 'unixepoch', 'localtime') AS day, sum(totalPrice)" +
             "from purchase natural join item " +
             "where" + PERIOD_CLAUSE + "and (:filter is null or category = :filter) " +
             "group by day " +
+            "order by sum(totalPrice) desc " +
             "limit 1;")
     abstract int getWeekdayWithMaxPurchaseCount(int period, Category filter);
-
-    @Query("select strftime('%w', date, 'unixepoch', 'localtime') AS day " +
-            "from purchase natural join item " +
-            "where" + PERIOD_CLAUSE + "and (:filter is null or category = :filter) " +
-            "group by day " +
-            "limit 1;")
-    abstract int getWeekdayWithMinPurchaseCount(int period, Category filter);
 
     @Query("select avg(cost) from " +
             "(select sum(totalPrice) as cost from purchase natural join item " +
@@ -78,7 +80,7 @@ public abstract class PurchaseDao {
             "group by purchase.storeId " +
             "order by count(purchase.storeId) desc " +
             "limit 1;")
-    abstract Store getStoreWithMaxPurchases(int period, Category filter);
+    abstract Store getStoreWithMaxPurchaseCount(int period, Category filter);
 
     @Query("select max(cost) from " +
             "(select sum(totalPrice) as cost from purchase natural join item " +

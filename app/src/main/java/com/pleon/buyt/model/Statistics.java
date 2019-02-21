@@ -1,40 +1,19 @@
 package com.pleon.buyt.model;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 public class Statistics {
 
+    private List<DailyCost> dailyCosts;
     private long totalPurchaseCost;
-    private Category mostPurchasedCategory;
     private long averagePurchaseCost;
-    private Store storeWithMaxPurchases;
+    private Category mostPurchasedCategory;
+    private int numberOfPurchases;
     private long maxPurchaseCost;
     private long minPurchaseCost;
-    private List<DailyCost> dailyCosts;
-
-    public long getAveragePurchaseCost() {
-        return averagePurchaseCost;
-    }
-
-    public void setAveragePurchaseCost(long averagePurchaseCost) {
-        this.averagePurchaseCost = averagePurchaseCost;
-    }
-
-    public long getTotalPurchaseCost() {
-        return totalPurchaseCost;
-    }
-
-    public void setTotalPurchaseCost(long totalPurchaseCost) {
-        this.totalPurchaseCost = totalPurchaseCost;
-    }
-
-    public Category getMostPurchasedCategory() {
-        return mostPurchasedCategory;
-    }
-
-    public void setMostPurchasedCategory(Category category) {
-        this.mostPurchasedCategory = category;
-    }
+    private int weekdayWithMaxPurchases;
+    private Store storeWithMaxPurchaseCount;
 
     public List<DailyCost> getDailyCosts() {
         return dailyCosts;
@@ -44,31 +23,67 @@ public class Statistics {
         this.dailyCosts = dailyCosts;
     }
 
-    public long getMaxPurchaseCost() {
-        return maxPurchaseCost;
+    public String getTotalPurchaseCost() {
+        return NumberFormat.getInstance().format(totalPurchaseCost);
+    }
+
+    public void setTotalPurchaseCost(long totalPurchaseCost) {
+        this.totalPurchaseCost = totalPurchaseCost;
+    }
+
+    public String getAveragePurchaseCost() {
+        return NumberFormat.getInstance().format(averagePurchaseCost);
+    }
+
+    public void setAveragePurchaseCost(long averagePurchaseCost) {
+        this.averagePurchaseCost = averagePurchaseCost;
+    }
+
+    public int getMostPurchasedCategoryName() {
+        return mostPurchasedCategory.getNameRes();
+    }
+
+    public void setMostPurchasedCategory(Category mostPurchasedCategory) {
+        this.mostPurchasedCategory = mostPurchasedCategory;
+    }
+
+    public String getNumberOfPurchases() {
+        return NumberFormat.getInstance().format(numberOfPurchases);
+    }
+
+    public void setNumberOfPurchases(int numberOfPurchases) {
+        this.numberOfPurchases = numberOfPurchases;
+    }
+
+    public String getMaxPurchaseCost() {
+        return NumberFormat.getInstance().format(maxPurchaseCost);
     }
 
     public void setMaxPurchaseCost(long maxPurchaseCost) {
         this.maxPurchaseCost = maxPurchaseCost;
     }
 
-    public Store getStoreWithMaxPurchases() {
-        return storeWithMaxPurchases;
+    public String getMinPurchaseCost() {
+        return NumberFormat.getInstance().format(minPurchaseCost);
     }
 
-    public void setStoreWithMaxPurchases(Store storeWithMaxPurchases) {
-        this.storeWithMaxPurchases = storeWithMaxPurchases;
+    public void setMinPurchaseCost(long minPurchaseCost) {
+        this.minPurchaseCost = minPurchaseCost;
     }
 
-    @Override
-    public String toString() {
-        return "Statistics{" +
-                "totalPurchaseCost=" + totalPurchaseCost +
-                ", mostPurchasedCategory=" + mostPurchasedCategory +
-                ", averagePurchaseCost=" + averagePurchaseCost +
-                ", storeWithMaxPurchases=" + storeWithMaxPurchases.getStoreId() +
-                ", maxPurchaseCost=" + maxPurchaseCost +
-                ", minPurchaseCost=" + minPurchaseCost +
-                '}';
+    public int getWeekdayNameResWithMaxPurchases() {
+        return DailyCost.Days.values()[weekdayWithMaxPurchases].getNameStringRes();
+    }
+
+    public void setWeekdayWithMaxPurchases(int weekdayWithMaxPurchases) {
+        this.weekdayWithMaxPurchases = weekdayWithMaxPurchases;
+    }
+
+    public String getStoreNameWithMaxPurchaseCount() {
+        return storeWithMaxPurchaseCount.getName();
+    }
+
+    public void setStoreWithMaxPurchaseCount(Store storeWithMaxPurchases) {
+        this.storeWithMaxPurchaseCount = storeWithMaxPurchases;
     }
 }
