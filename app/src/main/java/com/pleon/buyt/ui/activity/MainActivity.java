@@ -465,7 +465,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_add_store:
                 viewModel.setShouldCompletePurchase(false);
                 Intent intentt = new Intent(this, CreateStoreActivity.class);
-                intentt.putExtra(CreateStoreFragment.EXTRA_LOCATION, viewModel.getLocation());
+                intentt.putExtra(CreateStoreFragment.ARG_LOCATION, viewModel.getLocation());
                 startActivityForResult(intentt, CREATE_STORE_REQUEST_CODE);
                 break;
             /* If setSupportActionBar() is used to set up the BottomAppBar, navigation menu item
@@ -731,7 +731,7 @@ public class MainActivity extends AppCompatActivity
             if (viewModel.getFoundStores().size() == 0) {
                 viewModel.setShouldCompletePurchase(true);
                 Intent intent = new Intent(this, CreateStoreActivity.class);
-                intent.putExtra(CreateStoreFragment.EXTRA_LOCATION, viewModel.getLocation());
+                intent.putExtra(CreateStoreFragment.ARG_LOCATION, viewModel.getLocation());
                 startActivityForResult(intent, CREATE_STORE_REQUEST_CODE);
             } else if (viewModel.getFoundStores().size() == 1) {
                 completeBuy(viewModel.getFoundStores().get(0));

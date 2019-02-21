@@ -37,7 +37,7 @@ import static com.pleon.buyt.model.Category.GROCERY;
  */
 public class CreateStoreFragment extends Fragment implements SelectDialogFragment.Callback {
 
-    public static final String EXTRA_LOCATION = "com.pleon.buyt.extra.LOCATION";
+    public static final String ARG_LOCATION = "com.pleon.buyt.extra.LOCATION";
 
     @BindView(R.id.name_layout) TextInputLayout nameTxInLt;
     @BindView(R.id.name) EditText nameEdtx;
@@ -55,7 +55,7 @@ public class CreateStoreFragment extends Fragment implements SelectDialogFragmen
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        location = getActivity().getIntent().getParcelableExtra(EXTRA_LOCATION);
+        location = getActivity().getIntent().getParcelableExtra(ARG_LOCATION);
     }
 
     @Override
