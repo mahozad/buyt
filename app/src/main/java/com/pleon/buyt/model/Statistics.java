@@ -80,7 +80,7 @@ public class Statistics {
     }
 
     public String getStoreNameWithMaxPurchaseCount() {
-        return storeWithMaxPurchaseCount.getName();
+        return storeWithMaxPurchaseCount == null ? "" : storeWithMaxPurchaseCount.getName();
     }
 
     public void setStoreWithMaxPurchaseCount(Store storeWithMaxPurchases) {

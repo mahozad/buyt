@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
-import androidx.room.RoomWarnings;
 import androidx.room.Transaction;
 
 @Dao
@@ -74,9 +73,8 @@ public abstract class PurchaseDao {
             "group by purchaseId)")
     abstract long getAveragePurchaseCost(int period, Category filter);
 
-    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Query("select store.*, count(purchase.storeId) from purchase natural join store " +
-            "where" + PERIOD_CLAUSE + "and (:filter is null or category = :filter) " +
+    @Query("select store.* from purchase natural join store join item on purchase.purchaseId=item.purchaseId " +
+            "where" + PERIOD_CLAUSE + "and (:filter is null or item.category = :filter) " +
             "group by purchase.storeId " +
             "order by count(purchase.storeId) desc " +
             "limit 1;")
