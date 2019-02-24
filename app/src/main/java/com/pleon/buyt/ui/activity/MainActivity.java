@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity
     // TODO: Add ability to select a date to see its costs
     // TODO: Dark material colors: https://stackoverflow.com/q/36915508
     // TODO: for the item list to only one item be expanded see https://stackoverflow.com/q/27203817/8583692
+    // TODO: I can request the necessary permissions in the end of the app tutorial
     // FIXME: Correct all names and ids according to best practices
     // FIXME: Fix the query for chart data to start from the beginning of the first day (instead of just -7 days)
     // DONE: Use butter knife to declare activity views and view handlers
