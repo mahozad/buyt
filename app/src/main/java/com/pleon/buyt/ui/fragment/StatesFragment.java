@@ -114,11 +114,7 @@ public class StatesFragment extends Fragment {
         dataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
         dataSet.setThickness(2.5f);
 
-        DecimalFormat moneyFormat = new DecimalFormat("\u00A4##,###");
-        if (getResources().getConfiguration().locale.getDisplayName().equals("فارسی (ایران)")) {
-            // for Farsi, \u00A4 is ریال but we want something else (e.g. ت)
-            moneyFormat = new DecimalFormat("##,### ت");
-        }
+        DecimalFormat moneyFormat = new DecimalFormat(getString(R.string.currency_format));
         lineChart.setLabelsFormat(moneyFormat);
 
         int[] colors = getResources().getIntArray(R.array.lineChartGradient);

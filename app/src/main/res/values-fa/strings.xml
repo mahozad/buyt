@@ -62,5 +62,6 @@
     <string name="dialog_title_select_filter">Select filter</string>
     <string name="dialog_title_select_store">Select store</string>
     <string name="dialog_title_select_cat">Select category</string>
+    <string name="currency_format">##,### ت</string>
 
 </resources>

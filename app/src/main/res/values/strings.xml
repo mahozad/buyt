@@ -99,5 +99,6 @@
     <string name="no_filter">No filter</string>
     <string name="dialog_title_select_store">Select store</string>
     <string name="dialog_title_select_cat">Select category</string>
+    <string name="currency_format">¤##,###</string>
 
 </resources>
