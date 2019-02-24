@@ -5,8 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Vibrator;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,6 +47,8 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.vectordrawable.graphics.drawable.Animatable2Compat;
+import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -421,7 +426,18 @@ public class MainActivity extends AppCompatActivity
         }
         if (newbie) {
             // Make plus icon glow a little bit if the user is a newbie!
-            ((Animatable) menu.getItem(1).getIcon()).start();
+            // see this answer [https://stackoverflow.com/a/49431260/8583692] for why we are doing this!
+            Animatable2Compat avd = (Animatable2Compat) menu.getItem(1).getIcon();
+            avd.registerAnimationCallback(new AnimationCallback() {
+                private final Handler fHandler = new Handler(Looper.getMainLooper());
+
+                @Override
+                public void onAnimationEnd(@NonNull Drawable drawable) {
+                    Animatable2Compat avd = (Animatable2Compat) drawable;
+                    fHandler.post(avd::start);
+                }
+            });
+            avd.start();
         }
         return true;
     }
