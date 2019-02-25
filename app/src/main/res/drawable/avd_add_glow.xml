@@ -24,49 +24,81 @@
         <aapt:attr name="android:animation">
             <set>
                 <objectAnimator
-                    android:duration="900"
-                    android:interpolator="@android:anim/accelerate_decelerate_interpolator"
-                    android:propertyName="rotation"
-                    android:valueFrom="0"
-                    android:valueTo="180"
-                    android:valueType="floatType" />
-                <objectAnimator
-                    android:duration="450"
-                    android:interpolator="@android:anim/accelerate_decelerate_interpolator"
-                    android:propertyName="scaleX"
-                    android:valueFrom="1"
-                    android:valueTo="1.5"
-                    android:valueType="floatType" />
-                <objectAnimator
-                    android:duration="450"
-                    android:interpolator="@android:anim/accelerate_decelerate_interpolator"
-                    android:propertyName="scaleY"
-                    android:valueFrom="1"
-                    android:valueTo="1.5"
-                    android:valueType="floatType" />
-                <objectAnimator
-                    android:duration="450"
-                    android:interpolator="@android:anim/accelerate_decelerate_interpolator"
-                    android:propertyName="scaleX"
-                    android:startOffset="450"
-                    android:valueFrom="1.5"
-                    android:valueTo="1"
-                    android:valueType="floatType" />
-                <objectAnimator
-                    android:duration="450"
-                    android:interpolator="@android:anim/accelerate_decelerate_interpolator"
-                    android:propertyName="scaleY"
-                    android:startOffset="450"
-                    android:valueFrom="1.5"
-                    android:valueTo="1"
-                    android:valueType="floatType" />
-                <objectAnimator
-                    android:duration="2100"
+                    android:duration="100"
                     android:interpolator="@android:interpolator/fast_out_slow_in"
                     android:propertyName="rotation"
-                    android:startOffset="900"
+                    android:valueFrom="0"
+                    android:valueTo="5"
+                    android:valueType="floatType" />
+                <objectAnimator
+                    android:duration="100"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"
+                    android:propertyName="rotation"
+                    android:startOffset="100"
+                    android:valueFrom="5"
+                    android:valueTo="-5"
+                    android:valueType="floatType" />
+                <objectAnimator
+                    android:duration="100"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"
+                    android:propertyName="rotation"
+                    android:startOffset="200"
+                    android:valueFrom="-5"
+                    android:valueTo="5"
+                    android:valueType="floatType" />
+                <objectAnimator
+                    android:duration="100"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"
+                    android:propertyName="rotation"
+                    android:startOffset="300"
+                    android:valueFrom="5"
+                    android:valueTo="-5"
+                    android:valueType="floatType" />
+                <objectAnimator
+                    android:duration="100"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"
+                    android:propertyName="rotation"
+                    android:startOffset="400"
+                    android:valueFrom="-5"
+                    android:valueTo="0"
+                    android:valueType="floatType" />
+                <objectAnimator
+                    android:duration="2500"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"
+                    android:propertyName="rotation"
+                    android:startOffset="500"
                     android:valueFrom="0"
                     android:valueTo="0"
+                    android:valueType="floatType" />
+                <objectAnimator
+                    android:duration="250"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"
+                    android:propertyName="scaleY"
+                    android:valueFrom="1"
+                    android:valueTo="1.2"
+                    android:valueType="floatType" />
+                <objectAnimator
+                    android:duration="250"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"
+                    android:propertyName="scaleX"
+                    android:valueFrom="1"
+                    android:valueTo="1.2"
+                    android:valueType="floatType" />
+                <objectAnimator
+                    android:duration="250"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"
+                    android:propertyName="scaleY"
+                    android:startOffset="250"
+                    android:valueFrom="1.2"
+                    android:valueTo="1"
+                    android:valueType="floatType" />
+                <objectAnimator
+                    android:duration="250"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"
+                    android:propertyName="scaleX"
+                    android:startOffset="250"
+                    android:valueFrom="1.2"
+                    android:valueTo="1"
                     android:valueType="floatType" />
             </set>
         </aapt:attr>
