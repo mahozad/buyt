@@ -514,6 +514,10 @@ public class MainActivity extends AppCompatActivity
      * be resumed—for example, if the activity is closed by pressing the back button or if it calls
      * {@link #finish()}.
      * <p>
+     * Even if the system destroys the process while the activity is stopped, the system still
+     * retains the state of the View objects (such as text in an EditText widget) in a Bundle
+     * (a blob of key-value pairs) and restores them if the user navigates back to the activity.
+     * <p>
      * Note that state for any View with an 'android:id' attribute is automatically saved and
      * restored by the framework (hence the call to {@code super.onSaveInstanceState()} method).
      *
