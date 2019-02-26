@@ -586,6 +586,8 @@ public class MainActivity extends AppCompatActivity
     protected void onDestroy() {
         super.onDestroy();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(locationReceiver);
+        // TODO: Move AppDatabase.destroyInstance() to the onCleared() method of the viewModel
+        // see [https://developer.android.com/guide/components/activities/activity-lifecycle#ondestroy]
         // if activity being destroyed is because of back button (not because of config change)
         if (isFinishing()) {
             stopService(new Intent(this, GpsService.class));
