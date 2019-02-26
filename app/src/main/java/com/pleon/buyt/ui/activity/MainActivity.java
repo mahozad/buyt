@@ -637,6 +637,7 @@ public class MainActivity extends AppCompatActivity
                 shiftToSelectingState();
             }
         } else {
+            stopService(new Intent(this, GpsService.class)); // for the case if finding skipped
             shiftToSelectingState();
             setStoreMenuItemIcon(viewModel.getFoundStores());
             mBottomAppBar.getMenu().getItem(0).setVisible(true);
