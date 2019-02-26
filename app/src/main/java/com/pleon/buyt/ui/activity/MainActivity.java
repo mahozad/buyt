@@ -188,6 +188,7 @@ public class MainActivity extends AppCompatActivity
     // • make your fragments subclass "android.app.fragment" instead of the support one
     // • to get the fragment manager, call getFragmentManager() instead of getSupportFragment...
 
+    public static final String STATE_LOCATION = "com.pleon.buyt.state.LOCATION";
     public static final String EXTRA_ITEM_ORDER = "com.pleon.buyt.extra.ITEM_ORDER";
     private static final String TAG = "MainActivity";
     /**
@@ -516,12 +517,9 @@ public class MainActivity extends AppCompatActivity
      * be resumed—for example, if the activity is closed by pressing the back button or if it calls
      * {@link #finish()}.
      * <p>
-     * Even if the system destroys the process while the activity is stopped, the system still
-     * retains the state of the View objects (such as text in an EditText widget) in a Bundle
-     * (a blob of key-value pairs) and restores them if the user navigates back to the activity.
-     * <p>
-     * Note that state for any View with an 'android:id' attribute is automatically saved and
-     * restored by the framework (hence the call to {@code super.onSaveInstanceState()} method).
+     * Even if the system destroys the process while the activity is stopped, super.onSaveInstanceState();
+     * still retains the state of the View objects with an 'android:id' attribute (such as text in
+     * an EditText widget) in a Bundle and restores them if the user navigates back to the activity.
      *
      * @param outState
      */
@@ -529,11 +527,12 @@ public class MainActivity extends AppCompatActivity
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        /*outState.putSerializable("STATE", viewModel.getState());
-        // because in finding state the app runs a foreground service, no need to store its data
+        // There is nothing special in IDLE state to save here; In FINDING state app runs a
+        // FOREGROUND service and is unkillable so this state also doesn't need to save its data
+
         if (viewModel.getState() == SELECTING) {
-            outState.putParcelable("LOCATION", viewModel.getLocation());
-        }*/
+            outState.putParcelable(STATE_LOCATION, viewModel.getLocation());
+        }
     }
 
     @Override
@@ -545,6 +544,10 @@ public class MainActivity extends AppCompatActivity
         } else if (viewModel.getState() == SELECTING) {
             mFab.setImageResource(R.drawable.ic_done);
             itemListFragment.toggleItemsCheckbox(true);
+        } else if (savedInstanceState.containsKey(STATE_LOCATION)) {
+            // Bundle contains location but previous condition (viewModel.getState() == SELECTING)
+            // was not true, so this is a restore from a PROCESS KILL
+            viewModel.findNearStores(new Coordinates(savedInstanceState.getParcelable(STATE_LOCATION)));
         }
 
         // menu items should be restored in onCreateOptionsMenu()
