@@ -13,6 +13,7 @@ import android.os.Looper;
 import android.os.Vibrator;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomappbar.BottomAppBar;
@@ -58,7 +59,7 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.location.LocationManager.GPS_PROVIDER;
 import static com.getkeepsafe.taptargetview.TapTarget.forView;
 import static com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_CENTER;
-import static com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE;
+import static com.google.android.material.snackbar.Snackbar.LENGTH_LONG;
 import static com.google.android.material.snackbar.Snackbar.LENGTH_SHORT;
 import static com.pleon.buyt.viewmodel.MainViewModel.State.FINDING;
 import static com.pleon.buyt.viewmodel.MainViewModel.State.IDLE;
@@ -196,6 +197,7 @@ public class MainActivity extends AppCompatActivity
 
     @BindView(R.id.fab) FloatingActionButton mFab;
     @BindView(R.id.bottom_bar) BottomAppBar mBottomAppBar;
+    @BindView(R.id.snackBarContainer) View snackbarContainer;
 //    @BindView(R.id.chart_container) CardView chartContainer;
 //    @BindView(R.id.toggleChart) CheckBox chartToggle;
 //    @BindView(R.id.chart) BarChartView barChart;
@@ -595,14 +597,14 @@ public class MainActivity extends AppCompatActivity
     void onFabClick() {
         if (viewModel.getState() == IDLE) { // act as find
             if (itemListFragment.isCartEmpty()) {
-                showShortSnackbar(R.string.snackbar_message_cart_empty);
+                showSnackbar(R.string.snackbar_message_cart_empty, 0, LENGTH_SHORT);
             } else {
                 itemListFragment.clearSelectedItems(); // clear items of previous purchase
                 findLocation();
             }
         } else if (viewModel.getState() == SELECTING) { // act as done
             if (itemListFragment.isSelectedEmpty()) {
-                showShortSnackbar(R.string.snackbar_message_no_item_selected);
+                showSnackbar(R.string.snackbar_message_no_item_selected, 0, LENGTH_SHORT);
             } else {
                 buySelectedItems();
             }
@@ -627,8 +629,7 @@ public class MainActivity extends AppCompatActivity
         viewModel.setFoundStores(foundStores);
         if (foundStores.size() == 0) {
             if (viewModel.isFindingStateSkipped()) {
-                showIndefiniteSnackbar(R.string.snackbar_message_no_store_found, android.R.string.ok);
-                shiftToIdleState();
+                showSnackbar(R.string.snackbar_message_no_store_found, android.R.string.ok, LENGTH_LONG);
             } else {
                 mBottomAppBar.getMenu().findItem(R.id.action_add_store).setVisible(false); // no need because create store screen will be shown
                 viewModel.setStoreIcon(R.drawable.ic_store_new); // to use on config change
@@ -644,17 +645,12 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void showShortSnackbar(int message) {
-        Snackbar.make(findViewById(R.id.snackBarContainer),
-                getString(message), LENGTH_SHORT)
-                .show();
-    }
-
-    private void showIndefiniteSnackbar(int message, int action) {
-        Snackbar.make(findViewById(R.id.snackBarContainer),
-                getString(message), LENGTH_INDEFINITE).setAction(action, v -> {
-        })
-                .show();
+    private void showSnackbar(int message, int action, int length) {
+        Snackbar snackbar = Snackbar.make(snackbarContainer, message, length);
+        if (action != 0) {
+            snackbar.setAction(action, v -> {/* to dismiss snackbar on click */});
+        }
+        snackbar.show();
     }
 
     private void shiftToFindingState() {
