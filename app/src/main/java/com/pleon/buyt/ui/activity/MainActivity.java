@@ -59,6 +59,7 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.location.LocationManager.GPS_PROVIDER;
 import static com.getkeepsafe.taptargetview.TapTarget.forView;
 import static com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_CENTER;
+import static com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE;
 import static com.google.android.material.snackbar.Snackbar.LENGTH_LONG;
 import static com.google.android.material.snackbar.Snackbar.LENGTH_SHORT;
 import static com.pleon.buyt.viewmodel.MainViewModel.State.FINDING;
@@ -611,14 +612,14 @@ public class MainActivity extends AppCompatActivity
     void onFabClick() {
         if (viewModel.getState() == IDLE) { // act as find
             if (itemListFragment.isCartEmpty()) {
-                showSnackbar(R.string.snackbar_message_cart_empty, LENGTH_SHORT);
+                showSnackbar(R.string.snackbar_message_cart_empty, LENGTH_SHORT, null);
             } else {
                 itemListFragment.clearSelectedItems(); // clear items of previous purchase
                 findLocation();
             }
         } else if (viewModel.getState() == SELECTING) { // act as done
             if (itemListFragment.isSelectedEmpty()) {
-                showSnackbar(R.string.snackbar_message_no_item_selected, LENGTH_SHORT);
+                showSnackbar(R.string.snackbar_message_no_item_selected, LENGTH_SHORT, null);
             } else {
                 buySelectedItems();
             }
@@ -643,7 +644,7 @@ public class MainActivity extends AppCompatActivity
         viewModel.setFoundStores(foundStores);
         if (foundStores.size() == 0) {
             if (viewModel.isFindingStateSkipped()) {
-                showSnackbar(R.string.snackbar_message_no_store_found, LENGTH_LONG);
+                showSnackbar(R.string.snackbar_message_no_store_found, LENGTH_LONG, null);
             } else {
                 mBottomAppBar.getMenu().findItem(R.id.action_add_store).setVisible(false); // no need because create store screen will be shown
                 viewModel.setStoreIcon(R.drawable.ic_store_new); // to use on config change
@@ -659,9 +660,11 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void showSnackbar(int message, int length) {
+    private void showSnackbar(int message, int length, Integer action) {
         Snackbar snackbar = Snackbar.make(snackbarContainer, message, length);
-        // snackbar.setAction(action, v -> {/* to dismiss snackbar on click */});
+        if (action != 0) {
+            snackbar.setAction(action, v -> {/* to dismiss snackbar on click */});
+        }
         snackbar.show();
     }
 
