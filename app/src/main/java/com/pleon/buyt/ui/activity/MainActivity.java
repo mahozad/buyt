@@ -255,6 +255,14 @@ public class MainActivity extends AppCompatActivity
                     .start();
         }
 
+//        see [https://developer.android.com/guide/components/fragments#Example] for fragment example
+//        As in android developers guild, make this variable a field if needed
+//        boolean wideLayout = findViewById(R.id.chart) != null;
+//        if (wideLayout) {
+//             Do whatever needed
+//        }
+
+
         locationReceiver = new BroadcastReceiver() { // on location found
             public void onReceive(Context context, Intent intent) {
                 Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);

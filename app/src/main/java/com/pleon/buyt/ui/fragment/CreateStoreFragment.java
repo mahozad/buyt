@@ -58,6 +58,24 @@ public class CreateStoreFragment extends Fragment implements SelectDialogFragmen
         location = getActivity().getIntent().getParcelableExtra(ARG_LOCATION);
     }
 
+    /**
+     * Your fragments can contribute menu items to the activity's Options Menu (and, consequently,
+     * the app bar) by implementing onCreateOptionsMenu(). In order for this method to receive calls,
+     * however, setHasOptionsMenu() must be called during onCreate(), to indicate that the fragment
+     * would like to add items to the Options Menu. Otherwise, the fragment doesn't receive a call
+     * to onCreateOptionsMenu(). Any items that you then add to the Options Menu from the fragment
+     * are appended to the existing menu items.
+     * <p>
+     * Note: Although your fragment receives an on-item-selected callback for each menu item it adds,
+     * the activity is first to receive the respective callback when the user selects a menu item.
+     * If the activity's implementation of the on-item-selected callback does not handle the
+     * selected item, then the event is passed to the fragment's callback.
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_store, container, false);
