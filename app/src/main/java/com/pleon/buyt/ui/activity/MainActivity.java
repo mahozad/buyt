@@ -548,6 +548,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+
         if (viewModel.getState() == FINDING) {
             mFab.setImageResource(R.drawable.avd_finding);
             ((Animatable) mFab.getDrawable()).start();
@@ -557,7 +558,8 @@ public class MainActivity extends AppCompatActivity
         } else if (savedInstanceState.containsKey(STATE_LOCATION)) {
             // Bundle contains location but previous condition (viewModel.getState() == SELECTING)
             // was not true, so this is a restore from a PROCESS KILL
-            viewModel.findNearStores(new Coordinates(savedInstanceState.getParcelable(STATE_LOCATION)));
+            mBottomAppBar.setFabAlignmentMode(FAB_ALIGNMENT_MODE_CENTER);
+            showSnackbar(R.string.snackbar_message_start_over, LENGTH_INDEFINITE, android.R.string.ok);
         }
 
         // menu items should be restored in onCreateOptionsMenu()

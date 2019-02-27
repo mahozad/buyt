@@ -12,6 +12,7 @@
     <string name="snackbar_action_undo">لغو</string>
     <string name="snackbar_message_cart_empty">کالایی برای خریدن موجود نیست</string>
     <string name="snackbar_message_no_item_selected">کالایی انتخاب نشده است</string>
+    <string name="snackbar_message_start_over">متأسفانه بایت به اجبار متوقف شد. در صورت امکان مجددا فرایند خرید را انجام دهید.</string>
     <string name="input_def_quantity">۱</string>
     <string name="input_hint_quantity">مقدار</string>
     <string name="input_hint_description">توضیحات (اختیاری)</string>
