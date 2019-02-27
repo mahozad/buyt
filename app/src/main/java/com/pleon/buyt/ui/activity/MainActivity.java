@@ -81,6 +81,10 @@ public class MainActivity extends AppCompatActivity
     // TODO: application with upgrade to paid option vs two separate free and paid flavors
     // TODO: Limit the max buys in a day in free version to 5
 
+    // TODO: Suggestion: instead of embedding map in the application, the app can use an implicit
+    // intent to show map provided by other apps (e.g. google map)
+    // see [https://developer.android.com/training/basics/intents/sending]
+
     // TODO: Call setDragged() method on card when dragging it.
     // See [https://github.com/material-components/material-components-android/commit/7087f8e5d751be380b6cdd3fa261b639fa57a8df]
 
