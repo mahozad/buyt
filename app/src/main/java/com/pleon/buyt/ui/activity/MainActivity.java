@@ -70,6 +70,10 @@ public class MainActivity extends AppCompatActivity
 
     public static final int CREATE_STORE_REQUEST_CODE = 1;
 
+    // To force kill the app, go to the desired activity, press home button and then run this command:
+    // adb shell am kill com.pleon.buyt
+    // return to the app from recent apps screen (not by pressing its launcher icon)
+
     // the app can be described as both a t0do app and an expense manager and also a shopping list app
 
     // TODO: Make separate free and paid version flavors for the app
@@ -492,6 +496,11 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * If you override the onBackPressed() method, we still highly recommend that you invoke
+     * super.onBackPressed() from your overridden method. Otherwise the Back button behavior
+     * may be jarring to the user.
+     */
     @Override
     public void onBackPressed() {
         if (viewModel.getState() == FINDING || viewModel.getState() == SELECTING) {
