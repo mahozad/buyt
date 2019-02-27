@@ -81,8 +81,8 @@ public class MainActivity extends AppCompatActivity
     // TODO: application with upgrade to paid option vs two separate free and paid flavors
     // TODO: Limit the max buys in a day in free version to 5
 
-    // TODO: Increase item card elevation when it is picked up by user to be reordered. See
-    // the image file in project\design directory for the elevation value to use.
+    // TODO: Call setDragged() method on card when dragging it.
+    // See [https://github.com/material-components/material-components-android/commit/7087f8e5d751be380b6cdd3fa261b639fa57a8df]
 
     // FIXME: The bug that adding new items won't show in main screen is because of configuration change;
     // after config change the observer in fragment is no longer triggered no matter you again change the config or...
