@@ -478,7 +478,6 @@ public class MainActivity extends AppCompatActivity
                         itemListFragment.toggleEditMode();
                     }
                 } else { // if state == FINDING
-                    stopService(new Intent(this, GpsService.class));
                     skipFinding();
                 }
                 break;
