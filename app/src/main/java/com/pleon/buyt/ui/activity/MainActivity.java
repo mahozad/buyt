@@ -49,7 +49,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat;
-import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -448,17 +448,17 @@ public class MainActivity extends AppCompatActivity
         if (newbie) {
             // Make plus icon glow a little bit if the user is a newbie!
             // see this answer [https://stackoverflow.com/a/49431260/8583692] for why we are doing this!
-            Animatable2Compat avd = (Animatable2Compat) menu.getItem(1).getIcon();
-            avd.registerAnimationCallback(new AnimationCallback() {
-                private final Handler fHandler = new Handler(Looper.getMainLooper());
+            AnimatedVectorDrawableCompat.registerAnimationCallback(menu.getItem(1).getIcon(),
+                    new Animatable2Compat.AnimationCallback() {
+                        private final Handler fHandler = new Handler(Looper.getMainLooper());
 
-                @Override
-                public void onAnimationEnd(@NonNull Drawable drawable) {
-                    Animatable2Compat avd = (Animatable2Compat) drawable;
-                    fHandler.post(avd::start);
-                }
-            });
-            avd.start();
+                        @Override
+                        public void onAnimationEnd(@NonNull Drawable drawable) {
+                            Animatable avd = (Animatable) drawable;
+                            fHandler.post(avd::start);
+                        }
+                    });
+            ((Animatable) menu.getItem(1).getIcon()).start();
         }
         return true;
     }
