@@ -675,7 +675,7 @@ public class MainActivity extends AppCompatActivity
 
     private void showSnackbar(int message, int length, Integer action) {
         Snackbar snackbar = Snackbar.make(snackbarContainer, message, length);
-        if (action != 0) {
+        if (action != null) {
             snackbar.setAction(action, v -> {/* to dismiss snackbar on click */});
         }
         snackbar.show();
