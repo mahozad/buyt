@@ -145,6 +145,8 @@ public class MainActivity extends AppCompatActivity
     // TODO: Difference between <ImageView>s to <AppcompatImageView>s ?
     // TODO: disable the reorder items icon in bottomAppBar when number of items is less than 2 (by 'enabled' property of the menu item)
     // TODO: Embed ads in between of regular items
+    // TODO: Add an option in settings for the user to be able to add a pinned shortcut to e.g. add item screen
+    // see [https://developer.android.com/guide/topics/ui/shortcuts/creating-shortcuts]
     // TODO: Add snap to center for recyclerView items
     // TODO: Convert the main screen layout to ConstraintLayout and animate it (it seems possible with the help of guidelines)
     // TODO: Collapse the chart a little in main screen when scrolling down (with coordinatorLayout)
