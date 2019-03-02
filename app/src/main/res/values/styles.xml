@@ -7,6 +7,8 @@
         <item name="colorSecondary">@color/colorPrimary</item>
         <item name="colorSurface">#283028</item>
 
+        <item name="bottomAppBarStyle">@style/bottomAppBarStyle</item>
+
         <!-- To use normal parent themes above (without .NoActionBar) -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -24,6 +26,11 @@
         <item name="android:paddingStart">10dp</item>
         <item name="android:paddingEnd">10dp</item>
         <item name="android:gravity">center</item>
+    </style>
+
+    <style name="bottomAppBarStyle" parent="Widget.MaterialComponents.BottomAppBar" >
+        <item name="backgroundTint">#222822</item>
+        <!--<item name="backgroundTint">#232923</item>-->
     </style>
 
 </resources>

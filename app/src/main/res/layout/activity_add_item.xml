@@ -37,11 +37,9 @@
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottom_bar"
-            style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:backgroundTint="#212121"
             app:fabAlignmentMode="end"
             app:fabCradleMargin="6dp"
             app:navigationIcon="@drawable/avd_cancel_nav" />
