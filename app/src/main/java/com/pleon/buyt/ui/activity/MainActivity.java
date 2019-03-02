@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity
     // TODO: Redesign the logo in 24 by 24 grid in inkscape to make it crisp (like standard icons)
     // TODO: You can view a location in google map by starting an implicit activity with
     // the ACTION_VIEW intent and URI schema of geo:...
+    // TODO: Add widgets for the app see[https://developer.android.com/guide/topics/appwidgets/overview]
     // TODO: disable swipe-to-delete when the state is not in IDLE
     // TODO: Show the found store (icon or name) in bottomAppBar when location found (selecting mode)
     // TODO: Make icons animation durations consistent
