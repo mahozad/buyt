@@ -109,4 +109,15 @@
     <string name="pref_theme_light">Light</string>
     <string name="pref_theme_dark">Dark</string>
 
+    <string-array name="pref_near_dist_values">
+        <item>50</item>
+        <item>100</item>
+        <item>200</item>
+    </string-array>
+    <string-array name="pref_near_dist_names">
+        <item>50 meters</item>
+        <item>100 meters</item>
+        <item>200 meters</item>
+    </string-array>
+
 </resources>

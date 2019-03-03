@@ -1,6 +1,7 @@
 package com.pleon.buyt.viewmodel;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -18,6 +19,7 @@ import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.preference.PreferenceManager;
 
 import static com.pleon.buyt.viewmodel.MainViewModel.State.IDLE;
 import static java.lang.Math.cos;
@@ -38,13 +40,13 @@ import static java.lang.Math.cos;
  */
 public class MainViewModel extends AndroidViewModel {
 
-    // equals 100m (6371km is the radius of the Earth)
-    private static final double NEAR_STORES_DISTANCE = cos(0.1 / 6371);
+    private static final double EARTH_RADIUS = 6371000; // In meters
 
     public enum State {
         IDLE, FINDING, SELECTING
     }
 
+    private SharedPreferences preferences;
     private MainRepository mMainRepository;
     private volatile State state = IDLE;
     private Location location;
@@ -59,6 +61,7 @@ public class MainViewModel extends AndroidViewModel {
 
     public MainViewModel(Application application) {
         super(application);
+        preferences = PreferenceManager.getDefaultSharedPreferences(application);
         mMainRepository = new MainRepository(application);
         mAllItems = mMainRepository.getAllItems();
     }
@@ -67,8 +70,11 @@ public class MainViewModel extends AndroidViewModel {
         return mAllItems;
     }
 
+    @SuppressWarnings("ConstantConditions")
     public LiveData<List<Store>> findNearStores(Coordinates origin) {
-        return mMainRepository.findNearStores(origin, NEAR_STORES_DISTANCE);
+        int distInMeters = Integer.parseInt(preferences.getString("distance", "50"));
+        double nearStoresDistance = cos(distInMeters / EARTH_RADIUS);
+        return mMainRepository.findNearStores(origin, nearStoresDistance);
     }
 
     public LiveData<List<Store>> getAllStores() {

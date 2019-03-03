@@ -64,8 +64,8 @@
                           <map>
                             <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_vibration" />
-                            <entry key="sourceFile" value="C:\Users\Mahdi\Downloads\round-vibration-24px.svg" />
+                            <entry key="outputName" value="ic_distance" />
+                            <entry key="sourceFile" value="C:\Users\Mahdi\Downloads\round-straighten-24px.svg" />
                           </map>
                         </option>
                       </PersistentState>

@@ -2,14 +2,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <SwitchPreference
-        android:defaultValue="true"
-        android:icon="@drawable/ic_vibration"
-        android:key="vibrate"
-        android:title="Vibrate when location found" />
-
-    <PreferenceCategory />
-
     <ListPreference
         android:defaultValue="@string/pref_theme_dark"
         android:dialogTitle="Select theme"
@@ -18,5 +10,23 @@
         android:icon="@drawable/ic_theme"
         android:key="theme"
         android:title="Theme"
+        app:useSimpleSummaryProvider="true" />
+
+    <PreferenceCategory />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:icon="@drawable/ic_vibration"
+        android:key="vibrate"
+        android:title="Vibrate when location found" />
+
+    <ListPreference
+        android:defaultValue="50"
+        android:dialogTitle="Select distance"
+        android:entries="@array/pref_near_dist_names"
+        android:entryValues="@array/pref_near_dist_values"
+        android:icon="@drawable/ic_distance"
+        android:key="distance"
+        android:title="Distance"
         app:useSimpleSummaryProvider="true" />
 </PreferenceScreen>
