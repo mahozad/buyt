@@ -14,6 +14,20 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <!-- Light app theme -->
+    <style name="LightTheme" parent="Theme.MaterialComponents.Light">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorSecondary">@color/colorPrimary</item>
+        <item name="colorSurface">#97B397</item>
+
+        <item name="bottomAppBarStyle">@style/lightBottomAppBarStyle</item>
+
+        <!-- To use normal parent themes above (without .NoActionBar) -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <!-- Style for unit (kg, g, ...) toggle buttons -->
     <style name="UnitToggleButton" parent="@android:style/Widget.CompoundButton.RadioButton">
         <item name="android:foreground">?android:attr/selectableItemBackground</item>
@@ -28,8 +42,13 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="bottomAppBarStyle" parent="Widget.MaterialComponents.BottomAppBar" >
+    <style name="bottomAppBarStyle" parent="Widget.MaterialComponents.BottomAppBar">
         <item name="backgroundTint">#222822</item>
+        <!--<item name="backgroundTint">#232923</item>-->
+    </style>
+
+    <style name="lightBottomAppBarStyle" parent="Widget.MaterialComponents.BottomAppBar">
+        <item name="backgroundTint">#ACC7AC</item>
         <!--<item name="backgroundTint">#232923</item>-->
     </style>
 

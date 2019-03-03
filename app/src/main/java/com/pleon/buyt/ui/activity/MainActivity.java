@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
@@ -48,6 +49,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.preference.PreferenceManager;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat;
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 import butterknife.BindView;
@@ -70,6 +72,8 @@ public class MainActivity extends AppCompatActivity
         implements SelectDialogFragment.Callback, ConfirmExitDialog.Callback, Callback {
 
     public static final int CREATE_STORE_REQUEST_CODE = 1;
+    public static final String KEY_PREF_THEME = "theme";
+    public static final String DEFAULT_THEME = "Dark";
 
     // To force kill the app, go to the desired activity, press home button and then run this command:
     // adb shell am kill com.pleon.buyt
@@ -103,6 +107,8 @@ public class MainActivity extends AppCompatActivity
     // FIXME: Use srcCompat instead of src in layout files
     // FIXME: If number of Items to buy is less than e.g. 4 then don't show the "items to buy" prompt
     // DONE: the bottom shadow (elevation) of item cards is broken. Maybe because of swipe-to-delete background layer
+
+    // For testing app components see [https://developer.android.com/jetpack/docs/guide#test-components]
 
     // FIXME: when dragging items, in some situations** item moves from behind of other cards
     // **: this happens if the card being dragged over by this card, has itself dragged over this card in the past.
@@ -239,6 +245,7 @@ public class MainActivity extends AppCompatActivity
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this); // unbind() is not required for activities
@@ -316,6 +323,12 @@ public class MainActivity extends AppCompatActivity
 //                show7DayCosts();
 //            }
 //        });
+    }
+
+    private void setTheme() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String theme = preferences.getString(KEY_PREF_THEME, DEFAULT_THEME);
+        setTheme(DEFAULT_THEME.equals(theme) ? R.style.AppTheme : R.style.LightTheme);
     }
 
 //    private void show7DayCosts() {
@@ -661,6 +674,7 @@ public class MainActivity extends AppCompatActivity
         if (foundStores.size() == 0) {
             if (viewModel.isFindingStateSkipped()) {
                 showSnackbar(R.string.snackbar_message_no_store_found, LENGTH_LONG, null);
+                viewModel.setFindingStateSkipped(false); // Reset the flag
             } else {
                 mBottomAppBar.getMenu().findItem(R.id.action_add_store).setVisible(false); // no need because create store screen will be shown
                 viewModel.setStoreIcon(R.drawable.ic_store_new); // to use on config change

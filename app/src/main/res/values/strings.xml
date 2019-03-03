@@ -102,4 +102,11 @@
     <string name="dialog_title_select_cat">Select category</string>
     <string name="currency_format">¤##,###</string>
 
+    <string-array name="pref_themes">
+        <item>@string/pref_theme_dark</item>
+        <item>@string/pref_theme_light</item>
+    </string-array>
+    <string name="pref_theme_light">Light</string>
+    <string name="pref_theme_dark">Dark</string>
+
 </resources>

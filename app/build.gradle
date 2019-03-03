@@ -99,7 +99,7 @@ dependencies {
     implementation 'com.mohamadamin:persianmaterialdatetimepicker:1.2.1'
     implementation 'com.jakewharton:butterknife:10.1.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
-
+    implementation 'androidx.preference:preference:1.1.0-alpha03'
 
     // another persian date picker
 //    implementation 'com.alirezaafkar:sundatepicker:2.1.1'

@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- foreground services require this for API level 28 or higher -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> <!-- The app can function without location features so we specify it as not required -->
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <uses-feature
         android:name="android.hardware.location"
@@ -18,7 +18,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.StatesActivity"></activity>
+        <activity
+            android:name=".ui.activity.SettingsActivity"
+            android:parentActivityName=".ui.activity.MainActivity" />
+        <activity
+            android:name=".ui.activity.StatesActivity"
+            android:parentActivityName=".ui.activity.MainActivity" />
         <!-- android:windowSoftInputMode attribute is to prevent the bottom app bar to jump when keyboard appears -->
         <activity
             android:name=".ui.activity.MainActivity"

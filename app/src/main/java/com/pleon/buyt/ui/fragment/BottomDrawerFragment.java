@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.pleon.buyt.R;
+import com.pleon.buyt.ui.activity.SettingsActivity;
 import com.pleon.buyt.ui.activity.StatesActivity;
 
 import androidx.annotation.NonNull;
@@ -45,6 +46,8 @@ public class BottomDrawerFragment extends BottomSheetDialogFragment
                 break;
 
             case R.id.settings:
+                Intent intentt = new Intent(getContext(), SettingsActivity.class);
+                startActivity(intentt);
                 break;
         }
         return true;

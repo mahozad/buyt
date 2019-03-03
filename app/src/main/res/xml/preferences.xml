@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreference />
+
+    <PreferenceCategory />
+
+    <ListPreference
+        android:defaultValue="@string/pref_theme_dark"
+        android:dialogTitle="Select theme"
+        android:entries="@array/pref_themes"
+        android:entryValues="@array/pref_themes"
+        android:icon="@drawable/ic_theme"
+        android:key="theme"
+        android:title="Theme"
+        app:useSimpleSummaryProvider="true" />
+</PreferenceScreen>

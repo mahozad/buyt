@@ -1,5 +1,6 @@
 package com.pleon.buyt.ui.activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +18,10 @@ import java.util.Date;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.preference.PreferenceManager;
+
+import static com.pleon.buyt.ui.activity.MainActivity.DEFAULT_THEME;
+import static com.pleon.buyt.ui.activity.MainActivity.KEY_PREF_THEME;
 
 public class AddItemActivity extends AppCompatActivity implements AddItemFragment.Callback {
 
@@ -25,6 +30,7 @@ public class AddItemActivity extends AppCompatActivity implements AddItemFragmen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
 
@@ -38,6 +44,12 @@ public class AddItemActivity extends AppCompatActivity implements AddItemFragmen
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(v -> addItemFragment.onDonePressed()); // notify fragment fab was clicked
+    }
+
+    private void setTheme() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String theme = preferences.getString(KEY_PREF_THEME, DEFAULT_THEME);
+        setTheme(DEFAULT_THEME.equals(theme) ? R.style.AppTheme : R.style.LightTheme);
     }
 
     @Override
