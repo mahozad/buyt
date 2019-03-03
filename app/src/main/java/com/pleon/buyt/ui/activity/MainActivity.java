@@ -77,13 +77,13 @@ public class MainActivity extends AppCompatActivity
 
     // To force kill the app, go to the desired activity, press home button and then run this command:
     // adb shell am kill com.pleon.buyt
-    // return to the app from recent apps screen (not by pressing its launcher icon)
+    // return to the app from recent apps screen (or maybe by pressing its launcher icon)
 
-    // the app can be described as both a t0do app and an expense manager and also a shopping list app
+    // the app can be described as both a shopping list app and an expense manager app
 
     // TODO: Make separate free and paid version flavors for the app
     // TODO: application with upgrade to paid option vs two separate free and paid flavors
-    // TODO: Limit the max buys in a day in free version to 5
+    // TODO: Limit the max buys in a day in free version to 3
 
     // TODO: Suggestion: instead of embedding map in the application, the app can use an implicit
     // intent to show map provided by other apps (e.g. google map)
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity
     // TODO: Call setDragged() method on card when dragging it.
     // See [https://github.com/material-components/material-components-android/commit/7087f8e5d751be380b6cdd3fa261b639fa57a8df]
 
-    // FIXME: The bug that adding new items won't show in main screen is because of configuration change;
+    // DONE: The bug that adding new items won't show in main screen is because of configuration change;
     // after config change the observer in fragment is no longer triggered no matter you again change the config or...
 
     // FIXME: The bug that sometimes occur when expanding an item (the bottom item jumps up one moment),
@@ -107,9 +107,7 @@ public class MainActivity extends AppCompatActivity
     // FIXME: Use srcCompat instead of src in layout files
     // FIXME: If number of Items to buy is less than e.g. 4 then don't show the "items to buy" prompt
     // DONE: the bottom shadow (elevation) of item cards is broken. Maybe because of swipe-to-delete background layer
-
-    // For testing app components see [https://developer.android.com/jetpack/docs/guide#test-components]
-
+    // TODO: For testing app components see [https://developer.android.com/jetpack/docs/guide#test-components]
     // FIXME: when dragging items, in some situations** item moves from behind of other cards
     // **: this happens if the card being dragged over by this card, has itself dragged over this card in the past.
     // steps to reproduce: drag card1 over card2 and then drop it (you can also drop it to its previous position).
@@ -121,25 +119,20 @@ public class MainActivity extends AppCompatActivity
     // DONE: What if someone forgets to tick items of a shop and then later wants to tick them: He can skip finding location
 
     // FIXME: Shift to idle state if the app is in finding state and all items are deleted meanwhile
+    // OR disable swipe-to-delete when the state is not in IDLE
     // FIXME: Slide-up bottom bar if it was hidden (because of scroll) and some items were deleted and
     // now cannot scroll to make it slide up again
     // TODO: Use a ViewStub in AddItemFragment layout for the part that is not shown until bought is checked
     // TODO: Redesign the logo in 24 by 24 grid in inkscape to make it crisp (like standard icons)
-    // TODO: You can view a location in google map by starting an implicit activity with
-    // the ACTION_VIEW intent and URI schema of geo:...
     // TODO: Add widgets for the app see[https://developer.android.com/guide/topics/appwidgets/overview]
-    // TODO: disable swipe-to-delete when the state is not in IDLE
-    // TODO: Show the found store (icon or name) in bottomAppBar when location found (selecting mode)
+    // DONE: Show the found store (icon or name) in bottomAppBar when location found (selecting mode)
     // TODO: Make icons animation durations consistent
-    // TODO: round and filled icons of material design are here: https://material.io/tools/icons/?icon=done&style=round
-    // TODO: Convert the logo to path (with path -> stroke to path option) and then recreate the logo
+    // TODO: Convert the logo to path (with "path -> stroke to path" option) and then recreate the logo
     // FIXME: Update position field of items if an item is deleted
     // DONE: Add ability to cancel completely when in input price mode
     // TODO: Add option in settings to enable/disable showing urgent items at top of the list
-    // TODO: Add a button (custom view) at the end of SelectionListAdapter to create a new Store
-    // TODO: Add option in settings to disable/enable store confirmation (only one near store found)
-    // TODO: Add option in settings to disable/enable price confirmation dialog
-    // TODO: Add a separator (e.g. comma) in every 3 digits of price and other numeric fields
+    // DONE: Add a button (custom view) at the end of SelectionListAdapter to create a new Store
+    // DONE: Add a separator (e.g. comma) in every 3 digits of price and other numeric fields
     // TODO: Add option in settings to set the default item quantity in add new item activity (1 seems good)
     // TODO: Reimplement item unit switch button with this approach: https://stackoverflow.com/a/48640424/8583692
     // TODO: Add a functionality to merge another device data to a device (e.g. can merge all family spending data to father's phone)
@@ -149,17 +142,15 @@ public class MainActivity extends AppCompatActivity
     // DONE: Add an reorder icon to bottomAppBar so when taped, the cards show a handle to order them
     // DONE: Disable buyt fab button when there is no item
     // TODO: For correct margins of cards, Texts, ... see the page of that component in design section of material.io
-    // TODO: Difference between <ImageView>s to <AppcompatImageView>s ?
     // TODO: disable the reorder items icon in bottomAppBar when number of items is less than 2 (by 'enabled' property of the menu item)
     // TODO: Embed ads in between of regular items
     // TODO: Add an option in settings for the user to be able to add a pinned shortcut to e.g. add item screen
     // see [https://developer.android.com/guide/topics/ui/shortcuts/creating-shortcuts]
     // TODO: Add snap to center for recyclerView items
-    // TODO: Convert the main screen layout to ConstraintLayout and animate it (it seems possible with the help of guidelines)
+    // DONE: Convert the main screen layout to ConstraintLayout and animate it (it seems possible with the help of guidelines)
     // TODO: Collapse the chart a little in main screen when scrolling down (with coordinatorLayout)
     // TODO: extract margins and dimensions into xml files
-    // TODO: Add ability to select a date to see its costs
-    // TODO: Dark material colors: https://stackoverflow.com/q/36915508
+    // DONE: Add feature to select a date to see its costs
     // TODO: for the item list to only one item be expanded see https://stackoverflow.com/q/27203817/8583692
     // TODO: I can request the necessary permissions in the end of the app tutorial
     // FIXME: Correct all names and ids according to best practices
@@ -170,23 +161,20 @@ public class MainActivity extends AppCompatActivity
     // TODO: Add the functionality to export and import all app data
     // TODO: Try to first provide an MVP (minimally viable product) version of the app
     // TODO: Make viewing stores on map a premium feature
-    // TODO: Enable the user to change the radius that app uses to find near stores in settings
+    // DONE: Enable the user to change the radius that app uses to find near stores in settings
     // TODO: Add ability to remove all app data
     // TODO: Add android.support.annotation to the app
-    // TODO: For item prices user can enter an inexact value (range)
     // TODO: For every new version of the app display a what's new page on first app open
     // DONE: Convert the app architecture to MVVM
-    // TODO: Use loaders to get data from database?
     // TODO: Convert all ...left and ...right attributes to ...start and ...end
     // DONE: Add ability (an icon) for each item to mark it as high priority
-    // TODO: Add animation to item expand icon
+    // DONE: Add animation to item expand icon
     // DONE: Ability to add details (description) for each item
     // TODO: Show a small progress bar of how much has been spent if user has set a limit on spends
-
     // TODO: use downloadable fonts instead of integrating the font in the app to reduce the app size
-    /* FIXME: What happens if two stores are near each other and only one of them is saved in the app.
+    /* DONE: What happens if two stores are near each other and only one of them is saved in the app.
        now if user has bought something from the other store, it is saved for the persisted store */
-
+    // TODO: new version of MaterialCardView will include a setCheckedIcon. check it out
     /* TODO: Show a prompt (or an emoji or whatever) when there is no items in the home screen
        to do this, add a new View to the layout and play with its setVisibility as appropriate
     */
@@ -196,15 +184,6 @@ public class MainActivity extends AppCompatActivity
      * your generic @Insert,... there. Have each DAO extend the BaseDao and add methods specific to each of them.
      */
 
-    // TODO: new version of MaterialCardView will include a setCheckedIcon. check it out
-
-    // If want to replace a fragment as the whole activity pass android.R.id.content to fragment manager
-    // My solution: to have both the top and bottom app bars create the activity with top app bar
-    // and add a fragment that includes the bottom app bar in it in this activity
-    // If you want to use the standard libraries instead of the support, make these changes:
-    // • make your activities extend the "Activity" instead of "AppCompatActivity"
-    // • make your fragments subclass "android.app.fragment" instead of the support one
-    // • to get the fragment manager, call getFragmentManager() instead of getSupportFragment...
 
     public static final String STATE_LOCATION = "com.pleon.buyt.state.LOCATION";
     public static final String EXTRA_ITEM_ORDER = "com.pleon.buyt.extra.ITEM_ORDER";
