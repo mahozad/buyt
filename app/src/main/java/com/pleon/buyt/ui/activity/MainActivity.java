@@ -224,6 +224,7 @@ public class MainActivity extends AppCompatActivity
 //    @BindView(R.id.lineChartCaption) TextView lineChartCaption;
 //    @BindView(R.id.guideline) Guideline guideline;
 
+    private SharedPreferences preferences;
     private LocationManager locationMgr;
     private BroadcastReceiver locationReceiver;
     private MainViewModel viewModel;
@@ -245,6 +246,7 @@ public class MainActivity extends AppCompatActivity
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
         setTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -275,9 +277,10 @@ public class MainActivity extends AppCompatActivity
 
         locationReceiver = new BroadcastReceiver() { // on location found
             public void onReceive(Context context, Intent intent) {
-                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                v.vibrate(150); // FIXME: Deprecated method
-
+                if (preferences.getBoolean("vibrate", true)) {
+                    Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                    v.vibrate(150); // FIXME: Deprecated method
+                }
                 viewModel.setLocation(intent.getParcelableExtra(GpsService.EXTRA_LOCATION));
                 Coordinates here = new Coordinates(viewModel.getLocation());
                 viewModel.findNearStores(here).observe(MainActivity.this, stores -> onStoresFound(stores));
@@ -326,7 +329,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setTheme() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String theme = preferences.getString(KEY_PREF_THEME, DEFAULT_THEME);
         setTheme(DEFAULT_THEME.equals(theme) ? R.style.AppTheme : R.style.LightTheme);
     }
