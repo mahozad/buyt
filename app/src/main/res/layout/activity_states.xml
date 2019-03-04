@@ -41,7 +41,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             app:fabAlignmentMode="center"
-            app:fabAnimationMode="slide"
             app:fabCradleMargin="6dp"
             app:navigationIcon="@drawable/avd_cancel_nav" />
 
