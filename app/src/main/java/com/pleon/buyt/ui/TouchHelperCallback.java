@@ -8,6 +8,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 
+import com.google.android.material.card.MaterialCardView;
 import com.pleon.buyt.R;
 import com.pleon.buyt.ui.adapter.ItemListAdapter;
 
@@ -82,7 +83,8 @@ public class TouchHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public void clearView(RecyclerView recyclerView, ViewHolder viewHolder) {
-        View view = ((ItemListAdapter.ItemHolder) viewHolder).cardFg;
+        MaterialCardView view = ((ItemListAdapter.ItemHolder) viewHolder).cardFg;
+        view.setDragged(false); // enabled in onDragHandleTouch() method of the view holder
         getDefaultUIUtil().clearView(view);
     }
 
