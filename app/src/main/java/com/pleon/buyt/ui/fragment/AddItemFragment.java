@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.DrawableContainer.DrawableContainerState;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -237,7 +238,10 @@ public class AddItemFragment extends Fragment implements DatePickerDialog.OnDate
             PersianCalendar persianCal = new PersianCalendar();
             DatePickerDialog datePicker = DatePickerDialog
                     .newInstance(this, persianCal.getPersianYear(), persianCal.getPersianMonth(), persianCal.getPersianDay());
-            datePicker.setThemeDark(true); // if you want to change colors see colors.xml
+            String theme = PreferenceManager.getDefaultSharedPreferences(getContext()).getString("theme", "Dark");
+            if (theme.equals("Dark")) {
+                datePicker.setThemeDark(true); // if you want to change colors see colors.xml
+            }
             datePicker.setRetainInstance(true);
 
             PersianCalendar[] selectableDays = new PersianCalendar[10];

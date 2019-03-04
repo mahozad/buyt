@@ -54,4 +54,9 @@
         <!--<item name="backgroundTint">#232923</item>-->
     </style>
 
+    <!-- Set persian date picker button color -->
+    <style name="mdtp_ActionButton">
+        <item name="android:backgroundTint">@color/date_picker_btn</item>
+    </style>
+
 </resources>
