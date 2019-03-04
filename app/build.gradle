@@ -86,7 +86,7 @@ dependencies {
     /* The AndroidX version of 'com.android.support:design'
                              * Another support library that adds support for material components such as NavigationDrawer,
                              * SnackBar, FAB and Tab for older android versions. */
-    implementation 'com.google.android.material:material:1.1.0-alpha03'
+    implementation 'com.google.android.material:material:1.1.0-alpha04'
     /* library to show tap targets */
     implementation 'com.getkeepsafe.taptargetview:taptargetview:1.12.0'
     /* // another tap target library
