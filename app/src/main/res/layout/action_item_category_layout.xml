@@ -14,4 +14,5 @@
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
     android:text="@string/item_cat_grocery"
+    android:textColor="?attr/colorOnSurface"
     app:drawableStartCompat="@drawable/ic_item_grocery" />

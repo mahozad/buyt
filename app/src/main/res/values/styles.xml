@@ -19,7 +19,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorSecondary">@color/colorPrimary</item>
-        <item name="colorSurface">#97B397</item>
+        <item name="colorSurface">#eaFFea</item>
 
         <item name="bottomAppBarStyle">@style/lightBottomAppBarStyle</item>
 
@@ -48,7 +48,7 @@
     </style>
 
     <style name="lightBottomAppBarStyle" parent="Widget.MaterialComponents.BottomAppBar">
-        <item name="backgroundTint">#ACC7AC</item>
+        <item name="backgroundTint">#CaE7Ca</item>
         <!--<item name="backgroundTint">#232923</item>-->
     </style>
 
