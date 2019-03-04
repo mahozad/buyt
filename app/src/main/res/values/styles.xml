@@ -1,12 +1,13 @@
 <resources>
 
-    <!-- Base application theme -->
+    <!-- Dark and base application theme -->
     <style name="AppTheme" parent="Theme.MaterialComponents">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorSecondary">@color/colorPrimary</item>
         <item name="colorSurface">#283028</item>
 
+        <item name="cardBgColor">#4A5E4A</item>
         <item name="bottomAppBarStyle">@style/bottomAppBarStyle</item>
 
         <!-- To use normal parent themes above (without .NoActionBar) -->
@@ -21,6 +22,7 @@
         <item name="colorSecondary">@color/colorPrimary</item>
         <item name="colorSurface">#eaFFea</item>
 
+        <item name="cardBgColor">#A9B8A9</item>
         <item name="bottomAppBarStyle">@style/lightBottomAppBarStyle</item>
 
         <!-- To use normal parent themes above (without .NoActionBar) -->

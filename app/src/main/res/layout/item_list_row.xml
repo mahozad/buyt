@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:backgroundTint="#525252"
+        android:backgroundTint="?cardBgColor"
         app:cardCornerRadius="5dp"
         app:cardElevation="0dp"
         app:cardUseCompatPadding="true">
