@@ -2,7 +2,6 @@ package com.pleon.buyt.ui.activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
@@ -50,15 +49,6 @@ public class AddItemActivity extends AppCompatActivity implements AddItemFragmen
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String theme = preferences.getString(KEY_PREF_THEME, DEFAULT_THEME);
         setTheme(DEFAULT_THEME.equals(theme) ? R.style.AppTheme : R.style.LightTheme);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        /* FIXME: This statement was added to fix the menu item showing behind the fab.
-         * Remove it if you update the material library and see if it's fixed */
-        ((BottomAppBar) findViewById(R.id.bottom_bar)).setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
-
-        return true;
     }
 
     @Override

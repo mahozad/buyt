@@ -2,10 +2,8 @@ package com.pleon.buyt.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pleon.buyt.R;
 import com.pleon.buyt.model.Store;
@@ -36,15 +34,6 @@ public class CreateStoreActivity extends AppCompatActivity implements CreateStor
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(v -> createStoreFragment.onDonePressed());
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        /* FIXME: This statement was added to fix the menu item showing behind the fab.
-         * Remove it if you update the material library and see if it's fixed */
-        ((BottomAppBar) findViewById(R.id.bottom_bar)).setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
-
-        return true;
     }
 
     @Override
