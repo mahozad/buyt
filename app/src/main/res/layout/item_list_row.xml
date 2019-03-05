@@ -77,8 +77,9 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:padding="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/item_quantity"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/item_name"
                 app:srcCompat="@drawable/ic_item_grocery" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -88,11 +89,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="8dp"
-                android:maxLength="20"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toStartOf="@id/urgentIcon"
                 app:layout_constraintStart_toEndOf="@id/categoryIcon"
-                app:layout_constraintTop_toTopOf="@id/categoryIcon"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="Item name" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -100,10 +100,11 @@
                 style="@style/TextAppearance.MaterialComponents.Subtitle1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="@id/categoryIcon"
                 app:layout_constraintEnd_toEndOf="@id/item_name"
                 app:layout_constraintStart_toStartOf="@id/item_name"
+                app:layout_constraintTop_toBottomOf="@+id/item_name"
                 tools:text="Item volume" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -153,9 +154,9 @@
                 android:id="@+id/price_container"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="2dp"
+                android:layout_marginEnd="8dp"
                 android:paddingBottom="2dp"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"

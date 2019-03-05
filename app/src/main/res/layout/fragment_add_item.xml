@@ -20,7 +20,7 @@
             android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
             android:hint="@string/input_hint_name"
-            app:counterMaxLength="12"
+            app:counterMaxLength="20"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +34,7 @@
                 android:drawablePadding="8dp"
                 android:imeOptions="flagNoFullscreen"
                 android:inputType="text"
-                android:maxLength="12"
+                android:maxLength="20"
                 app:drawableStartCompat="@drawable/ic_text"
                 tools:text="Item name">
 
@@ -80,10 +80,10 @@
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/materialCardView"
                 android:layout_width="wrap_content"
-                android:layout_height="43.5dp"
+                android:layout_height="44dp"
                 android:layout_gravity="center|end"
                 android:layout_marginEnd="3.8dp"
-                android:layout_marginBottom="6.8dp"
+                android:layout_marginBottom="5dp"
                 android:elevation="0dp"
                 app:cardCornerRadius="2dp">
 
@@ -128,7 +128,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="@string/input_hint_description"
-            app:counterMaxLength="20"
+            app:counterMaxLength="30"
             app:layout_constraintEnd_toEndOf="@id/quantity_container"
             app:layout_constraintStart_toStartOf="@id/quantity_container"
             app:layout_constraintTop_toBottomOf="@id/quantity_container">
@@ -139,7 +139,8 @@
                 android:layout_height="wrap_content"
                 android:drawablePadding="8dp"
                 android:imeOptions="flagNoFullscreen"
-                android:maxLength="20"
+                android:inputType="text"
+                android:maxLength="30"
                 app:drawableStartCompat="@drawable/ic_description"
                 tools:text="Item description (optional)" />
 
