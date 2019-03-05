@@ -1,5 +1,9 @@
 package com.pleon.buyt.ui.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +19,7 @@ import com.pleon.buyt.model.DailyCost;
 import com.pleon.buyt.viewmodel.StatisticsViewModel;
 
 import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import static android.content.Intent.ACTION_TIME_TICK;
 import static com.db.chart.renderer.AxisRenderer.LabelPosition.NONE;
 
 
@@ -43,6 +49,19 @@ public class StatesFragment extends Fragment {
     @BindView(R.id.textView7) TextView minPurchaseCostTxvi;
     @BindView(R.id.textView9) TextView weekdayWithMaxPurchaseTxvi;
     @BindView(R.id.textView17) TextView storeWithMaxPurchaseTxvi;
+
+    // Update the statistics when date changes (for example time changes from 23:59 to 00:00)
+    private Date today = new Date();
+    private IntentFilter timeTickIntent = new IntentFilter(ACTION_TIME_TICK);
+    private BroadcastReceiver timeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (new Date().getDate() != today.getDate()) {
+                showStatistics();
+                today = new Date();
+            }
+        }
+    };
 
     private StatisticsViewModel viewModel;
     private Unbinder unbinder;
@@ -61,6 +80,8 @@ public class StatesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_states, container, false);
         unbinder = ButterKnife.bind(this, view); // unbind() is required only for Fragments
+
+        getActivity().registerReceiver(timeReceiver, timeTickIntent);
 
         String caption = getString(R.string.chart_caption, viewModel.getPeriod().length);
         chartCaption.setText(caption);
@@ -128,6 +149,7 @@ public class StatesFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        getActivity().unregisterReceiver(timeReceiver);
         unbinder.unbind();
     }
 
