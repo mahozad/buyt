@@ -16,10 +16,7 @@ import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener;
 import com.pleon.buyt.ui.adapter.ItemListAdapter;
 import com.pleon.buyt.viewmodel.MainViewModel;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import androidx.annotation.NonNull;
@@ -34,6 +31,7 @@ import butterknife.Unbinder;
 
 import static com.google.android.material.snackbar.Snackbar.LENGTH_LONG;
 import static java.util.Collections.singletonList;
+import static java.util.Collections.sort;
 
 public class ItemListFragment extends Fragment implements ItemTouchHelperListener {
 
@@ -180,17 +178,14 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
         return adapter.getItemCount();
     }
 
-    public void sortStoreItemsFirst(Category category) {
-        List<Item> sortedItems = new ArrayList<>();
-        Iterator<Item> iterator = adapter.getItems().iterator();
-        while (iterator.hasNext()) {
-            Item item = iterator.next();
-            if (item.getCategory() == category) {
-                sortedItems.add(item);
-                iterator.remove();
-            }
-        }
-        sortedItems.addAll(adapter.getItems());
-        adapter.setItems(sortedItems);
+    public void sortItemsByCategory(Category category) {
+        sort(adapter.getItems(), (item1, item2) ->
+                item1.getCategory() == item2.getCategory() ? 0 :
+                        item1.getCategory() == category ? -1 : +1);
+        adapter.notifyDataSetChanged();
+    }
+
+    public void sortItemsByOrder() {
+        sort(adapter.getItems(), (item1, item2) -> item1.getPosition() - item2.getPosition());
     }
 }

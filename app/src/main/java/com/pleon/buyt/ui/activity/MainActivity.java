@@ -714,6 +714,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void shiftToIdleState() {
+        itemListFragment.sortItemsByOrder();
         if (viewModel.getState() == FINDING || viewModel.getState() == SELECTING) {
             itemListFragment.toggleItemsCheckbox(false);
 
@@ -782,7 +783,7 @@ public class MainActivity extends AppCompatActivity
             int icon = stores.get(0).getCategory().getStoreImageRes();
             viewModel.setStoreIcon(icon); // to use on config change
             mBottomAppBar.getMenu().getItem(0).setIcon(icon);
-            itemListFragment.sortStoreItemsFirst(stores.get(0).getCategory());
+            itemListFragment.sortItemsByCategory(stores.get(0).getCategory()); // TODO: move this to another method
         } else {
             viewModel.setStoreIcon(R.drawable.ic_store_multi); // to use on config change
             mBottomAppBar.getMenu().getItem(0).setIcon(viewModel.getStoreIcon());
