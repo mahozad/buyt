@@ -1,5 +1,7 @@
 package com.pleon.buyt.ui.fragment;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,11 +9,18 @@ import android.os.Bundle;
 import com.pleon.buyt.R;
 import com.pleon.buyt.ui.activity.MainActivity;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.TaskStackBuilder;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
-public class PreferenceFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class PreferenceFragment extends PreferenceFragmentCompat
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+    /**
+     * Use this field wherever a context is needed to prevent exceptions.
+     */
+    private Activity activity;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -21,13 +30,28 @@ public class PreferenceFragment extends PreferenceFragmentCompat implements Shar
         preferences.registerOnSharedPreferenceChangeListener(this);
     }
 
+    /**
+     * Use the {@link #activity} field initialized in {@link #onAttach(Context) onAttach()}
+     * as context to prevent exception when reset icon is pressed multiple times in a row.
+     *
+     * @param sharedPreferences
+     * @param key
+     */
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals("theme")) {
-            TaskStackBuilder.create(getContext())
-                    .addNextIntent(new Intent(getActivity(), MainActivity.class))
-                    .addNextIntent(getActivity().getIntent())
+            // Recreate the back stack so the new theme is applied to parent activities
+            // (their onCreate() method is called which in turn invokes setTheme() method)
+            TaskStackBuilder.create(activity)
+                    .addNextIntent(new Intent(activity, MainActivity.class))
+                    .addNextIntent(activity.getIntent())
                     .startActivities();
         }
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        this.activity = (Activity) context;
     }
 }

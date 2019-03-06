@@ -48,6 +48,9 @@ public class SettingsActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_reset:
                 ((Animatable) item.getIcon()).start();
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+                preferences.edit().clear().apply();
+                PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
                 break;
             case android.R.id.home:
                 finish();
