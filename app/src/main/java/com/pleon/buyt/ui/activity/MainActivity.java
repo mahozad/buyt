@@ -193,8 +193,8 @@ public class MainActivity extends AppCompatActivity
      */
     private static final int REQUEST_LOCATION_PERMISSION = 1;
 
-    @BindView(R.id.fab) FloatingActionButton mFab;
-    @BindView(R.id.bottom_bar) BottomAppBar mBottomAppBar;
+    @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.bottom_bar) BottomAppBar bottomAppBar;
     @BindView(R.id.snackBarContainer) View snackbarContainer;
 //    @BindView(R.id.chart_container) CardView chartContainer;
 //    @BindView(R.id.toggleChart) CheckBox chartToggle;
@@ -208,6 +208,10 @@ public class MainActivity extends AppCompatActivity
     private BroadcastReceiver locationReceiver;
     private MainViewModel viewModel;
     private ItemListFragment itemListFragment;
+    private MenuItem addMenuItem;
+    private MenuItem reorderMenuItem;
+    private MenuItem storeMenuItem;
+    private MenuItem addStoreMenuItem;
     private boolean newbie;
 
 //    UI controllers such as activities and fragments are primarily intended to display UI data,
@@ -277,11 +281,11 @@ public class MainActivity extends AppCompatActivity
         viewModel.getAllItems().observe(this, items -> {
             if (newbie && items.size() > 0) {
                 getPreferences(MODE_PRIVATE).edit().putBoolean("NEWBIE", false).apply();
-                mBottomAppBar.getMenu().getItem(1).setIcon(R.drawable.avd_add_hide);
+                addMenuItem.setIcon(R.drawable.avd_add_hide);
             }
         });
 
-        setSupportActionBar(mBottomAppBar);
+        setSupportActionBar(bottomAppBar);
 
         // FragmentManager of an activity is responsible for calling the lifecycle methods of the fragments in its list.
         FragmentManager fragMgr = getSupportFragmentManager();
@@ -437,19 +441,23 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_bottom_home, menu);
+        addMenuItem = menu.findItem(R.id.action_add);
+        reorderMenuItem = menu.findItem(R.id.action_reorder);
+        storeMenuItem = menu.findItem(R.id.found_stores);
+        addStoreMenuItem = menu.findItem(R.id.action_add_store);
         if (viewModel.getState() == FINDING) {
-            mBottomAppBar.setNavigationIcon(R.drawable.avd_cancel_nav);
-            menu.getItem(2).setIcon(R.drawable.avd_skip_reorder).setTitle(R.string.menu_hint_skip_finding);
+            bottomAppBar.setNavigationIcon(R.drawable.avd_cancel_nav);
+            reorderMenuItem.setIcon(R.drawable.avd_skip_reorder).setTitle(R.string.menu_hint_skip_finding);
         } else if (viewModel.getState() == SELECTING) {
-            mBottomAppBar.setNavigationIcon(R.drawable.avd_cancel_nav);
-            menu.getItem(0).setIcon(viewModel.getStoreIcon()).setTitle(viewModel.getStoreTitle()).setVisible(true);
-            menu.getItem(2).setVisible(false);
-            mBottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END); // this is because menu items go behind fab
+            bottomAppBar.setNavigationIcon(R.drawable.avd_cancel_nav);
+            storeMenuItem.setIcon(viewModel.getStoreIcon()).setTitle(viewModel.getStoreTitle()).setVisible(true);
+            reorderMenuItem.setVisible(false);
+            bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END); // this is because menu items go behind fab
         }
         if (newbie) {
             // Make plus icon glow a little bit if the user is a newbie!
             // see this answer [https://stackoverflow.com/a/49431260/8583692] for why we are doing this!
-            AnimatedVectorDrawableCompat.registerAnimationCallback(menu.getItem(1).getIcon(),
+            AnimatedVectorDrawableCompat.registerAnimationCallback(addMenuItem.getIcon(),
                     new Animatable2Compat.AnimationCallback() {
                         private final Handler fHandler = new Handler(Looper.getMainLooper());
 
@@ -459,7 +467,7 @@ public class MainActivity extends AppCompatActivity
                             fHandler.post(avd::start);
                         }
                     });
-            ((Animatable) menu.getItem(1).getIcon()).start();
+            ((Animatable) addMenuItem.getIcon()).start();
         }
         return true;
     }
@@ -562,15 +570,15 @@ public class MainActivity extends AppCompatActivity
         super.onRestoreInstanceState(savedInstanceState);
 
         if (viewModel.getState() == FINDING) {
-            mFab.setImageResource(R.drawable.avd_finding);
-            ((Animatable) mFab.getDrawable()).start();
+            fab.setImageResource(R.drawable.avd_finding);
+            ((Animatable) fab.getDrawable()).start();
         } else if (viewModel.getState() == SELECTING) {
-            mFab.setImageResource(R.drawable.ic_done);
+            fab.setImageResource(R.drawable.ic_done);
             itemListFragment.toggleItemsCheckbox(true);
         } else if (savedInstanceState.containsKey(STATE_LOCATION)) {
             // Bundle contains location but previous condition (viewModel.getState() == SELECTING)
             // was not true, so this is a restore from a PROCESS KILL
-            mBottomAppBar.setFabAlignmentMode(FAB_ALIGNMENT_MODE_CENTER);
+            bottomAppBar.setFabAlignmentMode(FAB_ALIGNMENT_MODE_CENTER);
             showSnackbar(R.string.snackbar_message_start_over, LENGTH_INDEFINITE, android.R.string.ok);
         }
 
@@ -662,16 +670,15 @@ public class MainActivity extends AppCompatActivity
             } else {
                 viewModel.setStoreIcon(R.drawable.ic_store_new); // to use on config change
                 viewModel.setStoreTitle(R.string.menu_hint_new_store_found);
-                mBottomAppBar.getMenu().getItem(0).setIcon(viewModel.getStoreIcon())
-                        .setTitle(viewModel.getStoreTitle()).setVisible(true);
+                storeMenuItem.setIcon(viewModel.getStoreIcon()).setTitle(viewModel.getStoreTitle()).setVisible(true);
                 shiftToSelectingState();
             }
         } else {
-            mBottomAppBar.getMenu().findItem(R.id.action_add_store).setVisible(!viewModel.isFindingSkipped());
+            addStoreMenuItem.setVisible(!viewModel.isFindingSkipped());
             stopService(new Intent(this, GpsService.class)); // for the case if finding skipped
             shiftToSelectingState();
             setStoreMenuItemIcon(viewModel.getFoundStores());
-            mBottomAppBar.getMenu().getItem(0).setVisible(true);
+            storeMenuItem.setVisible(true);
         }
     }
 
@@ -686,32 +693,31 @@ public class MainActivity extends AppCompatActivity
     private void shiftToFindingState() {
         viewModel.setState(FINDING);
 
-        mFab.setImageResource(R.drawable.avd_buyt);
-        ((Animatable) mFab.getDrawable()).start();
+        fab.setImageResource(R.drawable.avd_buyt);
+        ((Animatable) fab.getDrawable()).start();
 
-        mBottomAppBar.setNavigationIcon(R.drawable.avd_nav_cancel);
-        ((Animatable) mBottomAppBar.getNavigationIcon()).start();
+        bottomAppBar.setNavigationIcon(R.drawable.avd_nav_cancel);
+        ((Animatable) bottomAppBar.getNavigationIcon()).start();
 
-        mBottomAppBar.getMenu().getItem(2).setIcon(R.drawable.avd_reorder_skip).setTitle(R.string.menu_hint_skip_finding);
-        ((Animatable) mBottomAppBar.getMenu().getItem(2).getIcon()).start();
+        reorderMenuItem.setIcon(R.drawable.avd_reorder_skip).setTitle(R.string.menu_hint_skip_finding);
+        ((Animatable) reorderMenuItem.getIcon()).start();
 
         // Make sure the bottomAppBar is not hidden and make it not hide on scroll
-        new BottomAppBar.Behavior().slideUp(mBottomAppBar);
-        mBottomAppBar.setHideOnScroll(false);
+        // new BottomAppBar.Behavior().slideUp(mBottomAppBar);
     }
 
     private void shiftToSelectingState() {
         itemListFragment.toggleItemsCheckbox(true);
 
         if (viewModel.shouldAnimateNavIcon()) {
-            mBottomAppBar.setNavigationIcon(R.drawable.avd_nav_cancel);
-            ((Animatable) mBottomAppBar.getNavigationIcon()).start();
+            bottomAppBar.setNavigationIcon(R.drawable.avd_nav_cancel);
+            ((Animatable) bottomAppBar.getNavigationIcon()).start();
         }
-        mBottomAppBar.getMenu().getItem(2).setVisible(false);
-        mBottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
+        reorderMenuItem.setVisible(false);
+        bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
 
-        mFab.setImageResource(R.drawable.avd_find_done);
-        ((Animatable) mFab.getDrawable()).start();
+        fab.setImageResource(R.drawable.avd_find_done);
+        ((Animatable) fab.getDrawable()).start();
 
         viewModel.setState(SELECTING);
     }
@@ -721,22 +727,22 @@ public class MainActivity extends AppCompatActivity
         if (viewModel.getState() == FINDING || viewModel.getState() == SELECTING) {
             itemListFragment.toggleItemsCheckbox(false);
 
-            mFab.setImageResource(viewModel.getState() == FINDING ?
+            fab.setImageResource(viewModel.getState() == FINDING ?
                     R.drawable.avd_buyt_reverse : R.drawable.avd_done_buyt);
-            ((Animatable) mFab.getDrawable()).start();
+            ((Animatable) fab.getDrawable()).start();
 
-            mBottomAppBar.setFabAlignmentMode(FAB_ALIGNMENT_MODE_CENTER);
-            mBottomAppBar.setNavigationIcon(R.drawable.avd_cancel_nav);
-            ((Animatable) mBottomAppBar.getNavigationIcon()).start();
-            mBottomAppBar.getMenu().getItem(0).setVisible(false);
-            mBottomAppBar.getMenu().getItem(2).setIcon(R.drawable.avd_skip_reorder).setTitle(R.string.menu_hint_reorder_items).setVisible(true);
-            ((Animatable) mBottomAppBar.getMenu().getItem(2).getIcon()).start();
+            bottomAppBar.setFabAlignmentMode(FAB_ALIGNMENT_MODE_CENTER);
+            bottomAppBar.setNavigationIcon(R.drawable.avd_cancel_nav);
+            ((Animatable) bottomAppBar.getNavigationIcon()).start();
+            storeMenuItem.setVisible(false);
+            reorderMenuItem.setIcon(R.drawable.avd_skip_reorder).setTitle(R.string.menu_hint_reorder_items).setVisible(true);
+            ((Animatable) reorderMenuItem.getIcon()).start();
         }
+        addStoreMenuItem.setVisible(false);
         viewModel.resetFoundStores();
         viewModel.setShouldCompletePurchase(false);
         viewModel.setShouldAnimateNavIcon(false);
         viewModel.setFindingSkipped(false);
-        mBottomAppBar.getMenu().findItem(R.id.action_add_store).setVisible(false);
         viewModel.setState(IDLE); // this should be the last statement (because of the if above)
     }
 
@@ -783,12 +789,12 @@ public class MainActivity extends AppCompatActivity
         if (stores.size() == 1) {
             int icon = stores.get(0).getCategory().getStoreImageRes();
             viewModel.setStoreIcon(icon); // to use on config change
-            mBottomAppBar.getMenu().getItem(0).setIcon(icon).setTitle(viewModel.getStoreTitle());
+            storeMenuItem.setIcon(icon).setTitle(viewModel.getStoreTitle());
             itemListFragment.sortItemsByCategory(stores.get(0).getCategory()); // TODO: move this to another method
         } else {
             viewModel.setStoreIcon(R.drawable.ic_store_multi); // to use on config change
             viewModel.setStoreTitle(R.string.menu_hint_multi_store_found);
-            mBottomAppBar.getMenu().getItem(0).setIcon(viewModel.getStoreIcon()).setTitle(viewModel.getStoreTitle());
+            storeMenuItem.setIcon(viewModel.getStoreIcon()).setTitle(viewModel.getStoreTitle());
         }
     }
 
