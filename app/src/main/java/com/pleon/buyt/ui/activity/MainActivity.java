@@ -443,7 +443,7 @@ public class MainActivity extends AppCompatActivity
             menu.getItem(2).setTitle(R.string.menu_hint_skip_finding);
         } else if (viewModel.getState() == SELECTING) {
             mBottomAppBar.setNavigationIcon(R.drawable.avd_cancel_nav);
-            menu.getItem(0).setIcon(viewModel.getStoreIcon()).setVisible(true);
+            menu.getItem(0).setIcon(viewModel.getStoreIcon()).setTitle(viewModel.getStoreTitle()).setVisible(true);
             menu.getItem(2).setVisible(false);
             mBottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END); // this is because menu items go behind fab
         }
@@ -662,8 +662,9 @@ public class MainActivity extends AppCompatActivity
                 viewModel.setFindingSkipped(false); // Reset the flag
             } else {
                 viewModel.setStoreIcon(R.drawable.ic_store_new); // to use on config change
-                mBottomAppBar.getMenu().getItem(0).setIcon(viewModel.getStoreIcon());
-                mBottomAppBar.getMenu().getItem(0).setVisible(true);
+                viewModel.setStoreTitle(R.string.menu_hint_new_store_found);
+                mBottomAppBar.getMenu().getItem(0).setIcon(viewModel.getStoreIcon())
+                        .setTitle(viewModel.getStoreTitle()).setVisible(true);
                 shiftToSelectingState();
             }
         } else {
@@ -786,11 +787,12 @@ public class MainActivity extends AppCompatActivity
         if (stores.size() == 1) {
             int icon = stores.get(0).getCategory().getStoreImageRes();
             viewModel.setStoreIcon(icon); // to use on config change
-            mBottomAppBar.getMenu().getItem(0).setIcon(icon);
+            mBottomAppBar.getMenu().getItem(0).setIcon(icon).setTitle(viewModel.getStoreTitle());
             itemListFragment.sortItemsByCategory(stores.get(0).getCategory()); // TODO: move this to another method
         } else {
             viewModel.setStoreIcon(R.drawable.ic_store_multi); // to use on config change
-            mBottomAppBar.getMenu().getItem(0).setIcon(viewModel.getStoreIcon());
+            viewModel.setStoreTitle(R.string.menu_hint_multi_store_found);
+            mBottomAppBar.getMenu().getItem(0).setIcon(viewModel.getStoreIcon()).setTitle(viewModel.getStoreTitle());
         }
     }
 

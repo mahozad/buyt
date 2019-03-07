@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -55,6 +56,7 @@ public class MainViewModel extends AndroidViewModel {
     private boolean shouldCompletePurchase;
     private boolean shouldAnimateNavIcon;
     @DrawableRes private int storeIcon;
+    @StringRes private int storeTitle;
 
     // TODO: Use paging library architecture component
     private LiveData<List<Item>> mAllItems;
@@ -151,5 +153,14 @@ public class MainViewModel extends AndroidViewModel {
 
     public void setStoreIcon(int storeIcon) {
         this.storeIcon = storeIcon;
+    }
+
+    public String getStoreTitle() {
+        return foundStores.size() == 1 ?
+                foundStores.get(0).getName() : getApplication().getString(storeTitle);
+    }
+
+    public void setStoreTitle(int storeTitle) {
+        this.storeTitle = storeTitle;
     }
 }

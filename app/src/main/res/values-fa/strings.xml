@@ -40,6 +40,8 @@
     <string name="snackbar_message_no_store_found">مغازه‌ای از قبل ذخیره نشده است!</string>
     <string name="menu_hint_skip_finding">رد کردن جستجو</string>
     <string name="menu_hint_reorder_items">تغییر ترتیب کالاها</string>
+    <string name="menu_hint_new_store_found">مغازه‌ی جدید</string>
+    <string name="menu_hint_multi_store_found">بیش از یک مغازه پیدا شد</string>
     <string name="menu_title_select_store">انتخاب مغازه</string>
 
     <string name="dialog_message_location_permission">مجوز شناسایی موقعیت مکانی داده نشده است.

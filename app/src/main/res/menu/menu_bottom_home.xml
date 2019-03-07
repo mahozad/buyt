@@ -5,7 +5,7 @@
     tools:context=".ui.activity.MainActivity">
 
     <item
-        android:title="%d stores found"
+        android:id="@+id/found_stores"
         android:visible="false"
         app:showAsAction="always">
 
