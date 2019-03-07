@@ -1,5 +1,6 @@
 package com.pleon.buyt.ui.activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -8,8 +9,12 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.pleon.buyt.R;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.pleon.buyt.ui.activity.MainActivity.DEFAULT_THEME;
+import static com.pleon.buyt.ui.activity.MainActivity.KEY_PREF_THEME;
 
 public class StoresActivity extends AppCompatActivity {
 
@@ -17,11 +22,18 @@ public class StoresActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stores);
         ButterKnife.bind(this); // unbind() is not required for activities
 
         setSupportActionBar(bottomAppBar);
+    }
+
+    private void setTheme() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String theme = preferences.getString(KEY_PREF_THEME, DEFAULT_THEME);
+        setTheme(DEFAULT_THEME.equals(theme) ? R.style.AppTheme : R.style.LightTheme);
     }
 
     @Override
