@@ -121,7 +121,8 @@
             app:layout_anchor="@id/bottom_bar"
             app:maxImageSize="42dp"
             app:rippleColor="@android:color/transparent"
-            app:srcCompat="@drawable/avd_buyt" />
+            app:srcCompat="@drawable/avd_buyt"
+            app:tint="@null" />
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottom_bar"

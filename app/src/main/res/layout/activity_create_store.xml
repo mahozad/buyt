@@ -32,7 +32,8 @@
             app:fabSize="normal"
             app:layout_anchor="@id/bottom_bar"
             app:maxImageSize="42dp"
-            app:srcCompat="@drawable/ic_done" />
+            app:srcCompat="@drawable/ic_done"
+            app:tint="@null" />
 
         <!-- android:gravity="start" is for the icons (wrapped in ActionViewMenu) to align to left -->
         <com.google.android.material.bottomappbar.BottomAppBar

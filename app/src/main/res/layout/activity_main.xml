@@ -7,53 +7,53 @@
     android:layout_height="match_parent">
 
     <!--<com.google.android.material.card.MaterialCardView-->
-        <!--android:id="@+id/chart_container"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:layout_marginStart="11dp"-->
-        <!--android:layout_marginTop="12dp"-->
-        <!--android:layout_marginEnd="11dp"-->
-        <!--android:visibility="gone"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintHeight_percent="0.4"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent"-->
-        <!--tools:visibility="visible">-->
+    <!--android:id="@+id/chart_container"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="0dp"-->
+    <!--android:layout_marginStart="11dp"-->
+    <!--android:layout_marginTop="12dp"-->
+    <!--android:layout_marginEnd="11dp"-->
+    <!--android:visibility="gone"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintHeight_percent="0.4"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toTopOf="parent"-->
+    <!--tools:visibility="visible">-->
 
-        <!--<androidx.appcompat.widget.AppCompatCheckBox-->
-            <!--android:id="@+id/toggleChart"-->
-            <!--android:layout_width="48dp"-->
-            <!--android:layout_height="24dp"-->
-            <!--android:layout_gravity="center_horizontal|top"-->
-            <!--android:layout_marginTop="2dp"-->
-            <!--android:text="@null"-->
-            <!--app:buttonCompat="@drawable/avd_toggle_chart_1" />-->
+    <!--<androidx.appcompat.widget.AppCompatCheckBox-->
+    <!--android:id="@+id/toggleChart"-->
+    <!--android:layout_width="48dp"-->
+    <!--android:layout_height="24dp"-->
+    <!--android:layout_gravity="center_horizontal|top"-->
+    <!--android:layout_marginTop="2dp"-->
+    <!--android:text="@null"-->
+    <!--app:buttonCompat="@drawable/avd_toggle_chart_1" />-->
 
-        <!--&lt;!&ndash; app:chart_barBackgroundColor="#2d2d2d" &ndash;&gt;-->
-        <!--<com.db.chart.view.BarChartView-->
-            <!--android:id="@+id/chart"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_marginStart="12dp"-->
-            <!--android:layout_marginTop="24dp"-->
-            <!--android:layout_marginEnd="12dp"-->
-            <!--android:layout_marginBottom="12dp"-->
-            <!--app:chart_axis="false"-->
-            <!--app:chart_axisBorderSpacing="6dp"-->
-            <!--app:chart_axisLabelsSpacing="6dp"-->
-            <!--app:chart_axisTopSpacing="-12dp"-->
-            <!--app:chart_barSpacing="@dimen/chart_bar_spacing"-->
-            <!--app:chart_cornerRadius="12dp"-->
-            <!--app:chart_fontSize="11sp"-->
-            <!--app:chart_labelColor="?attr/colorOnSurface" />-->
+    <!--&lt;!&ndash; app:chart_barBackgroundColor="#2d2d2d" &ndash;&gt;-->
+    <!--<com.db.chart.view.BarChartView-->
+    <!--android:id="@+id/chart"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_marginStart="12dp"-->
+    <!--android:layout_marginTop="24dp"-->
+    <!--android:layout_marginEnd="12dp"-->
+    <!--android:layout_marginBottom="12dp"-->
+    <!--app:chart_axis="false"-->
+    <!--app:chart_axisBorderSpacing="6dp"-->
+    <!--app:chart_axisLabelsSpacing="6dp"-->
+    <!--app:chart_axisTopSpacing="-12dp"-->
+    <!--app:chart_barSpacing="@dimen/chart_bar_spacing"-->
+    <!--app:chart_cornerRadius="12dp"-->
+    <!--app:chart_fontSize="11sp"-->
+    <!--app:chart_labelColor="?attr/colorOnSurface" />-->
 
     <!--</com.google.android.material.card.MaterialCardView>-->
 
     <!--<com.mapbox.mapboxsdk.maps.MapView-->
-        <!--android:id="@+id/mapView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--/>-->
+    <!--android:id="@+id/mapView"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--/>-->
 
     <fragment
         android:id="@+id/fragment_items"
@@ -91,7 +91,8 @@
             app:layout_anchor="@id/bottom_bar"
             app:maxImageSize="42dp"
             app:rippleColor="@android:color/transparent"
-            app:srcCompat="@drawable/avd_buyt" />
+            app:srcCompat="@drawable/avd_buyt"
+            app:tint="@null" />
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottom_bar"
