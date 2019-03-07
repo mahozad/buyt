@@ -238,8 +238,8 @@ public class AddItemFragment extends Fragment implements DatePickerDialog.OnDate
             PersianCalendar persianCal = new PersianCalendar();
             DatePickerDialog datePicker = DatePickerDialog
                     .newInstance(this, persianCal.getPersianYear(), persianCal.getPersianMonth(), persianCal.getPersianDay());
-            String theme = PreferenceManager.getDefaultSharedPreferences(getContext()).getString("theme", "Dark");
-            if (theme.equals("Dark")) {
+            String theme = PreferenceManager.getDefaultSharedPreferences(getContext()).getString("theme", MainActivity.DEFAULT_THEME);
+            if (theme.equals(MainActivity.DEFAULT_THEME)) {
                 datePicker.setThemeDark(true); // if you want to change colors see colors.xml
             }
             datePicker.setRetainInstance(true);
