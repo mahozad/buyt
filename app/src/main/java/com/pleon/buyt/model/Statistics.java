@@ -40,7 +40,7 @@ public class Statistics {
     }
 
     public int getMostPurchasedCategoryName() {
-        return mostPurchasedCategory.getNameRes();
+        return mostPurchasedCategory == null ? 0 : mostPurchasedCategory.getNameRes();
     }
 
     public void setMostPurchasedCategory(Category mostPurchasedCategory) {

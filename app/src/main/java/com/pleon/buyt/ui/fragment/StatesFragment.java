@@ -97,7 +97,9 @@ public class StatesFragment extends Fragment {
 
             totalSpentTxvi.setText(statistics.getTotalPurchaseCost());
             averagePurchaseCostTxvi.setText(statistics.getAveragePurchaseCost());
-            mostPurchasedCatTxvi.setText(statistics.getMostPurchasedCategoryName());
+            if (statistics.getMostPurchasedCategoryName() != 0) {
+                mostPurchasedCatTxvi.setText(statistics.getMostPurchasedCategoryName());
+            }
             numberOfPurchasesTxvi.setText(statistics.getNumberOfPurchases());
             maxPurchaseCostTxvi.setText(statistics.getMaxPurchaseCost());
             minPurchaseCostTxvi.setText(statistics.getMinPurchaseCost());
