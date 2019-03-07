@@ -24,24 +24,11 @@
         android:elevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:backgroundTint="@color/colorPrimary"
-            app:fabSize="normal"
-            app:layout_anchor="@id/bottom_bar"
-            app:maxImageSize="42dp"
-            app:rippleColor="@android:color/transparent"
-            app:srcCompat="@drawable/avd_period_nar_med" />
-
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottom_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            app:fabAlignmentMode="center"
-            app:fabCradleMargin="6dp"
             app:navigationIcon="@drawable/avd_cancel_nav" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

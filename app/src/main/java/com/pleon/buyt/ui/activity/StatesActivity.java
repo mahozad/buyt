@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pleon.buyt.R;
 import com.pleon.buyt.model.Category;
 import com.pleon.buyt.ui.dialog.SelectDialogFragment;
@@ -21,7 +20,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 import static com.pleon.buyt.ui.activity.MainActivity.DEFAULT_THEME;
 import static com.pleon.buyt.ui.activity.MainActivity.KEY_PREF_THEME;
@@ -31,7 +29,6 @@ public class StatesActivity extends AppCompatActivity implements SelectDialogFra
     private static final String TAG = "STATES";
 
     @BindView(R.id.bottom_bar) BottomAppBar bottomAppBar;
-    @BindView(R.id.fab) FloatingActionButton fab;
 
     private StatesFragment statesFragment;
     private ArrayList<SelectionDialogRow> filterList;
@@ -63,29 +60,15 @@ public class StatesActivity extends AppCompatActivity implements SelectDialogFra
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        fab.setImageResource(statesFragment.getPeriod().getImageRes());
-        ((Animatable) fab.getDrawable()).start();
-
-        // menu items should be restored in onCreateOptionsMenu()
-    }
-
-    @OnClick(R.id.fab)
-    void onFabClick() {
-        statesFragment.togglePeriod();
-        fab.setImageResource(statesFragment.getPeriod().getImageRes());
-        ((Animatable) fab.getDrawable()).start();
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_bottom_states, menu);
 
-        filterMenuItem = menu.getItem(0);
+        filterMenuItem = menu.findItem(R.id.action_filter);
         filterMenuItem.setIcon(statesFragment.getFilter() == null ?
                 R.drawable.ic_filter : statesFragment.getFilter().getImageRes());
+
+        menu.findItem(R.id.action_toggle_period).setIcon(statesFragment.getPeriod().getImageRes());
+        ((Animatable) menu.getItem(0).getIcon()).start(); // Animate icon to get its final shape
 
         return true;
     }
@@ -98,6 +81,13 @@ public class StatesActivity extends AppCompatActivity implements SelectDialogFra
                         .newInstance(this, R.string.dialog_title_select_filter, filterList);
                 dialog.show(getSupportFragmentManager(), "SELECTION_DIALOG");
                 break;
+
+            case R.id.action_toggle_period:
+                statesFragment.togglePeriod();
+                item.setIcon(statesFragment.getPeriod().getImageRes());
+                ((Animatable) item.getIcon()).start();
+                break;
+
             case android.R.id.home:
                 finish();
                 break;

@@ -42,6 +42,8 @@
     <string name="menu_hint_reorder_items">تغییر ترتیب کالاها</string>
     <string name="menu_hint_new_store_found">مغازه‌ی جدید</string>
     <string name="menu_hint_multi_store_found">بیش از یک مغازه پیدا شد</string>
+    <string name="menu_hint_toggle_period">تغییر طول دوره</string>
+    <string name="menu_hint_filter">فیلتر بر اساس دسته‌بندی</string>
     <string name="menu_title_select_store">انتخاب مغازه</string>
     <string name="menu_title_add_store">افزودن مغازه جدید</string>
 
