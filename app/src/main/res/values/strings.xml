@@ -31,6 +31,7 @@
     <string name="menu_hint_filter">Filter by category</string>
     <string name="menu_title_select_store">Select store</string>
     <string name="menu_title_add_store">Add new store</string>
+    <string name="menu_title_store_category">Category</string>
 
     <string name="dialog_message_location_permission">"It seems you have revoked location permission.
         If granted, you do not have to manually specify the store for each purchase.
@@ -89,9 +90,9 @@
     <string name="quantity_kilogram">kg</string>
     <string name="quantity_gram">g</string>
 
-    <!-- Change title of persian date picker from "بیخیال" to this -->
+    <!-- Change title of persian date picker button from "بیخیال" to this -->
     <string name="mdtp_cancel" translatable="false">لغو</string>
-    <string name="menu_title_store_category">Category</string>
+
     <string name="chart_caption">Last %1$d days</string>
     <string name="checkbox_purchased">Bought</string>
     <string name="input_def_purchase_date">Today</string>
@@ -106,24 +107,35 @@
     <string name="no_filter">No filter</string>
     <string name="dialog_title_select_store">Select store</string>
     <string name="dialog_title_select_cat">Select category</string>
+    <string name="dialog_title_select_search_dist">Select distance</string>
     <string name="currency_format">¤##,###</string>
 
-    <string-array name="pref_themes">
+    <string-array name="pref_theme_vals">
+        <item>dark</item>
+        <item>light</item>
+    </string-array>
+    <string-array name="pref_theme_names">
         <item>@string/pref_theme_dark</item>
         <item>@string/pref_theme_light</item>
     </string-array>
-    <string name="pref_theme_light">Light</string>
     <string name="pref_theme_dark">Dark</string>
+    <string name="pref_theme_light">Light</string>
+    <string name="pref_title_theme">Theme</string>
+    <string name="pref_title_vibrate">Vibrate when location found</string>
+    <string name="pref_title_search_radius">Stores search distance</string>
+    <string name="dialog_title_select_theme">Select theme</string>
 
-    <string-array name="pref_near_dist_values">
+    <string-array name="pref_search_dist_vals">
         <item>50</item>
         <item>100</item>
         <item>200</item>
     </string-array>
-    <string-array name="pref_near_dist_names">
-        <item>50 meters</item>
-        <item>100 meters</item>
-        <item>200 meters</item>
+    <string-array name="pref_search_dist_names">
+        <item>@string/pref_search_dist_1</item>
+        <item>@string/pref_search_dist_2</item>
+        <item>@string/pref_search_dist_3</item>
     </string-array>
-
+    <string name="pref_search_dist_1">50 meters</string>
+    <string name="pref_search_dist_2">100 meters</string>
+    <string name="pref_search_dist_3">200 meters</string>
 </resources>

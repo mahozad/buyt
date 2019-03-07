@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ListPreference
-        android:defaultValue="@string/pref_theme_dark"
-        android:dialogTitle="Select theme"
-        android:entries="@array/pref_themes"
-        android:entryValues="@array/pref_themes"
+        android:defaultValue="dark"
+        android:dialogTitle="@string/dialog_title_select_theme"
+        android:entries="@array/pref_theme_names"
+        android:entryValues="@array/pref_theme_vals"
         android:icon="@drawable/ic_theme"
         android:key="theme"
-        android:title="Theme"
+        android:title="@string/pref_title_theme"
         app:useSimpleSummaryProvider="true" />
 
     <PreferenceCategory />
@@ -18,15 +18,15 @@
         android:defaultValue="true"
         android:icon="@drawable/ic_vibration"
         android:key="vibrate"
-        android:title="Vibrate when location found" />
+        android:title="@string/pref_title_vibrate" />
 
     <ListPreference
         android:defaultValue="50"
-        android:dialogTitle="Select distance"
-        android:entries="@array/pref_near_dist_names"
-        android:entryValues="@array/pref_near_dist_values"
+        android:dialogTitle="@string/dialog_title_select_search_dist"
+        android:entries="@array/pref_search_dist_names"
+        android:entryValues="@array/pref_search_dist_vals"
         android:icon="@drawable/ic_distance"
         android:key="distance"
-        android:title="Distance"
+        android:title="@string/pref_title_search_radius"
         app:useSimpleSummaryProvider="true" />
 </PreferenceScreen>

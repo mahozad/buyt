@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity
 
     public static final int CREATE_STORE_REQUEST_CODE = 1;
     public static final String KEY_PREF_THEME = "theme";
-    public static final String DEFAULT_THEME = "Dark";
+    public static final String DEFAULT_THEME = "dark";
 
     // To force kill the app, go to the desired activity, press home button and then run this command:
     // adb shell am kill com.pleon.buyt

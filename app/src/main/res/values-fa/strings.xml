@@ -66,9 +66,18 @@
     <string name="nav_settings">تنظیمات</string>
     <string name="nav_help">راهنمایی</string>
     <string name="no_filter">No filter</string>
-    <string name="dialog_title_select_filter">Select filter</string>
-    <string name="dialog_title_select_store">Select store</string>
-    <string name="dialog_title_select_cat">Select category</string>
+    <string name="dialog_title_select_filter">انتخاب فیلتر</string>
+    <string name="dialog_title_select_store">انتخاب مغازه</string>
+    <string name="dialog_title_select_cat">انتخاب دسته‌بندی</string>
+    <string name="dialog_title_select_search_dist">انتخاب شعاع</string>
+    <string name="dialog_title_select_theme">انتخاب قالب</string>
     <string name="currency_format">##,### ت</string>
-
+    <string name="pref_theme_dark">تیره</string>
+    <string name="pref_theme_light">روشن</string>
+    <string name="pref_title_theme">قالب</string>
+    <string name="pref_title_vibrate">لرزش دستگاه هنگام پیدا شدن مکان</string>
+    <string name="pref_title_search_radius">شعاع جستجوی مغازه</string>
+    <string name="pref_search_dist_1">۵۰ متر</string>
+    <string name="pref_search_dist_2">۱۰۰ متر</string>
+    <string name="pref_search_dist_3">۲۰۰ متر</string>
 </resources>
