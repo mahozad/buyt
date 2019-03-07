@@ -229,6 +229,11 @@ public class MainActivity extends AppCompatActivity
         setTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (preferences.getBoolean("themeChanged", false)) { // restore drawer
+            BottomSheetDialogFragment bottomDrawerFragment = BottomDrawerFragment.newInstance();
+            bottomDrawerFragment.show(getSupportFragmentManager(), "BOTTOM_SHEET");
+            preferences.edit().putBoolean("themeChanged", false).apply();
+        }
         ButterKnife.bind(this); // unbind() is not required for activities
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);

@@ -40,12 +40,14 @@ public class PreferenceFragment extends PreferenceFragmentCompat
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals("theme")) {
+            sharedPreferences.edit().putBoolean("themeChanged", true).apply();
             // Recreate the back stack so the new theme is applied to parent activities
             // (their onCreate() method is called which in turn invokes setTheme() method)
             TaskStackBuilder.create(activity)
                     .addNextIntent(new Intent(activity, MainActivity.class))
                     .addNextIntent(activity.getIntent())
                     .startActivities();
+            // An alternative way would be to call setTheme() in onResume() callback of the main activity
         }
     }
 
