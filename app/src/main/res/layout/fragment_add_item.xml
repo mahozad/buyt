@@ -218,6 +218,7 @@
                     android:layout_height="wrap_content"
                     android:drawablePadding="8dp"
                     android:imeOptions="flagNoFullscreen"
+                    android:text="@string/input_suffix_price"
                     android:inputType="number"
                     android:maxLength="17"
                     app:drawableStartCompat="@drawable/ic_price"

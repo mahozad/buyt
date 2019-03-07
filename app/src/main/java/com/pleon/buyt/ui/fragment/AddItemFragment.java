@@ -444,7 +444,7 @@ public class AddItemFragment extends Fragment implements DatePickerDialog.OnDate
                 item.setDescription(descriptionEdtx.getText().toString());
             }
             if (isBoughtChecked() && !isEmpty(priceEdtx)) {
-                item.setTotalPrice(Long.parseLong(priceEdtx.getText().toString().replaceAll("[^\\d]", "")));
+                item.setTotalPrice(getPrice());
             }
 
             if (isBoughtChecked()) {
@@ -453,6 +453,14 @@ public class AddItemFragment extends Fragment implements DatePickerDialog.OnDate
             } else {
                 callback.onSubmit(item);
             }
+        }
+    }
+
+    private long getPrice() {
+        try {
+            return Long.parseLong(priceEdtx.getText().toString().replaceAll("[^\\d]", ""));
+        } catch (NumberFormatException e) {
+            return 0;
         }
     }
 
@@ -487,7 +495,7 @@ public class AddItemFragment extends Fragment implements DatePickerDialog.OnDate
             setColorOfAllUnitsForEnabledState(colorError);
             validated = false;
         }
-        if (boughtChbx.isChecked() && isEmpty(priceEdtx)) {
+        if (boughtChbx.isChecked() && (isEmpty(priceEdtx) || getPrice() == 0)) {
             priceTxinlt.setError(getString(R.string.input_error_price));
             validated = false;
         }
