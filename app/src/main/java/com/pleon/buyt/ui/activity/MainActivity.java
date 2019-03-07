@@ -439,8 +439,7 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.menu_bottom_home, menu);
         if (viewModel.getState() == FINDING) {
             mBottomAppBar.setNavigationIcon(R.drawable.avd_cancel_nav);
-            menu.getItem(2).setIcon(R.drawable.avd_skip_reorder);
-            menu.getItem(2).setTitle(R.string.menu_hint_skip_finding);
+            menu.getItem(2).setIcon(R.drawable.avd_skip_reorder).setTitle(R.string.menu_hint_skip_finding);
         } else if (viewModel.getState() == SELECTING) {
             mBottomAppBar.setNavigationIcon(R.drawable.avd_cancel_nav);
             menu.getItem(0).setIcon(viewModel.getStoreIcon()).setTitle(viewModel.getStoreTitle()).setVisible(true);
@@ -693,8 +692,7 @@ public class MainActivity extends AppCompatActivity
         mBottomAppBar.setNavigationIcon(R.drawable.avd_nav_cancel);
         ((Animatable) mBottomAppBar.getNavigationIcon()).start();
 
-        mBottomAppBar.getMenu().getItem(2).setIcon(R.drawable.avd_reorder_skip);
-        mBottomAppBar.getMenu().getItem(2).setTitle(R.string.menu_hint_skip_finding);
+        mBottomAppBar.getMenu().getItem(2).setIcon(R.drawable.avd_reorder_skip).setTitle(R.string.menu_hint_skip_finding);
         ((Animatable) mBottomAppBar.getMenu().getItem(2).getIcon()).start();
 
         // Make sure the bottomAppBar is not hidden and make it not hide on scroll
@@ -731,9 +729,7 @@ public class MainActivity extends AppCompatActivity
             mBottomAppBar.setNavigationIcon(R.drawable.avd_cancel_nav);
             ((Animatable) mBottomAppBar.getNavigationIcon()).start();
             mBottomAppBar.getMenu().getItem(0).setVisible(false);
-            mBottomAppBar.getMenu().getItem(2).setVisible(true);
-            mBottomAppBar.getMenu().getItem(2).setIcon(R.drawable.avd_skip_reorder);
-            mBottomAppBar.getMenu().getItem(2).setTitle(R.string.menu_hint_reorder_items);
+            mBottomAppBar.getMenu().getItem(2).setIcon(R.drawable.avd_skip_reorder).setTitle(R.string.menu_hint_reorder_items).setVisible(true);
             ((Animatable) mBottomAppBar.getMenu().getItem(2).getIcon()).start();
         }
         viewModel.resetFoundStores();
