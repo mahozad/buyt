@@ -186,6 +186,12 @@ public class ItemListFragment extends Fragment implements ItemTouchHelperListene
     }
 
     public void sortItemsByOrder() {
-        sort(adapter.getItems(), (item1, item2) -> item1.getPosition() - item2.getPosition());
+        sort(adapter.getItems(), (item1, item2) -> {
+            if (item1.isUrgent() != item2.isUrgent()) {
+                return item1.isUrgent() ? -1 : +1;
+            } else {
+                return item1.getPosition() - item2.getPosition();
+            }
+        });
     }
 }
