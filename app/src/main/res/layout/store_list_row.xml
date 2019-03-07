@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Container to wrap foreground and background (for swiping to delete) -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <!-- Background -->
+    <!-- Set the "app:cardElevation" to "0dp" on this so when swiping the foreground, the card remains
+     in back. Also by removing the elevation, it will be similar to examples in material.io -->
+    <!--Note: "app:cardUseCompatPadding" property is used because it is used in the foreground card.
+    see Note 2 of foreground for description -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="?cardBgColor"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="0dp"
+        app:cardUseCompatPadding="true">
+
+        <FrameLayout
+            android:id="@+id/backgroundContentHolder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- to circular reveal-->
+            <View
+                android:id="@+id/circular_reveal"
+                android:layout_width="88dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:alpha="0"
+                android:background="?attr/colorError" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/delete_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="32dp"
+                app:srcCompat="@drawable/avd_delete_open" />
+
+        </FrameLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Foreground -->
+    <!-- Note 1: that padding for the last item has been set in the recyclerView layout -->
+    <!-- Note 2: for the bottom shadow of card to show (and not clipped by parent) set the
+    "app:cardUseCompatPadding" property to "true". This produces a little margin around the card -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardForeground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:rippleColor="@android:color/transparent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="14dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/storeIcon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_store_grocery" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/storeName"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/storeIcon"
+                app:layout_constraintStart_toEndOf="@+id/storeIcon"
+                app:layout_constraintTop_toTopOf="@+id/storeIcon"
+                tools:text="Item name" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</FrameLayout>

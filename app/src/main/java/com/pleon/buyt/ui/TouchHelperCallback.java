@@ -10,7 +10,6 @@ import android.view.animation.AlphaAnimation;
 
 import com.google.android.material.card.MaterialCardView;
 import com.pleon.buyt.R;
-import com.pleon.buyt.ui.adapter.ItemListAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -76,46 +75,46 @@ public class TouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public void onSelectedChanged(ViewHolder viewHolder, int actionState) {
         if (viewHolder != null) {
-            View view = ((ItemListAdapter.ItemHolder) viewHolder).cardBg;
+            View view = ((BaseViewHolder) viewHolder).cardBg;
             getDefaultUIUtil().onSelected(view);
         }
     }
 
     @Override
     public void clearView(RecyclerView recyclerView, ViewHolder viewHolder) {
-        MaterialCardView view = ((ItemListAdapter.ItemHolder) viewHolder).cardFg;
+        MaterialCardView view = ((BaseViewHolder) viewHolder).cardFg;
         view.setDragged(false); // enabled in onDragHandleTouch() method of the view holder
         getDefaultUIUtil().clearView(view);
     }
 
     // If you want to reduce or increase the speed of swipe, multiply dX by the desired factor
     @Override
-    public void onChildDraw(Canvas c, RecyclerView recyclerView, ViewHolder viewHolder,
+    public void onChildDraw(Canvas c, RecyclerView recyclerView, ViewHolder holder,
                             float dX, float dY, int actionState, boolean isCurrentlyActive) {
-        ItemListAdapter.ItemHolder itemHolder = (ItemListAdapter.ItemHolder) viewHolder;
+        BaseViewHolder viewHolder = (BaseViewHolder) holder;
 
         // If it's drag-n-drop move the whole card; if it's swipe just move the foreground
-        View view = (actionState == ACTION_STATE_DRAG) ? itemHolder.cardCtn : itemHolder.cardFg;
+        View view = (actionState == ACTION_STATE_DRAG) ? viewHolder.cardCtn : viewHolder.cardFg;
 
         // Limit the swipe distance. abs() and signum() are to support both LTR and RTL configs.
         dX = (abs(dX) < maxSwipeDistInPx) ? dX : signum(dX) * maxSwipeDistInPx;
 
         // Animate delete circular reveal
-        if (abs(dX) == maxSwipeDistInPx && !itemHolder.delAnimating) {
-            itemHolder.delIcon.setImageResource(R.drawable.avd_delete_open);
-            ((Animatable) itemHolder.delIcon.getDrawable()).start();
-            showCircularReveal(itemHolder, itemHolder.delRevealView);
-        } else if (abs(dX) < maxSwipeDistInPx && itemHolder.delAnimating) {
-            itemHolder.delIcon.setImageResource(R.drawable.avd_delete_close);
-            ((Animatable) itemHolder.delIcon.getDrawable()).start();
-            hideCircularReveal(itemHolder, itemHolder.delRevealView);
+        if (abs(dX) == maxSwipeDistInPx && !viewHolder.delAnimating) {
+            viewHolder.delIcon.setImageResource(R.drawable.avd_delete_open);
+            ((Animatable) viewHolder.delIcon.getDrawable()).start();
+            showCircularReveal(viewHolder, viewHolder.delRevealView);
+        } else if (abs(dX) < maxSwipeDistInPx && viewHolder.delAnimating) {
+            viewHolder.delIcon.setImageResource(R.drawable.avd_delete_close);
+            ((Animatable) viewHolder.delIcon.getDrawable()).start();
+            hideCircularReveal(viewHolder, viewHolder.delRevealView);
         }
 
         getDefaultUIUtil().onDraw(c, recyclerView, view, dX, dY, actionState, isCurrentlyActive);
     }
 
-    private void showCircularReveal(ItemListAdapter.ItemHolder itemHolder, View revealView) {
-        itemHolder.delAnimating = true;
+    private void showCircularReveal(BaseViewHolder viewHolder, View revealView) {
+        viewHolder.delAnimating = true;
 
         float finalRadius = max(revealView.getWidth(), revealView.getHeight()) / 1.6f;
         int centerX = revealView.getWidth() / 2;
@@ -128,8 +127,8 @@ public class TouchHelperCallback extends ItemTouchHelper.Callback {
         anim.start();
     }
 
-    private void hideCircularReveal(ItemListAdapter.ItemHolder itemHolder, View revealView) {
-        itemHolder.delAnimating = false;
+    private void hideCircularReveal(BaseViewHolder viewHolder, View revealView) {
+        viewHolder.delAnimating = false;
 
         AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
         anim.setDuration(60);

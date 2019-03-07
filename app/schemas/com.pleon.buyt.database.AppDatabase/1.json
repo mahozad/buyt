@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "26229a35a75b8c2426c847f7301daa9e",
+    "identityHash": "a80fc5bc375119eb49d659fe30b4eb33",
     "entities": [
       {
         "tableName": "Item",
@@ -92,7 +92,7 @@
       },
       {
         "tableName": "Store",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`storeId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `category` TEXT, `latitude` REAL, `longitude` REAL, `cosLat` REAL, `sinLat` REAL, `cosLng` REAL, `sinLng` REAL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`storeId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `category` TEXT, `flaggedForDeletion` INTEGER NOT NULL, `latitude` REAL, `longitude` REAL, `cosLat` REAL, `sinLat` REAL, `cosLng` REAL, `sinLng` REAL)",
         "fields": [
           {
             "fieldPath": "storeId",
@@ -111,6 +111,12 @@
             "columnName": "category",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "flaggedForDeletion",
+            "columnName": "flaggedForDeletion",
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
             "fieldPath": "location.latitude",
@@ -204,7 +210,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"26229a35a75b8c2426c847f7301daa9e\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"a80fc5bc375119eb49d659fe30b4eb33\")"
     ]
   }
 }

@@ -18,6 +18,8 @@ public class Store implements Serializable {
 
     private String name;
     private Category category;
+    // To fix the bug that happens when two stores are deleted in a row (the first appears again)
+    private boolean flaggedForDeletion = false;
 
     public Store(Coordinates location, String name, Category category) {
         this.location = location;
@@ -55,5 +57,13 @@ public class Store implements Serializable {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public boolean isFlaggedForDeletion() {
+        return flaggedForDeletion;
+    }
+
+    public void setFlaggedForDeletion(boolean flag) {
+        this.flaggedForDeletion = flag;
     }
 }

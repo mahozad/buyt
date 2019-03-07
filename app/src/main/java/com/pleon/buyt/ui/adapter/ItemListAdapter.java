@@ -13,10 +13,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.pleon.buyt.R;
 import com.pleon.buyt.model.Item;
+import com.pleon.buyt.ui.BaseViewHolder;
 import com.pleon.buyt.ui.NumberInputWatcher;
 import com.pleon.buyt.ui.adapter.ItemListAdapter.ItemHolder;
 
@@ -29,7 +29,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
-import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import androidx.transition.ChangeBounds;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -169,7 +168,7 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
     }
 
     // Adapter (and RecyclerView) work with ViewHolders instead of direct Views.
-    public class ItemHolder extends ViewHolder {
+    class ItemHolder extends BaseViewHolder {
 
         @BindView(R.id.categoryIcon) ImageView categoryImgVi;
         @BindView(R.id.item_name) TextView nameTxVi;
@@ -181,13 +180,6 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
         @BindView(R.id.price_container) FrameLayout priceContainer;
         @BindView(R.id.price_layout) TextInputLayout priceTxInLt;
         @BindView(R.id.price) EditText priceEdTx;
-        @BindView(R.id.cardContainer) public FrameLayout cardCtn;
-        @BindView(R.id.cardBackground) public MaterialCardView cardBg;
-        @BindView(R.id.cardForeground) public MaterialCardView cardFg;
-        @BindView(R.id.delete_icon) public ImageView delIcon;
-        @BindView(R.id.circular_reveal) public View delRevealView;
-
-        public boolean delAnimating = false;
 
         ItemHolder(View itemView) {
             super(itemView); // the view (row layout) for the item

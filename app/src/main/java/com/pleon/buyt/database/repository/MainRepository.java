@@ -172,7 +172,7 @@ public class MainRepository { // TODO: make this class singleton
 
         @Override
         protected List<Store> doInBackground(Void... voids) {
-            return mDao.getAll();
+            return mDao.getAllList();
         }
 
         @Override
