@@ -594,8 +594,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void skipFinding() {
-        // TODO: disable bottom bar R.id.action_add_store because we skipped gps and do not have store location
-        viewModel.setFindingStateSkipped(true);
+        viewModel.setFindingSkipped(true);
         viewModel.getAllStores().observe(this, this::onStoresFound);
     }
 
@@ -653,17 +652,17 @@ public class MainActivity extends AppCompatActivity
     private void onStoresFound(List<Store> foundStores) {
         viewModel.setFoundStores(foundStores);
         if (foundStores.size() == 0) {
-            if (viewModel.isFindingStateSkipped()) {
+            if (viewModel.isFindingSkipped()) {
                 showSnackbar(R.string.snackbar_message_no_store_found, LENGTH_LONG, null);
-                viewModel.setFindingStateSkipped(false); // Reset the flag
+                viewModel.setFindingSkipped(false); // Reset the flag
             } else {
-                mBottomAppBar.getMenu().findItem(R.id.action_add_store).setVisible(false); // no need because create store screen will be shown
                 viewModel.setStoreIcon(R.drawable.ic_store_new); // to use on config change
                 mBottomAppBar.getMenu().getItem(0).setIcon(viewModel.getStoreIcon());
                 mBottomAppBar.getMenu().getItem(0).setVisible(true);
                 shiftToSelectingState();
             }
         } else {
+            mBottomAppBar.getMenu().findItem(R.id.action_add_store).setVisible(!viewModel.isFindingSkipped());
             stopService(new Intent(this, GpsService.class)); // for the case if finding skipped
             shiftToSelectingState();
             setStoreMenuItemIcon(viewModel.getFoundStores());
@@ -734,8 +733,8 @@ public class MainActivity extends AppCompatActivity
         viewModel.resetFoundStores();
         viewModel.setShouldCompletePurchase(false);
         viewModel.setShouldAnimateNavIcon(false);
-        viewModel.setFindingStateSkipped(false);
-        mBottomAppBar.getMenu().findItem(R.id.action_add_store).setVisible(true);
+        viewModel.setFindingSkipped(false);
+        mBottomAppBar.getMenu().findItem(R.id.action_add_store).setVisible(false);
         viewModel.setState(IDLE); // this should be the last statement (because of the if above)
     }
 

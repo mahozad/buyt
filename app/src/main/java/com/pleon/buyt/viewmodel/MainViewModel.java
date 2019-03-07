@@ -50,7 +50,7 @@ public class MainViewModel extends AndroidViewModel {
     private MainRepository mMainRepository;
     private volatile State state = IDLE;
     private Location location;
-    private boolean findingStateSkipped;
+    private boolean findingSkipped;
     private List<Store> foundStores = new ArrayList<>();
     private boolean shouldCompletePurchase;
     private boolean shouldAnimateNavIcon;
@@ -109,12 +109,12 @@ public class MainViewModel extends AndroidViewModel {
         this.location = location;
     }
 
-    public boolean isFindingStateSkipped() {
-        return findingStateSkipped;
+    public boolean isFindingSkipped() {
+        return findingSkipped;
     }
 
-    public void setFindingStateSkipped(boolean findingStateSkipped) {
-        this.findingStateSkipped = findingStateSkipped;
+    public void setFindingSkipped(boolean findingSkipped) {
+        this.findingSkipped = findingSkipped;
     }
 
     public void resetFoundStores() {
