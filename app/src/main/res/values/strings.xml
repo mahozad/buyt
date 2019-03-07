@@ -28,6 +28,7 @@
     <string name="menu_hint_new_store_found">This is a new Store</string>
     <string name="menu_hint_multi_store_found">Multiple stores found</string>
     <string name="menu_title_select_store">Select store</string>
+    <string name="menu_title_add_store">Add new store</string>
 
     <string name="dialog_message_location_permission">"It seems you have revoked location permission.
         If granted, you do not have to manually specify the store for each purchase.

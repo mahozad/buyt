@@ -13,7 +13,7 @@
             <item
                 android:id="@+id/action_add_store"
                 android:icon="@drawable/ic_add_store"
-                android:title="Add new store"
+                android:title="@string/menu_title_add_store"
                 android:visible="false" />
         </menu>
     </item>
