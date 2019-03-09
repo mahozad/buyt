@@ -253,17 +253,6 @@ public class AddItemFragment extends Fragment implements DatePickerDialog.OnDate
             datePicker.setSelectableDays(selectableDays);
 
             datePicker.show(getActivity().getFragmentManager(), "DATE_PICKER");
-
-            // Another persian date picker
-//            new com.alirezaafkar.sundatepicker.DatePicker.Builder()
-//                    .id(23455)
-//                    .minDate(1380, 1, 1)
-//                    .maxDate(1400, 1, 1)
-////                    .date(1, 1, 1397)
-////                    .theme()
-//                    .build(this)
-//                    .show(getActivity().getSupportFragmentManager(), "ASDDD");
-
         } else {
             DatePickerFragment datePicker = new DatePickerFragment();
 //            datePicker.setRetainInstance(true);
@@ -405,7 +394,7 @@ public class AddItemFragment extends Fragment implements DatePickerDialog.OnDate
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof Callback) {
             callback = (Callback) context;
