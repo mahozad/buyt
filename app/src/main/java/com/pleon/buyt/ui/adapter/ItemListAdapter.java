@@ -192,7 +192,9 @@ public class ItemListAdapter extends Adapter<ItemHolder> {
         @OnTouch(R.id.expandDragButton)
         boolean onDragHandleTouch(MotionEvent event) {
             if (event.getActionMasked() == ACTION_DOWN) {
-                cardFg.setDragged(true); // disabled in clearView() method of the touch helper
+                if (dragModeEnabled) {
+                    cardFg.setDragged(true); // disabled in clearView() method of the touch helper
+                }
                 itemTouchHelper.startDrag(this);
             }
             return false;
