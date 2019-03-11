@@ -13,8 +13,9 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme() // Must be called before anything else
+        setTheme() // Call before anything else
         super.onCreate(savedInstanceState)
+
         setContentView(layoutResource())
         setSupportActionBar(findViewById(R.id.bottom_bar))
     }
