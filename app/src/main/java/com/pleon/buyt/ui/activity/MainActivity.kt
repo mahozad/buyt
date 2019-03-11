@@ -183,7 +183,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
         if (newbie) {
             // show tap target for FAB
             TapTargetSequence(this).targets(
-                    forView(findViewById(R.id.fab), "Tap here when you're near or in the store")
+                    forView(fab, "Tap here when you're near or in the store")
                             .outerCircleColor(R.color.colorAccent)
                             .targetCircleColor(android.R.color.background_light)
                             .transparentTarget(true)
@@ -270,7 +270,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
             reorderMenuItem.setIcon(R.drawable.avd_skip_reorder).setTitle(R.string.menu_hint_skip_finding)
         } else if (viewModel.state == SELECTING) {
             bottom_bar.setNavigationIcon(R.drawable.avd_cancel_nav)
-            storeMenuItem.setIcon(viewModel.storeIcon).setTitle(viewModel.storeTitle).isVisible = true
+            storeMenuItem.setIcon(viewModel.storeIcon).setTitle(viewModel.getStoreTitle()).isVisible = true
             reorderMenuItem.isVisible = false
             bottom_bar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_END // this is because menu items go behind fab
         }
@@ -303,16 +303,15 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
                 if (!itemListFragment.isCartEmpty) {
                     itemListFragment.toggleEditMode()
                 }
-            } else { // if state == FINDING
-                skipFinding()
-            }
+            } else skipFinding()
 
             R.id.action_add_store -> {
-                viewModel.setShouldCompletePurchase(false)
+                viewModel.shouldCompletePurchase = false
                 val intent = Intent(this, CreateStoreActivity::class.java)
                 intent.putExtra(CreateStoreFragment.ARG_LOCATION, viewModel.location)
                 startActivityForResult(intent, CREATE_STORE_REQUEST_CODE)
             }
+
             /* If setSupportActionBar() is used to set up the BottomAppBar, navigation menu item
              * can be identified by checking if the id of menu item equals android.R.id.home. */
             android.R.id.home -> when {
@@ -326,8 +325,6 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
                 }
                 else -> shiftToIdleState()
             }
-
-            else -> return super.onOptionsItemSelected(item)
         }
         return true
     }
@@ -401,10 +398,10 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
     override fun onRequestPermissionsResult(reqCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (reqCode == REQUEST_LOCATION_PERMISSION) {
             // If request is cancelled, the result arrays are empty.
-            if (grantResults.size > 0 && grantResults[0] == PERMISSION_GRANTED) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PERMISSION_GRANTED) {
                 findLocation()
             } else { // if permission denied
-                viewModel.setShouldAnimateNavIcon(true)
+                viewModel.shouldAnimateNavIcon = true
                 skipFinding()
             }
         }
@@ -412,7 +409,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
     }
 
     override fun onEnableLocationDenied() {
-        viewModel.setShouldAnimateNavIcon(true)
+        viewModel.shouldAnimateNavIcon = true
         skipFinding()
     }
 
@@ -455,7 +452,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
     }
 
     private fun onStoresFound(foundStores: List<Store>) {
-        viewModel.foundStores = foundStores
+        viewModel.foundStores = foundStores.toMutableList()
         if (foundStores.isEmpty()) {
             if (viewModel.isFindingSkipped) {
                 showSnackbar(R.string.snackbar_message_no_store_found, LENGTH_LONG, null)
@@ -463,7 +460,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
             } else {
                 viewModel.storeIcon = R.drawable.ic_store_new // to use on config change
                 viewModel.setStoreTitle(R.string.menu_hint_new_store_found)
-                storeMenuItem.setIcon(viewModel.storeIcon).setTitle(viewModel.storeTitle).isVisible = true
+                storeMenuItem.setIcon(viewModel.storeIcon).setTitle(viewModel.getStoreTitle()).isVisible = true
                 shiftToSelectingState()
             }
         } else {
@@ -502,7 +499,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
     private fun shiftToSelectingState() {
         itemListFragment.toggleItemsCheckbox(true)
 
-        if (viewModel.shouldAnimateNavIcon()) {
+        if (viewModel.shouldAnimateNavIcon) {
             bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
             (bottom_bar.navigationIcon as Animatable).start()
         }
@@ -535,8 +532,8 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
         }
         addStoreMenuItem.isVisible = false
         viewModel.resetFoundStores()
-        viewModel.setShouldCompletePurchase(false)
-        viewModel.setShouldAnimateNavIcon(false)
+        viewModel.shouldCompletePurchase = false
+        viewModel.shouldAnimateNavIcon = false
         viewModel.isFindingSkipped = false
         viewModel.state = IDLE // this should be the last statement (because of the if above)
     }
@@ -560,7 +557,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
     fun buySelectedItems() {
         if (itemListFragment.validateSelectedItemsPrice()) {
             if (viewModel.foundStores.size == 0) {
-                viewModel.setShouldCompletePurchase(true)
+                viewModel.shouldCompletePurchase = true
                 val intent = Intent(this, CreateStoreActivity::class.java)
                 intent.putExtra(CreateStoreFragment.ARG_LOCATION, viewModel.location)
                 startActivityForResult(intent, CREATE_STORE_REQUEST_CODE)
@@ -584,12 +581,12 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
         if (stores.size == 1) {
             val icon = stores[0].category.storeImageRes
             viewModel.storeIcon = icon // to use on config change
-            storeMenuItem.setIcon(icon).title = viewModel.storeTitle
+            storeMenuItem.setIcon(icon).title = viewModel.getStoreTitle()
             itemListFragment.sortItemsByCategory(stores[0].category) // TODO: move this to another method
         } else {
             viewModel.storeIcon = R.drawable.ic_store_multi // to use on config change
             viewModel.setStoreTitle(R.string.menu_hint_multi_store_found)
-            storeMenuItem.setIcon(viewModel.storeIcon).title = viewModel.storeTitle
+            storeMenuItem.setIcon(viewModel.storeIcon).title = viewModel.getStoreTitle()
         }
     }
 
@@ -597,7 +594,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CREATE_STORE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val store = data!!.getSerializableExtra("STORE") as Store
-            if (viewModel.shouldCompletePurchase()) {
+            if (viewModel.shouldCompletePurchase) {
                 completeBuy(store)
             } else {
                 viewModel.foundStores.add(store)
