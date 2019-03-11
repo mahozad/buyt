@@ -3,6 +3,7 @@
 /* The buildscript node is used to indicate the repositories and dependencies that are used
  by Gradle itself-not for your application */
 buildscript {
+    ext.kotlin_version = '1.3.21'
 
     repositories {
         google()
@@ -11,6 +12,7 @@ buildscript {
     dependencies {
         // This dependency version should be the same as the Android Studio version
         classpath 'com.android.tools.build:gradle:3.3.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
