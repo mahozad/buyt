@@ -66,51 +66,52 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+
     /* The AndroidX version of support library 'com.android.support:appcompat-v7'.
-                             * Support libraries provide capabilities of newer android versions to older devices and also
-                             * some of them provide new features on their own. They are separated into several libraries so
-                             * you don't have to add ONE big library (and include unwanted libs) and make your apk huge.
-                             * The following library for example adds support for ActionBar, AppCompatActivity and
-                             * some other for devices down to api v7. */
+     * Support libraries provide capabilities of newer android versions to older devices and also
+     * some of them provide new features on their own. They are separated into several libraries so
+     * you don't have to add ONE big library (and include unwanted libs) and make your apk huge.
+     * The following library for example adds support for ActionBar, AppCompatActivity and
+     * some other for devices down to api v7. */
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha02'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
-    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0-alpha01'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha02'
-    implementation 'androidx.room:room-runtime:2.1.0-alpha04'
-//        implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:7.1.2'
-    annotationProcessor 'androidx.room:room-compiler:2.1.0-alpha04'
+    /* The AndroidX version of 'com.android.support:design'
+     * Another support library that adds support for material components such as NavigationDrawer,
+     * SnackBar, FAB and Tab for older android versions. */
+    implementation 'com.google.android.material:material:1.1.0-alpha04'
     // ViewModel and LiveData
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha02'
     implementation 'androidx.lifecycle:lifecycle-common-java8:2.1.0-alpha02'
-    /* for inspecting the database and network in Chrome. In Iran, use VPN due to sanctions.*/
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
+    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0-alpha01'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha02'
+    implementation 'androidx.preference:preference:1.1.0-alpha03'
+    implementation 'androidx.room:room-runtime:2.1.0-alpha04'
+    annotationProcessor 'androidx.room:room-compiler:2.1.0-alpha04'
+
+    // If you're targeting JDK 8, you can use extended versions of the Kotlin standard library
+    // which contain additional extension functions for APIs added in new JDK versions.
+    // So instead of 'kotlin-stdlib', use 'kotlin-stdlib-jdk8':
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    // Alternative for Google map
+    // implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:7.1.2'
+    implementation 'com.getkeepsafe.taptargetview:taptargetview:1.12.0'
+    // Another tap target library
+    // implementation 'uk.co.samuelwall:material-tap-target-prompt:2.14.0'
+    implementation 'com.mohamadamin:persianmaterialdatetimepicker:1.2.1'
+    implementation 'com.diogobernardino:williamchart:2.5.0'
+    implementation 'ir.huri:JalaliCalendar:1.3.3'
+    implementation 'com.jakewharton:butterknife:10.1.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
+
+    // For inspecting the database and network in Chrome. In Iran, use VPN due to sanctions.
     debugImplementation 'com.facebook.stetho:stetho:1.5.0'
     debugImplementation 'com.facebook.stetho:stetho-js-rhino:1.5.0'
-    /* The AndroidX version of 'com.android.support:design'
-                             * Another support library that adds support for material components such as NavigationDrawer,
-                             * SnackBar, FAB and Tab for older android versions. */
-    implementation 'com.google.android.material:material:1.1.0-alpha04'
-    /* library to show tap targets */
-    implementation 'com.getkeepsafe.taptargetview:taptargetview:1.12.0'
-    /* // another tap target library
-                            implementation 'uk.co.samuelwall:material-tap-target-prompt:2.14.0' */
+    // Another library for debugging android databases and shared preferences
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.room:room-testing:2.0.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
-    implementation 'com.diogobernardino:williamchart:2.5.0'
-    implementation 'com.mohamadamin:persianmaterialdatetimepicker:1.2.1'
-    implementation 'com.jakewharton:butterknife:10.1.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
-    implementation 'androidx.preference:preference:1.1.0-alpha03'
-
-    // another persian date picker
-//    implementation 'com.alirezaafkar:sundatepicker:2.1.1'
-
-    // date converter
-    implementation 'ir.huri:JalaliCalendar:1.3.3'
-
-    // If you're targeting JDK 8, you can use extended versions of the Kotlin standard library
-    // which contain additional extension functions for APIs added in new JDK versions.
-    // Instead of kotlin-stdlib, use kotlin-stdlib-jdk8:
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
