@@ -52,9 +52,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
 
         const val EXTRA_ITEM_ORDER = "com.pleon.buyt.extra.ITEM_ORDER"
         private const val TAG = "MainActivity"
+        private const val STATE_LOCATION = "com.pleon.buyt.state.LOCATION"
         private const val CREATE_STORE_REQUEST_CODE = 1
         private const val REQUEST_LOCATION_PERMISSION = 1
-        private const val STATE_LOCATION = "com.pleon.buyt.state.LOCATION"
 
         // To force kill the app, go to the desired activity, press home button and then run this command:
         // adb shell am kill com.pleon.buyt
@@ -70,24 +70,17 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
         // intent to show map provided by other apps (e.g. google map)
         // see [https://developer.android.com/training/basics/intents/sending]
 
-        // TODO: Call setDragged() method on card when dragging it.
-        // See [https://github.com/material-components/material-components-android/commit/7087f8e5d751be380b6cdd3fa261b639fa57a8df]
-
-        // DONE: The bug that adding new items won't show in main screen is because of configuration change;
-        // after config change the observer in fragment is no longer triggered no matter you again change the config or...
-
         // FIXME: The bug that sometimes occur when expanding an item (the bottom item jumps up one moment),
         // is produced when another item was swiped partially
 
         // TODO: In onDestroy(), onPause() and... do the reverse things you did in onCreate(), onResume() and...
 
         /*
-     * DONE: if the bottomAppBar is hidden (by scrolling) and then you expand an Item, the fab jumps up
-     * The bug seems to have nothing to do with the expanding animation and persists even without that animation
-     */
+         * DONE: if the bottomAppBar is hidden (by scrolling) and then you expand an Item, the fab jumps up
+         * The bug seems to have nothing to do with the expanding animation and persists even without that animation
+         */
         // FIXME: Use srcCompat instead of src in layout files
-        // FIXME: If number of Items to buy is less than e.g. 4 then don't show the "items to buy" prompt
-        // DONE: the bottom shadow (elevation) of item cards is broken. Maybe because of swipe-to-delete background layer
+        // FIXME: the bottom shadow (elevation) of item cards is broken. Maybe because of swipe-to-delete background layer
         // TODO: For testing app components see [https://developer.android.com/jetpack/docs/guide#test-components]
         // FIXME: when dragging items, in some situations** item moves from behind of other cards
         // **: this happens if the card being dragged over by this card, has itself dragged over this card in the past.
@@ -97,8 +90,6 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
         // see the following to probably fix it:
         // https://github.com/brianwernick/RecyclerExt/blob/master/library/src/main/java/com/devbrackets/android/recyclerext/adapter/helper/SimpleElevationItemTouchHelperCallback.java
 
-        // DONE: What if someone forgets to tick items of a shop and then later wants to tick them: He can skip finding location
-
         // FIXME: Shift to idle state if the app is in finding state and all items are deleted meanwhile
         // OR disable swipe-to-delete when the state is not in IDLE
         // FIXME: Slide-up bottom bar if it was hidden (because of scroll) and some items were deleted and
@@ -106,11 +97,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
         // TODO: Use a ViewStub in AddItemFragment layout for the part that is not shown until bought is checked
         // TODO: Redesign the logo in 24 by 24 grid in inkscape to make it crisp (like standard icons)
         // TODO: Add widgets for the app see[https://developer.android.com/guide/topics/appwidgets/overview]
-        // DONE: Show the found store (icon or name) in bottomAppBar when location found (selecting mode)
         // TODO: Make icons animation durations consistent
         // TODO: Convert the logo to path (with "path -> stroke to path" option) and then recreate the logo
         // FIXME: Update position field of items if an item is deleted
-        // DONE: Add ability to cancel completely when in input price mode
         // TODO: Add option in settings to enable/disable showing urgent items at top of the list
         // DONE: Add a button (custom view) at the end of SelectionListAdapter to create a new Store
         // DONE: Add a separator (e.g. comma) in every 3 digits of price and other numeric fields
@@ -118,10 +107,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
         // TODO: Reimplement item unit switch button with this approach: https://stackoverflow.com/a/48640424/8583692
         // TODO: Add a functionality to merge another device data to a device (e.g. can merge all family spending data to father's phone)
         // TODO: Add an action in bottomAppBar in Add Item activity to select a date for showing the item in home page
-        // DONE: For circular coloring of swipe background, see https://stackoverflow.com/q/46460978/8583692
         // TODO: Use DiffUtil class (google it!) instead of calling notifyDataSetChanged() method of adapter
-        // DONE: Add an reorder icon to bottomAppBar so when taped, the cards show a handle to order them
-        // DONE: Disable buyt fab button when there is no item
         // TODO: For correct margins of cards, Texts, ... see the page of that component in design section of material.io
         // TODO: disable the reorder items icon in bottomAppBar when number of items is less than 2 (by 'enabled' property of the menu item)
         // TODO: Embed ads in between of regular items
@@ -129,32 +115,24 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
         // see [https://developer.android.com/guide/topics/ui/shortcuts/creating-shortcuts]
         // TODO: Add snap to center for recyclerView items
         // DONE: Convert the main screen layout to ConstraintLayout and animate it (it seems possible with the help of guidelines)
-        // TODO: Collapse the chart a little in main screen when scrolling down (with coordinatorLayout)
+        // TODO: Collapse the chart when scrolling down (with coordinatorLayout)
         // TODO: extract margins and dimensions into xml files
         // DONE: Add feature to select a date to see its costs
         // TODO: for the item list to only one item be expanded see https://stackoverflow.com/q/27203817/8583692
         // TODO: I can request the necessary permissions in the end of the app tutorial
         // FIXME: Correct all names and ids according to best practices
         // FIXME: Fix the query for chart data to start from the beginning of the first day (instead of just -7 days)
-        // DONE: Use butter knife to declare activity views and view handlers
         // TODO: Enable the user to disable location rationale dialog and always enter stores manually
         // TODO: What is Spherical Law of Cosines? (for locations)
         // TODO: Add the functionality to export and import all app data
         // TODO: Try to first provide an MVP (minimally viable product) version of the app
         // TODO: Make viewing stores on map a premium feature
-        // DONE: Enable the user to change the radius that app uses to find near stores in settings
         // TODO: Add ability to remove all app data
         // TODO: Add android.support.annotation to the app
         // TODO: For every new version of the app display a what's new page on first app open
-        // DONE: Convert the app architecture to MVVM
         // TODO: Convert all ...left and ...right attributes to ...start and ...end
-        // DONE: Add ability (an icon) for each item to mark it as high priority
-        // DONE: Add animation to item expand icon
-        // DONE: Ability to add details (description) for each item
         // TODO: Show a small progress bar of how much has been spent if user has set a limit on spends
         // TODO: use downloadable fonts instead of integrating the font in the app to reduce the app size
-        /* DONE: What happens if two stores are near each other and only one of them is saved in the app.
-       now if user has bought something from the other store, it is saved for the persisted store */
         // TODO: new version of MaterialCardView will include a setCheckedIcon. check it out
         /* TODO: Show a prompt (or an emoji or whatever) when there is no items in the home screen
        to do this, add a new View to the layout and play with its setVisibility as appropriate
