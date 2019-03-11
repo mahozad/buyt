@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.pleon.buyt.R
 
-open class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity() {
 
     companion object {
         const val KEY_PREF_THEME = "theme"
@@ -13,8 +13,9 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme()
+        setTheme() // Must be called before anything else
         super.onCreate(savedInstanceState)
+        setContentView(layoutResource())
         setSupportActionBar(findViewById(R.id.bottom_bar))
     }
 
@@ -23,4 +24,6 @@ open class BaseActivity : AppCompatActivity() {
         val theme = preferences.getString(KEY_PREF_THEME, DEFAULT_THEME)
         setTheme(if (theme == DEFAULT_THEME) R.style.AppTheme else R.style.LightTheme)
     }
+
+    abstract fun layoutResource(): Int
 }
