@@ -316,8 +316,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
              * can be identified by checking if the id of menu item equals android.R.id.home. */
             android.R.id.home -> when {
                 viewModel.state == IDLE -> {
-                    val bottomDrawerFragment = BottomDrawerFragment.newInstance()
-                    bottomDrawerFragment.show(supportFragmentManager, "BOTTOM_SHEET")
+                    BottomDrawerFragment().show(supportFragmentManager, "BOTTOM_SHEET")
                 }
                 viewModel.state == FINDING -> { // then it is cancel button
                     stopService(Intent(this, GpsService::class.java))

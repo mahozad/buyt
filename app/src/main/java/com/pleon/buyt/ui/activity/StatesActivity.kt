@@ -51,8 +51,7 @@ class StatesActivity : BaseActivity(), SelectDialogFragment.Callback {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_filter -> {
-                val dialog = SelectDialogFragment
-                        .newInstance(this, R.string.dialog_title_select_filter, filterList)
+                val dialog = SelectDialogFragment.newInstance(this, R.string.dialog_title_select_filter, filterList)
                 dialog.show(supportFragmentManager, "SELECTION_DIALOG")
             }
 
