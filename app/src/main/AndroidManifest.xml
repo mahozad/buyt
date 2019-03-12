@@ -18,7 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.StoresActivity"></activity>
+        <activity android:name=".ui.activity.HelpActivity"></activity>
+        <activity android:name=".ui.activity.StoresActivity" />
         <activity
             android:name=".ui.activity.SettingsActivity"
             android:parentActivityName=".ui.activity.MainActivity" />
