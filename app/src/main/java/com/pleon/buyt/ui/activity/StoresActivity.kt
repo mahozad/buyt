@@ -6,7 +6,7 @@ import com.pleon.buyt.R
 
 class StoresActivity : BaseActivity() {
 
-    override fun layoutResource() = R.layout.activity_states
+    override fun layoutResource() = R.layout.activity_stores
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_bottom_stores, menu)
