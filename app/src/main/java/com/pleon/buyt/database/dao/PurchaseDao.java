@@ -110,8 +110,8 @@ public abstract class PurchaseDao {
             "   (SELECT strftime('%Y-%m-%d', date, 'unixepoch', 'localtime') AS date, sum(totalPrice) AS totalCost" +
             "    FROM Purchase NATURAL JOIN Item" +
             "    WHERE" + PERIOD_CLAUSE + "AND (:filter IS NULL OR category = :filter)" +
-            "    GROUP BY date) Costs " +
-            "ON AllDates.date = Costs.date " +
+            "    GROUP BY date) DailyCosts " +
+            "ON AllDates.date = DailyCosts.date " +
             "GROUP BY AllDates.date")
     abstract List<DailyCost> getDailyCosts(int period, Category filter);
 }
