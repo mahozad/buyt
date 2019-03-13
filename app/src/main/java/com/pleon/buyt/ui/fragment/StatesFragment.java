@@ -111,7 +111,7 @@ public class StatesFragment extends Fragment {
 
         LineSet dataSet = new LineSet();
         for (DailyCost dailyCost : dailyCosts) {
-            dataSet.addPoint(dailyCost.getDa(), dailyCost.getTotalCost());
+            dataSet.addPoint(dailyCost.getDate(), dailyCost.getTotalCost());
         }
 
         if (viewModel.getPeriod().length <= 20) {

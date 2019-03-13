@@ -99,16 +99,19 @@ public abstract class PurchaseDao {
             "group by day")
     abstract long getAverageDailyPurchaseCost(int period, Category filter);
 
-    @Query(" WITH RECURSIVE AllDates(da,cost)" +
+    @Query(" WITH RECURSIVE AllDates(date, cost)" +
             "AS (SELECT strftime('%Y-%m-%d', 'now', 'localtime', -:period||' days'), 0" +
             "    UNION ALL" +
-            "    SELECT strftime('%Y-%m-%d', da, '+1 days'), 0" +
-            "    FROM alldates" +
-            "    WHERE da < strftime('%Y-%m-%d', 'now', 'localtime')) " +
-            "SELECT da, totalCost FROM alldates LEFT JOIN " +
-            "   (SELECT strftime('%Y-%m-%d', date, 'unixepoch', 'localtime') AS date, SUM(totalPrice) AS totalCost" +
+            "    SELECT strftime('%Y-%m-%d', date, '+1 days'), 0" +
+            "    FROM AllDates" +
+            "    WHERE date < strftime('%Y-%m-%d', 'now', 'localtime')) " +
+            "SELECT AllDates.date, sum(totalCost) AS totalCost " +
+            "FROM AllDates LEFT JOIN " +
+            "   (SELECT strftime('%Y-%m-%d', date, 'unixepoch', 'localtime') AS date, sum(totalPrice) AS totalCost" +
             "    FROM Purchase NATURAL JOIN Item" +
             "    WHERE" + PERIOD_CLAUSE + "AND (:filter IS NULL OR category = :filter)" +
-            "    GROUP BY date) ON da = date")
+            "    GROUP BY date) Costs " +
+            "ON AllDates.date = Costs.date " +
+            "GROUP BY AllDates.date")
     abstract List<DailyCost> getDailyCosts(int period, Category filter);
 }

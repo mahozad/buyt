@@ -40,16 +40,16 @@ public class DailyCost {
         }
     }
 
-    private final String da;
+    private final String date;
     private final long totalCost;
 
-    public DailyCost(String da, long totalCost) {
-        this.da = da;
+    public DailyCost(String date, long totalCost) {
+        this.date = date;
         this.totalCost = totalCost;
     }
 
-    public String getDa() {
-        return da;
+    public String getDate() {
+        return date;
     }
 
     public long getTotalCost() {
