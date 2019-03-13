@@ -40,20 +40,20 @@ public class DailyCost {
         }
     }
 
-    private int day;
+    private String date;
     private long cost;
 
-    public DailyCost(int day, long cost) {
-        this.day = day;
+    public DailyCost(String date, long cost) {
+        this.date = date;
         this.cost = cost;
     }
 
-    public int getDay() {
-        return day;
+    public String getDate() {
+        return date;
     }
 
-    public void setDay(int day) {
-        this.day = day;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public long getCost() {

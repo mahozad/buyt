@@ -18,10 +18,14 @@ import com.pleon.buyt.model.Category;
 import com.pleon.buyt.model.DailyCost;
 import com.pleon.buyt.viewmodel.StatisticsViewModel;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
@@ -49,6 +53,9 @@ public class StatesFragment extends Fragment {
     @BindView(R.id.textView7) TextView minPurchaseCostTxvi;
     @BindView(R.id.textView9) TextView weekdayWithMaxPurchaseTxvi;
     @BindView(R.id.textView17) TextView storeWithMaxPurchaseTxvi;
+
+    private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+
 
     // Update the statistics when date changes (for example time changes from 23:59 to 00:00)
     private Date today = new Date();
@@ -111,22 +118,18 @@ public class StatesFragment extends Fragment {
     private void showGraph(List<DailyCost> dailyCosts) {
         lineChart.reset();
 
-        int now = 0;
+        Map<String, Long> dayToCostMap = new HashMap<>();
         for (DailyCost cost : dailyCosts) {
-            if (cost.getCost() == -1) {
-                now = cost.getDay();
-                dailyCosts.remove(cost);
-            }
+            dayToCostMap.put(cost.getDate(), cost.getCost());
         }
 
-        Map<Integer, Long> dayToCostMap = new HashMap<>();
-        for (DailyCost cost : dailyCosts) {
-            dayToCostMap.put(cost.getDay(), cost.getCost());
-        }
-
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, -viewModel.getPeriod().length);
         LineSet dataSet = new LineSet();
-        for (int i = now - viewModel.getPeriod().length + 1; i <= now; i++) {
-            dataSet.addPoint("" + i, dayToCostMap.containsKey(i) ? dayToCostMap.get(i) : 0);
+        for (int i = 0; i < viewModel.getPeriod().length; i++) {
+            calendar.add(Calendar.DATE, 1);
+            String date = dateFormat.format(calendar.getTime());
+            dataSet.addPoint("" + i, dayToCostMap.containsKey(date) ? dayToCostMap.get(date) : 0);
         }
 
         if (viewModel.getPeriod().length <= 20) {
@@ -163,7 +166,6 @@ public class StatesFragment extends Fragment {
         viewModel.togglePeriod();
         String caption = getString(R.string.chart_caption, viewModel.getPeriod().length);
         chartCaption.setText(caption);
-
         showStatistics();
     }
 
@@ -173,7 +175,6 @@ public class StatesFragment extends Fragment {
 
     public void setFilter(Category filter) {
         viewModel.setFilter(filter);
-
         showStatistics();
     }
 }

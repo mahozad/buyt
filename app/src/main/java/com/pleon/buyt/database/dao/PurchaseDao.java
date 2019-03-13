@@ -98,11 +98,9 @@ public abstract class PurchaseDao {
             "group by day")
     abstract long getAverageDailyPurchaseCost(int period, Category filter);
 
-    @Query("SELECT strftime('%j', date, 'unixepoch', 'localtime') AS day, SUM(totalPrice) AS cost " +
+    @Query("SELECT strftime('%Y-%m-%d', date, 'unixepoch', 'localtime') AS day, SUM(totalPrice) AS cost " +
             "FROM purchase natural join item " +
             "where" + PERIOD_CLAUSE + "and (:filter is null or category = :filter)" +
-            "GROUP BY day " +
-            "UNION ALL " +
-            "SELECT strftime('%j', 'now', 'localtime') AS day, -1 AS cost")
+            "GROUP BY day ")
     abstract List<DailyCost> getDailyCosts(int period, Category filter);
 }
