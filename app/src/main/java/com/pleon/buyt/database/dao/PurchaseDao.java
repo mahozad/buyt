@@ -32,7 +32,8 @@ public abstract class PurchaseDao {
     public Statistics getStats(int period, @Nullable Category filter) {
         Statistics statistics = new Statistics();
 
-        statistics.setDailyCosts(getDailyCosts(period, filter));
+        // This query returns one extra day so do --period
+        statistics.setDailyCosts(getDailyCosts(--period, filter));
         statistics.setTotalPurchaseCost(getTotalPurchaseCost(period, filter));
         statistics.setAveragePurchaseCost(getAveragePurchaseCost(period, filter));
         statistics.setMostPurchasedCategory(getMostPurchasedCategory(period));
@@ -98,9 +99,16 @@ public abstract class PurchaseDao {
             "group by day")
     abstract long getAverageDailyPurchaseCost(int period, Category filter);
 
-    @Query("SELECT strftime('%Y-%m-%d', date, 'unixepoch', 'localtime') AS day, SUM(totalPrice) AS cost " +
-            "FROM purchase natural join item " +
-            "where" + PERIOD_CLAUSE + "and (:filter is null or category = :filter)" +
-            "GROUP BY day ")
+    @Query(" WITH RECURSIVE AllDates(da,cost)" +
+            "AS (SELECT strftime('%Y-%m-%d', 'now', 'localtime', -:period||' days'), 0" +
+            "    UNION ALL" +
+            "    SELECT strftime('%Y-%m-%d', da, '+1 days'), 0" +
+            "    FROM alldates" +
+            "    WHERE da < strftime('%Y-%m-%d', 'now', 'localtime')) " +
+            "SELECT da, totalCost FROM alldates LEFT JOIN " +
+            "   (SELECT strftime('%Y-%m-%d', date, 'unixepoch', 'localtime') AS date, SUM(totalPrice) AS totalCost" +
+            "    FROM Purchase NATURAL JOIN Item" +
+            "    WHERE" + PERIOD_CLAUSE + "AND (:filter IS NULL OR category = :filter)" +
+            "    GROUP BY date) ON da = date")
     abstract List<DailyCost> getDailyCosts(int period, Category filter);
 }

@@ -40,27 +40,19 @@ public class DailyCost {
         }
     }
 
-    private String date;
-    private long cost;
+    private final String da;
+    private final long totalCost;
 
-    public DailyCost(String date, long cost) {
-        this.date = date;
-        this.cost = cost;
+    public DailyCost(String da, long totalCost) {
+        this.da = da;
+        this.totalCost = totalCost;
     }
 
-    public String getDate() {
-        return date;
+    public String getDa() {
+        return da;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public long getCost() {
-        return cost;
-    }
-
-    public void setCost(long cost) {
-        this.cost = cost;
+    public long getTotalCost() {
+        return totalCost;
     }
 }
