@@ -1,11 +1,14 @@
 package com.pleon.buyt.database.dao;
 
+import com.pleon.buyt.database.converter.DateConverter;
 import com.pleon.buyt.model.Category;
 import com.pleon.buyt.model.DailyCost;
 import com.pleon.buyt.model.Purchase;
 import com.pleon.buyt.model.Statistics;
 import com.pleon.buyt.model.Store;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.Nullable;
@@ -99,6 +102,23 @@ public abstract class PurchaseDao {
             "group by day")
     abstract long getAverageDailyPurchaseCost(int period, Category filter);
 
+    /**
+     * Returns total costs per day.
+     * <p>
+     * This query also includes dates that did not have any purchase in them (so it
+     * assigns 0 as the total cost for those dates). For more information, see
+     * <a href="https://www.sqlite.org/lang_with.html">the official documentation of WITH clause
+     * in sqlite</a>.
+     * <p>
+     * If you want to return the date as a
+     * {@link Date java Date} object, then change type of the field in {@link DailyCost}
+     * from {@link String} to {@link Date} and modify the {@link DateConverter} to convert
+     * from String to Date (using a {@link DateFormat} or other approaches).
+     *
+     * @param period number of days to return their costs
+     * @param filter the {@link Category category} to filter by
+     * @return list of {@link DailyCost daily costs}
+     */
     @Query(" WITH RECURSIVE AllDates(date, cost)" +
             "AS (SELECT DATE('now', 'localtime', -:period||' days'), 0" +
             "    UNION ALL" +
@@ -106,10 +126,9 @@ public abstract class PurchaseDao {
             "    WHERE date < DATE('now', 'localtime')) " +
             "SELECT AllDates.date, SUM(totalCost) AS totalCost " +
             "FROM AllDates LEFT JOIN " +
-            "   (SELECT DATE(date, 'unixepoch', 'localtime') AS date, SUM(totalPrice) AS totalCost" +
+            "   (SELECT DATE(date, 'unixepoch', 'localtime') AS date, totalPrice AS totalCost" +
             "    FROM Purchase NATURAL JOIN Item" +
-            "    WHERE" + PERIOD_CLAUSE + "AND (:filter IS NULL OR category = :filter)" +
-            "    GROUP BY date) DailyCosts " +
+            "    WHERE" + PERIOD_CLAUSE + "AND (:filter IS NULL OR category = :filter)) DailyCosts " +
             "ON AllDates.date = DailyCosts.date " +
             "GROUP BY AllDates.date")
     abstract List<DailyCost> getDailyCosts(int period, Category filter);
