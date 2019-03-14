@@ -6,6 +6,7 @@ import android.content.*
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
+import android.location.Location
 import android.location.LocationManager
 import android.location.LocationManager.GPS_PROVIDER
 import android.os.Bundle
@@ -272,7 +273,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
             bottom_bar.setNavigationIcon(R.drawable.avd_cancel_nav)
             storeMenuItem.setIcon(viewModel.storeIcon).setTitle(viewModel.getStoreTitle()).isVisible = true
             reorderMenuItem.isVisible = false
-            bottom_bar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_END // this is because menu items go behind fab
+            bottom_bar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_END
         }
         if (newbie) {
             // Make plus icon glow a little bit if the user is a newbie!
@@ -342,9 +343,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
         }
     }
 
-    override fun onExitConfirmed() {
-        super.onBackPressed()
-    }
+    override fun onExitConfirmed() = super.onBackPressed()
 
     /**
      * [ViewModels][androidx.lifecycle.ViewModel] only survive configuration changes but
@@ -367,7 +366,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-        // There is nothing special in IDLE state to save here; In FINDING state app runs a
+        // There is nothing special in IDLE state to save here; In FINDING state, app runs a
         // FOREGROUND service and is unkillable so this state also doesn't need to save its data
 
         if (viewModel.state == SELECTING) {
@@ -386,7 +385,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
             itemListFragment.toggleItemsCheckbox(true)
         } else if (savedInstanceState.containsKey(STATE_LOCATION)) {
             // Bundle contains location but previous condition (viewModel.getState() == SELECTING)
-            // was not true, so this is a restore from a PROCESS KILL
+            // was not true, so this is restore from a PROCESS KILL
+            val location = savedInstanceState.getParcelable<Location>(STATE_LOCATION)
+            // TODO: Restore the selecting state
             bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_CENTER
             showSnackbar(R.string.snackbar_message_start_over, LENGTH_INDEFINITE, android.R.string.ok)
         }
