@@ -46,8 +46,8 @@ import java.util.*
 
 class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitDialog.Callback, Callback {
 
-    //    UI controllers such as activities and fragments are primarily intended to display UI data,
-    //    react to user actions, or handle operating system communication, such as permission requests.
+    // UI controllers such as activities and fragments are primarily intended to display UI data,
+    // react to user actions, or handle operating system communication, such as permission requests.
 
     companion object {
 
@@ -366,6 +366,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
+        // TODO: Use Saved State module for ViewModel instead.
+        // See [https://developer.android.com/topic/libraries/architecture/viewmodel-savedstate]
+
         // There is nothing special in IDLE state to save here; In FINDING state, app runs a
         // FOREGROUND service and is unkillable so this state also doesn't need to save its data
 
@@ -459,7 +462,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
                 viewModel.isFindingSkipped = false // Reset the flag
             } else {
                 viewModel.storeIcon = R.drawable.ic_store_new // to use on config change
-                viewModel.setStoreTitle(R.string.menu_hint_new_store_found)
+                viewModel.storeTitle = R.string.menu_hint_new_store_found
                 storeMenuItem.setIcon(viewModel.storeIcon).setTitle(viewModel.getStoreTitle()).isVisible = true
                 shiftToSelectingState()
             }
@@ -585,7 +588,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
             itemListFragment.sortItemsByCategory(stores[0].category) // TODO: move this to another method
         } else {
             viewModel.storeIcon = R.drawable.ic_store_multi // to use on config change
-            viewModel.setStoreTitle(R.string.menu_hint_multi_store_found)
+            viewModel.storeTitle = R.string.menu_hint_multi_store_found
             storeMenuItem.setIcon(viewModel.storeIcon).title = viewModel.getStoreTitle()
         }
     }

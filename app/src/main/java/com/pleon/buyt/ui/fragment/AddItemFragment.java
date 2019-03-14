@@ -109,6 +109,8 @@ public class AddItemFragment extends Fragment implements DatePickerDialog.OnDate
 
         viewModel = ViewModelProviders.of(this).get(AddItemViewModel.class);
 
+        // When an activity is opened from an intent, the bundle of extras is delivered to the activity
+        // both when the configuration changes and when the system restores the activity from process kill.
         viewModel.setItemOrder(getActivity().getIntent().getIntExtra(MainActivity.EXTRA_ITEM_ORDER, 0));
 
         TypedValue typedValue = new TypedValue();

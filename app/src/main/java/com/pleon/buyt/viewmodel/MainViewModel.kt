@@ -1,7 +1,6 @@
 package com.pleon.buyt.viewmodel
 
 import android.app.Application
-import android.content.SharedPreferences
 import android.location.Location
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -33,16 +32,24 @@ import java.util.*
  */
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val preferences: SharedPreferences = getDefaultSharedPreferences(application)
-    private val mMainRepository: MainRepository = MainRepository(application)
+    companion object {
+        private const val EARTH_RADIUS = 6371000.0 // In meters
+    }
+
+    enum class State {
+        IDLE, FINDING, SELECTING
+    }
+
+    private val preferences = getDefaultSharedPreferences(application)
+    private val mMainRepository = MainRepository(application)
     @Volatile var state = IDLE
     var location: Location? = null
-    var isFindingSkipped: Boolean = false
+    var isFindingSkipped = false
     var foundStores: MutableList<Store> = ArrayList()
-    var shouldCompletePurchase: Boolean = false
-    var shouldAnimateNavIcon: Boolean = false
-    @DrawableRes var storeIcon: Int = 0
-    @StringRes private var storeTitle: Int = 0
+    var shouldCompletePurchase = false
+    var shouldAnimateNavIcon = false
+    @DrawableRes var storeIcon = 0
+    @StringRes var storeTitle = 0
 
     // TODO: Use paging library architecture component
     val allItems: LiveData<List<Item>>
@@ -51,44 +58,24 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val allStores: LiveData<List<Store>>
         get() = mMainRepository.allStores
 
-    enum class State {
-        IDLE, FINDING, SELECTING
-    }
-
     fun findNearStores(origin: Coordinates): LiveData<List<Store>> {
-        val distInMeters = Integer.parseInt(preferences.getString("distance", "50")!!)
+        val distInMeters = preferences.getString("distance", "50")!!.toInt()
         val nearStoresDistance = cos(distInMeters / EARTH_RADIUS)
         return mMainRepository.findNearStores(origin, nearStoresDistance)
-    }
-
-    fun updateItems(items: Collection<Item>) {
-        mMainRepository.updateItems(items)
     }
 
     fun buy(items: Collection<Item>, store: Store, purchaseDate: Date) {
         mMainRepository.buy(items, store, purchaseDate)
     }
 
-    fun deleteItem(item: Item) {
-        mMainRepository.deleteItem(item)
-    }
+    fun updateItems(items: Collection<Item>) = mMainRepository.updateItems(items)
 
-    fun resetFoundStores() {
-        foundStores.clear()
-    }
+    fun deleteItem(item: Item) = mMainRepository.deleteItem(item)
+
+    fun resetFoundStores() = foundStores.clear()
 
     fun getStoreTitle(): String {
-        return if (foundStores.size == 1)
-            foundStores[0].name
-        else
-            getApplication<Application>().getString(storeTitle)
-    }
-
-    fun setStoreTitle(storeTitle: Int) {
-        this.storeTitle = storeTitle
-    }
-
-    companion object {
-        private const val EARTH_RADIUS = 6371000.0 // In meters
+        return if (foundStores.size == 1) foundStores[0].name
+        else getApplication<Application>().getString(storeTitle)
     }
 }
