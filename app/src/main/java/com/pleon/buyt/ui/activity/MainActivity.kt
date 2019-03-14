@@ -215,7 +215,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
 
         // This is just to disable add icon glow animation after first added item
         viewModel.allItems.observe(this, Observer { items ->
-            if (newbie && items.size > 0) {
+            if (newbie && items.isNotEmpty()) {
                 getPreferences(Context.MODE_PRIVATE).edit().putBoolean("NEWBIE", false).apply()
                 addMenuItem?.setIcon(R.drawable.avd_add_hide)
             }
@@ -478,7 +478,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
     private fun showSnackbar(message: Int, length: Int, action: Int?) {
         val snackbar = Snackbar.make(snackBarContainer, message, length)
         if (action != null) {
-            snackbar.setAction(action) {/* to dismiss snackbar on click */ v -> }
+            snackbar.setAction(action) { /* to dismiss snackbar on click */ }
         }
         snackbar.show()
     }
@@ -557,7 +557,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
         }
     }
 
-    fun buySelectedItems() {
+    private fun buySelectedItems() {
         if (itemListFragment.validateSelectedItemsPrice()) {
             if (viewModel.foundStores.size == 0) {
                 viewModel.shouldCompletePurchase = true

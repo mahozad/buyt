@@ -20,8 +20,8 @@ import androidx.room.Transaction;
 @Dao
 public abstract class PurchaseDao {
 
-    private static final String PERIOD_CLAUSE =
-            " date >= strftime('%s', 'now', 'localtime', 'start of day', -:period || ' days') ";
+    private static final String PERIOD_CLAUSE = " date >= STRFTIME('%s', 'now', 'localtime', 'start of day', -:period || ' days') ";
+    private static final String FILTER_CLAUSE = " (:filter IS NULL OR category = :filter) ";
 
     @Insert
     public abstract long insert(Purchase purchase);
@@ -50,7 +50,7 @@ public abstract class PurchaseDao {
     }
 
     @Query("select sum(totalPrice) from purchase natural join item " +
-            "where" + PERIOD_CLAUSE + "and (:filter is null or category = :filter)")
+            "where" + PERIOD_CLAUSE + "AND" + FILTER_CLAUSE)
     abstract long getTotalPurchaseCost(int period, Category filter);
 
     @Query("select category from purchase natural join item where" + PERIOD_CLAUSE +
@@ -60,12 +60,12 @@ public abstract class PurchaseDao {
     abstract Category getMostPurchasedCategory(int period);
 
     @Query("select count(Distinct purchaseId) from purchase natural join item " +
-            "where" + PERIOD_CLAUSE + "and (:filter is null or category = :filter)")
+            "where" + PERIOD_CLAUSE + "and" + FILTER_CLAUSE)
     abstract int getNumberOfPurchases(int period, Category filter);
 
     @Query("select strftime('%w', date, 'unixepoch', 'localtime') AS day, sum(totalPrice)" +
             "from purchase natural join item " +
-            "where" + PERIOD_CLAUSE + "and (:filter is null or category = :filter) " +
+            "where" + PERIOD_CLAUSE + "and" + FILTER_CLAUSE +
             "group by day " +
             "order by sum(totalPrice) desc " +
             "limit 1;")
@@ -73,7 +73,7 @@ public abstract class PurchaseDao {
 
     @Query("select avg(cost) from " +
             "(select sum(totalPrice) as cost from purchase natural join item " +
-            "where" + PERIOD_CLAUSE + "and (:filter is null or category = :filter)" +
+            "where" + PERIOD_CLAUSE + "and" + FILTER_CLAUSE +
             "group by purchaseId)")
     abstract long getAveragePurchaseCost(int period, Category filter);
 
@@ -86,49 +86,49 @@ public abstract class PurchaseDao {
 
     @Query("select max(cost) from " +
             "(select sum(totalPrice) as cost from purchase natural join item " +
-            "where" + PERIOD_CLAUSE + "and (:filter is null or category = :filter)" +
+            "where" + PERIOD_CLAUSE + "and" + FILTER_CLAUSE +
             "group by purchaseId)")
     abstract long getMaxPurchaseCost(int period, Category filter);
 
     @Query("select min(cost) from " +
             "(select sum(totalPrice) as cost from purchase natural join item " +
-            "where" + PERIOD_CLAUSE + "and (:filter is null or category = :filter)" +
+            "where" + PERIOD_CLAUSE + "and" + FILTER_CLAUSE +
             "group by purchaseId)")
     abstract long getMinPurchaseCost(int period, Category filter);
 
     @Query("select strftime('%j', date, 'unixepoch', 'localtime') AS day, avg(totalPrice) " +
             "from purchase natural join item " +
-            "where" + PERIOD_CLAUSE + "and (:filter is null or category = :filter)" +
+            "where" + PERIOD_CLAUSE + "and" + FILTER_CLAUSE +
             "group by day")
     abstract long getAverageDailyPurchaseCost(int period, Category filter);
 
     /**
-     * Returns total costs per day.
+     * Returns total costs per day that are within the specified period and match the filter.
      * <p>
      * This query also includes dates that did not have any purchase in them (so it
-     * assigns 0 as the total cost for those dates). For more information, see
-     * <a href="https://www.sqlite.org/lang_with.html">the official documentation of WITH clause
-     * in sqlite</a>.
+     * returns 0 as the total cost for those dates). For more information, see
+     * <a href="https://www.sqlite.org/lang_with.html">the official documentation of
+     * WITH clause in sqlite</a>.
      * <p>
-     * If you want to return the date as a
-     * {@link Date java Date} object, then change type of the field in {@link DailyCost}
-     * from {@link String} to {@link Date} and modify the {@link DateConverter} to convert
-     * from String to Date (using a {@link DateFormat} or other approaches).
+     * If you want to return the date as a {@link Date java Date} object, then change
+     * type of the field in {@link DailyCost} from {@link String} to {@link Date} and
+     * modify the {@link DateConverter} to convert from String to Date
+     * (using a {@link DateFormat} or any other approaches).
      *
      * @param period number of days to return their costs
      * @param filter the {@link Category category} to filter by
      * @return list of {@link DailyCost daily costs}
      */
-    @Query(" WITH RECURSIVE AllDates(date, cost)" +
-            "AS (SELECT DATE('now', 'localtime', -:period||' days'), 0" +
+    @Query(" WITH RECURSIVE AllDates(date)" +
+            "AS (SELECT DATE('now', 'localtime', -:period||' days')" +
             "    UNION ALL" +
-            "    SELECT DATE(date, '+1 days'), 0 FROM AllDates" +
+            "    SELECT DATE(date, '+1 days') FROM AllDates" +
             "    WHERE date < DATE('now', 'localtime')) " +
-            "SELECT AllDates.date, SUM(totalCost) AS totalCost " +
+            "SELECT AllDates.date, SUM(totalPrice) AS totalCost " +
             "FROM AllDates LEFT JOIN " +
-            "   (SELECT DATE(date, 'unixepoch', 'localtime') AS date, totalPrice AS totalCost" +
+            "   (SELECT DATE(date, 'unixepoch', 'localtime') AS date, totalPrice" +
             "    FROM Purchase NATURAL JOIN Item" +
-            "    WHERE" + PERIOD_CLAUSE + "AND (:filter IS NULL OR category = :filter)) DailyCosts " +
+            "    WHERE" + PERIOD_CLAUSE + "AND" + FILTER_CLAUSE + ") DailyCosts " +
             "ON AllDates.date = DailyCosts.date " +
             "GROUP BY AllDates.date")
     abstract List<DailyCost> getDailyCosts(int period, Category filter);
