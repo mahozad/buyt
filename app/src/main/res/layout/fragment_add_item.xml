@@ -62,7 +62,7 @@
                 app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/quantity"
+                    android:id="@+id/quantityEd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawablePadding="8dp"
@@ -212,8 +212,8 @@
                 android:hint="@string/input_hint_price"
                 app:errorEnabled="true">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/price"
+                <com.pleon.buyt.ui.EditTextWithSuffix
+                    android:id="@+id/priceEd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawablePadding="8dp"
@@ -242,7 +242,7 @@
             app:layout_constraintTop_toBottomOf="@id/price_container">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/date"
+                android:id="@+id/dateEd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"

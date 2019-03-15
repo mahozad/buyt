@@ -45,7 +45,7 @@ class StatesFragment : Fragment() {
     val period: StatisticsViewModel.Period
         get() = viewModel.period
 
-    var filter: Category
+    var filter: Category?
         get() = viewModel.filter
         set(filter) {
             viewModel.filter = filter
@@ -57,7 +57,7 @@ class StatesFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(StatisticsViewModel::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedState: Bundle?): View {
         val view = inflater.inflate(R.layout.fragment_states, container, false)
         unbinder = ButterKnife.bind(this, view) // unbind() is required only for Fragments
 

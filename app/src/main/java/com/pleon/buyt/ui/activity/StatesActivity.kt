@@ -40,7 +40,7 @@ class StatesActivity : BaseActivity(), SelectDialogFragment.Callback {
 
         filterMenuItem = menu.findItem(R.id.action_filter)
         filterMenuItem!!.setIcon(if (statesFragment.filter == null)
-            R.drawable.ic_filter else statesFragment.filter.imageRes)
+            R.drawable.ic_filter else statesFragment.filter!!.imageRes)
 
         menu.findItem(R.id.action_toggle_period).setIcon(statesFragment.period.imageRes)
         (menu.getItem(0).icon as Animatable).start() // Animate icon to get its final shape
