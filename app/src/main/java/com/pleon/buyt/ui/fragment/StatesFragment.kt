@@ -12,8 +12,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import butterknife.ButterKnife
-import butterknife.Unbinder
 import com.db.chart.animation.Animation
 import com.db.chart.model.LineSet
 import com.db.chart.renderer.AxisRenderer.LabelPosition.NONE
@@ -40,7 +38,6 @@ class StatesFragment : Fragment() {
     }
 
     private lateinit var viewModel: StatisticsViewModel
-    private lateinit var unbinder: Unbinder
 
     val period: StatisticsViewModel.Period
         get() = viewModel.period
@@ -52,23 +49,19 @@ class StatesFragment : Fragment() {
             showStatistics()
         }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(StatisticsViewModel::class.java)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedState: Bundle?): View {
+        return inflater.inflate(R.layout.fragment_states, container, false)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedState: Bundle?): View {
-        val view = inflater.inflate(R.layout.fragment_states, container, false)
-        unbinder = ButterKnife.bind(this, view) // unbind() is required only for Fragments
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        viewModel = ViewModelProviders.of(this).get(StatisticsViewModel::class.java)
 
         activity!!.registerReceiver(timeReceiver, timeTickIntent)
 
         val caption = getString(R.string.chart_caption, viewModel.period.length)
-        chartCaption!!.text = caption
+        chartCaption.text = caption
 
         showStatistics()
-
-        return view
     }
 
     private fun showStatistics() {
@@ -118,7 +111,6 @@ class StatesFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         activity!!.unregisterReceiver(timeReceiver)
-        unbinder.unbind()
     }
 
     fun togglePeriod() {

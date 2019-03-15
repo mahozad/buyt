@@ -70,6 +70,6 @@ class StatesActivity : BaseActivity(), SelectDialogFragment.Callback {
         val selection = filterList[index]
         filterMenuItem!!.setIcon(selection.image)
         statesFragment.filter = if (selection.name == getString(R.string.no_filter))
-            null else Category.valueOf(selection.name)
+            null else Category.valueOf(selection.name!!)
     }
 }
