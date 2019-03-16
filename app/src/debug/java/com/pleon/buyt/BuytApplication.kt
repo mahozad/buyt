@@ -1,8 +1,8 @@
-package com.pleon.buyt;
+package com.pleon.buyt
 
-import android.app.Application;
+import android.app.Application
 
-import com.facebook.stetho.Stetho;
+import com.facebook.stetho.Stetho
 
 /*
  * if application runs in debug mode, this file will be the "Application" class of the app
@@ -11,10 +11,10 @@ import com.facebook.stetho.Stetho;
  * with Google chrome in: [chrome://inspect].
  * In Iran, use VPN due to sanctions.
  */
-public class BuytApplication extends Application {
+class BuytApplication : Application() {
 
-    public void onCreate() {
-        super.onCreate();
-        Stetho.initializeWithDefaults(this);
+    override fun onCreate() {
+        super.onCreate()
+        Stetho.initializeWithDefaults(this)
     }
 }
