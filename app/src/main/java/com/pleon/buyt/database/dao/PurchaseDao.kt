@@ -27,7 +27,7 @@ abstract class PurchaseDao {
      * The transaction will fail when an exception is thrown in the method body.
      */
     @Transaction
-    open fun getStats(period: Int, filter: Category?): Statistics {
+    open fun getStatistics(period: Int, filter: Category?): Statistics {
         var period = period
         val statistics = Statistics()
 

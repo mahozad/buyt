@@ -56,7 +56,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         get() = mMainRepository.allItems
 
     val allStores: LiveData<List<Store>>
-        get() = mMainRepository.allStores
+        get() = mMainRepository.getAllStores()
 
     fun findNearStores(origin: Coordinates): LiveData<List<Store>> {
         val distInMeters = preferences.getString("distance", "50")!!.toInt()

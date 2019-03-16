@@ -17,7 +17,7 @@ interface StoreDao {
     @Query("SELECT *" +
             "FROM Store " +
             "WHERE :sinLat * sinLat + :cosLat * cosLat * (cosLng * :cosLng + sinLng * :sinLng) > :maxDistance")
-    fun findNearStores(sinLat: Double, cosLat: Double, sinLng: Double, cosLng: Double, maxDistance: Double): List<Store>
+    fun getNearStores(sinLat: Double, cosLat: Double, sinLng: Double, cosLng: Double, maxDistance: Double): List<Store>
 
     @Insert
     fun insert(store: Store): Long

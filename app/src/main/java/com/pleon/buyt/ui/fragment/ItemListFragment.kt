@@ -43,7 +43,7 @@ class ItemListFragment : Fragment(), ItemTouchHelperListener {
         get() = adapter.selectedItems.size == 0
 
     val isCartEmpty: Boolean
-        get() = adapter.items.size == 0
+        get() = adapter.items!!.isEmpty()
 
     val nextItemPosition: Int
         get() = adapter.itemCount
@@ -61,7 +61,7 @@ class ItemListFragment : Fragment(), ItemTouchHelperListener {
         touchHelperCallback = TouchHelperCallback(this)
         val touchHelper = ItemTouchHelper(touchHelperCallback)
         touchHelper.attachToRecyclerView(recyclerView)
-        adapter = ItemListAdapter(context, touchHelper).also { recyclerView.adapter = it }
+        adapter = ItemListAdapter(context!!, touchHelper).also { recyclerView.adapter = it }
     }
 
     override fun onMoved(oldPosition: Int, newPosition: Int) {
@@ -92,10 +92,10 @@ class ItemListFragment : Fragment(), ItemTouchHelperListener {
             override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
                 if (event != DISMISS_EVENT_ACTION) { // If dismiss wasn't because of "UNDO"...
                     // ... then delete the item from database and update order of below items
-                    for (i in item.position until adapter.items.size) {
+                    for (i in item.position until adapter.items!!.size) {
                         adapter.getItem(i).position = adapter.getItem(i).position - 1
                     }
-                    mainViewModel.updateItems(adapter.items)
+                    mainViewModel.updateItems(adapter.items!!)
                     // This should be the last statement because by deleting the item, the observer
                     // is notified and adapter is given the old items with their old positions
                     mainViewModel.deleteItem(item)
@@ -113,7 +113,7 @@ class ItemListFragment : Fragment(), ItemTouchHelperListener {
     override fun onStop() {
         super.onStop()
         if (itemsReordered) {
-            mainViewModel.updateItems(adapter.items)
+            mainViewModel.updateItems(adapter.items!!)
             itemsReordered = false
         }
     }
@@ -131,7 +131,7 @@ class ItemListFragment : Fragment(), ItemTouchHelperListener {
         var validated = true
         for (item in adapter.selectedItems) {
             if (item.totalPrice == 0L) {
-                val itemIndex = adapter.items.indexOf(item) // FIXME: maybe heavy operation
+                val itemIndex = adapter.items!!.indexOf(item) // FIXME: maybe heavy operation
                 val itemView = recyclerView.layoutManager!!.findViewByPosition(itemIndex)
                 val priceLayout = itemView!!.findViewById<TextInputLayout>(R.id.price_layout)
                 priceLayout.error = "price cannot be empty"

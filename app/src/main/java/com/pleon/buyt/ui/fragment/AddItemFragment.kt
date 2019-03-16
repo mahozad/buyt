@@ -192,8 +192,8 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
         selectCategoryTxvi = menu.findItem(R.id.action_item_category).actionView.findViewById(R.id.select_store)
 
         if (viewModel!!.store != null) {
-            selectCategoryTxvi!!.text = viewModel!!.store.name
-            selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(viewModel!!.store.category.storeImageRes, 0, 0, 0)
+            selectCategoryTxvi!!.text = viewModel!!.store!!.name
+            selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(viewModel!!.store!!.category.storeImageRes, 0, 0, 0)
         } else if (bought.isChecked) {
             selectCategoryTxvi!!.setText(R.string.menu_title_select_store)
             selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_store, 0, 0, 0)
@@ -432,8 +432,8 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
             }
 
             if (isBoughtChecked) {
-                item.category = viewModel!!.store.category
-                callback!!.onSubmitPurchasedItem(item, viewModel!!.store, viewModel!!.purchaseDate)
+                item.category = viewModel!!.store!!.category
+                callback!!.onSubmitPurchasedItem(item, viewModel!!.store!!, viewModel!!.purchaseDate)
             } else {
                 callback!!.onSubmit(item)
             }
@@ -444,14 +444,14 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
         val name: String
         val imageRes: Int
         if (isBoughtChecked) {
-            viewModel!!.store = viewModel!!.storeList[index]
-            name = viewModel!!.store.name
-            imageRes = viewModel!!.store.category.storeImageRes
+            viewModel!!.store = viewModel!!.storeList!![index]
+            name = viewModel!!.store!!.name
+            imageRes = viewModel!!.store!!.category.storeImageRes
         } else {
             val category = Category.values()[index]
             name = resources.getString(category.nameRes)
             imageRes = category.imageRes
-            viewModel!!.setItemCategory(category)
+            viewModel!!.category = category
         }
         selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(imageRes, 0, 0, 0)
         selectCategoryTxvi!!.setTextColor(ContextCompat.getColor(context!!, colorOnSurface))

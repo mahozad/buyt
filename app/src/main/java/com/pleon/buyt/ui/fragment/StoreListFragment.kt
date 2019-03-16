@@ -43,7 +43,7 @@ class StoreListFragment : Fragment(), ItemTouchHelperListener {
         // for swipe-to-delete of store
         val touchHelperCallback = TouchHelperCallback(this)
         ItemTouchHelper(touchHelperCallback).attachToRecyclerView(recyclerView)
-        adapter = StoreListAdapter(context).also { recyclerView.adapter = it }
+        adapter = StoreListAdapter(context!!).also { recyclerView.adapter = it }
     }
 
     override fun onMoved(oldPosition: Int, newPosition: Int) {
