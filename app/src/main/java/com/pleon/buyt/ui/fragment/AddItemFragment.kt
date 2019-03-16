@@ -57,8 +57,7 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
     private lateinit var viewModel: AddItemViewModel
     private var selectCategoryTxvi: TextView? = null
 
-    private val isBoughtChecked: Boolean
-        get() = bought.isChecked
+    private val isBoughtChecked = bought.isChecked
 
     private val price: Long
         get() {
@@ -485,8 +484,9 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
         return validated
     }
 
-    private fun isEmpty(editText: EditText) =
-            editText.text.toString().trim { it <= ' ' }.isEmpty()
+    private fun isEmpty(editText: EditText): Boolean {
+        return editText.text.toString().trim { it <= ' ' }.isEmpty()
+    }
 
     interface Callback {
         fun onItemAdded(item: Item, purchased: Boolean)

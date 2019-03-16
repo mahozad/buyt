@@ -25,37 +25,25 @@ import kotlinx.android.synthetic.main.fragment_item_list.*
 import java.util.*
 import java.util.Collections.sort
 
-/**
- * Mandatory empty constructor for the fragment manager to instantiate the
- * fragment (e.g. upon screen orientation changes).
- */
 class ItemListFragment : Fragment(), ItemTouchHelperListener {
 
+    val isSelectedEmpty = adapter.selectedItems.isEmpty()
+    val selectedItems = adapter.selectedItems
+    val isCartEmpty = adapter.items!!.isEmpty()
+    val nextItemPosition = adapter.itemCount
+    private lateinit var viewModel: MainViewModel
     private lateinit var adapter: ItemListAdapter
-    private lateinit var mainViewModel: MainViewModel
     private lateinit var touchHelperCallback: TouchHelperCallback
     private var itemsReordered = false
-
-    val selectedItems: Set<Item>
-        get() = adapter.selectedItems
-
-    val isSelectedEmpty: Boolean
-        get() = adapter.selectedItems.size == 0
-
-    val isCartEmpty: Boolean
-        get() = adapter.items!!.isEmpty()
-
-    val nextItemPosition: Int
-        get() = adapter.itemCount
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_item_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
-        mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         // In fragments use getViewLifecycleOwner() as owner argument
-        mainViewModel.allItems.observe(viewLifecycleOwner, Observer { adapter.items = it })
+        viewModel.allItems.observe(viewLifecycleOwner, Observer { adapter.items = it })
 
         // for swipe-to-delete and drag-n-drop of item
         touchHelperCallback = TouchHelperCallback(this)
@@ -77,7 +65,7 @@ class ItemListFragment : Fragment(), ItemTouchHelperListener {
         val item = adapter.getItem(viewHolder.adapterPosition)
 
         item.isFlaggedForDeletion = true
-        mainViewModel.updateItems(listOf(item))
+        viewModel.updateItems(listOf(item))
 
         showUndoSnackbar(item)
     }
@@ -86,7 +74,7 @@ class ItemListFragment : Fragment(), ItemTouchHelperListener {
         val snackbar = Snackbar.make(activity!!.snackBarContainer, getString(R.string.snackbar_message_item_deleted, item.name), LENGTH_LONG)
         snackbar.setAction(getString(R.string.snackbar_action_undo)) {
             item.isFlaggedForDeletion = false
-            mainViewModel.updateItems(listOf(item))
+            viewModel.updateItems(listOf(item))
         }
         snackbar.addCallback(object : BaseCallback<Snackbar>() {
             override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
@@ -95,10 +83,10 @@ class ItemListFragment : Fragment(), ItemTouchHelperListener {
                     for (i in item.position until adapter.items!!.size) {
                         adapter.getItem(i).position = adapter.getItem(i).position - 1
                     }
-                    mainViewModel.updateItems(adapter.items!!)
+                    viewModel.updateItems(adapter.items!!)
                     // This should be the last statement because by deleting the item, the observer
                     // is notified and adapter is given the old items with their old positions
-                    mainViewModel.deleteItem(item)
+                    viewModel.deleteItem(item)
                 }
             }
         })
@@ -113,7 +101,7 @@ class ItemListFragment : Fragment(), ItemTouchHelperListener {
     override fun onStop() {
         super.onStop()
         if (itemsReordered) {
-            mainViewModel.updateItems(adapter.items!!)
+            viewModel.updateItems(adapter.items!!)
             itemsReordered = false
         }
     }
@@ -154,9 +142,8 @@ class ItemListFragment : Fragment(), ItemTouchHelperListener {
 
     fun sortItemsByOrder() {
         sort(adapter.items) { item1, item2 ->
-            if (item1.isUrgent != item2.isUrgent) {
-                if (item1.isUrgent) -1 else +1
-            } else item1.position - item2.position
+            if (item1.isUrgent != item2.isUrgent) if (item1.isUrgent) -1 else +1
+            else item1.position - item2.position
         }
     }
 }

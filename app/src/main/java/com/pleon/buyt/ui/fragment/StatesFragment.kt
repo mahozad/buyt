@@ -38,9 +38,7 @@ class StatesFragment : Fragment() {
     }
 
     private lateinit var viewModel: StatisticsViewModel
-
-    val period: StatisticsViewModel.Period
-        get() = viewModel.period
+    val period = viewModel.period
 
     var filter: Category?
         get() = viewModel.filter

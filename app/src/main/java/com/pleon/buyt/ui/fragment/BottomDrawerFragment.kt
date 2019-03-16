@@ -8,13 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.activity.HelpActivity
 import com.pleon.buyt.ui.activity.SettingsActivity
 import com.pleon.buyt.ui.activity.StatesActivity
 import com.pleon.buyt.ui.activity.StoresActivity
 
-class BottomDrawerFragment : BottomSheetDialogFragment(), NavigationView.OnNavigationItemSelectedListener {
+class BottomDrawerFragment : BottomSheetDialogFragment(), OnNavigationItemSelectedListener {
 
     companion object {
         @Suppress("unused")
