@@ -119,10 +119,10 @@ class ItemListAdapter(private val context: Context, private val itemTouchHelper:
         }
 
         fun bindItem(item: Item) {
-            itemView.categoryIcon.setImageResource(item.category.imageRes)
+            itemView.categoryIcon.setImageResource(item.category!!.imageRes)
             itemView.item_name.text = item.name
             itemView.description.text = item.description
-            itemView.item_quantity.text = numberFormat.format(item.quantity.quantity) + " " + context.getString(item.quantity.unit.nameRes)
+            itemView.item_quantity.text = numberFormat.format(item.quantity!!.quantity) + " " + context.getString(item.quantity!!.unit!!.nameRes)
             itemView.urgentIcon.visibility = if (item.isUrgent) VISIBLE else INVISIBLE
             itemView.selectCheckBox.isChecked = selectedItems.contains(item)
             itemView.description.visibility = if (selectionModeEnabled || !item.isExpanded) GONE else VISIBLE

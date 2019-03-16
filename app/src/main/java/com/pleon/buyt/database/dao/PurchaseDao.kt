@@ -33,12 +33,12 @@ abstract class PurchaseDao {
 
         // This query returns one extra day so do --period
         statistics.dailyCosts = getDailyCosts(--period, filter)
-        statistics.setTotalPurchaseCost(getTotalPurchaseCost(period, filter))
-        statistics.setAveragePurchaseCost(getAveragePurchaseCost(period, filter))
+        statistics.totalPurchaseCost = (getTotalPurchaseCost(period, filter))
+        statistics.averagePurchaseCost = (getAveragePurchaseCost(period, filter))
         statistics.setMostPurchasedCategory(getMostPurchasedCategory(period))
-        statistics.setNumberOfPurchases(getNumberOfPurchases(period, filter))
-        statistics.setMaxPurchaseCost(getMaxPurchaseCost(period, filter))
-        statistics.setMinPurchaseCost(getMinPurchaseCost(period, filter))
+        statistics.numberOfPurchases = (getNumberOfPurchases(period, filter))
+        statistics.maxPurchaseCost = (getMaxPurchaseCost(period, filter))
+        statistics.minPurchaseCost = (getMinPurchaseCost(period, filter))
         statistics.setWeekdayWithMaxPurchases(getWeekdayWithMaxPurchaseCount(period, filter))
         statistics.setStoreWithMaxPurchaseCount(getStoreWithMaxPurchaseCount(period, filter))
 

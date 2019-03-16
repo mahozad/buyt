@@ -57,7 +57,7 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
     private lateinit var viewModel: AddItemViewModel
     private var selectCategoryTxvi: TextView? = null
 
-    private val isBoughtChecked = bought.isChecked
+    private val isBoughtChecked get() = bought.isChecked
 
     private val price: Long
         get() {
@@ -104,7 +104,6 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
      * would like to add items to the Options Menu. Otherwise, the fragment doesn't receive a call
      * to onCreateOptionsMenu(). Any items that you then add to the Options Menu from the fragment
      * are appended to the existing menu items.
-     *
      *
      * Note: Although your fragment receives an on-item-selected callback for each menu item it adds,
      * the activity is first to receive the respective callback when the user selects a menu item.
@@ -191,7 +190,7 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
 
         if (viewModel.store != null) {
             selectCategoryTxvi!!.text = viewModel.store!!.name
-            selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(viewModel.store!!.category.storeImageRes, 0, 0, 0)
+            selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(viewModel.store!!.category!!.storeImageRes, 0, 0, 0)
         } else if (bought.isChecked) {
             selectCategoryTxvi!!.setText(R.string.menu_title_select_store)
             selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_store, 0, 0, 0)
@@ -211,7 +210,7 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
                     viewModel.storeList = stores
                     selectionList.clear()
                     for (store in stores) {
-                        val selection = SelectionDialogRow(store.name, store.category.storeImageRes)
+                        val selection = SelectionDialogRow(store.name, store.category!!.storeImageRes)
                         selectionList.add(selection)
                     }
                     val selectStoreDialog = SelectDialogFragment
@@ -445,8 +444,8 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
         val imageRes: Int
         if (isBoughtChecked) {
             viewModel.store = viewModel.storeList!![index]
-            name = viewModel.store!!.name
-            imageRes = viewModel.store!!.category.storeImageRes
+            name = viewModel.store!!.name!!
+            imageRes = viewModel.store!!.category!!.storeImageRes
         } else {
             val category = Category.values()[index]
             name = resources.getString(category.nameRes)

@@ -11,8 +11,8 @@ interface ItemDao {
 
     // language=RoomSql see [https://youtrack.jetbrains.com/issue/KT-13233] if the issue is resolved
     @Query("SELECT * FROM Item " +
-            "WHERE bought = 0 AND flaggedForDeletion = 0 " +
-            "ORDER BY urgent DESC, position ASC")
+            "WHERE isBought = 0 AND isFlaggedForDeletion = 0 " +
+            "ORDER BY isUrgent DESC, position ASC")
     fun getAll(): LiveData<List<Item>>
 
     @Query("SELECT count(*) FROM Item")

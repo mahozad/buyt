@@ -207,7 +207,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
                     v.vibrate(150) // FIXME: Deprecated method
                 }
                 viewModel.location = intent.getParcelableExtra(GpsService.EXTRA_LOCATION)
-                val here = Coordinates(viewModel.location)
+                val here = Coordinates(viewModel.location as Location)
                 viewModel.findNearStores(here).observe(this@MainActivity, Observer { onStoresFound(it) })
             }
         }
@@ -569,7 +569,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
             } else { // show store selection dialog
                 val selectionList = ArrayList<SelectionDialogRow>() // dialog requires ArrayList
                 for (store in viewModel.foundStores) {
-                    val selection = SelectionDialogRow(store.name, store.category.storeImageRes)
+                    val selection = SelectionDialogRow(store.name, store.category!!.storeImageRes)
                     selectionList.add(selection)
                 }
                 val selectStoreDialog = SelectDialogFragment
@@ -582,10 +582,10 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
 
     private fun setStoreMenuItemIcon(stores: List<Store>) {
         if (stores.size == 1) {
-            val icon = stores[0].category.storeImageRes
+            val icon = stores[0].category!!.storeImageRes
             viewModel.storeIcon = icon // to use on config change
             storeMenuItem.setIcon(icon).title = viewModel.getStoreTitle()
-            itemListFragment.sortItemsByCategory(stores[0].category) // TODO: move this to another method
+            itemListFragment.sortItemsByCategory(stores[0].category!!) // TODO: move this to another method
         } else {
             viewModel.storeIcon = R.drawable.ic_store_multi // to use on config change
             viewModel.storeTitle = R.string.menu_hint_multi_store_found

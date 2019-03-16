@@ -64,16 +64,16 @@ class StatesFragment : Fragment() {
 
     private fun showStatistics() {
         viewModel.statistics.observe(this, androidx.lifecycle.Observer { statistics ->
-            showGraph(statistics.dailyCosts)
+            showGraph(statistics.dailyCosts!!)
 
-            textView3.text = statistics.totalPurchaseCost
-            textView.text = statistics.averagePurchaseCost
+            textView3.text = statistics.totalPurchaseCost.toString()
+            textView.text = statistics.averagePurchaseCost.toString()
             if (statistics.mostPurchasedCategoryName != 0) {
                 textView13.setText(statistics.mostPurchasedCategoryName)
             }
-            textView18.text = statistics.numberOfPurchases
-            textView6.text = statistics.maxPurchaseCost
-            textView7.text = statistics.minPurchaseCost
+            textView18.text = statistics.numberOfPurchases.toString()
+            textView6.text = statistics.maxPurchaseCost.toString()
+            textView7.text = statistics.minPurchaseCost.toString()
             textView9.setText(statistics.weekdayNameResWithMaxPurchases)
             textView17.text = statistics.storeNameWithMaxPurchaseCount
         })

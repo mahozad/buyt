@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a80fc5bc375119eb49d659fe30b4eb33",
+    "identityHash": "58935d27696760e9f045ae3326a0b7ca",
     "entities": [
       {
         "tableName": "Item",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`itemId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `purchaseId` INTEGER NOT NULL, `name` TEXT, `description` TEXT, `urgent` INTEGER NOT NULL, `bought` INTEGER NOT NULL, `category` TEXT, `totalPrice` INTEGER NOT NULL, `position` INTEGER NOT NULL, `flaggedForDeletion` INTEGER NOT NULL, `quantity` INTEGER, `unit` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`itemId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `purchaseId` INTEGER NOT NULL, `description` TEXT, `totalPrice` INTEGER NOT NULL, `position` INTEGER NOT NULL, `isFlaggedForDeletion` INTEGER NOT NULL, `name` TEXT, `isUrgent` INTEGER NOT NULL, `isBought` INTEGER NOT NULL, `category` TEXT, `quantity` INTEGER, `unit` TEXT)",
         "fields": [
           {
             "fieldPath": "itemId",
@@ -21,32 +21,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "name",
-            "columnName": "name",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
             "fieldPath": "description",
             "columnName": "description",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "urgent",
-            "columnName": "urgent",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "bought",
-            "columnName": "bought",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "category",
-            "columnName": "category",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -63,10 +39,34 @@
             "notNull": true
           },
           {
-            "fieldPath": "flaggedForDeletion",
-            "columnName": "flaggedForDeletion",
+            "fieldPath": "isFlaggedForDeletion",
+            "columnName": "isFlaggedForDeletion",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isUrgent",
+            "columnName": "isUrgent",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isBought",
+            "columnName": "isBought",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "category",
+            "columnName": "category",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "quantity.quantity",
@@ -92,11 +92,17 @@
       },
       {
         "tableName": "Store",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`storeId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `category` TEXT, `flaggedForDeletion` INTEGER NOT NULL, `latitude` REAL, `longitude` REAL, `cosLat` REAL, `sinLat` REAL, `cosLng` REAL, `sinLng` REAL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`storeId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `isFlaggedForDeletion` INTEGER NOT NULL, `name` TEXT, `category` TEXT, `cosLat` REAL, `sinLat` REAL, `cosLng` REAL, `sinLng` REAL, `latitude` REAL, `longitude` REAL)",
         "fields": [
           {
             "fieldPath": "storeId",
             "columnName": "storeId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isFlaggedForDeletion",
+            "columnName": "isFlaggedForDeletion",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -110,24 +116,6 @@
             "fieldPath": "category",
             "columnName": "category",
             "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "flaggedForDeletion",
-            "columnName": "flaggedForDeletion",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "location.latitude",
-            "columnName": "latitude",
-            "affinity": "REAL",
-            "notNull": false
-          },
-          {
-            "fieldPath": "location.longitude",
-            "columnName": "longitude",
-            "affinity": "REAL",
             "notNull": false
           },
           {
@@ -151,6 +139,18 @@
           {
             "fieldPath": "location.sinLng",
             "columnName": "sinLng",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "location.latitude",
+            "columnName": "latitude",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "location.longitude",
+            "columnName": "longitude",
             "affinity": "REAL",
             "notNull": false
           }
@@ -210,7 +210,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"a80fc5bc375119eb49d659fe30b4eb33\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"58935d27696760e9f045ae3326a0b7ca\")"
     ]
   }
 }

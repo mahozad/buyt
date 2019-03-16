@@ -56,7 +56,7 @@ class StoreListAdapter(private val context: Context) : Adapter<StoreListAdapter.
     inner class StoreHolder(view: View) : BaseViewHolder(view) {
 
         fun bindStore(store: Store) {
-            itemView.storeIcon.setImageResource(store.category.storeImageRes)
+            itemView.storeIcon.setImageResource(store.category!!.storeImageRes)
             itemView.storeName.text = store.name
             itemView.circular_reveal.alpha = 0f // for the case of undo of deleted item
         }

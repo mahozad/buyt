@@ -27,14 +27,14 @@ import java.util.Collections.sort
 
 class ItemListFragment : Fragment(), ItemTouchHelperListener {
 
-    val isSelectedEmpty = adapter.selectedItems.isEmpty()
-    val selectedItems = adapter.selectedItems
-    val isCartEmpty = adapter.items!!.isEmpty()
-    val nextItemPosition = adapter.itemCount
     private lateinit var viewModel: MainViewModel
     private lateinit var adapter: ItemListAdapter
     private lateinit var touchHelperCallback: TouchHelperCallback
     private var itemsReordered = false
+    val isSelectedEmpty get() = adapter.selectedItems.isEmpty()
+    val selectedItems get() = adapter.selectedItems
+    val isCartEmpty get() = adapter.items!!.isEmpty()
+    val nextItemPosition get() = adapter.itemCount
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_item_list, container, false)

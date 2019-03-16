@@ -1,12 +1,14 @@
-package com.pleon.buyt.model;
+package com.pleon.buyt.model
 
-import com.pleon.buyt.R;
-
-import androidx.annotation.DrawableRes;
-import androidx.annotation.StringRes;
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import com.pleon.buyt.R
 
 // TODO: store the enum as a separate table in the database. see [https://softwareengineering.stackexchange.com/a/305153/311271]
-public enum Category {
+enum class Category constructor(@field:StringRes val nameRes: Int,
+                                @field:StringRes val storeNameRes: Int,
+                                @field:DrawableRes val imageRes: Int,
+                                @field:DrawableRes val storeImageRes: Int) {
 
     GROCERY(R.string.item_cat_grocery, R.string.store_cat_grocery_store, R.drawable.ic_item_grocery, R.drawable.ic_store_grocery),
     BREAD(R.string.item_cat_bread, R.string.store_cat_bakery, R.drawable.ic_item_bread, R.drawable.ic_store_bakery),
@@ -27,33 +29,5 @@ public enum Category {
     //    CLOTHES_SHOP(R.string.store_cat_clothes_shop, R.drawable.ic_store_ice_creamy),
     //    SHOE_SHOP(R.string.store_cat_shoe_shop, R.drawable.ic_store_ice_creamy);
     //    OTHER(R.string.item_cat_other, R.drawable.ic_item_other),
-    TOOLS(R.string.item_cat_tools, R.string.store_cat_hardware_store, R.drawable.ic_item_tools, R.drawable.ic_store_hardwary);
-
-    @StringRes private final int name;
-    @StringRes private final int storeName;
-    @DrawableRes private final int image;
-    @DrawableRes private final int storeImage;
-
-    Category(int name, int storeName, int image, int storeImage) {
-        this.name = name;
-        this.storeName = storeName;
-        this.image = image;
-        this.storeImage = storeImage;
-    }
-
-    public int getNameRes() {
-        return name;
-    }
-
-    public int getStoreNameRes() {
-        return storeName;
-    }
-
-    public int getImageRes() {
-        return image;
-    }
-
-    public int getStoreImageRes() {
-        return storeImage;
-    }
+    TOOLS(R.string.item_cat_tools, R.string.store_cat_hardware_store, R.drawable.ic_item_tools, R.drawable.ic_store_hardwary)
 }

@@ -72,7 +72,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun resetFoundStores() = foundStores.clear()
 
     fun getStoreTitle(): String {
-        return if (foundStores.size == 1) foundStores[0].name
+        return if (foundStores.size == 1) foundStores[0].name.toString()
         else getApplication<Application>().getString(storeTitle)
     }
 }
