@@ -41,7 +41,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private val preferences = getDefaultSharedPreferences(application)
-    private val mMainRepository = MainRepository(application)
+    private val repository = MainRepository(application)
     @Volatile var state = IDLE
     var location: Location? = null
     var isFindingSkipped = false
@@ -52,25 +52,22 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     @StringRes var storeTitle = 0
 
     // TODO: Use paging library architecture component
-    val allItems: LiveData<List<Item>>
-        get() = mMainRepository.allItems
+    val allItems = repository.allItems
+    val allStores = repository.getAllStores()
 
-    val allStores: LiveData<List<Store>>
-        get() = mMainRepository.getAllStores()
+    fun buy(items: Collection<Item>, store: Store, purchaseDate: Date) {
+        repository.buy(items, store, purchaseDate)
+    }
 
     fun findNearStores(origin: Coordinates): LiveData<List<Store>> {
         val distInMeters = preferences.getString("distance", "50")!!.toInt()
         val nearStoresDistance = cos(distInMeters / EARTH_RADIUS)
-        return mMainRepository.findNearStores(origin, nearStoresDistance)
+        return repository.findNearStores(origin, nearStoresDistance)
     }
 
-    fun buy(items: Collection<Item>, store: Store, purchaseDate: Date) {
-        mMainRepository.buy(items, store, purchaseDate)
-    }
+    fun updateItems(items: Collection<Item>) = repository.updateItems(items)
 
-    fun updateItems(items: Collection<Item>) = mMainRepository.updateItems(items)
-
-    fun deleteItem(item: Item) = mMainRepository.deleteItem(item)
+    fun deleteItem(item: Item) = repository.deleteItem(item)
 
     fun resetFoundStores() = foundStores.clear()
 

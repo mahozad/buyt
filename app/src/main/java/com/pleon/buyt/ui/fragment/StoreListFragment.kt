@@ -57,6 +57,7 @@ class StoreListFragment : Fragment(), ItemTouchHelperListener {
         store.isFlaggedForDeletion = true
         viewModel.updateStore(store)
 
+        // TODO: Use Anko to show snackbar
         showUndoSnackbar(store)
     }
 

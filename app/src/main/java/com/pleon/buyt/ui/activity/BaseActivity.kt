@@ -16,7 +16,7 @@ abstract class BaseActivity : AppCompatActivity() {
         setTheme() // Call before anything else
         super.onCreate(savedInstanceState)
 
-        setContentView(layoutResource())
+        setContentView(layout())
         setSupportActionBar(findViewById(R.id.bottom_bar))
     }
 
@@ -26,5 +26,5 @@ abstract class BaseActivity : AppCompatActivity() {
         setTheme(if (theme == DEFAULT_THEME) R.style.AppTheme else R.style.LightTheme)
     }
 
-    abstract fun layoutResource(): Int
+    abstract fun layout(): Int
 }

@@ -10,7 +10,7 @@ import org.jetbrains.anko.uiThread
 
 class StoreRepository(context: Context) {
 
-    private val storeDao = AppDatabase.getDatabase(context).storeDao()
+    private val storeDao = AppDatabase.getDatabase(context)!!.storeDao()
     private val createdStore = SingleLiveEvent<Store>()
     val all = storeDao.getAll()
 

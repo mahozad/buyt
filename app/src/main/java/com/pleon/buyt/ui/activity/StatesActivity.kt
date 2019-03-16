@@ -21,7 +21,7 @@ class StatesActivity : BaseActivity(), SelectDialogFragment.Callback {
     private var filterList: ArrayList<SelectionDialogRow> = ArrayList()
     private var filterMenuItem: MenuItem? = null
 
-    override fun layoutResource() = R.layout.activity_states
+    override fun layout() = R.layout.activity_states
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

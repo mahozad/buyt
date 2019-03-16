@@ -30,13 +30,15 @@ abstract class AppDatabase : RoomDatabase() {
 
         private const val DATABASE_NAME = "buyt-database.db"
 
-        private lateinit var instance: AppDatabase
+        private var instance: AppDatabase? = null
 
-        fun getDatabase(context: Context): AppDatabase {
+        fun getDatabase(context: Context): AppDatabase? {
             // TODO: Make this method thread safe. See the previous java version
-            instance = Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME)
-                    // .fallbackToDestructiveMigration()
-                    .build()
+            if (instance == null) {
+                instance = Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME)
+                        // .fallbackToDestructiveMigration()
+                        .build()
+            }
             return instance
         }
 

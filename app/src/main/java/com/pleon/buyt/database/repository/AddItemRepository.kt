@@ -10,8 +10,8 @@ import java.util.*
 
 class AddItemRepository(application: Application) {
 
-    private val itemDao = AppDatabase.getDatabase(application).itemDao()
-    private val purchaseDao = AppDatabase.getDatabase(application).purchaseDao()
+    private val itemDao = AppDatabase.getDatabase(application)!!.itemDao()
+    private val purchaseDao = AppDatabase.getDatabase(application)!!.purchaseDao()
     val itemNames = itemDao.getItemNames()
 
     fun addItem(item: Item) = doAsync { itemDao.insert(item) }

@@ -18,9 +18,9 @@ import java.util.*
 // to fetch data from a network or use results cached in a local database.
 class MainRepository(application: Application) { // TODO: make this class singleton
 
-    private val itemDao = AppDatabase.getDatabase(application).itemDao()
-    private val storeDao = AppDatabase.getDatabase(application).storeDao()
-    private val purchaseDao = AppDatabase.getDatabase(application).purchaseDao()
+    private val itemDao = AppDatabase.getDatabase(application)!!.itemDao()
+    private val storeDao = AppDatabase.getDatabase(application)!!.storeDao()
+    private val purchaseDao = AppDatabase.getDatabase(application)!!.purchaseDao()
     private val nearStores = SingleLiveEvent<List<Store>>()
     private val allStores = SingleLiveEvent<List<Store>>()
     val allItems = itemDao.getAll()

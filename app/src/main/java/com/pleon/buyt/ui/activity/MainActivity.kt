@@ -156,7 +156,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
     private lateinit var addStoreMenuItem: MenuItem
     private var newbie: Boolean = false
 
-    override fun layoutResource() = R.layout.activity_main
+    override fun layout() = R.layout.activity_main
 
     /**
      * The broadcast receiver is registered in this method because of this quote: "Does the receiver

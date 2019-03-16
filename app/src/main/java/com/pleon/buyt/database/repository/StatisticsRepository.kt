@@ -11,7 +11,7 @@ import org.jetbrains.anko.uiThread
 
 class StatisticsRepository(application: Application) { // TODO: make this class singleton
 
-    private val purchaseDao = AppDatabase.getDatabase(application).purchaseDao()
+    private val purchaseDao = AppDatabase.getDatabase(application)!!.purchaseDao()
     private val statistics = SingleLiveEvent<Statistics>()
 
     fun getStatistics(period: Int, filter: Category?): LiveData<Statistics> {

@@ -9,7 +9,7 @@ import org.jetbrains.anko.doAsync
 
 class PurchaseRepository(application: Application) {
 
-    private val purchaseDao: PurchaseDao = AppDatabase.getDatabase(application).purchaseDao()
+    private val purchaseDao: PurchaseDao = AppDatabase.getDatabase(application)!!.purchaseDao()
     private val insertedPurchaseId = MutableLiveData<Long>()
 
     fun insert(purchase: Purchase): MutableLiveData<Long> {

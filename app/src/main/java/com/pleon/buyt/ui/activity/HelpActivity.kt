@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.activity_help.*
 
 class HelpActivity : BaseActivity() {
 
-    override fun layoutResource() = com.pleon.buyt.R.layout.activity_help
+    override fun layout() = com.pleon.buyt.R.layout.activity_help
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

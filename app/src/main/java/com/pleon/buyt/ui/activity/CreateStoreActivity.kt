@@ -16,7 +16,7 @@ class CreateStoreActivity : BaseActivity(), CreateStoreFragment.Callback {
     private lateinit var viewModel: CreateStoreViewModel
     private lateinit var createStoreFrag: CreateStoreFragment
 
-    override fun layoutResource() = R.layout.activity_create_store
+    override fun layout() = R.layout.activity_create_store
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
