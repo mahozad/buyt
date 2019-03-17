@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "58935d27696760e9f045ae3326a0b7ca",
+    "identityHash": "465bec2cdfa02540aea0639920ed75bd",
     "entities": [
       {
         "tableName": "Item",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`itemId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `purchaseId` INTEGER NOT NULL, `description` TEXT, `totalPrice` INTEGER NOT NULL, `position` INTEGER NOT NULL, `isFlaggedForDeletion` INTEGER NOT NULL, `name` TEXT, `isUrgent` INTEGER NOT NULL, `isBought` INTEGER NOT NULL, `category` TEXT, `quantity` INTEGER, `unit` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`itemId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `purchaseId` INTEGER NOT NULL, `description` TEXT, `totalPrice` INTEGER NOT NULL, `position` INTEGER NOT NULL, `isFlaggedForDeletion` INTEGER NOT NULL, `name` TEXT NOT NULL, `isUrgent` INTEGER NOT NULL, `isBought` INTEGER NOT NULL, `category` TEXT NOT NULL, `quantity` INTEGER NOT NULL, `unit` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "itemId",
@@ -48,7 +48,7 @@
             "fieldPath": "name",
             "columnName": "name",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "isUrgent",
@@ -66,19 +66,19 @@
             "fieldPath": "category",
             "columnName": "category",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "quantity.quantity",
             "columnName": "quantity",
             "affinity": "INTEGER",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "quantity.unit",
             "columnName": "unit",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -92,7 +92,7 @@
       },
       {
         "tableName": "Store",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`storeId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `isFlaggedForDeletion` INTEGER NOT NULL, `name` TEXT, `category` TEXT, `cosLat` REAL, `sinLat` REAL, `cosLng` REAL, `sinLng` REAL, `latitude` REAL, `longitude` REAL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`storeId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `isFlaggedForDeletion` INTEGER NOT NULL, `name` TEXT NOT NULL, `category` TEXT NOT NULL, `cosLat` REAL NOT NULL, `sinLat` REAL NOT NULL, `cosLng` REAL NOT NULL, `sinLng` REAL NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL)",
         "fields": [
           {
             "fieldPath": "storeId",
@@ -110,49 +110,49 @@
             "fieldPath": "name",
             "columnName": "name",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "category",
             "columnName": "category",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "location.cosLat",
             "columnName": "cosLat",
             "affinity": "REAL",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "location.sinLat",
             "columnName": "sinLat",
             "affinity": "REAL",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "location.cosLng",
             "columnName": "cosLng",
             "affinity": "REAL",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "location.sinLng",
             "columnName": "sinLng",
             "affinity": "REAL",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "location.latitude",
             "columnName": "latitude",
             "affinity": "REAL",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "location.longitude",
             "columnName": "longitude",
             "affinity": "REAL",
-            "notNull": false
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -176,7 +176,7 @@
       },
       {
         "tableName": "Purchase",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`purchaseId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `storeId` INTEGER NOT NULL, `date` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`purchaseId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `storeId` INTEGER NOT NULL, `date` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "purchaseId",
@@ -194,7 +194,7 @@
             "fieldPath": "date",
             "columnName": "date",
             "affinity": "INTEGER",
-            "notNull": false
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -210,7 +210,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"58935d27696760e9f045ae3326a0b7ca\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"465bec2cdfa02540aea0639920ed75bd\")"
     ]
   }
 }

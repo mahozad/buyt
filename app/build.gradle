@@ -91,7 +91,7 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.1.0-alpha03")
     implementation("androidx.preference:preference:1.1.0-alpha04")
     implementation("androidx.room:room-runtime:2.1.0-alpha05")
-    kapt("androidx.room:room-compiler:2.1.0-alpha05")
+    kapt("androidx.room:room-compiler:2.1.0-alpha04")
 
     /* If you're targeting JDK 8, you can use extended versions of the Kotlin standard library
      * which contain additional extension functions for APIs added in new JDK versions.

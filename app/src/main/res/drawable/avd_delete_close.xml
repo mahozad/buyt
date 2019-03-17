@@ -18,7 +18,7 @@
     <target android:name="path">
         <aapt:attr name="android:animation">
             <objectAnimator
-                android:duration="160"
+                android:duration="180"
                 android:interpolator="@android:interpolator/fast_out_slow_in"
                 android:propertyName="pathData"
                 android:valueFrom="M 6 19 C 6 20.1 6.9 21 8 21 L 16 21 C 17.1 21 18 20.1 18 19 L 18 9 C 18 7.9 17.1 7 16 7 L 8 7 C 6.9 7 6 7.9 6 9 Z M 18.31 4.957 L 16 4 L 15.616 3.072 C 15.518 2.837 15.32 2.636 15.08 2.537 L 11.218 0.937 C 10.978 0.837 10.696 0.84 10.461 0.937 L 9.533 1.321 L 7.223 0.365 C 6.715 0.154 6.127 0.398 5.917 0.906 C 5.706 1.414 5.95 2.002 6.458 2.212 L 17.544 6.804 C 18.052 7.015 18.64 6.771 18.851 6.263 C 19.061 5.755 18.818 5.167 18.31 4.957 Z"
