@@ -13,8 +13,8 @@ import com.pleon.buyt.model.Coordinates
 import com.pleon.buyt.model.Item
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.viewmodel.MainViewModel.State.IDLE
-import java.lang.Math.cos
 import java.util.*
+import kotlin.math.cos
 
 // The ViewModel's role is to provide data to the UI and survive configuration changes.
 // Every screen in the app (an activity with all its fragments) has one corresponding viewModel for itself.

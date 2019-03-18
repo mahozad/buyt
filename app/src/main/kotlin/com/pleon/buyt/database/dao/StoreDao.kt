@@ -13,10 +13,7 @@ interface StoreDao {
     @Query("SELECT * FROM Store")
     fun getAllList(): List<Store>
 
-    // language=RoomSql see [https://youtrack.jetbrains.com/issue/KT-13233] if the issue is resolved
-    @Query("SELECT *" +
-            "FROM Store " +
-            "WHERE :sinLat * sinLat + :cosLat * cosLat * (cosLng * :cosLng + sinLng * :sinLng) > :maxDistance")
+    @Query("SELECT * FROM Store WHERE :sinLat * sinLat + :cosLat * cosLat * (cosLng * :cosLng + sinLng * :sinLng) > :maxDistance")
     fun getNearStores(sinLat: Double, cosLat: Double, sinLng: Double, cosLng: Double, maxDistance: Double): List<Store>
 
     @Insert
