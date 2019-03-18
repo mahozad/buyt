@@ -40,7 +40,7 @@ import com.pleon.buyt.ui.dialog.*
 import com.pleon.buyt.ui.dialog.Callback
 import com.pleon.buyt.ui.fragment.BottomDrawerFragment
 import com.pleon.buyt.ui.fragment.CreateStoreFragment
-import com.pleon.buyt.ui.fragment.ItemListFragment
+import com.pleon.buyt.ui.fragment.ItemsFragment
 import com.pleon.buyt.viewmodel.MainViewModel
 import com.pleon.buyt.viewmodel.MainViewModel.State.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -53,16 +53,15 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
 
     private val TAG by lazy { MainActivity::class.java.simpleName }
 
+    private lateinit var viewModel: MainViewModel
+    private lateinit var itemsFragment: ItemsFragment
     private lateinit var preferences: SharedPreferences
     private lateinit var locationMgr: LocationManager
     private lateinit var locationReceiver: BroadcastReceiver
-    private lateinit var viewModel: MainViewModel
-    private lateinit var itemListFragment: ItemListFragment
     private lateinit var addMenuItem: MenuItem
     private lateinit var reorderMenuItem: MenuItem
     private lateinit var storeMenuItem: MenuItem
     private lateinit var addStoreMenuItem: MenuItem
-    private var newbie: Boolean = false
 
     override fun layout() = R.layout.activity_main
 
@@ -79,74 +78,26 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
         preferences = getDefaultSharedPreferences(this)
-        if (preferences.getBoolean("themeChanged", false)) { // restore drawer
-            val bottomDrawerFragment = BottomDrawerFragment()
-            bottomDrawerFragment.show(supportFragmentManager, "BOTTOM_SHEET")
+
+        if (preferences.getBoolean("themeChanged", false)) { // Restore drawer
+            BottomDrawerFragment().show(supportFragmentManager, "BOTTOM_SHEET")
             preferences.edit().putBoolean("themeChanged", false).apply()
         }
 
-        newbie = getDefaultSharedPreferences(this).getBoolean("NEWBIE", true)
-        if (newbie) {
-            bottom_bar.inflateMenu(R.menu.menu_bottom_home) // This is to ensure menu item is ready
-            TapTargetSequence(this).targets(
-                    forToolbarMenuItem(bottom_bar, R.id.action_add, "Add your items")
-                            .transparentTarget(true).cancelable(false),
-                    forView(fab, "Tap here when you're near or in the store")
-                            .transparentTarget(true).cancelable(false))
-                    .listener(object : TapTargetSequence.Listener {
-                        override fun onSequenceStep(lastTarget: TapTarget?, clicked: Boolean) {}
-                        override fun onSequenceCanceled(lastTarget: TapTarget?) {}
-                        override fun onSequenceFinish() {
-                            getDefaultSharedPreferences(applicationContext).edit().putBoolean("NEWBIE", false).apply()
-                        }
-                    })
-                    .start()
-        }
+        if (preferences.getBoolean("NEWBIE", true)) showTutorial()
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        itemsFragment = supportFragmentManager.findFragmentById(R.id.itemsFragment) as ItemsFragment
         locationMgr = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
-        // see [https://developer.android.com/guide/components/fragments#Example] for fragment example
-        // As in android developers guild, make this variable a field if needed
+        fab.setOnClickListener { onFabClick() }
+
+        // for fragment example see [https://developer.android.com/guide/components/fragments#Example]
+        // As in android developers guild, make this variable a field if needed:
         // boolean wideLayout = findViewById(R.id.chart) != null;
         // if (wideLayout) {
         //      Do whatever needed
         // }
-
-        locationReceiver = object : BroadcastReceiver() { // on location found
-            override fun onReceive(context: Context, intent: Intent) {
-                if (preferences.getBoolean("vibrate", true)) {
-                    val v = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-                    v.vibrate(150) // FIXME: Deprecated method
-                }
-                viewModel.location = intent.getParcelableExtra(GpsService.EXTRA_LOCATION)
-                val here = Coordinates(viewModel.location as Location)
-                viewModel.findNearStores(here).observe(this@MainActivity, Observer { onStoresFound(it) })
-            }
-        }
-        LocalBroadcastManager.getInstance(this).registerReceiver(locationReceiver, IntentFilter(GpsService.ACTION_LOCATION_EVENT))
-
-
-        // FragmentManager of an activity is responsible for calling the lifecycle methods of the fragments in its list.
-        val fragMgr = supportFragmentManager
-        itemListFragment = fragMgr.findFragmentById(R.id.fragment_items) as ItemListFragment
-
-        fab.setOnClickListener {
-            if (viewModel.state == IDLE) { // act as find
-                if (itemListFragment.isCartEmpty) {
-                    showSnackbar(R.string.snackbar_message_cart_empty, LENGTH_SHORT, null)
-                } else {
-                    itemListFragment.clearSelectedItems() // clear items of previous purchase
-                    findLocation()
-                }
-            } else if (viewModel.state == SELECTING) { // act as done
-                if (itemListFragment.isSelectedEmpty) {
-                    showSnackbar(R.string.snackbar_message_no_item_selected, LENGTH_SHORT, null)
-                } else {
-                    buySelectedItems()
-                }
-            }
-        }
 
         /*
          * // If the activity is re-created due to a config change, any fragments added using the
@@ -162,8 +113,55 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
          * }
          */
 
-        // observe() methods should be set only once (e.g. in activity onCreate() method) so if you
-        // call it every time you want some data, maybe you're doing something wrong
+        locationReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) = onLocationFound()
+        }
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(locationReceiver, IntentFilter(GpsService.ACTION_LOCATION_EVENT))
+    }
+
+    private fun showTutorial() {
+        bottom_bar.inflateMenu(R.menu.menu_bottom_home) // To ensure menu item is ready
+        TapTargetSequence(this).targets(
+                forToolbarMenuItem(bottom_bar, R.id.action_add, getString(R.string.tutorial_add_item))
+                        .transparentTarget(true).cancelable(false),
+                forView(fab, getString(R.string.tutorial_tap_buyt))
+                        .transparentTarget(true).cancelable(false),
+                forToolbarMenuItem(bottom_bar, R.id.action_reorder, getString(R.string.tutorial_skip_finding))
+                        .transparentTarget(true).cancelable(false)
+        ).listener(object : TapTargetSequence.Listener {
+            override fun onSequenceStep(lastTarget: TapTarget?, clicked: Boolean) {}
+            override fun onSequenceCanceled(lastTarget: TapTarget?) {}
+            override fun onSequenceFinish() {
+                preferences.edit().putBoolean("NEWBIE", false).apply()
+                reorderMenuItem.setIcon(R.drawable.avd_skip_reorder).also {
+                    (it.icon as Animatable).start()
+                }
+            }
+        }).start()
+    }
+
+    private fun onLocationFound() {
+        if (preferences.getBoolean("vibrate", true)) {
+            val vibrator = getSystemService(VIBRATOR_SERVICE) as Vibrator
+            vibrator.vibrate(150) // FIXME: Deprecated method
+        }
+        viewModel.location = intent.getParcelableExtra(GpsService.EXTRA_LOCATION)
+        val here = Coordinates(viewModel.location as Location)
+        viewModel.findNearStores(here).observe(this@MainActivity, Observer { onStoresFound(it) })
+    }
+
+    private fun onFabClick() {
+        if (viewModel.state == IDLE) { // act as find
+            if (itemsFragment.isCartEmpty) showSnackbar(R.string.snackbar_message_cart_empty, LENGTH_SHORT)
+            else {
+                itemsFragment.clearSelectedItems() // clear items of previous purchase
+                findLocation()
+            }
+        } else if (viewModel.state == SELECTING) { // act as done
+            if (itemsFragment.isSelectedEmpty) showSnackbar(R.string.snackbar_message_no_item_selected, LENGTH_SHORT)
+            else buySelectedItems()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -190,6 +188,11 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
             } else addMenuItem.setIcon(R.drawable.avd_add_hide)
         })
 
+        // Set icon for the tutorial; At the end of tutorial the icon is corrected
+        if (preferences.getBoolean("NEWBIE", true)) {
+            reorderMenuItem.setIcon(R.drawable.avd_skip_reorder)
+        }
+
         return true
     }
 
@@ -209,13 +212,13 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
         when (item.itemId) {
             R.id.action_add -> {
                 val intent = Intent(this, AddItemActivity::class.java)
-                intent.putExtra(EXTRA_ITEM_ORDER, itemListFragment.nextItemPosition)
+                intent.putExtra(EXTRA_ITEM_ORDER, itemsFragment.nextItemPosition)
                 startActivity(intent)
             }
 
             R.id.action_reorder -> {
                 if (viewModel.state == IDLE) {
-                    if (!itemListFragment.isCartEmpty) itemListFragment.toggleEditMode()
+                    if (!itemsFragment.isCartEmpty) itemsFragment.toggleEditMode()
                 } else skipFinding()
             }
 
@@ -301,7 +304,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
             }
             viewModel.state == SELECTING -> {
                 fab.setImageResource(R.drawable.ic_done)
-                itemListFragment.toggleItemsCheckbox(true)
+                itemsFragment.toggleItemsCheckbox(true)
             }
             savedState.containsKey(STATE_LOCATION) ->
                 // TODO: Restore the selecting state
@@ -372,7 +375,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
         viewModel.foundStores = foundStores.toMutableList()
         if (foundStores.isEmpty()) {
             if (viewModel.isFindingSkipped) {
-                showSnackbar(R.string.snackbar_message_no_store_found, LENGTH_LONG, null)
+                showSnackbar(R.string.snackbar_message_no_store_found, LENGTH_LONG)
                 viewModel.isFindingSkipped = false // Reset the flag
             } else {
                 viewModel.storeIcon = R.drawable.ic_store_new // to use on config change
@@ -389,7 +392,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
         }
     }
 
-    private fun showSnackbar(message: Int, length: Int, action: Int?) {
+    private fun showSnackbar(message: Int, length: Int, action: Int? = null) {
         val snackbar = Snackbar.make(snackBarContainer, message, length)
         if (action != null) {
             snackbar.setAction(action) { /* to dismiss snackbar on click */ }
@@ -414,7 +417,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
     }
 
     private fun shiftToSelectingState() {
-        itemListFragment.toggleItemsCheckbox(true)
+        itemsFragment.toggleItemsCheckbox(true)
 
         if (viewModel.shouldAnimateNavIcon) {
             bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
@@ -430,9 +433,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
     }
 
     private fun shiftToIdleState() {
-        itemListFragment.sortItemsByOrder()
+        itemsFragment.sortItemsByOrder()
         if (viewModel.state == FINDING || viewModel.state == SELECTING) {
-            itemListFragment.toggleItemsCheckbox(false)
+            itemsFragment.toggleItemsCheckbox(false)
 
             fab.setImageResource(if (viewModel.state == FINDING)
                 R.drawable.avd_buyt_reverse
@@ -472,7 +475,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
     }
 
     private fun buySelectedItems() {
-        if (itemListFragment.validateSelectedItemsPrice()) {
+        if (itemsFragment.validateSelectedItemsPrice()) {
             if (viewModel.foundStores.size == 0) {
                 viewModel.shouldCompletePurchase = true
                 val intent = Intent(this, CreateStoreActivity::class.java)
@@ -499,7 +502,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
             val icon = stores[0].category.storeImageRes
             viewModel.storeIcon = icon // to use on config change
             storeMenuItem.setIcon(icon).title = viewModel.getStoreTitle()
-            itemListFragment.sortItemsByCategory(stores[0].category) // TODO: move this to another method
+            itemsFragment.sortItemsByCategory(stores[0].category) // TODO: move this to another method
         } else {
             viewModel.storeIcon = R.drawable.ic_store_multi // to use on config change
             viewModel.storeTitle = R.string.menu_hint_multi_store_found
@@ -528,7 +531,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
     override fun onSelected(index: Int) = completeBuy(viewModel.foundStores[index])
 
     private fun completeBuy(store: Store) {
-        viewModel.buy(itemListFragment.selectedItems, store, Date())
+        viewModel.buy(itemsFragment.selectedItems, store, Date())
         shiftToIdleState()
     }
 

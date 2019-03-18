@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_item_list.*
 import java.util.*
 
-class ItemListFragment : Fragment(), ItemTouchHelperListener {
+class ItemsFragment : Fragment(), ItemTouchHelperListener {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var adapter: ItemListAdapter

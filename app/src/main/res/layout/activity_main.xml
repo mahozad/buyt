@@ -56,8 +56,8 @@
     <!--/>-->
 
     <fragment
-        android:id="@+id/fragment_items"
-        class="com.pleon.buyt.ui.fragment.ItemListFragment"
+        android:id="@+id/itemsFragment"
+        class="com.pleon.buyt.ui.fragment.ItemsFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="20dp"

@@ -8,8 +8,8 @@
     android:orientation="horizontal">
 
     <fragment
-        android:id="@+id/fragment_items"
-        class="com.pleon.buyt.ui.fragment.ItemListFragment"
+        android:id="@+id/itemsFragment"
+        class="com.pleon.buyt.ui.fragment.ItemsFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -35,7 +35,7 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/fragment_items"
+        app:layout_constraintStart_toEndOf="@id/itemsFragment"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible">
 
@@ -95,7 +95,7 @@
         app:chart_labels="inside"
         app:layout_constraintBottom_toTopOf="@id/bar_container"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/fragment_items"
+        app:layout_constraintStart_toEndOf="@id/itemsFragment"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

@@ -80,4 +80,7 @@
     <string name="pref_search_dist_1">۵۰ متر</string>
     <string name="pref_search_dist_2">۱۰۰ متر</string>
     <string name="pref_search_dist_3">۲۰۰ متر</string>
+    <string name="tutorial_add_item">کالاهای مورد نظر خود را اضافه نمایید…</string>
+    <string name="tutorial_tap_buyt">داخل یا در نزدیکی مغازه ضربه بزنید تا مغازه پیدا شود</string>
+    <string name="tutorial_skip_finding">اگر مغازه از قبل ذخیره شده است، می‌توانید مرحله جستجو را رد کنید</string>
 </resources>
