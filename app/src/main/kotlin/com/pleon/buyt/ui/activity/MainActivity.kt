@@ -23,6 +23,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat.registerAnimationCallback
+import com.getkeepsafe.taptargetview.TapTarget
+import com.getkeepsafe.taptargetview.TapTarget.forToolbarMenuItem
 import com.getkeepsafe.taptargetview.TapTarget.forView
 import com.getkeepsafe.taptargetview.TapTargetSequence
 import com.google.android.material.bottomappbar.BottomAppBar
@@ -83,28 +85,33 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
             preferences.edit().putBoolean("themeChanged", false).apply()
         }
 
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        locationMgr = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
         newbie = getDefaultSharedPreferences(this).getBoolean("NEWBIE", true)
         if (newbie) {
-            // show tap target for FAB
+            bottom_bar.inflateMenu(R.menu.menu_bottom_home) // This is to ensure menu item is ready
             TapTargetSequence(this).targets(
+                    forToolbarMenuItem(bottom_bar, R.id.action_add, "Add your items")
+                            .transparentTarget(true).cancelable(false),
                     forView(fab, "Tap here when you're near or in the store")
-                            .outerCircleColor(R.color.colorAccent)
-                            .targetCircleColor(android.R.color.background_light)
-                            .transparentTarget(true)
-                            .textColor(android.R.color.background_dark))
+                            .transparentTarget(true).cancelable(false))
+                    .listener(object : TapTargetSequence.Listener {
+                        override fun onSequenceStep(lastTarget: TapTarget?, clicked: Boolean) {}
+                        override fun onSequenceCanceled(lastTarget: TapTarget?) {}
+                        override fun onSequenceFinish() {
+                            getDefaultSharedPreferences(applicationContext).edit().putBoolean("NEWBIE", false).apply()
+                        }
+                    })
                     .start()
         }
 
-        //        see [https://developer.android.com/guide/components/fragments#Example] for fragment example
-        //        As in android developers guild, make this variable a field if needed
-        //        boolean wideLayout = findViewById(R.id.chart) != null;
-        //        if (wideLayout) {
-        //             Do whatever needed
-        //        }
+        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        locationMgr = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
+        // see [https://developer.android.com/guide/components/fragments#Example] for fragment example
+        // As in android developers guild, make this variable a field if needed
+        // boolean wideLayout = findViewById(R.id.chart) != null;
+        // if (wideLayout) {
+        //      Do whatever needed
+        // }
 
         locationReceiver = object : BroadcastReceiver() { // on location found
             override fun onReceive(context: Context, intent: Intent) {
@@ -175,29 +182,27 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
             bottom_bar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_END
         }
 
-        // This is just to disable add icon glow animation after first added item
+        // Enable/Disable add menuItem animation
         viewModel.allItems.observe(this, Observer { items ->
-            if (newbie) getPreferences(MODE_PRIVATE).edit().putBoolean("NEWBIE", false).apply()
-
             if (items.isEmpty()) {
                 addMenuItem.setIcon(R.drawable.avd_add_glow)
-                animateAddIcon()
+                animateIconInfinitely(addMenuItem.icon)
             } else addMenuItem.setIcon(R.drawable.avd_add_hide)
         })
 
         return true
     }
 
-    private fun animateAddIcon() {
+    private fun animateIconInfinitely(icon: Drawable) {
         // Make plus icon glow a little bit if the user is a newbie!
         // see this answer [https://stackoverflow.com/a/49431260/8583692] for why we are doing this!
-        registerAnimationCallback(addMenuItem.icon, object : AnimationCallback() {
+        registerAnimationCallback(icon, object : AnimationCallback() {
             private val handler = Handler(Looper.getMainLooper())
             override fun onAnimationEnd(drawable: Drawable) {
                 handler.post { (drawable as Animatable).start() }
             }
         })
-        (addMenuItem.icon as Animatable).start()
+        (icon as Animatable).start()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
