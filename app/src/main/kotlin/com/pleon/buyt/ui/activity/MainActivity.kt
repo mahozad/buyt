@@ -174,25 +174,30 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
             reorderMenuItem.isVisible = false
             bottom_bar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_END
         }
-        if (newbie) {
-            // Make plus icon glow a little bit if the user is a newbie!
-            // see this answer [https://stackoverflow.com/a/49431260/8583692] for why we are doing this!
-            registerAnimationCallback(addMenuItem.icon, object : AnimationCallback() {
-                private val handler = Handler(Looper.getMainLooper())
-                override fun onAnimationEnd(drawable: Drawable) {
-                    handler.post { (drawable as Animatable).start() }
-                }
-            })
-            (addMenuItem.icon as Animatable).start()
-        }
 
         // This is just to disable add icon glow animation after first added item
         viewModel.allItems.observe(this, Observer { items ->
             if (newbie) getPreferences(MODE_PRIVATE).edit().putBoolean("NEWBIE", false).apply()
-            if (items.isNotEmpty()) addMenuItem.setIcon(R.drawable.avd_add_hide)
+
+            if (items.isEmpty()) {
+                addMenuItem.setIcon(R.drawable.avd_add_glow)
+                animateAddIcon()
+            } else addMenuItem.setIcon(R.drawable.avd_add_hide)
         })
 
         return true
+    }
+
+    private fun animateAddIcon() {
+        // Make plus icon glow a little bit if the user is a newbie!
+        // see this answer [https://stackoverflow.com/a/49431260/8583692] for why we are doing this!
+        registerAnimationCallback(addMenuItem.icon, object : AnimationCallback() {
+            private val handler = Handler(Looper.getMainLooper())
+            override fun onAnimationEnd(drawable: Drawable) {
+                handler.post { (drawable as Animatable).start() }
+            }
+        })
+        (addMenuItem.icon as Animatable).start()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -473,7 +478,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
             } else { // show store selection dialog
                 val selectionList = ArrayList<SelectDialogRow>() // dialog requires ArrayList
                 for (store in viewModel.foundStores) {
-                    val selection = SelectDialogRow(store.name, store.category!!.storeImageRes)
+                    val selection = SelectDialogRow(store.name, store.category.storeImageRes)
                     selectionList.add(selection)
                 }
                 val selectDialog = SelectDialogFragment
@@ -486,10 +491,10 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
 
     private fun setStoreMenuItemIcon(stores: List<Store>) {
         if (stores.size == 1) {
-            val icon = stores[0].category!!.storeImageRes
+            val icon = stores[0].category.storeImageRes
             viewModel.storeIcon = icon // to use on config change
             storeMenuItem.setIcon(icon).title = viewModel.getStoreTitle()
-            itemListFragment.sortItemsByCategory(stores[0].category!!) // TODO: move this to another method
+            itemListFragment.sortItemsByCategory(stores[0].category) // TODO: move this to another method
         } else {
             viewModel.storeIcon = R.drawable.ic_store_multi // to use on config change
             viewModel.storeTitle = R.string.menu_hint_multi_store_found

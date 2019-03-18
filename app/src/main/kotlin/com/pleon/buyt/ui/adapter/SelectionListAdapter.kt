@@ -1,6 +1,5 @@
 package com.pleon.buyt.ui.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
@@ -13,7 +12,7 @@ import com.pleon.buyt.ui.adapter.SelectionListAdapter.StoreHolder
 import com.pleon.buyt.ui.dialog.SelectDialogRow
 import kotlinx.android.synthetic.main.selection_list_row.view.*
 
-class SelectionListAdapter(private val mContext: Context, private val callback: Callback) : Adapter<StoreHolder>() {
+class SelectionListAdapter(private val callback: Callback) : Adapter<StoreHolder>() {
 
     interface Callback {
         fun onStoreClick()
@@ -22,7 +21,6 @@ class SelectionListAdapter(private val mContext: Context, private val callback: 
     private var list: List<SelectDialogRow>? = null
     private var callbackNotified = false
     var selectedIndex = -1
-        private set
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoreHolder {
         val itemView = LayoutInflater.from(parent.context)

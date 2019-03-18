@@ -23,7 +23,6 @@ import com.pleon.buyt.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_item_list.*
 import java.util.*
-import java.util.Collections.sort
 
 class ItemListFragment : Fragment(), ItemTouchHelperListener {
 
@@ -31,10 +30,10 @@ class ItemListFragment : Fragment(), ItemTouchHelperListener {
     private lateinit var adapter: ItemListAdapter
     private lateinit var touchHelperCallback: TouchHelperCallback
     private var itemsReordered = false
+    val nextItemPosition get() = adapter.itemCount
     val isSelectedEmpty get() = adapter.selectedItems.isEmpty()
     val selectedItems get() = adapter.selectedItems
-    val isCartEmpty get() = adapter.items!!.isEmpty()
-    val nextItemPosition get() = adapter.itemCount
+    val isCartEmpty get() = adapter.items.isEmpty()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_item_list, container, false)
@@ -43,7 +42,7 @@ class ItemListFragment : Fragment(), ItemTouchHelperListener {
     override fun onViewCreated(view: View, savedState: Bundle?) {
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         // In fragments use getViewLifecycleOwner() as owner argument
-        viewModel.allItems.observe(viewLifecycleOwner, Observer { adapter.items = it })
+        viewModel.allItems.observe(viewLifecycleOwner, Observer { adapter.items = it.toMutableList() })
 
         // for swipe-to-delete and drag-n-drop of item
         touchHelperCallback = TouchHelperCallback(this)
@@ -78,12 +77,13 @@ class ItemListFragment : Fragment(), ItemTouchHelperListener {
         }
         snackbar.addCallback(object : BaseCallback<Snackbar>() {
             override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                if (event != DISMISS_EVENT_ACTION) { // If dismiss wasn't because of "UNDO"...
-                    // ... then delete the item from database and update order of below items
-                    for (i in item.position until adapter.items!!.size) {
+                if (event != DISMISS_EVENT_ACTION) {
+                    // If dismiss wasn't because of "UNDO" then
+                    // delete the item from database and update order of below items
+                    for (i in item.position until adapter.items.size) {
                         adapter.getItem(i).position = adapter.getItem(i).position - 1
                     }
-                    viewModel.updateItems(adapter.items!!)
+                    viewModel.updateItems(adapter.items)
                     // This should be the last statement because by deleting the item, the observer
                     // is notified and adapter is given the old items with their old positions
                     viewModel.deleteItem(item)
@@ -101,7 +101,7 @@ class ItemListFragment : Fragment(), ItemTouchHelperListener {
     override fun onStop() {
         super.onStop()
         if (itemsReordered) {
-            viewModel.updateItems(adapter.items!!)
+            viewModel.updateItems(adapter.items)
             itemsReordered = false
         }
     }
@@ -113,13 +113,13 @@ class ItemListFragment : Fragment(), ItemTouchHelperListener {
 
     fun clearSelectedItems() = adapter.clearSelectedItems()
 
-    fun toggleItemsCheckbox(enabled: Boolean) = adapter.togglePriceInput(enabled)
+    fun toggleItemsCheckbox(isEnabled: Boolean) = adapter.togglePriceInput(isEnabled)
 
     fun validateSelectedItemsPrice(): Boolean {
         var validated = true
         for (item in adapter.selectedItems) {
             if (item.totalPrice == 0L) {
-                val itemIndex = adapter.items!!.indexOf(item) // FIXME: maybe heavy operation
+                val itemIndex = adapter.items.indexOf(item) // FIXME: maybe heavy operation
                 val itemView = recyclerView.layoutManager!!.findViewByPosition(itemIndex)
                 val priceLayout = itemView!!.findViewById<TextInputLayout>(R.id.price_layout)
                 priceLayout.error = "price cannot be empty"
@@ -130,20 +130,20 @@ class ItemListFragment : Fragment(), ItemTouchHelperListener {
     }
 
     fun sortItemsByCategory(category: Category) {
-        sort(adapter.items) { item1, item2 ->
+        adapter.items.sortWith(kotlin.Comparator { item1, item2 ->
             when {
                 item1.category == item2.category -> 0
                 item1.category == category -> -1
                 else -> +1
             }
-        }
+        })
         adapter.notifyDataSetChanged()
     }
 
     fun sortItemsByOrder() {
-        sort(adapter.items) { item1, item2 ->
+        adapter.items.sortWith(Comparator { item1, item2 ->
             if (item1.isUrgent != item2.isUrgent) if (item1.isUrgent) -1 else +1
             else item1.position - item2.position
-        }
+        })
     }
 }

@@ -30,7 +30,6 @@ class SelectDialogFragment : AppCompatDialogFragment(), SelectionListAdapter.Cal
      *  * layout_width
      *  * layout_height
      *
-     *
      * See [this very good explanation](https://stackoverflow.com/a/41495370/8583692)
      *
      * @param savedState
@@ -40,7 +39,7 @@ class SelectDialogFragment : AppCompatDialogFragment(), SelectionListAdapter.Cal
         val inflater = activity!!.layoutInflater
         val customView = inflater.inflate(R.layout.fragment_selection_list, null)
 
-        val adapter = SelectionListAdapter(activity!!.applicationContext, this)
+        val adapter = SelectionListAdapter(this)
         adapter.setList(arguments!!.getSerializable("LIST") as List<SelectDialogRow>)
 
         val storeRecyclerView = customView.findViewById<RecyclerView>(R.id.storeList)

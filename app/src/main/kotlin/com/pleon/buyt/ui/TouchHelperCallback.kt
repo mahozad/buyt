@@ -34,19 +34,15 @@ class TouchHelperCallback(private val listener: ItemTouchHelperListener) : ItemT
         fun onSwiped(viewHolder: ViewHolder, direction: Int)
     }
 
-    private val maxSwipeDistInPx: Float
+    private val displayMetrics = Resources.getSystem().displayMetrics
+    private val maxSwipeDistInPx = applyDimension(COMPLEX_UNIT_DIP, MAX_SWIPE_DIST, displayMetrics)
     private var dragModeEnabled = false
-
-    init {
-        val displayMetrics = Resources.getSystem().displayMetrics
-        this.maxSwipeDistInPx = applyDimension(COMPLEX_UNIT_DIP, MAX_SWIPE_DIST, displayMetrics)
-    }
 
     // If you want to just disable long press drag-n-drop, override isLongPressDragEnabled()
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: ViewHolder): Int {
         val swipeFlags = START
         val dragFlags = if (dragModeEnabled) UP or DOWN else 0
-        return ItemTouchHelper.Callback.makeMovementFlags(dragFlags, swipeFlags)
+        return makeMovementFlags(dragFlags, swipeFlags)
     }
 
     override fun onMove(recyclerView: RecyclerView, dragged: ViewHolder, target: ViewHolder): Boolean {
@@ -56,9 +52,7 @@ class TouchHelperCallback(private val listener: ItemTouchHelperListener) : ItemT
         return true
     }
 
-    override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
-        listener.onSwiped(viewHolder, direction)
-    }
+    override fun onSwiped(vh: ViewHolder, direction: Int) = listener.onSwiped(vh, direction)
 
     override fun onSelectedChanged(viewHolder: ViewHolder?, actionState: Int) {
         if (viewHolder != null) {
@@ -69,7 +63,7 @@ class TouchHelperCallback(private val listener: ItemTouchHelperListener) : ItemT
 
     override fun clearView(recyclerView: RecyclerView, viewHolder: ViewHolder) {
         val view = (viewHolder as BaseViewHolder).itemView.cardForeground
-        view!!.isDragged = false // enabled in onDragHandleTouch() method of the view holder
+        view.isDragged = false // enabled in onDragHandleTouch() method of the view holder
         ItemTouchHelper.Callback.getDefaultUIUtil().clearView(view)
     }
 
@@ -87,13 +81,13 @@ class TouchHelperCallback(private val listener: ItemTouchHelperListener) : ItemT
 
         // Animate delete circular reveal
         if (abs(dX) == maxSwipeDistInPx && !(viewHolder as ItemListAdapter.ItemHolder).delAnimating) {
-            viewHolder.itemView.delete_icon!!.setImageResource(R.drawable.avd_delete_open)
-            (viewHolder.itemView.delete_icon!!.drawable as Animatable).start()
-            showCircularReveal(viewHolder, viewHolder.itemView.circular_reveal!!)
+            viewHolder.itemView.delete_icon.setImageResource(R.drawable.avd_delete_open)
+            (viewHolder.itemView.delete_icon.drawable as Animatable).start()
+            showCircularReveal(viewHolder, viewHolder.itemView.circular_reveal)
         } else if (abs(dX) < maxSwipeDistInPx && (viewHolder as ItemListAdapter.ItemHolder).delAnimating) {
-            viewHolder.itemView.delete_icon!!.setImageResource(R.drawable.avd_delete_close)
-            (viewHolder.itemView.delete_icon!!.drawable as Animatable).start()
-            hideCircularReveal(viewHolder, viewHolder.itemView.circular_reveal!!)
+            viewHolder.itemView.delete_icon.setImageResource(R.drawable.avd_delete_close)
+            (viewHolder.itemView.delete_icon.drawable as Animatable).start()
+            hideCircularReveal(viewHolder, viewHolder.itemView.circular_reveal)
         }
 
         ItemTouchHelper.Callback.getDefaultUIUtil().onDraw(c, recyclerView, view, dX, dY, actionState, isCurrentlyActive)
@@ -102,7 +96,7 @@ class TouchHelperCallback(private val listener: ItemTouchHelperListener) : ItemT
     private fun showCircularReveal(viewHolder: BaseViewHolder, revealView: View) {
         (viewHolder as ItemListAdapter.ItemHolder).delAnimating = true
 
-        val finalRadius = max(revealView.width, revealView.height) / 1.6f
+        val finalRadius = max(revealView.width, revealView.height) / 1.65f
         val centerX = revealView.width / 2
         val centerY = revealView.height / 2
 
@@ -123,14 +117,10 @@ class TouchHelperCallback(private val listener: ItemTouchHelperListener) : ItemT
     }
 
     // Set how much swipe is considered done. Default is 0.5f.
-    override fun getSwipeThreshold(viewHolder: ViewHolder): Float {
-        return SWIPE_THRESHOLD
-    }
+    override fun getSwipeThreshold(viewHolder: ViewHolder) = SWIPE_THRESHOLD
 
     // If you want to completely disable drag-n-drop, override getMovementFlags()
-    override fun isLongPressDragEnabled(): Boolean {
-        return false
-    }
+    override fun isLongPressDragEnabled() = false
 
     fun toggleDragMode() {
         dragModeEnabled = !dragModeEnabled

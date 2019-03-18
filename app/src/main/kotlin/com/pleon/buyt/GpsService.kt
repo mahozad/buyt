@@ -13,7 +13,6 @@ import android.location.LocationManager
 import android.location.LocationManager.GPS_PROVIDER
 import android.os.Build
 import android.os.Bundle
-import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.PRIORITY_LOW
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -62,10 +61,10 @@ class GpsService : Service(), LocationListener {
         startForeground(12421, notification.build())
     }
 
-    override fun onBind(arg: Intent): IBinder? {
-        // This method must be overridden; if you don't want to allow binding, return null.
-        return null
-    }
+    /**
+     * This method must be overridden; if you don't want to allow binding, return null.
+     */
+    override fun onBind(arg: Intent) = null
 
     @SuppressLint("MissingPermission")
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
@@ -102,9 +101,7 @@ class GpsService : Service(), LocationListener {
     override fun onDestroy() {
         super.onDestroy()
 
-        if (locationManager != null) {
-            locationManager!!.removeUpdates(this)
-        }
+        locationManager?.removeUpdates(this)
 
         // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         stopForeground(false) // here notification can be removed as well

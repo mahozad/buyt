@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.db.chart.animation.Animation
 import com.db.chart.model.LineSet
@@ -25,9 +26,18 @@ import java.util.*
 
 class StatesFragment : Fragment() {
 
-    // Update the statistics when date changes (for example time changes from 23:59 to 00:00)
+    val period get() = viewModel.period
+    private lateinit var viewModel: StatisticsViewModel
+
+    var filter: Category?
+        get() = viewModel.filter
+        set(filter) {
+            viewModel.filter = filter
+            showStatistics()
+        }
+
+    // Update the statistics when date changes (e.g. time changes from 23:59 to 00:00)
     private var today = Date()
-    private val timeTickIntent = IntentFilter(ACTION_TIME_TICK)
     private val timeReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             if (Date().date != today.date) {
@@ -37,33 +47,19 @@ class StatesFragment : Fragment() {
         }
     }
 
-    private lateinit var viewModel: StatisticsViewModel
-    val period = viewModel.period
-
-    var filter: Category?
-        get() = viewModel.filter
-        set(filter) {
-            viewModel.filter = filter
-            showStatistics()
-        }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_states, container, false)
     }
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
         viewModel = ViewModelProviders.of(this).get(StatisticsViewModel::class.java)
-
-        activity?.registerReceiver(timeReceiver, timeTickIntent)
-
-        val caption = getString(R.string.chart_caption, viewModel.period.length)
-        chartCaption.text = caption
-
+        activity?.registerReceiver(timeReceiver, IntentFilter(ACTION_TIME_TICK))
+        chartCaption.text = getString(R.string.chart_caption, viewModel.period.length)
         showStatistics()
     }
 
     private fun showStatistics() {
-        viewModel.statistics.observe(this, androidx.lifecycle.Observer { statistics ->
+        viewModel.statistics.observe(viewLifecycleOwner, Observer { statistics ->
             showGraph(statistics.dailyCosts!!)
 
             textView3.text = statistics.totalPurchaseCost.toString()
@@ -108,13 +104,13 @@ class StatesFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        activity!!.unregisterReceiver(timeReceiver)
+        activity?.unregisterReceiver(timeReceiver)
     }
 
     fun togglePeriod() {
         viewModel.togglePeriod()
         val caption = getString(R.string.chart_caption, viewModel.period.length)
-        chartCaption!!.text = caption
+        chartCaption.text = caption
         showStatistics()
     }
 }

@@ -125,9 +125,7 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
         setHasOptionsMenu(true) // for the onCreateOptionsMenu() method to be called
 
         // disable by default (because quantity input is not focused yet)
-        for (unitRdbtn in unitRdbtns) {
-            unitRdbtn.isEnabled = false
-        }
+        for (unitRdbtn in unitRdbtns) unitRdbtn.isEnabled = false
 
         // Set up auto complete for item name
         viewModel.itemNames.observe(viewLifecycleOwner, Observer { names ->
@@ -146,28 +144,19 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
         bought.setOnCheckedChangeListener { _, isChecked -> onBoughtToggled(isChecked) }
         quantityEd.setOnFocusChangeListener { _, hasFocus -> onQuantityFocusChanged(hasFocus) }
         name.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                onNameChanged()
-            }
-
+            override fun afterTextChanged(s: Editable?) = onNameChanged()
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
         quantityEd.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                onQuantityChanged()
-            }
-
+            override fun afterTextChanged(s: Editable?) = onQuantityChanged()
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
         description.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                onDescriptionChanged()
-            }
-
+            override fun afterTextChanged(s: Editable?) = onDescriptionChanged()
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
@@ -175,7 +164,6 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
 
     /**
      * For this method to be called, it is required that setHasOptionsMenu() has been set.
-     *
      *
      * Note that the containing activity must have a Toolbar set so this fragment can inflate and
      * use its own menu item.
@@ -210,7 +198,7 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
                     viewModel.storeList = stores
                     selectionList.clear()
                     for (store in stores) {
-                        val selection = SelectDialogRow(store.name, store.category!!.storeImageRes)
+                        val selection = SelectDialogRow(store.name, store.category.storeImageRes)
                         selectionList.add(selection)
                     }
                     val selectStoreDialog = SelectDialogFragment
@@ -237,7 +225,6 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
     /**
      * DatePickerDialog.show() for persian calendar is passed getActivity().getFragmentManager()
      * because it requires android.app.FragmentManager instead of androidx version.
-     *
      *
      * DatePickerFragment.show() is passed getChildFragmentManager() can get the parent (this)
      * fragment and set it as the callback.
@@ -272,7 +259,6 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
     /**
      * Calls the onClick method of the date field.
      *
-     *
      * This method is required because if focusable is set to true (and that is required
      * because of the textField border to change color), then the first click on the text view
      * will not open the date picker dialog because if the field does not have focus the first
@@ -291,7 +277,6 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
     /**
      * Because we want all the dates in the database to be in same format, we convert the given
      * persian date to Gregorian.
-     *
      *
      * This way all of our dates in the database are uniformed and if needed, we can format them
      * however we want at runtime; for example to show date in Persian format we can do this:<br></br>
@@ -376,22 +361,20 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
     }
 
     private fun onNameChanged() {
-        if (!name!!.text.toString().isEmpty()) { // to prevent error with config change
-            name_layout!!.error = null // clear error if exists
+        if (!name.text.toString().isEmpty()) { // to prevent error with config change
+            name_layout.error = null // clear error if exists
             setCounterEnabledIfInputLong(name_layout!!)
         }
     }
 
     private fun onQuantityChanged() {
-        if (!quantityEd!!.text.toString().isEmpty()) { // to prevent error with config change
-            quantity_layout!!.error = null // clear error if exists
+        if (!quantityEd.text.toString().isEmpty()) { // to prevent error with config change
+            quantity_layout.error = null // clear error if exists
         }
         setColorOfAllUnitsForEnabledState(R.color.colorPrimary)
     }
 
-    private fun onDescriptionChanged() {
-        setCounterEnabledIfInputLong(description_layout)
-    }
+    private fun onDescriptionChanged() = setCounterEnabledIfInputLong(description_layout)
 
     private fun setCounterEnabledIfInputLong(layout: TextInputLayout) {
         val inputLength = layout.editText!!.text.toString().length
@@ -400,11 +383,8 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is Callback) {
-            callback = context
-        } else {
-            throw RuntimeException("$context must implement Callback")
-        }
+        if (context is Callback) callback = context
+        else throw RuntimeException("$context must implement Callback")
     }
 
     override fun onDetach() {
