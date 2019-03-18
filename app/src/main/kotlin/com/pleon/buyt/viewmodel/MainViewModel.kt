@@ -41,7 +41,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     @Volatile var state = IDLE
     var location: Location? = null
     var isFindingSkipped = false
-    var foundStores: MutableList<Store> = ArrayList()
+    var foundStores = mutableListOf<Store>()
     var shouldCompletePurchase = false
     var shouldAnimateNavIcon = false
     @DrawableRes var storeIcon = 0
@@ -51,9 +51,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val allItems = repository.allItems
     val allStores get() = repository.getAllStores()
 
-    fun buy(items: Collection<Item>, store: Store, purchaseDate: Date) {
-        repository.buy(items, store, purchaseDate)
-    }
+    fun buy(items: Collection<Item>, store: Store, purchaseDate: Date) =
+            repository.buy(items, store, purchaseDate)
 
     fun findNearStores(origin: Coordinates): LiveData<List<Store>> {
         val distInMeters = preferences.getString("distance", "50")!!.toInt()

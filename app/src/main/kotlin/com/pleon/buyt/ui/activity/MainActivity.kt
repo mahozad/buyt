@@ -124,11 +124,11 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
         bottom_bar.inflateMenu(R.menu.menu_bottom_home) // To ensure menu item is ready
         TapTargetSequence(this).targets(
                 forToolbarMenuItem(bottom_bar, R.id.action_add, getString(R.string.tutorial_add_item))
-                        .transparentTarget(true).cancelable(false),
+                        .transparentTarget(true).cancelable(false).targetRadius(36),
                 forView(fab, getString(R.string.tutorial_tap_buyt))
                         .transparentTarget(true).cancelable(false),
                 forToolbarMenuItem(bottom_bar, R.id.action_reorder, getString(R.string.tutorial_skip_finding))
-                        .transparentTarget(true).cancelable(false)
+                        .transparentTarget(true).cancelable(false).targetRadius(36)
         ).listener(object : TapTargetSequence.Listener {
             override fun onSequenceStep(lastTarget: TapTarget?, clicked: Boolean) {}
             override fun onSequenceCanceled(lastTarget: TapTarget?) {}
@@ -253,9 +253,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
     override fun onBackPressed() {
         if (viewModel.state == FINDING || viewModel.state == SELECTING) {
             ConfirmExitDialog().show(supportFragmentManager, "CONFIRM_EXIT_DIALOG")
-        } else {
-            super.onBackPressed()
-        }
+        } else super.onBackPressed()
     }
 
     override fun onExitConfirmed() = super.onBackPressed()
@@ -266,11 +264,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
      * for both configuration changes and process kills. So because we have ViewModel in our app,
      * here this method is used to save data just for the case of **process kills**.
      *
-     *
      * This method will NOT be called if the system determines that the current state will not
      * be resumed—for example, if the activity is closed by pressing the back button or if it calls
      * [.finish].
-     *
      *
      * Even if the system destroys the process while the activity is stopped, super.onSaveInstanceState();
      * still retains the state of the View objects with an 'android:id' attribute (such as text in
@@ -287,9 +283,8 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
         // There is nothing special in IDLE state to save here; In FINDING state, app runs a
         // FOREGROUND service and is unkillable so this state also doesn't need to save its data
 
-        if (viewModel.state == SELECTING) {
+        if (viewModel.state == SELECTING)
             outState.putParcelable(STATE_LOCATION, viewModel.location)
-        }
     }
 
     override fun onRestoreInstanceState(savedState: Bundle) {
@@ -341,7 +336,6 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
     /**
      * Unregistering the broadcast receiver is done in this method instead of onPause() because
      * we want to get the broadcast even if the app went to background and then again resumed.
-     *
      *
      * See onCreate javadoc for mor info.
      */
