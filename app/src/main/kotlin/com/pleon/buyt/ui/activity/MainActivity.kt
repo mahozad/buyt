@@ -114,7 +114,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
          */
 
         locationReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) = onLocationFound()
+            override fun onReceive(context: Context, intent: Intent) = onLocationFound(intent)
         }
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(locationReceiver, IntentFilter(GpsService.ACTION_LOCATION_EVENT))
@@ -141,7 +141,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
         }).start()
     }
 
-    private fun onLocationFound() {
+    private fun onLocationFound(intent: Intent) {
         if (preferences.getBoolean("vibrate", true)) {
             val vibrator = getSystemService(VIBRATOR_SERVICE) as Vibrator
             vibrator.vibrate(150) // FIXME: Deprecated method
