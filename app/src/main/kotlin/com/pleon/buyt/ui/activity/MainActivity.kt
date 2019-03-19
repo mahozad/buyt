@@ -144,6 +144,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
                 reorderMenuItem.setIcon(R.drawable.avd_skip_reorder).also {
                     (it.icon as Animatable).start()
                 }
+                addMenuItem.setIcon(R.drawable.avd_add_glow).also { animateIconInfinitely(it.icon) }
             }
         }).start()
     }
@@ -196,16 +197,16 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
 
         // Enable/Disable add menuItem animation
         viewModel.allItems.observe(this, Observer { items ->
-            if (items.isEmpty()) {
+            // If user is newbie don't animate icon; the tutorial will animate it at the end
+            if (items.isEmpty() && !preferences.getBoolean("NEWBIE", true)) {
                 addMenuItem.setIcon(R.drawable.avd_add_glow)
                 animateIconInfinitely(addMenuItem.icon)
             } else addMenuItem.setIcon(R.drawable.avd_add_hide)
         })
 
         // Set icon for the tutorial; At the end of tutorial the icon is corrected
-        if (preferences.getBoolean("NEWBIE", true)) {
+        if (preferences.getBoolean("NEWBIE", true))
             reorderMenuItem.setIcon(R.drawable.avd_skip_reorder)
-        }
 
         return true
     }
@@ -590,7 +591,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
         // is produced when another item was swiped partially
 
         // TODO: In onDestroy(), onPause() and... do the reverse things you did in onCreate(), onResume() and...
-
+        // TODO: Use kotlin coroutines see[https://medium.com/androiddevelopers/room-coroutines-422b786dc4c5]
         /*
          * DONE: if the bottomAppBar is hidden (by scrolling) and then you expand an Item, the fab jumps up
          * The bug seems to have nothing to do with the expanding animation and persists even without that animation
