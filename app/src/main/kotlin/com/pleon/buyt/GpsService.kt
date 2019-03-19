@@ -14,7 +14,7 @@ import android.location.LocationManager.GPS_PROVIDER
 import android.os.Build
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationCompat.PRIORITY_LOW
+import androidx.core.app.NotificationCompat.PRIORITY_MAX
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.pleon.buyt.ui.activity.MainActivity
 
@@ -49,11 +49,13 @@ class GpsService : Service(), LocationListener {
 
         // If you want to remove the notification when service stopped, see onDestroy() below
         val notification = NotificationCompat.Builder(this, "default")
-                .setSmallIcon(R.drawable.ic_buyt_notification)
+                .setSmallIcon(R.drawable.ald_buyt_notification)
                 .setOngoing(true)
-                .setPriority(PRIORITY_LOW) // set to MIN to hide the icon in notification bar
-                .setContentTitle("Finding location")
-                .setContentText("Determining the store...")
+                .setLights(resources.getColor(R.color.colorPrimary), 500, 600)
+                .setProgress(10, 1, true)
+                .setPriority(PRIORITY_MAX) // set to MIN to hide the icon in notification bar
+                .setContentTitle("Finding the store...")
+                // .setContentText("Determining the store...")
                 .setContentIntent(pendingIntent)
 
         // note that apps targeting android P (API level 28) or later must declare the permission
