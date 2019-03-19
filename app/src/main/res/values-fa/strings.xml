@@ -38,14 +38,14 @@
     <string name="dialog_title_exit">خروج از برنامه؟</string>
     <string name="dialog_message_exit">در صورت خروج از برنامه، پروسه‌ی خرید متوقف خواهد شد.</string>
     <string name="snackbar_message_no_store_found">مغازه‌ای از قبل ذخیره نشده است!</string>
-    <string name="menu_hint_skip_finding">رد کردن جستجو</string>
-    <string name="menu_hint_reorder_items">تغییر ترتیب کالاها</string>
-    <string name="menu_hint_new_store_found">مغازه‌ی جدید</string>
-    <string name="menu_hint_multi_store_found">بیش از یک مغازه پیدا شد</string>
-    <string name="menu_hint_toggle_period">تغییر طول دوره</string>
-    <string name="menu_hint_filter">فیلتر بر اساس دسته‌بندی</string>
+    <string name="menu_text_new_store_found">جدید</string>
     <string name="menu_title_select_store">انتخاب مغازه</string>
     <string name="menu_title_add_store">افزودن مغازه جدید</string>
+    <string name="menu_title_store_category">دسته‌بندی</string>
+    <string name="menu_hint_skip_finding">رد کردن جستجو</string>
+    <string name="menu_hint_reorder_items">تغییر ترتیب کالاها</string>
+    <string name="menu_hint_toggle_period">تغییر طول دوره</string>
+    <string name="menu_hint_filter">فیلتر بر اساس دسته‌بندی</string>
 
     <string name="dialog_message_location_permission">مجوز شناسایی موقعیت مکانی داده نشده است.
 در صورت دسترسی، بایت به صورت خودکار مغازه را شناسایی خواهد کرد.
@@ -53,7 +53,6 @@
 
     <string name="dialog_message_location_off">حسگر مکان خاموش است. با روشن کردن آن (در حالت دقت زیاد)،
         بایت به صورت خودکار مغازه را شناسایی خواهد کرد.</string>
-    <string name="menu_title_store_category">دسته‌بندی</string>
     <string name="chart_caption">%1$d روز گذشته</string>
     <string name="checkbox_purchased">خریداری‌شده</string>
     <string name="input_hint_purchase_date">تاریخ خرید</string>

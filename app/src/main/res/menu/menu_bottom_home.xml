@@ -5,23 +5,16 @@
     tools:context=".ui.activity.MainActivity">
 
     <item
-        android:id="@+id/found_stores"
-        android:visible="false"
-        app:showAsAction="always">
-
-        <menu>
-            <item
-                android:id="@+id/action_add_store"
-                android:icon="@drawable/ic_add_store"
-                android:title="@string/menu_title_add_store"
-                android:visible="false" />
-        </menu>
-    </item>
-
-    <item
         android:id="@+id/action_add"
         android:icon="@drawable/avd_add_glow"
         android:title="@string/menu_hint_add_item"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/found_stores"
+        android:title="Stores"
+        android:visible="false"
+        app:actionLayout="@layout/found_stores_menu"
         app:showAsAction="always" />
 
     <item
