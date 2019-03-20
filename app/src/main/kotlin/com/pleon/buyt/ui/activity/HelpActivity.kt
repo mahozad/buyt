@@ -47,6 +47,7 @@ class HelpActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> finish()
+            // other menu options
         }
         return true
     }

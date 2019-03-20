@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import java.util.concurrent.atomic.AtomicBoolean
 
+private val TAG by lazy { SingleLiveEvent::class.java.simpleName }
+
 /**
  * A lifecycle-aware observable that sends only new updates after subscription, used for events like
  * navigation and Snackbar messages.
@@ -19,20 +21,16 @@ import java.util.concurrent.atomic.AtomicBoolean
  */
 class SingleLiveEvent<T> : MutableLiveData<T>() {
 
-    private val TAG by lazy { SingleLiveEvent::class.java.simpleName }
     private val pending = AtomicBoolean(false)
 
     @MainThread
     override fun observe(owner: LifecycleOwner, observer: Observer<in T>) {
-        if (hasActiveObservers()) {
+        if (hasActiveObservers())
             Log.w(TAG, "Multiple observers registered but only one will be notified of changes.")
-        }
 
         // Observe the internal MutableLiveData
         super.observe(owner, Observer { t ->
-            if (pending.compareAndSet(true, false)) {
-                observer.onChanged(t)
-            }
+            if (pending.compareAndSet(true, false)) observer.onChanged(t)
         })
     }
 

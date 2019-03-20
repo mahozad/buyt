@@ -17,6 +17,8 @@ import com.pleon.buyt.ui.dialog.SelectDialogRow
 import kotlinx.android.synthetic.main.fragment_create_store.*
 import java.util.*
 
+const val ARG_LOCATION = "com.pleon.buyt.extra.LOCATION"
+
 /**
  * This fragment requires a Toolbar as it needs to inflate and use a menu item for selection of
  * store category. So the activities using this fragment must have a Toolbar set.
@@ -45,7 +47,6 @@ class CreateStoreFragment : Fragment(), SelectDialogFragment.Callback {
      * to onCreateOptionsMenu(). Any items that you then add to the Options Menu from the fragment
      * are appended to the existing menu items.
      *
-     *
      * Note: Although your fragment receives an on-item-selected callback for each menu item it adds,
      * the activity is first to receive the respective callback when the user selects a menu item.
      * If the activity's implementation of the on-item-selected callback does not handle the
@@ -62,15 +63,15 @@ class CreateStoreFragment : Fragment(), SelectDialogFragment.Callback {
         // MapView mapView = view.findViewById(R.id.mapView);
         // mapView.onCreate(savedState);
         // mapView.getMapAsync(mapboxMap -> {
-        //             LatLng latLng = new LatLng(location);
-        //             CameraPosition position = new CameraPosition.Builder()
-        //                     .target(latLng).zoom(14).tilt(20).build();
-        //             mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position));
-        //             mapboxMap.addMarker(new MarkerOptions().position(latLng));
-        //             mapboxMap.setStyle(Style.DARK, style -> {
-        //                 // Map is set up and the style has loaded. Now you can add data or make other map adjustments
-        //             });
-        //         }
+        //         LatLng latLng = new LatLng(location);
+        //         CameraPosition position = new CameraPosition.Builder()
+        //                 .target(latLng).zoom(14).tilt(20).build();
+        //         mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position));
+        //         mapboxMap.addMarker(new MarkerOptions().position(latLng));
+        //         mapboxMap.setStyle(Style.DARK, style -> {
+        //             // Map is set up and the style has loaded. Now you can add data or make other map adjustments
+        //         });
+        //     }
         // );
 
         setHasOptionsMenu(true) // for the onCreateOptionsMenu() method to be called
@@ -79,7 +80,6 @@ class CreateStoreFragment : Fragment(), SelectDialogFragment.Callback {
 
     /**
      * For this method to be called, it is required that setHasOptionsMenu() has been set.
-     *
      *
      * Note that the containing activity must have a Toolbar set so this fragment can inflate and
      * use its own menu item.
@@ -113,11 +113,8 @@ class CreateStoreFragment : Fragment(), SelectDialogFragment.Callback {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is Callback) {
-            callback = context
-        } else {
-            throw RuntimeException("$context must implement Callback")
-        }
+        if (context is Callback) callback = context
+        else throw RuntimeException("$context must implement Callback")
     }
 
     override fun onDetach() {
@@ -153,8 +150,4 @@ class CreateStoreFragment : Fragment(), SelectDialogFragment.Callback {
     }
 
     private fun isEmpty(editText: EditText) = editText.text.toString().trim { it <= ' ' }.isEmpty()
-
-    companion object {
-        const val ARG_LOCATION = "com.pleon.buyt.extra.LOCATION"
-    }
 }

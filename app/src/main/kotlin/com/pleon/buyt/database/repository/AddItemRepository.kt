@@ -1,7 +1,7 @@
 package com.pleon.buyt.database.repository
 
 import android.app.Application
-import com.pleon.buyt.database.AppDatabase
+import com.pleon.buyt.database.getDatabase
 import com.pleon.buyt.model.Item
 import com.pleon.buyt.model.Purchase
 import com.pleon.buyt.model.Store
@@ -10,8 +10,8 @@ import java.util.*
 
 class AddItemRepository(application: Application) {
 
-    private val itemDao = AppDatabase.getDatabase(application).itemDao()
-    private val purchaseDao = AppDatabase.getDatabase(application).purchaseDao()
+    private val itemDao = getDatabase(application).itemDao()
+    private val purchaseDao = getDatabase(application).purchaseDao()
     val itemNames = itemDao.getItemNames()
 
     fun addItem(item: Item) = doAsync { itemDao.insert(item) }

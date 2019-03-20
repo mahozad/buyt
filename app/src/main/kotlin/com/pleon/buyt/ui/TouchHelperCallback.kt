@@ -19,10 +19,12 @@ import com.pleon.buyt.ui.adapter.ItemListAdapter
 import kotlinx.android.synthetic.main.item_list_row.view.*
 import java.lang.Math.*
 
+private const val MAX_SWIPE_DIST = 88f // in dp unit
+private const val SWIPE_THRESHOLD = 0.3f // to be considered done
+
 /**
  * ItemTouchHelper is a powerful utility that takes care of everything we need for adding
  * drag & drop and swipe-to-dismiss to our RecyclerView.
- *
  *
  * In order to use ItemTouchHelper, we’ll create an ItemTouchHelper.Callback to
  * listen for “move” and “swipe” events.
@@ -124,10 +126,5 @@ class TouchHelperCallback(private val listener: ItemTouchHelperListener) : ItemT
 
     fun toggleDragMode() {
         dragModeEnabled = !dragModeEnabled
-    }
-
-    companion object {
-        private const val MAX_SWIPE_DIST = 88f // in dp unit
-        private const val SWIPE_THRESHOLD = 0.3f // to be considered done
     }
 }

@@ -3,6 +3,7 @@ package com.pleon.buyt
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.NotificationManager.IMPORTANCE_DEFAULT
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
@@ -17,6 +18,10 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.PRIORITY_MAX
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.pleon.buyt.ui.activity.MainActivity
+
+const val ACTION_LOCATION_EVENT = "com.pleon.buyt.broadcast.LOCATION_EVENT"
+const val EXTRA_LOCATION = "com.pleon.buyt.extra.LOCATION"
+private const val PROVIDER = GPS_PROVIDER
 
 /**
  * We are not using WorkManager because if we want to run our task instantly
@@ -39,9 +44,9 @@ class GpsService : Service(), LocationListener {
         super.onCreate()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel("default", "BUYT", NotificationManager.IMPORTANCE_DEFAULT)
+            val channel = NotificationChannel("default", "BUYT", IMPORTANCE_DEFAULT)
             channel.description = "BUYT Channel"
-            (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(channel)
+            (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(channel)
         }
 
         val notificationIntent = Intent(this, MainActivity::class.java)
@@ -95,9 +100,7 @@ class GpsService : Service(), LocationListener {
     }
 
     override fun onProviderDisabled(provider: String) {}
-
     override fun onProviderEnabled(provider: String) {}
-
     override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
 
     override fun onDestroy() {
@@ -108,11 +111,5 @@ class GpsService : Service(), LocationListener {
         // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         stopForeground(false) // here notification can be removed as well
         // }
-    }
-
-    companion object {
-        const val ACTION_LOCATION_EVENT = "com.pleon.buyt.broadcast.LOCATION_EVENT"
-        const val EXTRA_LOCATION = "com.pleon.buyt.extra.LOCATION"
-        private const val PROVIDER = GPS_PROVIDER
     }
 }

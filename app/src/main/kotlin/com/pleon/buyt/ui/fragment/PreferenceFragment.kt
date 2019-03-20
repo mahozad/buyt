@@ -11,6 +11,7 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.activity.MainActivity
+import com.pleon.buyt.ui.activity.PREF_KEY_THEME
 
 class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeListener {
 
@@ -34,7 +35,7 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
      * @param key
      */
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        if (key == "theme") {
+        if (key == PREF_KEY_THEME) {
             sharedPreferences.edit().putBoolean("themeChanged", true).apply()
             // Recreate the back stack so the new theme is applied to parent activities
             // (their onCreate() method is called which in turn invokes setTheme() method)

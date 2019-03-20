@@ -6,7 +6,6 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.DrawableContainer.DrawableContainerState
 import android.graphics.drawable.StateListDrawable
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.TypedValue
@@ -21,6 +20,7 @@ import androidx.core.widget.CompoundButtonCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.google.android.material.textfield.TextInputLayout
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
@@ -30,8 +30,9 @@ import com.pleon.buyt.model.Item
 import com.pleon.buyt.model.Quantity
 import com.pleon.buyt.model.Quantity.Unit
 import com.pleon.buyt.ui.NumberInputWatcher
-import com.pleon.buyt.ui.activity.BaseActivity
-import com.pleon.buyt.ui.activity.MainActivity
+import com.pleon.buyt.ui.activity.DEFAULT_THEME
+import com.pleon.buyt.ui.activity.EXTRA_ITEM_ORDER
+import com.pleon.buyt.ui.activity.PREF_KEY_THEME
 import com.pleon.buyt.ui.dialog.DatePickerFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogRow
@@ -62,7 +63,7 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
     private val price: Long
         get() {
             return try {
-                java.lang.Long.parseLong(priceEd!!.text.toString().replace("[^\\d]".toRegex(), ""))
+                priceEd.text.toString().replace("[^\\d]".toRegex(), "").toLong()
             } catch (e: NumberFormatException) {
                 0
             }
@@ -70,7 +71,7 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
 
     private val quantity: Quantity
         get() {
-            val quantity = java.lang.Long.parseLong(quantityEd!!.text.toString().replace("[^\\d]".toRegex(), ""))
+            val quantity = quantityEd.text.toString().replace("[^\\d]".toRegex(), "").toLong()
 
             val idOfSelectedUnit = radio_group.checkedRadioButtonId
             val selectedUnit = view!!.findViewById<RadioButton>(idOfSelectedUnit)
@@ -87,7 +88,7 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
 
         // When an activity is opened from an intent, the bundle of extras is delivered to the activity
         // both when the configuration changes and when the system restores the activity from process kill.
-        viewModel.itemOrder = activity!!.intent.getIntExtra(MainActivity.EXTRA_ITEM_ORDER, 0)
+        viewModel.itemOrder = activity!!.intent.getIntExtra(EXTRA_ITEM_ORDER, 0)
 
         val typedValue = TypedValue()
         context!!.theme.resolveAttribute(R.attr.colorError, typedValue, true)
@@ -232,12 +233,10 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
     private fun onDateClicked() {
         if (activity!!.resources.configuration.locale.displayName == "فارسی (ایران)") {
             val persianCal = PersianCalendar()
-            val datePicker = DatePickerDialog
-                    .newInstance(this, persianCal.persianYear, persianCal.persianMonth, persianCal.persianDay)
-            val theme = PreferenceManager.getDefaultSharedPreferences(context).getString("theme", BaseActivity.DEFAULT_THEME)
-            if (theme == BaseActivity.DEFAULT_THEME) {
-                datePicker.isThemeDark = true // if you want to change colors see colors.xml
-            }
+            val datePicker = DatePickerDialog.newInstance(this, persianCal.persianYear,
+                    persianCal.persianMonth, persianCal.persianDay)
+            val theme = getDefaultSharedPreferences(context).getString(PREF_KEY_THEME, DEFAULT_THEME)
+            datePicker.isThemeDark = (theme == DEFAULT_THEME) // if you want to change colors see colors.xml
             datePicker.retainInstance = true
 
             val selectableDays = arrayOfNulls<PersianCalendar>(10)
@@ -398,7 +397,7 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
         if (validated) {
             val name = name.text.toString()
             val quantity = quantity
-            val item = Item(name, quantity, urgent.isChecked, bought.isChecked, viewModel.category)
+            val item = Item(name, quantity, viewModel.category, urgent.isChecked, bought.isChecked)
             item.position = viewModel.itemOrder
 
             if (!isEmpty(description)) {

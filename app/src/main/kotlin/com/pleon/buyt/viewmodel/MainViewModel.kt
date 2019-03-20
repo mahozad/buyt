@@ -16,14 +16,11 @@ import com.pleon.buyt.viewmodel.MainViewModel.State.IDLE
 import java.util.*
 import kotlin.math.cos
 
-// The ViewModel's role is to provide data to the UI and survive configuration changes.
+private const val EARTH_RADIUS = 6_371_000.0 // In meters
+
 // Every screen in the app (an activity with all its fragments) has one corresponding viewModel for itself.
 // A ViewModel acts as a communication center between the Repository and the UI.
-// You can also use a ViewModel to share data between fragments
-
-// Warning: Never pass context into ViewModel instances. Do not store Activity, Fragment, or View instances or their Context in the ViewModel.
-// For example, an Activity can be destroyed and created many times during the lifecycle of a ViewModel as the device is rotated.
-// If you store a reference to the Activity in the ViewModel, you end up with references that point to the destroyed Activity. This is a memory leak.
+// You can also use a ViewModel to share data between fragments.
 
 /**
  * [ViewModels][androidx.lifecycle.ViewModel] only survive configuration changes and not
@@ -69,9 +66,5 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun getStoreTitle(): String {
         return if (foundStores.size == 1) foundStores[0].name
         else getApplication<Application>().getString(storeTitle)
-    }
-
-    companion object {
-        private const val EARTH_RADIUS = 6371000.0 // In meters
     }
 }

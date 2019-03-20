@@ -2,8 +2,8 @@ package com.pleon.buyt.database.repository
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import com.pleon.buyt.database.AppDatabase
 import com.pleon.buyt.database.SingleLiveEvent
+import com.pleon.buyt.database.getDatabase
 import com.pleon.buyt.model.Coordinates
 import com.pleon.buyt.model.Item
 import com.pleon.buyt.model.Purchase
@@ -18,9 +18,9 @@ import java.util.*
 // to fetch data from a network or use results cached in a local database.
 class MainRepository(application: Application) { // TODO: make this class singleton
 
-    private val itemDao = AppDatabase.getDatabase(application).itemDao()
-    private val storeDao = AppDatabase.getDatabase(application).storeDao()
-    private val purchaseDao = AppDatabase.getDatabase(application).purchaseDao()
+    private val itemDao = getDatabase(application).itemDao()
+    private val storeDao = getDatabase(application).storeDao()
+    private val purchaseDao = getDatabase(application).purchaseDao()
     private val nearStores = SingleLiveEvent<List<Store>>()
     private val allStores = SingleLiveEvent<List<Store>>()
     val allItems = itemDao.getAll()

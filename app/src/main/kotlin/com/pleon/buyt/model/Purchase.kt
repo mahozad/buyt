@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 @Entity
-class Purchase(@ForeignKey(entity = Store::class, parentColumns = ["id"], childColumns = ["storeId"])
+class Purchase(@ForeignKey(entity = Store::class, parentColumns = ["storeId"], childColumns = ["storeId"])
                val storeId: Long, val date: Date) {
 
     @PrimaryKey(autoGenerate = true)

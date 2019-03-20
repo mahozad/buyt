@@ -9,6 +9,10 @@ import com.pleon.buyt.model.*
 import java.text.DateFormat
 import java.util.*
 
+private const val PERIOD_CLAUSE = " date >= STRFTIME('%s', 'now', 'localtime', 'start of day', -:period || ' days') "
+private const val FILTER_CLAUSE = " (:filter IS NULL OR category = :filter) "
+private const val PERIOD_AND_FILTER_CLAUSE = "$PERIOD_CLAUSE AND $FILTER_CLAUSE"
+
 @Dao
 abstract class PurchaseDao {
 
@@ -132,10 +136,4 @@ abstract class PurchaseDao {
             "ON AllDates.date = DailyCosts.date " +
             "GROUP BY AllDates.date")
     abstract fun getDailyCosts(period: Int, filter: Category?): List<DailyCost>
-
-    companion object {
-        private const val PERIOD_CLAUSE = " date >= STRFTIME('%s', 'now', 'localtime', 'start of day', -:period || ' days') "
-        private const val FILTER_CLAUSE = " (:filter IS NULL OR category = :filter) "
-        private const val PERIOD_AND_FILTER_CLAUSE = "$PERIOD_CLAUSE AND $FILTER_CLAUSE"
-    }
 }

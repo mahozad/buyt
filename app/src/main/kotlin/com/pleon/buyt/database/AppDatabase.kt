@@ -15,37 +15,30 @@ import com.pleon.buyt.model.Item
 import com.pleon.buyt.model.Purchase
 import com.pleon.buyt.model.Store
 
+@Volatile private var INSTANCE: AppDatabase? = null
+private const val DATABASE_NAME = "buyt-database.db"
+
+fun getDatabase(context: Context): AppDatabase {
+    return INSTANCE ?: synchronized(AppDatabase::class) {
+        // Create database here
+        val instance = Room.databaseBuilder(context.applicationContext,
+                AppDatabase::class.java, DATABASE_NAME).build()
+        INSTANCE = instance
+        instance
+    }
+}
+
+fun destroyDatabase() {
+    INSTANCE = null
+}
+
 // Usually, you only need one instance of the Room database for the whole app
 @Database(entities = [Item::class, Store::class, Purchase::class], version = 1)
 @TypeConverters(DateConverter::class, QuantityUnitConverter::class, CategoryConverter::class)
 abstract class AppDatabase : RoomDatabase() {
-
     abstract fun itemDao(): ItemDao
 
     abstract fun storeDao(): StoreDao
 
     abstract fun purchaseDao(): PurchaseDao
-
-    companion object {
-
-        private const val DATABASE_NAME = "buyt-database.db"
-
-        @Volatile
-        private var INSTANCE: AppDatabase? = null
-
-        fun getDatabase(context: Context): AppDatabase {
-            return INSTANCE ?: synchronized(this) {
-                // Create database here
-                val instance = Room.databaseBuilder(context.applicationContext,
-                        AppDatabase::class.java, DATABASE_NAME).build()
-                INSTANCE = instance
-                instance
-            }
-        }
-
-        // TODO: call this method when appropriate
-        fun destroyInstance() {
-            INSTANCE = null
-        }
-    }
 }

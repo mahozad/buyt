@@ -3,12 +3,12 @@ package com.pleon.buyt.model
 import androidx.room.*
 
 @Entity
-class Item(val name: String, @Embedded val quantity: Quantity,
-           val isUrgent: Boolean, var isBought: Boolean, var category: Category) {
+class Item(val name: String, @Embedded val quantity: Quantity, var category: Category,
+           val isUrgent: Boolean, var isBought: Boolean) {
 
     @PrimaryKey(autoGenerate = true)
     var itemId: Long = 0 // TODO: change type of id here to int?
-    @ForeignKey(entity = Purchase::class, parentColumns = ["id"], childColumns = ["purchaseId"])
+    @ForeignKey(entity = Purchase::class, parentColumns = ["purchaseId"], childColumns = ["purchaseId"])
     var purchaseId: Long = 0
     var description: String? = null
     var totalPrice: Long = 0

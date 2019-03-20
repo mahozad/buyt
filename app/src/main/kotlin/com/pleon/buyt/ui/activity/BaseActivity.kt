@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.pleon.buyt.R
 
+const val PREF_KEY_THEME = "theme"
+const val DEFAULT_THEME = "dark"
+
 abstract class BaseActivity : AppCompatActivity() {
 
     abstract fun layout(): Int
@@ -19,12 +22,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     private fun setTheme() {
         val preferences = getDefaultSharedPreferences(this)
-        val theme = preferences.getString(KEY_PREF_THEME, DEFAULT_THEME)
+        val theme = preferences.getString(PREF_KEY_THEME, DEFAULT_THEME)
         setTheme(if (theme == DEFAULT_THEME) R.style.AppTheme else R.style.LightTheme)
-    }
-
-    companion object {
-        const val KEY_PREF_THEME = "theme"
-        const val DEFAULT_THEME = "dark"
     }
 }

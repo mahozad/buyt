@@ -13,7 +13,7 @@ import com.pleon.buyt.ui.fragment.StatesFragment
 class StatesActivity : BaseActivity(), SelectDialogFragment.Callback {
 
     private lateinit var statesFragment: StatesFragment
-    private var filterList: ArrayList<SelectDialogRow> = ArrayList()
+    private var filterList = ArrayList<SelectDialogRow>()
     private var filterMenuItem: MenuItem? = null
 
     override fun layout() = R.layout.activity_states
