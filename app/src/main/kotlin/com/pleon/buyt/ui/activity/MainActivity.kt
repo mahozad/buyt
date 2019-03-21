@@ -55,7 +55,6 @@ import com.pleon.buyt.viewmodel.MainViewModel.State.*
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
-private val TAG by lazy { MainActivity::class.java.simpleName }
 private const val STATE_LOCATION = "com.pleon.buyt.state.LOCATION"
 private const val CREATE_STORE_REQUEST_CODE = 1
 private const val REQUEST_LOCATION_PERMISSION = 1
