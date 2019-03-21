@@ -1,7 +1,11 @@
 package com.pleon.buyt.ui.fragment
 
 import android.content.Context
+import android.content.Intent
+import android.content.Intent.ACTION_VIEW
 import android.location.Location
+import android.net.Uri
+import android.net.Uri.parse
 import android.os.Bundle
 import android.view.*
 import android.widget.EditText
@@ -58,21 +62,18 @@ class CreateStoreFragment : Fragment(), SelectDialogFragment.Callback {
      * @return
      */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedState: Bundle?): View {
+//        Mapbox.getInstance(context!!, getString(R.string.mapbox_access_token)) // should be called before inflation
         val view = inflater.inflate(R.layout.fragment_create_store, container, false)
-        // Mapbox.getInstance(getContext(), getString(R.string.mapbox_access_token)); // should be called before inflation
-        // MapView mapView = view.findViewById(R.id.mapView);
-        // mapView.onCreate(savedState);
-        // mapView.getMapAsync(mapboxMap -> {
-        //         LatLng latLng = new LatLng(location);
-        //         CameraPosition position = new CameraPosition.Builder()
-        //                 .target(latLng).zoom(14).tilt(20).build();
-        //         mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position));
-        //         mapboxMap.addMarker(new MarkerOptions().position(latLng));
-        //         mapboxMap.setStyle(Style.DARK, style -> {
-        //             // Map is set up and the style has loaded. Now you can add data or make other map adjustments
-        //         });
-        //     }
-        // );
+//        val mapView: MapView = view.findViewById(R.id.mapView)
+//        mapView.onCreate(savedState)
+//        mapView.getMapAsync {
+//            val latLng = LatLng(location)
+//            val position: CameraPosition = CameraPosition.Builder()
+//                    .target(latLng).zoom(14.0).tilt(20.0).build()
+//            it.animateCamera(CameraUpdateFactory.newCameraPosition(position))
+//            it.addMarker(MarkerOptions().position(latLng))
+//            it.setStyle(Style.Builder().fromUrl("mapbox://styles/crygas/cjthow4p00b831fs6w5n9hhrt"))
+//        }
 
         setHasOptionsMenu(true) // for the onCreateOptionsMenu() method to be called
         return view
@@ -97,16 +98,26 @@ class CreateStoreFragment : Fragment(), SelectDialogFragment.Callback {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_store_category) {
-            // FIXME: initialize this only once
-            val selectionList = ArrayList<SelectDialogRow>() // dialog requires ArrayList
-            for (category in Category.values()) {
-                val selection = SelectDialogRow(getString(category.storeNameRes), category.storeImageRes)
-                selectionList.add(selection)
+        when (item.itemId) {
+            R.id.action_store_category -> {
+                // FIXME: initialize this only once
+                val selectionList = ArrayList<SelectDialogRow>() // dialog requires ArrayList
+                for (category in Category.values()) {
+                    val selection = SelectDialogRow(getString(category.storeNameRes), category.storeImageRes)
+                    selectionList.add(selection)
+                }
+                val selectStoreDialog = SelectDialogFragment
+                        .newInstance(this, R.string.dialog_title_select_cat, selectionList)
+                selectStoreDialog.show(activity!!.supportFragmentManager, "SELECT_STORE_DIALOG")
             }
-            val selectStoreDialog = SelectDialogFragment
-                    .newInstance(this, R.string.dialog_title_select_cat, selectionList)
-            selectStoreDialog.show(activity!!.supportFragmentManager, "SELECT_STORE_DIALOG")
+
+            R.id.action_show_map -> {
+                // or use "geo:0,0?q=lat,lng(label)" format to show a label on map as well
+                val uri: Uri = parse("geo:${location.latitude},${location.longitude}?z=15")
+                val intent = Intent(ACTION_VIEW).apply { data = uri }
+                // intent.setPackage("com.google.android.apps.maps") // If desired, Make the Intent explicit
+                if (intent.resolveActivity(activity!!.packageManager) != null) startActivity(intent)
+            }
         }
         return true
     }

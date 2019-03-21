@@ -2,11 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item
+        android:id="@+id/action_show_map"
+        android:icon="@drawable/ic_map"
+        android:title="Show on map"
+        app:showAsAction="always" />
+
     <!-- app:actionLayout sets a custom layout for this item (to show icon and text together) -->
     <item
         android:id="@+id/action_store_category"
         android:title="@string/menu_title_store_category"
         app:actionLayout="@layout/action_store_category_layout"
         app:showAsAction="always" />
-
 </menu>

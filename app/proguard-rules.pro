@@ -20,4 +20,5 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+# Mapbox:
 #-keep class com.mapbox.android.core.location.** { *; }

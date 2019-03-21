@@ -99,7 +99,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
 
     // Alternative for Google map
-    // implementation("com.mapbox.mapboxsdk:mapbox-android-sdk:7.1.2")
+    // implementation("com.mapbox.mapboxsdk:mapbox-android-sdk:7.2.0")
     implementation("com.getkeepsafe.taptargetview:taptargetview:1.12.0")
     implementation("com.mohamadamin:persianmaterialdatetimepicker:1.2.1")
     implementation("com.diogobernardino:williamchart:2.5.0")
