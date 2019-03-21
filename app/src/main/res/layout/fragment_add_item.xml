@@ -99,21 +99,21 @@
                         style="@style/UnitToggleButton"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="@string/quantity_unit" />
+                        android:text="@string/qty_unit" />
 
                     <androidx.appcompat.widget.AppCompatRadioButton
                         android:id="@+id/kilogram"
                         style="@style/UnitToggleButton"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="@string/quantity_kilogram" />
+                        android:text="@string/qty_kilogram" />
 
                     <androidx.appcompat.widget.AppCompatRadioButton
                         android:id="@+id/gram"
                         style="@style/UnitToggleButton"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="@string/quantity_gram" />
+                        android:text="@string/qty_gram" />
 
                 </RadioGroup>
 

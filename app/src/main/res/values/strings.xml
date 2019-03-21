@@ -85,9 +85,9 @@
     <string name="store_cat_shoe_shop">Shoe shop</string>
     <string name="store_cat_confectionery">Confectionery</string>
 
-    <string name="quantity_unit">unit</string>
-    <string name="quantity_kilogram">kg</string>
-    <string name="quantity_gram">g</string>
+    <string name="qty_unit">unit</string>
+    <string name="qty_kilogram">kg</string>
+    <string name="qty_gram">g</string>
 
     <!-- Change title of persian date picker button from "بیخیال" to this -->
     <string name="mdtp_cancel" translatable="false">لغو</string>

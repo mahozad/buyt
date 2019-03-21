@@ -1,7 +1,7 @@
 package com.pleon.buyt.database.converter
 
 import androidx.room.TypeConverter
-import com.pleon.buyt.model.Quantity.Unit
+import com.pleon.buyt.model.Item.Quantity.Unit
 
 class QuantityUnitConverter {
 

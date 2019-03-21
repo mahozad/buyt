@@ -28,9 +28,9 @@
     <string name="item_cat_bread">نان</string>
     <string name="store_cat_grocery_store">سوپری</string>
     <string name="store_cat_bakery">نانوایی</string>
-    <string name="quantity_unit">عدد</string>
-    <string name="quantity_kilogram">کیلوگرم</string>
-    <string name="quantity_gram">گرم</string>
+    <string name="qty_unit">عدد</string>
+    <string name="qty_kilogram">کیلوگرم</string>
+    <string name="qty_gram">گرم</string>
     <string name="dialog_title_location_permission">مکان غیرفعال</string>
     <string name="dialog_title_location_off">مکان خاموش</string>
     <string name="dialog_action_skip">اکنون نه</string>

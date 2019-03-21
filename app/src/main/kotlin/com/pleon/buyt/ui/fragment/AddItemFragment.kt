@@ -27,8 +27,7 @@ import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import com.pleon.buyt.R
 import com.pleon.buyt.model.Category
 import com.pleon.buyt.model.Item
-import com.pleon.buyt.model.Quantity
-import com.pleon.buyt.model.Quantity.Unit
+import com.pleon.buyt.model.Item.Quantity.Unit
 import com.pleon.buyt.ui.NumberInputWatcher
 import com.pleon.buyt.ui.activity.DEFAULT_THEME
 import com.pleon.buyt.ui.activity.EXTRA_ITEM_ORDER
@@ -69,7 +68,7 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
             }
         }
 
-    private val quantity: Quantity
+    private val quantity: Item.Quantity
         get() {
             val quantity = quantityEd.text.toString().replace("[^\\d]".toRegex(), "").toLong()
 
@@ -78,7 +77,7 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
             val indexOfSelectedUnit = radio_group.indexOfChild(selectedUnit)
             val unit = Unit.values()[indexOfSelectedUnit]
 
-            return Quantity(quantity, unit)
+            return Item.Quantity(quantity, unit)
         }
 
     override fun onCreate(savedState: Bundle?) {
