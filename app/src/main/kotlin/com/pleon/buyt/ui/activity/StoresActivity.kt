@@ -21,6 +21,6 @@ class StoresActivity : BaseActivity() {
 
             android.R.id.home -> finish()
         }
-        return true
+        return false
     }
 }
