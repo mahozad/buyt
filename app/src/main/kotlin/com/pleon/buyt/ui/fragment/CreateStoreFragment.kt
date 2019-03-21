@@ -29,8 +29,8 @@ class CreateStoreFragment : Fragment(), SelectDialogFragment.Callback {
         fun onSubmit(store: Store)
     }
 
+    private lateinit var location: Location
     private var callback: Callback? = null
-    private var location: Location? = null
     private var storeCategory = GROCERY
     private var selectCategoryTxvi: TextView? = null
 
@@ -90,10 +90,10 @@ class CreateStoreFragment : Fragment(), SelectDialogFragment.Callback {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_add_store, menu)
 
-        selectCategoryTxvi = menu.findItem(R.id.action_store_category).actionView.findViewById(R.id.select_category)
-        // Setting up "Choose category" action because it has custom layout
         val menuItem = menu.findItem(R.id.action_store_category)
-        menuItem.actionView.setOnClickListener { v -> onOptionsItemSelected(menuItem) }
+        selectCategoryTxvi = menuItem.actionView.findViewById(R.id.select_category)
+        // Setting up "Choose category" action because it has custom layout
+        menuItem.actionView.setOnClickListener { onOptionsItemSelected(menuItem) }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -132,9 +132,9 @@ class CreateStoreFragment : Fragment(), SelectDialogFragment.Callback {
 
     fun onDonePressed() {
         if (validateFields()) {
-            val coordinates = Coordinates(location!!)
+            val coordinates = Coordinates(location)
 
-            val name = name!!.text.toString()
+            val name = name.text.toString()
             val store = Store(coordinates, name, storeCategory)
 
             callback!!.onSubmit(store)
@@ -142,8 +142,8 @@ class CreateStoreFragment : Fragment(), SelectDialogFragment.Callback {
     }
 
     private fun validateFields(): Boolean {
-        if (isEmpty(name!!)) {
-            name_layout!!.error = "Name cannot be empty"
+        if (isEmpty(name)) {
+            name_layout.error = "Name cannot be empty"
             return false
         }
         return true

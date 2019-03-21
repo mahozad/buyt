@@ -26,8 +26,8 @@ import java.lang.Long.parseLong
 class ItemListAdapter(private val context: Context, private val itemTouchHelper: ItemTouchHelper) : Adapter<ItemHolder>() {
 
     var items = mutableListOf<Item>()
-        set(items) {
-            field = items
+        set(value) {
+            field = value
             notifyDataSetChanged()
         }
     val selectedItems = mutableSetOf<Item>()
@@ -43,7 +43,6 @@ class ItemListAdapter(private val context: Context, private val itemTouchHelper:
 
     /**
      * Gets a reference of the enclosing RecyclerView.
-     *
      *
      * Note that if the adapter is assigned to multiple RecyclerViews, then only one
      * of them is assigned to the filed because every time the adapter is attached to a new

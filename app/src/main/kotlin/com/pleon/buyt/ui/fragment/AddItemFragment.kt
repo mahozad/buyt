@@ -62,7 +62,7 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
     private val price: Long
         get() {
             return try {
-                priceEd.text.toString().replace("[^\\d]".toRegex(), "").toLong()
+                priceEd.text.toString().replace(Regex("[^\\d]"), "").toLong()
             } catch (e: NumberFormatException) {
                 0
             }
@@ -70,7 +70,7 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
 
     private val quantity: Item.Quantity
         get() {
-            val quantity = quantityEd.text.toString().replace("[^\\d]".toRegex(), "").toLong()
+            val quantity = quantityEd.text.toString().replace(Regex("[^\\d]"), "").toLong()
 
             val idOfSelectedUnit = radio_group.checkedRadioButtonId
             val selectedUnit = view!!.findViewById<RadioButton>(idOfSelectedUnit)
