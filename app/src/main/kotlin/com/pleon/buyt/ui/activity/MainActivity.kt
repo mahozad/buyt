@@ -105,6 +105,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
     // FIXME: Slide-up bottom bar if it was hidden (because of scroll) and some items were deleted and
     // now cannot scroll to make it slide up again
     // TODO: Use a ViewStub in AddItemFragment layout for the part that is not shown until bought is checked
+    // see [https://developer.android.com/training/improving-layouts/loading-ondemand]
     // TODO: Redesign the logo in 24 by 24 grid in inkscape to make it crisp (like standard icons)
     // TODO: Add widgets for the app see[https://developer.android.com/guide/topics/appwidgets/overview]
     // TODO: Make icons animation durations consistent
@@ -140,18 +141,20 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
     // TODO: Add ability to remove all app data
     // TODO: Add android.support.annotation to the app
     // TODO: For every new version of the app display a what's new page on first app open
+    // TODO: Use list-item selection in recycler view;
+    // see [https://developer.android.com/guide/topics/ui/layout/recyclerview#select]
     // TODO: Convert all ...left and ...right attributes to ...start and ...end
     // TODO: Show a small progress bar of how much has been spent if user has set a limit on spends
     // TODO: use downloadable fonts instead of integrating the font in the app to reduce the app size
     // TODO: new version of MaterialCardView will include a setCheckedIcon. check it out
     /* TODO: Show a prompt (or an emoji or whatever) when there is no items in the home screen
-   to do this, add a new View to the layout and play with its setVisibility as appropriate
-*/
+     * to do this, add a new View to the layout and play with its setVisibility as appropriate
+     */
 
     /* TODO: Do you have multiple tables in your database and find yourself copying the same Insert,
- * Update and Delete methods? DAOs support inheritance, so create a BaseDao<T> class, and define
- * your generic @Insert,... there. Have each DAO extend the BaseDao and add methods specific to each of them.
- */
+     * Update and Delete methods? DAOs support inheritance, so create a BaseDao<T> class, and define
+     * your generic @Insert,... there. Have each DAO extend the BaseDao and add methods specific to each of them.
+     */
 
     private lateinit var viewModel: MainViewModel
     private lateinit var itemsFragment: ItemsFragment
