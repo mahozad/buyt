@@ -39,7 +39,6 @@ import com.pleon.buyt.viewmodel.AddItemViewModel
 import com.pleon.buyt.viewmodel.MainViewModel
 import ir.huri.jcal.JalaliCalendar
 import kotlinx.android.synthetic.main.fragment_add_item.*
-import kotlinx.android.synthetic.main.fragment_add_item.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -53,8 +52,8 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
     @ColorRes private var colorError: Int = 0 // this color varies based on the theme
 
     private lateinit var unitRdbtns: Array<RadioButton>
-    private var callback: Callback? = null
     private lateinit var viewModel: AddItemViewModel
+    private var callback: Callback? = null
     private var selectCategoryTxvi: TextView? = null
 
     private val isBoughtChecked get() = bought.isChecked
@@ -120,18 +119,15 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
     }
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
-        unitRdbtns = arrayOf(view.unit, view.kilogram, view.gram)
+        unitRdbtns = arrayOf(unit, kilogram, gram)
 
         setHasOptionsMenu(true) // for the onCreateOptionsMenu() method to be called
 
-        // disable by default (because quantity input is not focused yet)
-        for (unitRdbtn in unitRdbtns) unitRdbtn.isEnabled = false
-
-        // Set up auto complete for item name
+        // Setup auto complete for item name
         viewModel.itemNames.observe(viewLifecycleOwner, Observer { names ->
             val adapter = ArrayAdapter<String>(context!!,
                     android.R.layout.simple_dropdown_item_1line, names)
-            name!!.setAdapter<ArrayAdapter<String>>(adapter)
+            name.setAdapter<ArrayAdapter<String>>(adapter)
         })
 
         val priceSuffix = getString(R.string.input_suffix_price)
@@ -265,9 +261,7 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
      * @param focused if the view is focused
      */
     private fun onDateGainedFocus(focused: Boolean) {
-        if (focused) {
-            onDateClicked()
-        }
+        if (focused) onDateClicked()
     }
 
     // On result of Persian date picker
@@ -332,44 +326,35 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
     }
 
     private fun onQuantityFocusChanged(hasFocus: Boolean) {
-        // should enable and set the new color for EACH radio button
-        for (unitRdbtn in unitRdbtns) {
-            unitRdbtn.isEnabled = hasFocus
-        }
-
         var color = colorError
-        if (hasFocus && quantity_layout!!.error == null) {
-            color = R.color.colorPrimary
-        } else if (!hasFocus && quantity_layout!!.error == null) {
-            color = R.color.unfocused
-        }
-        setColorOfAllUnitsForEnabledState(color)
+        if (hasFocus && quantity_layout.error == null) color = R.color.colorPrimary
+        else if (!hasFocus && quantity_layout.error == null) color = R.color.unfocused
+        setColorOfAllUnits(color)
     }
 
-    private fun setColorOfAllUnitsForEnabledState(color: Int) {
-        val unitRdbtns = arrayOf(unit, kilogram, gram)
+    private fun setColorOfAllUnits(color: Int) {
         for (unitRdbtn in unitRdbtns) {
             val sld = unitRdbtn.background as StateListDrawable
             val dcs = sld.constantState as DrawableContainerState
             // <color> element for checked state (<color> index 3 in unit_background_selector.xml)
-            val checkedColor = dcs.getChild(3) as ColorDrawable
+            val checkedColor = dcs.getChild(4) as ColorDrawable
 
             checkedColor.color = resources.getColor(color)
         }
     }
 
     private fun onNameChanged() {
-        if (!name.text.toString().isEmpty()) { // to prevent error with config change
+        if (name.text.toString().isNotEmpty()) { // to prevent error with config change
             name_layout.error = null // clear error if exists
-            setCounterEnabledIfInputLong(name_layout!!)
+            setCounterEnabledIfInputLong(name_layout)
         }
     }
 
     private fun onQuantityChanged() {
-        if (!quantityEd.text.toString().isEmpty()) { // to prevent error with config change
+        if (quantityEd.text.toString().isNotEmpty()) { // to prevent error with config change
             quantity_layout.error = null // clear error if exists
         }
-        setColorOfAllUnitsForEnabledState(R.color.colorPrimary)
+        setColorOfAllUnits(R.color.colorPrimary)
     }
 
     private fun onDescriptionChanged() = setCounterEnabledIfInputLong(description_layout)
@@ -422,8 +407,8 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
         val imageRes: Int
         if (isBoughtChecked) {
             viewModel.store = viewModel.storeList!![index]
-            name = viewModel.store!!.name!!
-            imageRes = viewModel.store!!.category!!.storeImageRes
+            name = viewModel.store!!.name
+            imageRes = viewModel.store!!.category.storeImageRes
         } else {
             val category = Category.values()[index]
             name = resources.getString(category.nameRes)
@@ -438,13 +423,13 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
     private fun validateFields(): Boolean {
         var validated = true
 
-        if (isEmpty(name!!)) {
-            name_layout!!.error = getString(R.string.input_error_name)
+        if (isEmpty(name)) {
+            name_layout.error = getString(R.string.input_error_name)
             validated = false
         }
-        if (isEmpty(quantityEd!!)) {
-            quantity_layout!!.error = getString(R.string.input_error_quantity)
-            setColorOfAllUnitsForEnabledState(colorError)
+        if (isEmpty(quantityEd)) {
+            quantity_layout.error = getString(R.string.input_error_quantity)
+            setColorOfAllUnits(colorError)
             validated = false
         }
         if (bought.isChecked && (isEmpty(priceEd) || price == 0L)) {

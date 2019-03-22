@@ -33,11 +33,11 @@
     <!-- Style for unit (kg, g, ...) toggle buttons -->
     <style name="UnitToggleButton" parent="@android:style/Widget.CompoundButton.RadioButton">
         <item name="android:foreground">?android:attr/selectableItemBackground</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">32dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:background">@drawable/unit_background_selector</item>
         <item name="android:button">@null</item>
-        <item name="android:textColor">@color/unit_text</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
         <item name="android:textSize">16sp</item>
         <item name="android:paddingStart">10dp</item>
         <item name="android:paddingEnd">10dp</item>

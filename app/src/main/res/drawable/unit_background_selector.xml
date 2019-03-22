@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- DO NOT REORDER ITEMS (if reordered, then you might need to update focusListener in AddItemFragment)-->
+    <item android:state_checked="true" android:state_pressed="true" android:state_focused="false">
+        <color android:color="@color/unfocused" />
+    </item>
     <item android:state_checked="true" android:state_pressed="true">
         <color android:color="@color/colorAccent" />
     </item>
@@ -8,9 +11,9 @@
         <color android:color="@color/colorPrimaryDark" />
     </item>
     <item android:state_checked="false">
-        <color android:color="#141414" />
+        <color android:color="?android:attr/colorBackground" />
     </item>
     <item android:state_checked="true">
-        <color android:color="#6e6e6e" />
+        <color android:color="@color/unfocused" />
     </item>
 </selector>

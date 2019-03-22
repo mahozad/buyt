@@ -13,7 +13,7 @@
     <!-- Other mdtp_... colors -->
 
     <color name="ic_launcher_background">#FFFFFF</color>
-    <color name="unfocused">#6E6E6E</color>
+    <color name="unfocused">#6f6f6f</color>
 
     <array name="lineChartGradient">
         <item>#CC259600</item>
