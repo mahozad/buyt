@@ -144,5 +144,13 @@
     <string name="tutorial_skip_finding">If the store is saved already you can skip finding step</string>
     <string name="input_hint_shopkeeper_name">Shopkeeper name (optional)</string>
     <string name="menu_title_show_map">Show on map</string>
+    <string name="state_total_spent_money">Total Spent money:</string>
+    <string name="state_max_purchase_cost">Max purchase cost:</string>
+    <string name="state_min_purchase_cost">Min purchase cost:</string>
+    <string name="state_weekday_with_most_purchases">Weekday with most purchases:</string>
+    <string name="state_average_purchase_cost">Average purchase cost:</string>
+    <string name="state_most_purchased_category">Most purchased category:</string>
+    <string name="state_store_with_most_purchases">Store with most purchases:</string>
+    <string name="state_number_of_purchases">Number of purchases:</string>
 
 </resources>

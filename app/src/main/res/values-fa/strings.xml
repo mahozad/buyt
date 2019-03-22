@@ -84,4 +84,12 @@
     <string name="tutorial_skip_finding">اگر مغازه از قبل ذخیره شده است، می‌توانید مرحله جستجو را رد کنید</string>
     <string name="input_hint_shopkeeper_name">نام مغازه‌دار (اختیاری)</string>
     <string name="menu_title_show_map">نمایش در نقشه</string>
+    <string name="state_total_spent_money">مجموع مبلغ خرج شده:</string>
+    <string name="state_max_purchase_cost">بیشترین هزینه خرید:</string>
+    <string name="state_min_purchase_cost">کمترین هزینه خرید:</string>
+    <string name="state_weekday_with_most_purchases">روز هفته با بیشترین خرید:</string>
+    <string name="state_average_purchase_cost">میانگین هزینه خرید:</string>
+    <string name="state_most_purchased_category">بیشترین دسته‌بندی خرید شده:</string>
+    <string name="state_store_with_most_purchases">مغازه با بیشترین خرید</string>
+    <string name="state_number_of_purchases">تعداد خریدهای انجام شده:</string>
 </resources>
