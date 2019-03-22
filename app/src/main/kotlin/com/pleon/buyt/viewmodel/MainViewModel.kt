@@ -48,14 +48,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val allItems = repository.allItems
     val allStores get() = repository.getAllStores()
 
-    fun buy(items: Collection<Item>, store: Store, purchaseDate: Date) =
-            repository.buy(items, store, purchaseDate)
-
     fun findNearStores(origin: Coordinates): LiveData<List<Store>> {
         val distInMeters = preferences.getString("distance", "50")!!.toInt()
         val nearStoresDistance = cos(distInMeters / EARTH_RADIUS)
         return repository.findNearStores(origin, nearStoresDistance)
     }
+
+    fun buy(items: Collection<Item>, store: Store, date: Date) = repository.buy(items, store, date)
 
     fun updateItems(items: Collection<Item>) = repository.updateItems(items)
 
