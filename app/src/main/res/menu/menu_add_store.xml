@@ -5,7 +5,7 @@
     <item
         android:id="@+id/action_show_map"
         android:icon="@drawable/ic_map"
-        android:title="Show on map"
+        android:title="@string/menu_title_show_map"
         app:showAsAction="always" />
 
     <!-- app:actionLayout sets a custom layout for this item (to show icon and text together) -->

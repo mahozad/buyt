@@ -11,12 +11,13 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="10dp"
         app:counterMaxLength="12"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -28,22 +29,40 @@
             android:maxLength="12" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/mapContainer"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/sellerName_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/name_layout">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:counterMaxLength="12"
+        app:errorEnabled="true"
+        app:layout_constraintEnd_toEndOf="@+id/name_layout"
+        app:layout_constraintStart_toStartOf="@+id/name_layout"
+        app:layout_constraintTop_toBottomOf="@+id/name_layout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/sellerName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/input_hint_shopkeeper_name"
+            android:maxLength="12" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!--<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+        <!--xmlns:tools="http://schemas.android.com/tools"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_margin="10dp"-->
+        <!--app:cardUseCompatPadding="true"-->
+        <!--app:layout_constraintBottom_toBottomOf="@id/sellerName_layout">-->
 
         <!--<com.mapbox.mapboxsdk.maps.MapView-->
         <!--android:id="@+id/mapView"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="match_parent" />-->
-    </com.google.android.material.card.MaterialCardView>
+
+    <!--</com.google.android.material.card.MaterialCardView>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

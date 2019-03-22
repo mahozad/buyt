@@ -82,4 +82,6 @@
     <string name="tutorial_add_item">کالاهای مورد نظر خود را اضافه نمایید…</string>
     <string name="tutorial_tap_buyt">داخل یا در نزدیکی مغازه ضربه بزنید تا مغازه پیدا شود</string>
     <string name="tutorial_skip_finding">اگر مغازه از قبل ذخیره شده است، می‌توانید مرحله جستجو را رد کنید</string>
+    <string name="input_hint_shopkeeper_name">نام مغازه‌دار (اختیاری)</string>
+    <string name="menu_title_show_map">نمایش در نقشه</string>
 </resources>
