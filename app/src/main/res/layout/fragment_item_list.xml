@@ -14,5 +14,5 @@
     android:paddingTop="6dp"
     android:paddingBottom="42dp"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    tools:context=".ui.fragment.ItemListFragment"
+    tools:context=".ui.fragment.ItemsFragment"
     tools:listitem="@layout/item_list_row" />

@@ -11,10 +11,10 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="10dp"
-        app:counterMaxLength="12"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        app:counterMaxLength="30"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/input_hint_store_name"
-            android:maxLength="12" />
+            android:maxLength="30" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -35,7 +35,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        app:counterMaxLength="12"
+        app:counterMaxLength="30"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="@+id/name_layout"
         app:layout_constraintStart_toStartOf="@+id/name_layout"
@@ -46,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/input_hint_shopkeeper_name"
-            android:maxLength="12" />
+            android:maxLength="30" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!--<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"-->
