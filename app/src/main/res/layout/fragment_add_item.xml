@@ -153,14 +153,14 @@
             app:layout_constraintStart_toStartOf="@+id/description_layout"
             app:layout_constraintTop_toBottomOf="@+id/description_layout" />
 
-        <!-- A divider -->
+        <!-- Divider -->
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginEnd="0dp"
             android:background="?android:attr/listDivider"
             app:layout_constraintEnd_toEndOf="@id/quantity_container"
             app:layout_constraintStart_toStartOf="@id/quantity_container"
@@ -170,12 +170,16 @@
             android:id="@+id/bought"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
+            android:background="?android:attr/colorBackground"
+            android:button="@drawable/avd_expand"
             android:buttonTint="?attr/colorOnSurface"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp"
+            android:layoutDirection="rtl"
+            android:paddingStart="2dp"
+            android:paddingEnd="6dp"
             android:text="@string/checkbox_purchased"
+            android:textColor="?attr/colorOnSurface"
+            app:layout_constraintBottom_toBottomOf="@id/divider"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider" />
 
@@ -193,7 +197,7 @@
             android:id="@+id/price_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             app:layout_constraintEnd_toEndOf="@id/description_layout"
             app:layout_constraintStart_toStartOf="@id/description_layout"
             app:layout_constraintTop_toBottomOf="@id/bought">

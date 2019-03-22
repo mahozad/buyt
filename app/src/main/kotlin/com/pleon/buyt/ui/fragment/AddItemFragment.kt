@@ -10,8 +10,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.TypedValue
 import android.view.*
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.widget.*
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
@@ -133,6 +132,10 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
         val priceSuffix = getString(R.string.input_suffix_price)
         priceEd.addTextChangedListener(NumberInputWatcher(price_layout, priceEd, priceSuffix))
         quantityEd.addTextChangedListener(NumberInputWatcher(quantity_layout, quantityEd, null))
+
+        // To reverse position of the bought checkbox icon
+        if (activity!!.resources.configuration.locale.displayName == "فارسی (ایران)")
+            bought.layoutDirection = LAYOUT_DIRECTION_LTR
 
         dateEd.setOnClickListener { onDateClicked() }
         dateEd.setOnFocusChangeListener { _, hasFocus -> onDateGainedFocus(hasFocus) }
@@ -312,6 +315,8 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
     }
 
     private fun onBoughtToggled(checked: Boolean) {
+        bought.setButtonDrawable(if (checked) R.drawable.avd_expand else R.drawable.avd_collapse)
+        (CompoundButtonCompat.getButtonDrawable(bought) as Animatable).start()
         if (selectCategoryTxvi != null) { // to fix bug on config change
             selectCategoryTxvi!!.text = if (checked) getString(R.string.menu_title_select_store) else getString(viewModel.category.nameRes)
             selectCategoryTxvi!!.setTextColor(ContextCompat.getColor(context!!, colorOnSurface))
