@@ -23,6 +23,7 @@ import com.pleon.buyt.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_item_list.*
 import java.util.*
+import kotlin.Comparator
 
 class ItemsFragment : Fragment(), ItemTouchHelperListener {
 
@@ -130,7 +131,7 @@ class ItemsFragment : Fragment(), ItemTouchHelperListener {
     }
 
     fun sortItemsByCategory(category: Category) {
-        adapter.items.sortWith(kotlin.Comparator { item1, item2 ->
+        adapter.items.sortWith(Comparator { item1, item2 ->
             when {
                 item1.category == item2.category -> 0
                 item1.category == category -> -1
