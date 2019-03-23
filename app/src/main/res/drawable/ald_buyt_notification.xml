@@ -3,40 +3,79 @@
     android:oneshot="false">
     <item
         android:drawable="@drawable/vd_buyt_notif_01"
-        android:duration="60" />
+        android:duration="50" />
     <item
         android:drawable="@drawable/vd_buyt_notif_02"
-        android:duration="60" />
+        android:duration="50" />
 
     <item
         android:drawable="@drawable/vd_buyt_notif_03"
-        android:duration="60" />
+        android:duration="50" />
 
     <item
         android:drawable="@drawable/vd_buyt_notif_04"
-        android:duration="60" />
+        android:duration="50" />
 
     <item
         android:drawable="@drawable/vd_buyt_notif_05"
-        android:duration="60" />
+        android:duration="50" />
 
     <item
         android:drawable="@drawable/vd_buyt_notif_06"
-        android:duration="60" />
+        android:duration="50" />
 
     <item
         android:drawable="@drawable/vd_buyt_notif_07"
-        android:duration="60" />
+        android:duration="50" />
 
     <item
         android:drawable="@drawable/vd_buyt_notif_08"
-        android:duration="60" />
+        android:duration="50" />
 
     <item
         android:drawable="@drawable/vd_buyt_notif_09"
-        android:duration="60" />
+        android:duration="50" />
 
     <item
         android:drawable="@drawable/vd_buyt_notif_10"
+        android:duration="50" />
+    <item
+        android:drawable="@drawable/vd_buyt_notif_11"
+        android:duration="50" />
+
+    <item
+        android:drawable="@drawable/vd_buyt_notif_12"
+        android:duration="50" />
+
+    <item
+        android:drawable="@drawable/vd_buyt_notif_13"
+        android:duration="50" />
+
+    <item
+        android:drawable="@drawable/vd_buyt_notif_14"
+        android:duration="50" />
+
+    <item
+        android:drawable="@drawable/vd_buyt_notif_15"
+        android:duration="50" />
+
+    <item
+        android:drawable="@drawable/vd_buyt_notif_16"
+        android:duration="50" />
+
+    <item
+        android:drawable="@drawable/vd_buyt_notif_17"
+        android:duration="50" />
+
+    <item
+        android:drawable="@drawable/vd_buyt_notif_18"
+        android:duration="50" />
+
+    <item
+        android:drawable="@drawable/vd_buyt_notif_19"
+        android:duration="50" />
+
+    <item
+        android:drawable="@drawable/vd_buyt_notif_20"
         android:duration="3000" />
 </animation-list>

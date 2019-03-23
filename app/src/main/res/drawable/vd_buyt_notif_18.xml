@@ -11,7 +11,7 @@
         android:strokeColor="#000"
         android:strokeLineCap="round"
         android:strokeLineJoin="round"
-        android:trimPathEnd="0.45" />
+        android:trimPathEnd="0.9" />
     <path
         android:name="path_2"
         android:pathData="M 6.534 8 L 6.534 16 L 13.462 20 C 15.671 20 17.462 18.209 17.462 16 C 17.462 13.791 15.676 12 13.466 12"
@@ -19,5 +19,5 @@
         android:strokeColor="#000"
         android:strokeLineCap="round"
         android:strokeLineJoin="round"
-        android:trimPathStart="0.55" />
+        android:trimPathStart="0.1" />
 </vector>
