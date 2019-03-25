@@ -2,6 +2,7 @@ package com.pleon.buyt.ui.activity
 
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.app.Activity
+import android.app.NotificationManager
 import android.content.*
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.graphics.drawable.Animatable
@@ -361,7 +362,10 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
                     stopService(Intent(this, GpsService::class.java))
                     shiftToIdleState()
                 }
-                else -> shiftToIdleState()
+                else -> {
+                    shiftToIdleState()
+                    (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).cancelAll()
+                }
             }
         }
         return true
