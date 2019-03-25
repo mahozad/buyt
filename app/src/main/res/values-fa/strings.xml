@@ -110,4 +110,7 @@
     <string name="state_most_purchased_category">بیشترین دسته‌بندی خرید شده:</string>
     <string name="state_store_with_most_purchases">مغازه با بیشترین خرید</string>
     <string name="state_number_of_purchases">تعداد خریدهای انجام شده:</string>
+    <string name="notif_title_finding_store">در حال جستجوی مغازه</string>
+    <string name="notif_channel_desc">کانال اصلی</string>
+    <string name="notif_title_store_found">مغازه پیدا شد</string>
 </resources>

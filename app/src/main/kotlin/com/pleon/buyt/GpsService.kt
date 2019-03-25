@@ -22,6 +22,7 @@ import com.pleon.buyt.ui.activity.MainActivity
 const val ACTION_LOCATION_EVENT = "com.pleon.buyt.broadcast.LOCATION_EVENT"
 const val EXTRA_LOCATION = "com.pleon.buyt.extra.LOCATION"
 private const val PROVIDER = GPS_PROVIDER
+private const val NOTIFICATION_ID = 238
 
 /**
  * We are not using WorkManager because if we want to run our task instantly
@@ -39,15 +40,20 @@ private const val PROVIDER = GPS_PROVIDER
 class GpsService : Service(), LocationListener {
 
     private lateinit var locationManager: LocationManager
+    private lateinit var notificationManager: NotificationManager
     private lateinit var pendingIntent: PendingIntent
 
     override fun onCreate() {
         super.onCreate()
 
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel("default", "BUYT", IMPORTANCE_DEFAULT)
-            channel.description = "BUYT Channel"
-            (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(channel)
+            val channel = NotificationChannel("Main", getString(R.string.app_name), IMPORTANCE_DEFAULT)
+            channel.description = getString(R.string.notif_channel_desc)
+            // channel.setShowBadge(false) // Disable the dot on app icon when notification is shown
+            notificationManager.createNotificationChannel(channel)
         }
 
         val notificationIntent = Intent(this, MainActivity::class.java)
@@ -58,16 +64,18 @@ class GpsService : Service(), LocationListener {
                 .setSmallIcon(R.drawable.ald_buyt_notification)
                 .setOngoing(true)
                 .setLights(resources.getColor(R.color.colorPrimary), 500, 600)
-                .setProgress(10, 1, true)
+                .setProgress(0, 0, true)
                 .setPriority(PRIORITY_DEFAULT) // set to MIN to hide the icon in notification bar
-                .setContentTitle("Finding the store...")
+                .setCategory(NotificationCompat.CATEGORY_PROGRESS)
+                .setContentTitle(getString(R.string.notif_title_finding_store))
                 // .setContentText("Determining the store...")
                 .setContentIntent(pendingIntent)
+                // .addAction() // Implement the action to cancel the search
                 .build()
 
         // note that apps targeting android P (API level 28) or later must declare the permission
         // Manifest.permission.FOREGROUND_SERVICE in order to use startForeground()
-        startForeground(12421, notification)
+        startForeground(NOTIFICATION_ID, notification)
     }
 
     /**
@@ -79,7 +87,6 @@ class GpsService : Service(), LocationListener {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
 
-        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         // FIXME: Because the first gps fix does not have a good accuracy, it seems better to call
         // requestLocationUpdates() and then in onLocationFound() check the accuracy and if it's
         // good enough call removeUpdates() there
@@ -99,10 +106,11 @@ class GpsService : Service(), LocationListener {
         stopSelf()
         val notification = NotificationCompat.Builder(this, "Main")
                 .setSmallIcon(R.drawable.ic_buyt)
-                .setContentTitle("Store found")
+                .setContentTitle(getString(R.string.notif_title_store_found))
                 .setContentIntent(pendingIntent)
+                .setAutoCancel(true) // Dismiss the notification when user taps on it
                 .build()
-        (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).notify(12421, notification)
+        notificationManager.notify(NOTIFICATION_ID, notification)
     }
 
     override fun onProviderDisabled(provider: String) {}
