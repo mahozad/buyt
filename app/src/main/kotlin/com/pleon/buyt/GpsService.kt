@@ -15,7 +15,7 @@ import android.location.LocationManager.GPS_PROVIDER
 import android.os.Build
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationCompat.PRIORITY_MAX
+import androidx.core.app.NotificationCompat.PRIORITY_DEFAULT
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.pleon.buyt.ui.activity.MainActivity
 
@@ -38,7 +38,8 @@ private const val PROVIDER = GPS_PROVIDER
  */
 class GpsService : Service(), LocationListener {
 
-    private var locationManager: LocationManager? = null
+    private lateinit var locationManager: LocationManager
+    private lateinit var pendingIntent: PendingIntent
 
     override fun onCreate() {
         super.onCreate()
@@ -50,22 +51,23 @@ class GpsService : Service(), LocationListener {
         }
 
         val notificationIntent = Intent(this, MainActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
+        pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
 
         // If you want to remove the notification when service stopped, see onDestroy() below
-        val notification = NotificationCompat.Builder(this, "default")
+        val notification = NotificationCompat.Builder(this, "Main")
                 .setSmallIcon(R.drawable.ald_buyt_notification)
                 .setOngoing(true)
                 .setLights(resources.getColor(R.color.colorPrimary), 500, 600)
                 .setProgress(10, 1, true)
-                .setPriority(PRIORITY_MAX) // set to MIN to hide the icon in notification bar
+                .setPriority(PRIORITY_DEFAULT) // set to MIN to hide the icon in notification bar
                 .setContentTitle("Finding the store...")
                 // .setContentText("Determining the store...")
                 .setContentIntent(pendingIntent)
+                .build()
 
         // note that apps targeting android P (API level 28) or later must declare the permission
         // Manifest.permission.FOREGROUND_SERVICE in order to use startForeground()
-        startForeground(12421, notification.build())
+        startForeground(12421, notification)
     }
 
     /**
@@ -81,7 +83,7 @@ class GpsService : Service(), LocationListener {
         // FIXME: Because the first gps fix does not have a good accuracy, it seems better to call
         // requestLocationUpdates() and then in onLocationFound() check the accuracy and if it's
         // good enough call removeUpdates() there
-        locationManager!!.requestSingleUpdate(PROVIDER, this, null)
+        locationManager.requestSingleUpdate(PROVIDER, this, null)
 
         // If we get killed, after returning from here, don't restart
         return Service.START_NOT_STICKY
@@ -94,9 +96,13 @@ class GpsService : Service(), LocationListener {
         result.putExtra(EXTRA_LOCATION, location)
         LocalBroadcastManager.getInstance(this).sendBroadcast(result)
 
-        // notification.setContentTitle("Location found");
-
         stopSelf()
+        val notification = NotificationCompat.Builder(this, "Main")
+                .setSmallIcon(R.drawable.ic_buyt)
+                .setContentTitle("Store found")
+                .setContentIntent(pendingIntent)
+                .build()
+        (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).notify(12421, notification)
     }
 
     override fun onProviderDisabled(provider: String) {}
@@ -106,10 +112,10 @@ class GpsService : Service(), LocationListener {
     override fun onDestroy() {
         super.onDestroy()
 
-        locationManager?.removeUpdates(this)
+        locationManager.removeUpdates(this)
 
         // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        stopForeground(false) // here notification can be removed as well
+        // stopForeground(false) // here notification can be removed as well
         // }
     }
 }
