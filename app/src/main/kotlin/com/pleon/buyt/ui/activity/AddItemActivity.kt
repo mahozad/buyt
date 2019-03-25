@@ -31,7 +31,5 @@ class AddItemActivity : BaseActivity(), AddItemFragment.Callback {
      *
      * @param item
      */
-    override fun onItemAdded(item: Item, purchased: Boolean) {
-        finish()
-    }
+    override fun onItemAdded(item: Item, purchased: Boolean) = finish()
 }
