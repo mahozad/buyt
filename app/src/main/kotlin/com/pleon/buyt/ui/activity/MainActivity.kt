@@ -253,7 +253,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
         viewModel.findNearStores(here).observe(this@MainActivity, Observer { onStoresFound(it) })
     }
 
-    fun onFabClick(view: View) {
+    fun onFabClick(@Suppress("UNUSED_PARAMETER") view: View) {
         if (viewModel.state == IDLE) { // act as find
             if (itemsFragment.isCartEmpty) showSnackbar(R.string.snackbar_message_cart_empty, LENGTH_SHORT)
             else {
@@ -362,10 +362,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
                     stopService(Intent(this, GpsService::class.java))
                     shiftToIdleState()
                 }
-                else -> {
-                    shiftToIdleState()
-                    (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).cancelAll()
-                }
+                else -> shiftToIdleState()
             }
         }
         return true
@@ -561,10 +558,8 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
         if (viewModel.state == FINDING || viewModel.state == SELECTING) {
             itemsFragment.toggleItemsCheckbox(false)
 
-            fab.setImageResource(if (viewModel.state == FINDING)
-                R.drawable.avd_buyt_reverse
-            else
-                R.drawable.avd_done_buyt)
+            fab.setImageResource(if (viewModel.state == FINDING) R.drawable.avd_buyt_reverse
+            else R.drawable.avd_done_buyt)
             (fab.drawable as Animatable).start()
 
             bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_CENTER
@@ -573,6 +568,8 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
             storeMenuItem.isVisible = false
             reorderMenuItem.setIcon(R.drawable.avd_skip_reorder).setTitle(R.string.menu_hint_reorder_items).isVisible = true
             (reorderMenuItem.icon as Animatable).start()
+
+            (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).cancelAll()
         }
         viewModel.resetFoundStores()
         viewModel.shouldCompletePurchase = false
