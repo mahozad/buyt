@@ -152,5 +152,5 @@
     <string name="notif_title_finding_store">Finding the store…</string>
     <string name="notif_channel_desc">Main Channel</string>
     <string name="notif_title_store_found">Store found</string>
-
+    <string name="notif_content_store_found">Complete your purchase</string>
 </resources>

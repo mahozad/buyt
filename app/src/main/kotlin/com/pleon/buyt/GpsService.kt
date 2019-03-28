@@ -105,8 +105,9 @@ class GpsService : Service(), LocationListener {
 
         stopSelf()
         val notification = NotificationCompat.Builder(this, "Main")
-                .setSmallIcon(R.drawable.ic_buyt)
+                .setSmallIcon(R.drawable.vd_buyt_notif_20)
                 .setContentTitle(getString(R.string.notif_title_store_found))
+                .setContentText(getString(R.string.notif_content_store_found))
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true) // Dismiss the notification when user taps on it
                 .build()
