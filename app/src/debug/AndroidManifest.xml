@@ -10,7 +10,7 @@
     package="com.pleon.buyt">
 
     <application
-        android:name=".BuytApplication"
+        android:name=".DebugApplication"
         tools:replace="android:name"
         android:fullBackupContent="@xml/backup_descriptor" />
 
