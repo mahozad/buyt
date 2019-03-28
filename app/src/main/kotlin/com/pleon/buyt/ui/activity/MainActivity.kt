@@ -193,6 +193,8 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
         itemsFragment = supportFragmentManager.findFragmentById(R.id.itemsFragment) as ItemsFragment
         locationMgr = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
+        fab.setOnClickListener { onFabClick() }
+
         // for fragment example see [https://developer.android.com/guide/components/fragments#Example]
         // As in android developers guild, make this variable a field if needed:
         // boolean wideLayout = findViewById(R.id.chart) != null;
@@ -253,7 +255,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
         viewModel.findNearStores(here).observe(this@MainActivity, Observer { onStoresFound(it) })
     }
 
-    fun onFabClick(@Suppress("UNUSED_PARAMETER") view: View) {
+    private fun onFabClick() {
         if (viewModel.state == IDLE) { // act as find
             if (itemsFragment.isCartEmpty) showSnackbar(R.string.snackbar_message_cart_empty, LENGTH_SHORT)
             else {
