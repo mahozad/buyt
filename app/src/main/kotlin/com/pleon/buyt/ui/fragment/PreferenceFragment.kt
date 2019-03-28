@@ -30,7 +30,7 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
 
     override fun onSharedPreferenceChanged(preferences: SharedPreferences, key: String) {
         if (key == PREF_KEY_THEME || key == PREF_KEY_LANG) {
-            preferences.edit().putBoolean("themeChanged", true).apply()
+            preferences.edit().putBoolean("configChanged", true).apply()
             // Recreate the back stack so the new theme or language is applied to parent activities
             // (their onCreate() method is called which in turn invokes setTheme() or setLocale() method)
             recreateTask()

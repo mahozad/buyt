@@ -182,9 +182,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
         super.onCreate(savedState)
         preferences = getDefaultSharedPreferences(this)
 
-        if (preferences.getBoolean("themeChanged", false)) { // Restore drawer
+        if (preferences.getBoolean("configChanged", false)) { // Restore drawer
             BottomDrawerFragment().show(supportFragmentManager, "BOTTOM_SHEET")
-            preferences.edit().putBoolean("themeChanged", false).apply()
+            preferences.edit().putBoolean("configChanged", false).apply()
         }
 
         if (preferences.getBoolean("NEWBIE", true)) showTutorial()
