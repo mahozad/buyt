@@ -109,8 +109,7 @@ class StatesFragment : Fragment() {
 
     fun togglePeriod() {
         viewModel.togglePeriod()
-        val caption = getString(R.string.chart_caption, viewModel.period.length)
-        chartCaption.text = caption
+        chartCaption.text = getString(R.string.chart_caption, viewModel.period.length)
         showStatistics()
     }
 }

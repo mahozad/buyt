@@ -112,8 +112,7 @@ class TouchHelperCallback(private val listener: ItemTouchHelperListener) : ItemT
     private fun hideCircularReveal(viewHolder: BaseViewHolder, revealView: View) {
         (viewHolder as ItemListAdapter.ItemHolder).delAnimating = false
 
-        val anim = AlphaAnimation(1.0f, 0.0f)
-        anim.duration = 70
+        val anim = AlphaAnimation(1.0f, 0.0f).also { it.duration = 100 }
         revealView.startAnimation(anim)
         revealView.visibility = INVISIBLE
     }
