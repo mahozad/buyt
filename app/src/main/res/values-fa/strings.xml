@@ -88,10 +88,15 @@
     <string name="dialog_title_select_cat">انتخاب دسته‌بندی</string>
     <string name="dialog_title_select_search_dist">انتخاب شعاع</string>
     <string name="dialog_title_select_theme">انتخاب قالب</string>
+    <string name="dialog_title_select_lang">انتخاب زبان</string>
     <string name="currency_format">##,### ت</string>
     <string name="pref_theme_dark">تیره</string>
     <string name="pref_theme_light">روشن</string>
+    <string name="pref_lang_auto">خودکار (زبان دستگاه)</string>
+    <string name="pref_lang_en">انگلیسی</string>
+    <string name="pref_lang_fa">فارسی</string>
     <string name="pref_title_theme">قالب</string>
+    <string name="pref_title_lang">زبان</string>
     <string name="pref_title_vibrate">لرزش دستگاه هنگام پیدا شدن مکان</string>
     <string name="pref_title_search_radius">شعاع جستجوی مغازه</string>
     <string name="pref_search_dist_1">۵۰ متر</string>

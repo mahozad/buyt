@@ -2,18 +2,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ListPreference
-        android:defaultValue="dark"
-        android:dialogTitle="@string/dialog_title_select_theme"
-        android:entries="@array/pref_theme_names"
-        android:entryValues="@array/pref_theme_vals"
-        android:icon="@drawable/ic_theme"
-        android:key="theme"
-        android:title="@string/pref_title_theme"
-        app:useSimpleSummaryProvider="true" />
-
-    <PreferenceCategory />
-
     <SwitchPreference
         android:defaultValue="true"
         android:icon="@drawable/ic_vibration"
@@ -28,5 +16,27 @@
         android:icon="@drawable/ic_distance"
         android:key="distance"
         android:title="@string/pref_title_search_radius"
+        app:useSimpleSummaryProvider="true" />
+
+    <PreferenceCategory />
+
+    <ListPreference
+        android:defaultValue="dark"
+        android:dialogTitle="@string/dialog_title_select_theme"
+        android:entries="@array/pref_theme_names"
+        android:entryValues="@array/pref_theme_vals"
+        android:icon="@drawable/ic_theme"
+        android:key="theme"
+        android:title="@string/pref_title_theme"
+        app:useSimpleSummaryProvider="true" />
+
+    <ListPreference
+        android:defaultValue="auto"
+        android:dialogTitle="@string/dialog_title_select_lang"
+        android:entries="@array/pref_lang_names"
+        android:entryValues="@array/pref_lang_vals"
+        android:icon="@drawable/ic_language"
+        android:key="lang"
+        android:title="@string/pref_title_lang"
         app:useSimpleSummaryProvider="true" />
 </PreferenceScreen>

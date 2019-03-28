@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.pleon.buyt.R
+import com.pleon.buyt.setLocale
 
 val <T : LifecycleOwner> T.TAG: String get() = javaClass.simpleName
 const val PREF_KEY_THEME = "theme"
 const val DEFAULT_THEME = "dark"
+const val PREF_KEY_LANG = "lang"
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -17,6 +19,7 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedState: Bundle?) {
         setTheme() // Call before anything else
         super.onCreate(savedState)
+        setLocale(this)
 
         setContentView(layout())
         setSupportActionBar(findViewById(R.id.bottom_bar))
