@@ -35,7 +35,7 @@
                 android:imeOptions="flagNoFullscreen"
                 android:inputType="text"
                 android:maxLength="20"
-                app:drawableStartCompat="@drawable/ic_text"
+                app:drawableStartCompat="@drawable/ic_cart"
                 tools:text="Item name">
 
                 <requestFocus />
