@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorSurface"
-        android:paddingBottom="64dp"
+        android:paddingBottom="88dp"
         tools:context=".ui.fragment.AddItemFragment">
 
         <com.google.android.material.textfield.TextInputLayout
@@ -19,7 +19,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="22dp"
             android:layout_marginEnd="16dp"
             android:hint="@string/input_hint_name"
             app:counterMaxLength="20"
@@ -122,7 +122,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="28dp"
             android:hint="@string/input_hint_description"
             app:counterMaxLength="30"
             app:layout_constraintEnd_toEndOf="@id/quantity_container"
