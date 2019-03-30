@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorSurface"
-        android:paddingBottom="62dp"
+        android:paddingBottom="64dp"
         tools:context=".ui.fragment.AddItemFragment">
 
         <com.google.android.material.textfield.TextInputLayout

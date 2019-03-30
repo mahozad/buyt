@@ -346,14 +346,15 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
                 addItemFragment = AddItemFragment()
 
                 supportFragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_up, 0)
+                        .setCustomAnimations(R.anim.slide_up, 0, 0, R.anim.slide_down)
                         .replace(R.id.frag_container, addItemFragment)
-                        // .addToBackStack(null)
-                        .commitNow()
+                        .addToBackStack(null)
+                        .commit()
 
                 // FIXME: Because hiding menu items here did not have effect (if the commit() method
                 // above is commented, hiding takes effect), the menu items are hidden in
-                // onCreateOptionsMenu() method of the AddItemFragment()
+                // onCreateOptionsMenu() method of the AddItemFragment(). It also seems that with
+                // removing the fragment, the menu items are unhidden automatically
 
                 isAddingItem = true
                 bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
@@ -380,20 +381,8 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
              * can be identified by checking if the id of menu item equals android.R.id.home. */
             android.R.id.home -> when {
                 isAddingItem -> {
-                    supportFragmentManager.beginTransaction()
-                            .setCustomAnimations(0, R.anim.slide_down)
-                            .remove(addItemFragment).commit()
-
-                    bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_CENTER
-                    bottom_bar.setNavigationIcon(R.drawable.avd_cancel_nav)
-                    (bottom_bar.navigationIcon as Animatable).start()
-
-                    fab.setImageResource(R.drawable.avd_done_buyt)
-                    (fab.drawable as Animatable).start()
-
-                    addMenuItem.isVisible = true
-                    reorderMenuItem.isVisible = true
-                    isAddingItem = false
+                    supportFragmentManager.popBackStack()
+                    shiftToIdleState()
                 }
                 viewModel.state == IDLE -> {
                     BottomDrawerFragment().show(supportFragmentManager, "BOTTOM_SHEET")
@@ -416,7 +405,12 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
     override fun onBackPressed() {
         if (viewModel.state == FINDING || viewModel.state == SELECTING) {
             ConfirmExitDialog().show(supportFragmentManager, "CONFIRM_EXIT_DIALOG")
-        } else super.onBackPressed()
+        } else if (isAddingItem) {
+            supportFragmentManager.popBackStack()
+            shiftToIdleState()
+        } else {
+            super.onBackPressed()
+        }
     }
 
     override fun onExitConfirmed() = super.onBackPressed()
@@ -595,7 +589,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
 
     private fun shiftToIdleState() {
         itemsFragment.sortItemsByOrder()
-        if (viewModel.state == FINDING || viewModel.state == SELECTING) {
+        if (viewModel.state == FINDING || viewModel.state == SELECTING || isAddingItem) {
             itemsFragment.toggleItemsCheckbox(false)
 
             fab.setImageResource(if (viewModel.state == FINDING) R.drawable.avd_buyt_reverse
@@ -615,6 +609,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
         viewModel.shouldCompletePurchase = false
         viewModel.shouldAnimateNavIcon = false
         viewModel.isFindingSkipped = false
+        isAddingItem = false
         viewModel.state = IDLE // this should be the last statement (because of the if above)
     }
 
