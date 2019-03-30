@@ -19,6 +19,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.animation.AlphaAnimation
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
@@ -362,6 +363,10 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback {
                 (fab.drawable as Animatable).start()
                 bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
                 (bottom_bar.navigationIcon as Animatable).start()
+
+              val animation = AlphaAnimation(0f, 1f).apply { duration = 300 }
+              scrim.alpha = 1f
+              scrim.startAnimation(animation)
             }
 
             R.id.action_reorder -> {
@@ -405,7 +410,11 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback {
     override fun onBackPressed() {
         when {
             viewModel.state == FINDING -> stopService(Intent(this, GpsService::class.java))
-            isAddingItem -> supportFragmentManager.popBackStack()
+            isAddingItem -> {
+                supportFragmentManager.popBackStack()
+                val animation = AlphaAnimation(1f, 0f).apply { duration = 300 }.also { it.fillAfter = true }
+                scrim.startAnimation(animation)
+            }
             viewModel.state != SELECTING -> super.onBackPressed()
         }
 
