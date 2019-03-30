@@ -98,7 +98,7 @@ class TouchHelperCallback(private val listener: ItemTouchHelperListener) : ItemT
     private fun showCircularReveal(viewHolder: BaseViewHolder, revealView: View) {
         (viewHolder as ItemListAdapter.ItemHolder).delAnimating = true
 
-        val finalRadius = max(revealView.width, revealView.height) / 1.65f
+        val finalRadius = max(revealView.width, revealView.height) / 1.6f
         val centerX = revealView.width / 2
         val centerY = revealView.height / 2
 
