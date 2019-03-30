@@ -63,7 +63,7 @@ private const val CREATE_STORE_REQUEST_CODE = 1
 private const val REQUEST_LOCATION_PERMISSION = 1
 const val EXTRA_ITEM_ORDER = "com.pleon.buyt.extra.ITEM_ORDER"
 
-class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitDialog.Callback, Callback {
+class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback {
 
     // UI controllers such as activities and fragments are primarily intended to display UI data,
     // react to user actions, or handle operating system communication, such as permission requests.
@@ -403,17 +403,14 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
      * may be jarring to the user.
      */
     override fun onBackPressed() {
-        if (viewModel.state == FINDING || viewModel.state == SELECTING) {
-            ConfirmExitDialog().show(supportFragmentManager, "CONFIRM_EXIT_DIALOG")
-        } else if (isAddingItem) {
-            supportFragmentManager.popBackStack()
-            shiftToIdleState()
-        } else {
-            super.onBackPressed()
+        when {
+            viewModel.state == FINDING -> stopService(Intent(this, GpsService::class.java))
+            isAddingItem -> supportFragmentManager.popBackStack()
+            viewModel.state != SELECTING -> super.onBackPressed()
         }
-    }
 
-    override fun onExitConfirmed() = super.onBackPressed()
+        shiftToIdleState()
+    }
 
     /**
      * [ViewModels][androidx.lifecycle.ViewModel] only survive configuration changes but
