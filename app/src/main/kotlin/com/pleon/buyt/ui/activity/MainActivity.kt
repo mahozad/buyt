@@ -387,6 +387,8 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback {
             android.R.id.home -> when {
                 isAddingItem -> {
                     supportFragmentManager.popBackStack()
+                    val animation = AlphaAnimation(1f, 0f).apply { duration = 300 }.also { it.fillAfter = true }
+                    scrim.startAnimation(animation)
                     shiftToIdleState()
                 }
                 viewModel.state == IDLE -> {
