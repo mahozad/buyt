@@ -9,6 +9,8 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?attr/colorSurface"
+        android:paddingBottom="62dp"
         tools:context=".ui.fragment.AddItemFragment">
 
         <com.google.android.material.textfield.TextInputLayout
@@ -17,7 +19,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
             android:hint="@string/input_hint_name"
             app:counterMaxLength="20"
@@ -170,7 +172,7 @@
             android:id="@+id/bought"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?android:attr/colorBackground"
+            android:background="?attr/colorSurface"
             android:button="@drawable/avd_expand"
             android:buttonTint="?attr/colorOnSurface"
             android:layoutDirection="rtl"

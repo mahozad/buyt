@@ -37,6 +37,7 @@ import com.getkeepsafe.taptargetview.TapTarget.forView
 import com.getkeepsafe.taptargetview.TapTargetSequence
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
+import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_END
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.*
 import com.pleon.buyt.ACTION_LOCATION_EVENT
@@ -49,6 +50,7 @@ import com.pleon.buyt.model.Store
 import com.pleon.buyt.ui.dialog.*
 import com.pleon.buyt.ui.dialog.Callback
 import com.pleon.buyt.ui.fragment.ARG_LOCATION
+import com.pleon.buyt.ui.fragment.AddItemFragment
 import com.pleon.buyt.ui.fragment.BottomDrawerFragment
 import com.pleon.buyt.ui.fragment.ItemsFragment
 import com.pleon.buyt.viewmodel.MainViewModel
@@ -166,6 +168,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
     private lateinit var storeMenuItem: MenuItem
     private lateinit var addStorePopup: PopupMenu
 
+    private lateinit var addItemFragment: AddItemFragment
+    private var isAddingItem = false
+
     override fun layout() = R.layout.activity_main
 
     /**
@@ -256,7 +261,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
     }
 
     private fun onFabClick() {
-        if (viewModel.state == IDLE) { // act as find
+        if (isAddingItem) {
+            addItemFragment.onDonePressed()
+        } else if (viewModel.state == IDLE) { // act as find
             if (itemsFragment.isCartEmpty) showSnackbar(R.string.snackbar_message_cart_empty, LENGTH_SHORT)
             else {
                 itemsFragment.clearSelectedItems() // clear items of previous purchase
@@ -336,9 +343,24 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_add -> {
-                val intent = Intent(this, AddItemActivity::class.java)
-                intent.putExtra(EXTRA_ITEM_ORDER, itemsFragment.nextItemPosition)
-                startActivity(intent)
+                addItemFragment = AddItemFragment()
+
+                supportFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.slide_up, 0)
+                        .replace(R.id.frag_container, addItemFragment)
+                        // .addToBackStack(null)
+                        .commitNow()
+
+                // FIXME: Because hiding menu items here did not have effect (if the commit() method
+                // above is commented, hiding takes effect), the menu items are hidden in
+                // onCreateOptionsMenu() method of the AddItemFragment()
+
+                isAddingItem = true
+                bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
+                fab.setImageResource(R.drawable.avd_find_done)
+                (fab.drawable as Animatable).start()
+                bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
+                (bottom_bar.navigationIcon as Animatable).start()
             }
 
             R.id.action_reorder -> {
@@ -357,6 +379,22 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, ConfirmExitD
             /* If setSupportActionBar() is used to set up the BottomAppBar, navigation menu item
              * can be identified by checking if the id of menu item equals android.R.id.home. */
             android.R.id.home -> when {
+                isAddingItem -> {
+                    supportFragmentManager.beginTransaction()
+                            .setCustomAnimations(0, R.anim.slide_down)
+                            .remove(addItemFragment).commit()
+
+                    bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_CENTER
+                    bottom_bar.setNavigationIcon(R.drawable.avd_cancel_nav)
+                    (bottom_bar.navigationIcon as Animatable).start()
+
+                    fab.setImageResource(R.drawable.avd_done_buyt)
+                    (fab.drawable as Animatable).start()
+
+                    addMenuItem.isVisible = true
+                    reorderMenuItem.isVisible = true
+                    isAddingItem = false
+                }
                 viewModel.state == IDLE -> {
                     BottomDrawerFragment().show(supportFragmentManager, "BOTTOM_SHEET")
                 }

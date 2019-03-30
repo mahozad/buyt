@@ -37,10 +37,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity> <!-- android:windowSoftInputMode attribute is to prevent the bottom app bar to jump when keyboard appears -->
-        <activity
-            android:name=".ui.activity.AddItemActivity"
-            android:parentActivityName=".ui.activity.MainActivity"
-            android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity android:name=".ui.activity.CreateStoreActivity" />
 
         <service

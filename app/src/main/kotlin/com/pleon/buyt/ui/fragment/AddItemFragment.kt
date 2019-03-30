@@ -1,6 +1,5 @@
 package com.pleon.buyt.ui.fragment
 
-import android.content.Context
 import android.graphics.drawable.Animatable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.DrawableContainer.DrawableContainerState
@@ -52,7 +51,6 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
 
     private lateinit var unitRdbtns: Array<RadioButton>
     private lateinit var viewModel: AddItemViewModel
-    private var callback: Callback? = null
     private var selectCategoryTxvi: TextView? = null
 
     private val isBoughtChecked get() = bought.isChecked
@@ -186,6 +184,11 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
         // Setting up "Choose category" action because it has custom layout
         val menuItem = menu.findItem(R.id.action_item_category)
         menuItem.actionView.setOnClickListener { onOptionsItemSelected(menuItem) }
+
+        // FIXME: Because setting these menu items invisible did not have effect when adding this
+        // fragment to the main activity, we hide them here
+        menu.findItem(R.id.action_add).isVisible = false
+        menu.findItem(R.id.action_reorder).isVisible = false
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -229,7 +232,7 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
      * fragment and set it as the callback.
      */
     private fun onDateClicked() {
-        if (activity!!.resources.configuration.locale.displayName == "فارسی (ایران)") {
+        if (activity!!.resources.configuration.locale.displayName.contains("فارسی")) {
             val persianCal = PersianCalendar()
             val datePicker = DatePickerDialog.newInstance(this, persianCal.persianYear,
                     persianCal.persianMonth, persianCal.persianDay)
@@ -369,41 +372,23 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
         layout.isCounterEnabled = inputLength > layout.counterMaxLength * 0.66
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is Callback) callback = context
-        else throw RuntimeException("$context must implement Callback")
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        callback = null
-    }
-
     fun onDonePressed() {
         val validated = validateFields()
 
         if (validated) {
-            val name = name.text.toString()
+            val itemName = name.text.toString()
             val quantity = quantity
-            val item = Item(name, quantity, viewModel.category, urgent.isChecked, bought.isChecked)
+            val item = Item(itemName, quantity, viewModel.category, urgent.isChecked, bought.isChecked)
             item.position = viewModel.itemOrder
 
-            if (!isEmpty(description)) {
-                item.description = description.text.toString()
-            }
-            if (isBoughtChecked && !isEmpty(priceEd)) {
-                item.totalPrice = price
-            }
+            if (!isEmpty(description)) item.description = description.text.toString()
+            if (isBoughtChecked && !isEmpty(priceEd)) item.totalPrice = price
 
-            if (isBoughtChecked) {
-                item.category = viewModel.store!!.category
-                viewModel.addPurchasedItem(item, viewModel.store!!, viewModel.purchaseDate)
-                callback!!.onItemAdded(item, true)
-            } else {
-                viewModel.addItem(item)
-                callback!!.onItemAdded(item, false)
-            }
+            // Reset fields
+            name.text.clear()
+            quantityEd.setText("1")
+
+            viewModel.addItem(item, isBoughtChecked)
         }
     }
 
@@ -453,9 +438,5 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
 
     private fun isEmpty(editText: EditText): Boolean {
         return editText.text.toString().trim { it <= ' ' }.isEmpty()
-    }
-
-    interface Callback {
-        fun onItemAdded(item: Item, purchased: Boolean)
     }
 }

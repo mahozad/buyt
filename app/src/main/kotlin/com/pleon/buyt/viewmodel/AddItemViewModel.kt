@@ -18,9 +18,8 @@ class AddItemViewModel(application: Application) : AndroidViewModel(application)
     var purchaseDate = Date()
     var itemOrder: Int = 0
 
-    fun addItem(item: Item) = repository.addItem(item)
-
-    fun addPurchasedItem(item: Item, store: Store, purchaseDate: Date) {
-        repository.addPurchasedItem(item, store, purchaseDate)
+    fun addItem(item: Item, isPurchased: Boolean) {
+        if (isPurchased) repository.addPurchasedItem(item, store!!, purchaseDate)
+        else repository.addItem(item)
     }
 }
