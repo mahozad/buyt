@@ -117,6 +117,7 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
         unitRdbtns = arrayOf(unit, kilogram, gram)
+        setColorOfAllUnits(R.color.unfocused) // because sometimes the color is not right
 
         setHasOptionsMenu(true) // for the onCreateOptionsMenu() method to be called
 
@@ -132,7 +133,7 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
         quantityEd.addTextChangedListener(NumberInputWatcher(quantity_layout, quantityEd, null))
 
         // To reverse position of the bought checkbox icon
-        if (activity!!.resources.configuration.locale.displayName == "فارسی (ایران)")
+        if (activity!!.resources.configuration.locale.displayName.contains("فارسی"))
             bought.layoutDirection = LAYOUT_DIRECTION_LTR
 
         dateEd.setOnClickListener { onDateClicked() }
@@ -175,7 +176,7 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
 
         if (viewModel.store != null) {
             selectCategoryTxvi!!.text = viewModel.store!!.name
-            selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(viewModel.store!!.category!!.storeImageRes, 0, 0, 0)
+            selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(viewModel.store!!.category.storeImageRes, 0, 0, 0)
         } else if (bought.isChecked) {
             selectCategoryTxvi!!.setText(R.string.menu_title_select_store)
             selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_store, 0, 0, 0)
@@ -384,11 +385,22 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
             if (!isEmpty(description)) item.description = description.text.toString()
             if (isBoughtChecked && !isEmpty(priceEd)) item.totalPrice = price
 
+            viewModel.addItem(item, isBoughtChecked)
+
             // Reset fields
             name.text.clear()
+            name.requestFocus()
             quantityEd.setText("1")
-
-            viewModel.addItem(item, isBoughtChecked)
+            radio_group.check(R.id.unit)
+            setColorOfAllUnits(R.color.unfocused)
+            selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_item_grocery, 0, 0, 0)
+            selectCategoryTxvi!!.setTextColor(ContextCompat.getColor(context!!, colorOnSurface))
+            selectCategoryTxvi!!.text = resources.getString(Category.GROCERY.nameRes)
+            viewModel.store = null
+            description.text?.clear()
+            priceEd.text?.clear()
+            urgent.isChecked = false
+            bought.isChecked = false
         }
     }
 
