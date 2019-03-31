@@ -402,6 +402,7 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
             selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_item_grocery, 0, 0, 0)
             selectCategoryTxvi!!.setTextColor(ContextCompat.getColor(context!!, colorOnSurface))
             selectCategoryTxvi!!.text = resources.getString(Category.GROCERY.nameRes)
+            viewModel.category = Category.GROCERY
             viewModel.store = null
             description.text?.clear()
             priceEd.text?.clear()
