@@ -4,16 +4,18 @@
     <color name="colorPrimaryDark">#1d7b00</color>
     <color name="colorAccent">#89dd5f</color>
 
-    <!-- Colors for persian date picker (if you want to switch to dark theme, call picker.setThemeDark();
-     to change color of buttons see styles.xml). -->
+    <!-- Colors for persian date picker (if you want to switch to dark theme, call
+         picker.setThemeDark(); to change color of buttons see styles.xml). -->
     <color name="mdtp_accent_color">@color/colorPrimary</color>
     <color name="mdtp_accent_color_dark">@color/colorPrimaryDark</color>
-    <!--<color name="mdtp_button_color">#fff</color>--><!-- button text color -->
     <color name="mdtp_date_picker_year_selector">#fff</color>
+    <!-- <color name="mdtp_button_color">#fff</color>--><!-- button text color -->
     <!-- Other mdtp_... colors -->
 
     <color name="ic_launcher_background">#FFFFFF</color>
-    <color name="unfocused">#6f6f6f</color>
+
+    <color name="unitUnfocusedDark">#6f6f6f</color>
+    <color name="unitUnfocusedLight">#afafaf</color>
 
     <array name="lineChartGradient">
         <item>#CC259600</item>

@@ -46,8 +46,10 @@ import java.util.*
  */
 class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDialogFragment.Callback, android.app.DatePickerDialog.OnDateSetListener {
 
-    @ColorRes private var colorOnSurface: Int = 0 // this color varies based on the theme
-    @ColorRes private var colorError: Int = 0 // this color varies based on the theme
+    // These colors vary based on the app theme
+    @ColorRes private var colorOnSurface: Int = 0
+    @ColorRes private var colorError: Int = 0
+    @ColorRes private var colorUnfocused: Int = 0
 
     private lateinit var unitRdbtns: Array<RadioButton>
     private lateinit var viewModel: AddItemViewModel
@@ -91,6 +93,9 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
 
         context!!.theme.resolveAttribute(R.attr.colorOnSurface, typedValue, true)
         colorOnSurface = typedValue.resourceId
+
+        context!!.theme.resolveAttribute(R.attr.unitUnfocusedColor, typedValue, true)
+        colorUnfocused = typedValue.resourceId
     }
 
     /**
@@ -117,7 +122,7 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
         unitRdbtns = arrayOf(unit, kilogram, gram)
-        setColorOfAllUnits(R.color.unfocused) // because sometimes the color is not right
+        setColorOfAllUnits(colorUnfocused) // because sometimes the color is not right
 
         setHasOptionsMenu(true) // for the onCreateOptionsMenu() method to be called
 
@@ -337,7 +342,8 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
     private fun onQuantityFocusChanged(hasFocus: Boolean) {
         var color = colorError
         if (hasFocus && quantity_layout.error == null) color = R.color.colorPrimary
-        else if (!hasFocus && quantity_layout.error == null) color = R.color.unfocused
+        else if (!hasFocus && quantity_layout.error == null) color = colorUnfocused
+
         setColorOfAllUnits(color)
     }
 
@@ -346,7 +352,7 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
             val sld = unitRdbtn.background as StateListDrawable
             val dcs = sld.constantState as DrawableContainerState
             // <color> element for checked state (<color> index 3 in unit_background_selector.xml)
-            val checkedColor = dcs.getChild(4) as ColorDrawable
+            val checkedColor = dcs.getChild(3) as ColorDrawable
 
             checkedColor.color = resources.getColor(color)
         }
@@ -392,7 +398,7 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
             name.requestFocus()
             quantityEd.setText("1")
             radio_group.check(R.id.unit)
-            setColorOfAllUnits(R.color.unfocused)
+            setColorOfAllUnits(colorUnfocused)
             selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_item_grocery, 0, 0, 0)
             selectCategoryTxvi!!.setTextColor(ContextCompat.getColor(context!!, colorOnSurface))
             selectCategoryTxvi!!.text = resources.getString(Category.GROCERY.nameRes)
