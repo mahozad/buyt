@@ -105,7 +105,7 @@ class TouchHelperCallback(private val listener: ItemTouchHelperListener) : ItemT
         val anim = createCircularReveal(revealView, centerX, centerY, 0f, finalRadius)
         revealView.alpha = 1.0f
         revealView.visibility = VISIBLE
-        anim.duration = 180
+        anim.duration = 170
         anim.start()
     }
 
