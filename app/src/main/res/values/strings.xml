@@ -152,7 +152,7 @@
     <string name="pref_search_dist_3">200 meters</string>
 
     <string name="item_quantity" translatable="false">%d %s</string>
-    <string name="tutorial_add_item">You can add your items to buy…</string>
+    <string name="tutorial_add_item">Here you can add your items to buy</string>
     <string name="tutorial_tap_buyt">Tap here when you\'re near or in the store</string>
     <string name="tutorial_skip_finding">If the store is saved already you can skip the finding step</string>
     <string name="input_hint_shopkeeper_name">Shopkeeper name (optional)</string>
