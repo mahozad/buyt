@@ -24,6 +24,10 @@
         <item name="colorSecondary">@color/colorPrimary</item>
         <item name="colorSurface">#eaFFea</item>
 
+        <!--<item name="android:fontFamily">@font/vazir</item>-->
+        <!--<item name="fontFamily">@font/vazir</item> &lt;!&ndash; target android sdk versions < 26 and > 14 if theme other than AppCompat &ndash;&gt;-->
+        <!--<item name="android:textViewStyle">@style/textViewStyle</item>-->
+
         <item name="cardBgColor">#A9B8A9</item>
         <item name="unitUnfocusedColor">@color/unitUnfocusedLight</item>
         <item name="bottomAppBarStyle">@style/lightBottomAppBarStyle</item>
@@ -70,5 +74,9 @@
     <style name="mdtp_ActionButton">
         <item name="android:backgroundTint">@color/date_picker_btn</item>
     </style>
+
+    <!--<style name="textViewStyle">-->
+        <!--<item name="android:textSize">14sp</item>-->
+    <!--</style>-->
 
 </resources>
