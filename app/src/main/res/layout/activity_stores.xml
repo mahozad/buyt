@@ -14,7 +14,7 @@
         tools:layout="@layout/fragment_store_list" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/snackBarContainer"
+        android:id="@+id/snbContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:elevation="2dp"

@@ -556,7 +556,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback {
     }
 
     private fun showSnackbar(message: Int, length: Int, action: Int? = null) {
-        val snackbar = Snackbar.make(snackBarContainer, message, length)
+        val snackbar = Snackbar.make(snbContainer, message, length)
         if (action != null) {
             snackbar.setAction(action) { /* to dismiss snackbar on click */ }
         }

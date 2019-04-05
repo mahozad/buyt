@@ -71,7 +71,7 @@ class ItemsFragment : Fragment(), ItemTouchHelperListener {
     }
 
     private fun showUndoSnackbar(item: Item) {
-        val snackbar = Snackbar.make(activity!!.snackBarContainer, getString(R.string.snackbar_message_item_deleted, item.name), LENGTH_LONG)
+        val snackbar = Snackbar.make(activity!!.snbContainer, getString(R.string.snackbar_message_item_deleted, item.name), LENGTH_LONG)
         snackbar.setAction(getString(R.string.snackbar_action_undo)) {
             item.isFlaggedForDeletion = false
             viewModel.updateItems(listOf(item))
