@@ -18,7 +18,7 @@
         android:title="@string/pref_title_search_radius"
         app:useSimpleSummaryProvider="true" />
 
-    <PreferenceCategory />
+    <!--<PreferenceCategory />-->
 
     <ListPreference
         android:defaultValue="dark"
