@@ -30,8 +30,6 @@ class ItemsFragment : Fragment(), ItemTouchHelperListener {
     private lateinit var viewModel: MainViewModel
     private lateinit var adapter: ItemListAdapter
     private lateinit var touchHelperCallback: TouchHelperCallback
-    private var itemsReordered = false
-    val nextItemPosition get() = adapter.itemCount
     val isSelectedEmpty get() = adapter.selectedItems.isEmpty()
     val selectedItems get() = adapter.selectedItems
     val isCartEmpty get() = adapter.items.isEmpty()
@@ -57,7 +55,9 @@ class ItemsFragment : Fragment(), ItemTouchHelperListener {
         adapter.getItem(newPosition).position = oldPosition
         Collections.swap(adapter.items, newPosition, oldPosition)
         adapter.notifyItemMoved(oldPosition, newPosition)
-        itemsReordered = true
+
+        viewModel.updateItems(adapter.items)
+        // or update items in onStop (causes bugs if before onStop some items are deleted)
     }
 
     override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
@@ -78,17 +78,9 @@ class ItemsFragment : Fragment(), ItemTouchHelperListener {
         }
         snackbar.addCallback(object : BaseCallback<Snackbar>() {
             override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                if (event != DISMISS_EVENT_ACTION) {
-                    // If dismiss wasn't because of "UNDO" then
-                    // delete the item from database and update order of below items
-                    for (i in item.position until adapter.items.size) {
-                        adapter.getItem(i).position = adapter.getItem(i).position - 1
-                    }
-                    viewModel.updateItems(adapter.items)
-                    // This should be the last statement because by deleting the item, the observer
-                    // is notified and adapter is given the old items with their old positions
-                    viewModel.deleteItem(item)
-                }
+                if (event != DISMISS_EVENT_ACTION) viewModel.deleteItem(item)
+                // If dismiss wasn't because of "UNDO" then delete the item from database
+                // (the sql query also updates position of other items)
             }
         })
         snackbar.show()
@@ -99,13 +91,13 @@ class ItemsFragment : Fragment(), ItemTouchHelperListener {
      * the app process is killed. Also the onPause() method should be kept as
      * light as possible so this method is the preferred place to update items.
      */
-    override fun onStop() {
-        super.onStop()
-        if (itemsReordered) {
-            viewModel.updateItems(adapter.items)
-            itemsReordered = false
-        }
-    }
+//    override fun onStop() {
+//        super.onStop()
+//        if (itemsReordered) {
+//            viewModel.updateItems(adapter.items)
+//            itemsReordered = false
+//        }
+//    }
 
     fun toggleEditMode() {
         adapter.toggleEditMode()

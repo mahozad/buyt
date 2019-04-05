@@ -21,14 +21,38 @@ interface ItemDao {
     @Query("SELECT DISTINCT name from item")
     fun getItemNames(): LiveData<Array<String>>
 
+    @Transaction
+    fun insertItem(item: Item) {
+        val itemId = insert(item)
+        if (!item.isBought) updateItemPosition(itemId) // no need to update position of purchased item
+    }
+
+    /**
+     * Do NOT call this function; It is a private member of the interface. Call [insertItem] instead.
+     */
     @Insert(onConflict = REPLACE)
     fun insert(item: Item): Long
+
+    @Query("UPDATE Item SET position = (SELECT MAX(position) + 1 FROM Item) WHERE itemId = :itemId")
+    fun updateItemPosition(itemId: Long)
 
     // FIXME: very heavy operation. @Update method, updates all fields of an entity
     // so this method updates all fields of all of the given items!
     @Update
     fun updateAll(items: Collection<Item>)
 
+    @Transaction
+    fun deleteItem(item: Item) {
+        delete(item)
+        updateBelowItemsPosition(item.itemId)
+    }
+
+    /**
+     * Do NOT call this function; It is a private member of the interface. Call [deleteItem] instead.
+     */
     @Delete
     fun delete(item: Item)
+
+    @Query("UPDATE Item SET position = position - 1 WHERE itemId > :itemId")
+    fun updateBelowItemsPosition(itemId: Long)
 }

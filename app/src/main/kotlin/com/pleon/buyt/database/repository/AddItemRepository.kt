@@ -14,13 +14,13 @@ class AddItemRepository(application: Application) {
     private val purchaseDao = getDatabase(application).purchaseDao()
     val itemNames = itemDao.getItemNames()
 
-    fun addItem(item: Item) = doAsync { itemDao.insert(item) }
+    fun addItem(item: Item) = doAsync { itemDao.insertItem(item) }
 
     fun addPurchasedItem(item: Item, store: Store, purchaseDate: Date) {
         doAsync {
             val purchase = Purchase(store.storeId, purchaseDate)
             purchaseDao.insert(purchase).also { item.purchaseId = it }
-            itemDao.insert(item)
+            itemDao.insertItem(item)
         }
     }
 }

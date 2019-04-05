@@ -28,7 +28,6 @@ import com.pleon.buyt.model.Item
 import com.pleon.buyt.model.Item.Quantity.Unit
 import com.pleon.buyt.ui.NumberInputWatcher
 import com.pleon.buyt.ui.activity.DEFAULT_THEME
-import com.pleon.buyt.ui.activity.EXTRA_ITEM_ORDER
 import com.pleon.buyt.ui.activity.PREF_KEY_THEME
 import com.pleon.buyt.ui.dialog.DatePickerFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
@@ -82,10 +81,6 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
         super.onCreate(savedState)
 
         viewModel = ViewModelProviders.of(this).get(AddItemViewModel::class.java)
-
-        // When an activity is opened from an intent, the bundle of extras is delivered to the activity
-        // both when the configuration changes and when the system restores the activity from process kill.
-        viewModel.itemOrder = activity!!.intent.getIntExtra(EXTRA_ITEM_ORDER, 0)
 
         val typedValue = TypedValue()
         context!!.theme.resolveAttribute(R.attr.colorError, typedValue, true)
@@ -386,7 +381,6 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
             val itemName = name.text.toString()
             val quantity = quantity
             val item = Item(itemName, quantity, viewModel.category, urgent.isChecked, bought.isChecked)
-            item.position = viewModel.itemOrder
 
             if (!isEmpty(description)) item.description = description.text.toString()
             if (isBoughtChecked && !isEmpty(priceEd)) item.totalPrice = price

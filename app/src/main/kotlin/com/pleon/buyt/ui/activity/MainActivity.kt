@@ -62,7 +62,6 @@ import java.util.*
 private const val STATE_LOCATION = "com.pleon.buyt.state.LOCATION"
 private const val CREATE_STORE_REQUEST_CODE = 1
 private const val REQUEST_LOCATION_PERMISSION = 1
-const val EXTRA_ITEM_ORDER = "com.pleon.buyt.extra.ITEM_ORDER"
 
 class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback {
 
