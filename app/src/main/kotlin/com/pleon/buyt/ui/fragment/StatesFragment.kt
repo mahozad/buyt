@@ -28,6 +28,7 @@ class StatesFragment : Fragment() {
 
     val period get() = viewModel.period
     private lateinit var viewModel: StatisticsViewModel
+    private val priceFormat = DecimalFormat("#,###")
 
     var filter: Category?
         get() = viewModel.filter
@@ -62,15 +63,15 @@ class StatesFragment : Fragment() {
         viewModel.statistics.observe(viewLifecycleOwner, Observer { statistics ->
             showGraph(statistics.dailyCosts!!)
 
-            textView3.text = statistics.totalPurchaseCost.toString()
-            textView.text = statistics.averagePurchaseCost.toString()
+            textView3.text = priceFormat.format(statistics.totalPurchaseCost)
+            textView.text = priceFormat.format(statistics.averagePurchaseCost)
 
             if (statistics.mostPurchasedCategoryName != 0) textView13.setText(statistics.mostPurchasedCategoryName)
             else textView13.text = "-"
 
-            textView18.text = statistics.numberOfPurchases.toString()
-            textView6.text = statistics.maxPurchaseCost.toString()
-            textView7.text = statistics.minPurchaseCost.toString()
+            textView18.text = priceFormat.format(statistics.numberOfPurchases)
+            textView6.text = priceFormat.format(statistics.maxPurchaseCost)
+            textView7.text = priceFormat.format(statistics.minPurchaseCost)
 
             if (statistics.weekdayNameResWithMaxPurchases != 0) textView9.setText(statistics.weekdayNameResWithMaxPurchases)
             else textView9.text = "-"
