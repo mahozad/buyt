@@ -64,13 +64,17 @@ class StatesFragment : Fragment() {
 
             textView3.text = statistics.totalPurchaseCost.toString()
             textView.text = statistics.averagePurchaseCost.toString()
-            if (statistics.mostPurchasedCategoryName != 0) {
-                textView13.setText(statistics.mostPurchasedCategoryName)
-            }
+
+            if (statistics.mostPurchasedCategoryName != 0) textView13.setText(statistics.mostPurchasedCategoryName)
+            else textView13.text = "-"
+
             textView18.text = statistics.numberOfPurchases.toString()
             textView6.text = statistics.maxPurchaseCost.toString()
             textView7.text = statistics.minPurchaseCost.toString()
-            textView9.setText(statistics.weekdayNameResWithMaxPurchases)
+
+            if (statistics.weekdayNameResWithMaxPurchases != 0) textView9.setText(statistics.weekdayNameResWithMaxPurchases)
+            else textView9.text = "-"
+
             textView17.text = statistics.storeNameWithMaxPurchaseCount
         })
     }

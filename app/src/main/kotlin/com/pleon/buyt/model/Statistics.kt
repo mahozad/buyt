@@ -18,22 +18,23 @@ class Statistics {
         get() = if (mostPurchasedCategory == null) 0 else mostPurchasedCategory!!.nameRes
 
     val weekdayNameResWithMaxPurchases: Int
-        get() = DailyCost.Days.values()[weekdayWithMaxPurchases].nameStringRes
+        get() {
+            return if (totalPurchaseCost != 0L) DailyCost.Days.values()[weekdayWithMaxPurchases].nameStringRes
+            else 0
+        }
 
     val storeNameWithMaxPurchaseCount: String
-        get() = if (storeWithMaxPurchaseCount == null) "" else storeWithMaxPurchaseCount!!.name!!
+        get() = if (storeWithMaxPurchaseCount == null) "-" else storeWithMaxPurchaseCount!!.name
 
     fun getTotalPurchaseCost(): String {
         return NumberFormat.getInstance().format(totalPurchaseCost)
     }
 
-
     fun getAveragePurchaseCost(): String {
         return NumberFormat.getInstance().format(averagePurchaseCost)
     }
 
-
-    fun setMostPurchasedCategory(mostPurchasedCategory: Category) {
+    fun setMostPurchasedCategory(mostPurchasedCategory: Category?) {
         this.mostPurchasedCategory = mostPurchasedCategory
     }
 
@@ -53,7 +54,7 @@ class Statistics {
         this.weekdayWithMaxPurchases = weekdayWithMaxPurchases
     }
 
-    fun setStoreWithMaxPurchaseCount(storeWithMaxPurchases: Store) {
+    fun setStoreWithMaxPurchaseCount(storeWithMaxPurchases: Store?) {
         this.storeWithMaxPurchaseCount = storeWithMaxPurchases
     }
 }
