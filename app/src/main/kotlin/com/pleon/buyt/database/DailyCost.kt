@@ -1,4 +1,4 @@
-package com.pleon.buyt.model
+package com.pleon.buyt.database
 
 import androidx.annotation.StringRes
 import com.pleon.buyt.R
