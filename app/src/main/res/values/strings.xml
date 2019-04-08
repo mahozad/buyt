@@ -132,8 +132,8 @@
         <item>fa</item>
     </string-array>
     <string name="pref_lang_auto">Auto (match device)</string>
-    <string name="pref_lang_en">English</string>
-    <string name="pref_lang_fa">Persian</string>
+    <string name="pref_lang_en" translatable="false">English</string>
+    <string name="pref_lang_fa" translatable="false">فارسی</string>
     <string name="pref_title_lang">Language</string>
     <string name="dialog_title_select_lang">Select language</string>
 

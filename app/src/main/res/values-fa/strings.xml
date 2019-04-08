@@ -71,7 +71,7 @@
 
     <string name="dialog_message_location_off">حسگر مکان خاموش است. با روشن کردن آن (در حالت دقت زیاد)،
         بایت به صورت خودکار مغازه را شناسایی خواهد کرد.</string>
-    <string name="chart_caption">%1$d روز گذشته</string>
+    <string name="chart_caption">میزان خرید در %1$d روز گذشته</string>
     <string name="checkbox_purchased">خریداری‌شده</string>
     <string name="input_hint_purchase_date">تاریخ خرید</string>
     <string name="input_hint_store_name">نام مغازه یا فروشگاه</string>
@@ -93,8 +93,6 @@
     <string name="pref_theme_dark">تیره</string>
     <string name="pref_theme_light">روشن</string>
     <string name="pref_lang_auto">خودکار (زبان دستگاه)</string>
-    <string name="pref_lang_en">انگلیسی</string>
-    <string name="pref_lang_fa">فارسی</string>
     <string name="pref_title_theme">قالب</string>
     <string name="pref_title_lang">زبان</string>
     <string name="pref_title_vibrate">لرزش دستگاه هنگام پیدا شدن مغازه</string>
@@ -113,7 +111,7 @@
     <string name="state_weekday_with_most_purchases">روز هفته با بیشترین خرید:</string>
     <string name="state_average_purchase_cost">میانگین هزینه خرید:</string>
     <string name="state_most_purchased_category">بیشترین دسته‌بندی خرید شده:</string>
-    <string name="state_store_with_most_purchases">مغازه با بیشترین خرید</string>
+    <string name="state_store_with_most_purchases">مغازه با بیشترین خرید:</string>
     <string name="state_number_of_purchases">تعداد خریدهای انجام شده:</string>
     <string name="notif_title_finding_store">در حال جستجوی مغازه</string>
     <string name="notif_channel_desc">کانال اصلی</string>
