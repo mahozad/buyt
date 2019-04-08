@@ -22,7 +22,7 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/chart_container"
             android:layout_width="0dp"
-            android:layout_height="220dp"
+            android:layout_height="222dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
@@ -36,10 +36,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="1dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="1dp"
-                android:layout_marginBottom="1dp"
                 android:paddingTop="16dp"
-                android:paddingBottom="24dp"
+                android:paddingBottom="12dp"
                 app:chart_axis="false"
                 app:chart_axisLabelsSpacing="12dp"
                 app:chart_fontSize="12sp"
@@ -53,11 +53,37 @@
                 android:id="@+id/chartCaption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center_horizontal"
-                android:layout_marginBottom="8dp"
-                android:text="@string/chart_caption"
-                android:textColor="?attr/colorOnSurface"
-                android:textSize="12sp" />
+                android:layout_gravity="top|center_horizontal"
+                android:layout_marginTop="8dp"
+                android:text="@string/chart_caption" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/pieChart_container"
+            android:layout_width="0dp"
+            android:layout_height="220dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/chart_container">
+
+            <com.pleon.buyt.ui.PieChartView
+                android:id="@+id/pieChart"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="1dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|center_horizontal"
+                android:layout_marginTop="8dp"
+                android:text="میزان خرید بر حسب دسته‌بندی" />
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -242,25 +268,6 @@
                     app:layout_constraintStart_toEndOf="@+id/barrier" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/pieChart_container"
-            android:layout_width="0dp"
-            android:layout_height="220dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            app:cardUseCompatPadding="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/chart_container">
-
-            <com.pleon.buyt.ui.PieChartView
-                android:id="@+id/pieChart"
-                android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:layout_margin="2dp" />
 
         </com.google.android.material.card.MaterialCardView>
 

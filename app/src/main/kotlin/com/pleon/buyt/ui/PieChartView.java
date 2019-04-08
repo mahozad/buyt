@@ -30,7 +30,7 @@ public class PieChartView extends View {
     private int width, height;
     private RectF pieRectF = new RectF(), tempRectF = new RectF();
     private int radius;
-    private List<Sector> sectorList = new ArrayList<>(), leftTypeList = new ArrayList<>(), rightTypeList = new ArrayList<>();
+    private List<Slice> sliceList = new ArrayList<>(), leftTypeList = new ArrayList<>(), rightTypeList = new ArrayList<>();
     private List<Point> itemPoints = new ArrayList<>();
     private int cell = 0;
     private float innerRadius = 0;
@@ -131,8 +131,8 @@ public class PieChartView extends View {
         }
         for (int i = 0; i < count; i++) {
             mPath.reset();
-            Sector sector = rightTypeList.get(i);
-            double angle = 2 * Math.PI * ((startRadius + sector.radius / 2) / 360d);
+            Slice slice = rightTypeList.get(i);
+            double angle = 2 * Math.PI * ((startRadius + slice.radius / 2) / 360d);
             int x = (int) (width / 2 + radius * Math.cos(angle));
             int y = (int) (height / 2 + radius * Math.sin(angle));
             startPoint.set(x, y);
@@ -143,23 +143,23 @@ public class PieChartView extends View {
             mPath.lineTo(endPoint.x, endPoint.y);
             resetPaint();
             mPaint.setStrokeWidth(2);
-            mPaint.setColor(sector.color);
+            mPaint.setColor(slice.color);
             mPaint.setStyle(Paint.Style.STROKE);
             mPathMeasure.setPath(mPath, false);
             drawLinePath.reset();
             mPathMeasure.getSegment(0, mPathMeasure.getLength() * offLine, drawLinePath, true);
             mCanvas.drawPath(drawLinePath, mPaint);
-            startRadius += sector.radius;
+            startRadius += slice.radius;
 
             if (textAlpha > 0) {
                 mPaint.setTextSize(itemTextSize);
                 mPaint.setStyle(Paint.Style.FILL);
                 mPaint.setTextAlign(Paint.Align.CENTER);
                 mPaint.setAlpha(textAlpha);
-                mCanvas.drawText(sector.type, centerPoint.x + (endPoint.x - centerPoint.x) / 2,
+                mCanvas.drawText(slice.type, centerPoint.x + (endPoint.x - centerPoint.x) / 2,
                         centerPoint.y - textPadding, mPaint);
                 mPaint.setTextSize(itemTextSize * 4 / 5);
-                mCanvas.drawText(sector.getPercent(), centerPoint.x + (endPoint.x - centerPoint.x) / 2,
+                mCanvas.drawText(slice.getPercent(), centerPoint.x + (endPoint.x - centerPoint.x) / 2,
                         centerPoint.y + (itemTextSize + textPadding) * 4 / 5, mPaint);
             }
         }
@@ -173,8 +173,8 @@ public class PieChartView extends View {
 
         for (int i = 0; i < count; i++) {
             mPath.reset();
-            Sector sector = leftTypeList.get(i);
-            double angle = 2 * Math.PI * ((startRadius + sector.radius / 2) / 360d);
+            Slice slice = leftTypeList.get(i);
+            double angle = 2 * Math.PI * ((startRadius + slice.radius / 2) / 360d);
             int x = (int) (width / 2 + radius * Math.cos(angle));
             int y = (int) (height / 2 + radius * Math.sin(angle));
             startPoint.set(x, y);
@@ -185,7 +185,7 @@ public class PieChartView extends View {
             mPath.lineTo(endPoint.x, endPoint.y);
             resetPaint();
             mPaint.setStrokeWidth(2);
-            mPaint.setColor(sector.color);
+            mPaint.setColor(slice.color);
             mPaint.setAntiAlias(true);
             mPaint.setDither(true);
             mPaint.setStyle(Paint.Style.STROKE);
@@ -193,23 +193,23 @@ public class PieChartView extends View {
             drawLinePath.reset();
             mPathMeasure.getSegment(0, mPathMeasure.getLength() * offLine, drawLinePath, true);
             mCanvas.drawPath(drawLinePath, mPaint);
-            startRadius += sector.radius;
+            startRadius += slice.radius;
 
             if (textAlpha > 0) {
                 mPaint.setTextSize(itemTextSize);
                 mPaint.setStyle(Paint.Style.FILL);
                 mPaint.setTextAlign(Paint.Align.CENTER);
                 mPaint.setAlpha(textAlpha);
-                mCanvas.drawText(sector.type, centerPoint.x + (endPoint.x - centerPoint.x) / 2,
+                mCanvas.drawText(slice.type, centerPoint.x + (endPoint.x - centerPoint.x) / 2,
                         centerPoint.y - textPadding, mPaint);
                 mPaint.setTextSize(itemTextSize * 4 / 5);
-                mCanvas.drawText(sector.getPercent(), centerPoint.x + (endPoint.x - centerPoint.x) / 2,
+                mCanvas.drawText(slice.getPercent(), centerPoint.x + (endPoint.x - centerPoint.x) / 2,
                         centerPoint.y + (itemTextSize + textPadding) * 4 / 5, mPaint);
             }
         }
 
         if (textAlpha == 1f) {
-            sectorList.clear();
+            sliceList.clear();
             leftTypeList.clear();
             rightTypeList.clear();
             itemPoints.clear();
@@ -223,8 +223,8 @@ public class PieChartView extends View {
         mCanvas.drawColor(backGroundColor);
         mPaint.setStyle(Paint.Style.FILL);
         int sum = 0;
-        for (Sector sector : sectorList) {
-            sum += sector.widget;
+        for (Slice slice : sliceList) {
+            sum += slice.widget;
         }
         float a = 360f / sum;
         float startRadius = defaultStartAngle;
@@ -232,8 +232,8 @@ public class PieChartView extends View {
         leftTypeList.clear();
         rightTypeList.clear();
         itemPoints.clear();
-        for (Sector sector : sectorList) {
-            sector.radius = sector.widget * a;
+        for (Slice slice : sliceList) {
+            slice.radius = slice.widget * a;
             double al = 2 * Math.PI * ((startRadius + 90) / 360d);
             tempPoint.set((int) (width / 2 + radius * Math.sin(al)),
                     (int) (height / 2 - radius * Math.cos(al)));
@@ -243,36 +243,36 @@ public class PieChartView extends View {
                 }
             }
 
-            double angle = 2 * Math.PI * ((startRadius + sector.radius / 2) / 360d);
+            double angle = 2 * Math.PI * ((startRadius + slice.radius / 2) / 360d);
             double sin = -Math.sin(angle);
             double cos = -Math.cos(angle);
             if (cos > 0) {
-                leftTypeList.add(sector);
+                leftTypeList.add(slice);
             } else {
-                rightTypeList.add(sector);
+                rightTypeList.add(slice);
             }
-            sumRadius += Math.abs(sector.radius);
+            sumRadius += Math.abs(slice.radius);
             mPaint.setStyle(Paint.Style.FILL);
-            mPaint.setColor(sector.color);
+            mPaint.setColor(slice.color);
             if (pieCell > 0) {
                 if (sumRadius <= offRadius) {
                     tempRectF.set(pieRectF.left - (float) (pieCell * cos), pieRectF.top - (float) (pieCell * sin),
                             pieRectF.right - (float) (pieCell * cos), pieRectF.bottom - (float) (pieCell * sin));
-                    mCanvas.drawArc(tempRectF, startRadius, sector.radius, true, mPaint);
+                    mCanvas.drawArc(tempRectF, startRadius, slice.radius, true, mPaint);
                 } else {
-                    mCanvas.drawArc(tempRectF, startRadius, sector.radius - (Math.abs(offRadius - sumRadius)), true, mPaint);
+                    mCanvas.drawArc(tempRectF, startRadius, slice.radius - (Math.abs(offRadius - sumRadius)), true, mPaint);
                     break;
                 }
             } else {
                 if (sumRadius <= offRadius) {
-                    mCanvas.drawArc(pieRectF, startRadius, sector.radius, true, mPaint);
+                    mCanvas.drawArc(pieRectF, startRadius, slice.radius, true, mPaint);
                 } else {
-                    mCanvas.drawArc(pieRectF, startRadius, sector.radius - (Math.abs(offRadius - sumRadius)), true, mPaint);
+                    mCanvas.drawArc(pieRectF, startRadius, slice.radius - (Math.abs(offRadius - sumRadius)), true, mPaint);
                     break;
                 }
 
             }
-            startRadius += sector.radius;
+            startRadius += slice.radius;
             if (cell > 0 && pieCell == 0) {
                 mPaint.setColor(backGroundColor);
                 mPaint.setStrokeWidth(cell);
@@ -299,11 +299,11 @@ public class PieChartView extends View {
     }
 
     public void clearData() {
-        sectorList.clear();
+        sliceList.clear();
     }
 
-    public void addSector(Sector sector) {
-        sectorList.add(sector);
+    public void addSector(Slice slice) {
+        sliceList.add(slice);
     }
 
     /**
@@ -339,7 +339,7 @@ public class PieChartView extends View {
         this.animDuration = animDuration;
     }
 
-    public static class Sector {
+    public static class Slice {
 
         private static final DecimalFormat formatter = new DecimalFormat("0.0%");
         String type;
@@ -347,7 +347,7 @@ public class PieChartView extends View {
         int color;
         float radius;
 
-        public Sector(String type, int widget, int color) {
+        public Slice(String type, int widget, int color) {
             this.type = type;
             this.widget = widget;
             this.color = color;

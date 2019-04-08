@@ -8,6 +8,7 @@
         <item name="colorSurface">#283028</item>
 
         <item name="cardBgColor">#4A5E4A</item>
+        <item name="pieChartBackgroundColor">@color/pieChartDarkBgColor</item>
         <item name="unitUnfocusedColor">@color/unitUnfocusedDark</item>
         <item name="bottomAppBarStyle">@style/bottomAppBarStyle</item>
         <item name="floatingActionButtonStyle">@style/fabStyle</item>
@@ -29,6 +30,7 @@
         <!--<item name="android:textViewStyle">@style/textViewStyle</item>-->
 
         <item name="cardBgColor">#A9B8A9</item>
+        <item name="pieChartBackgroundColor">@color/pieChartLightBgColor</item>
         <item name="unitUnfocusedColor">@color/unitUnfocusedLight</item>
         <item name="bottomAppBarStyle">@style/lightBottomAppBarStyle</item>
         <item name="floatingActionButtonStyle">@style/fabStyle</item>
