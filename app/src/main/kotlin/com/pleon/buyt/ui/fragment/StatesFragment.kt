@@ -25,14 +25,15 @@ import kotlinx.android.synthetic.main.fragment_states.*
 import java.text.DecimalFormat
 import java.util.*
 
-
 class StatesFragment : Fragment() {
 
     val period get() = viewModel.period
     private lateinit var viewModel: StatisticsViewModel
     private val priceFormat = DecimalFormat("#,###")
-    private val pieColors = intArrayOf(0xff2DA579.toInt(), 0xffC1B435.toInt(),
-            0xffC15335.toInt(), 0xff2D71A5.toInt(), 0xff999999.toInt())
+            private val pieColors = intArrayOf(0xffC1B435.toInt(), 0xff2DA579.toInt(),
+            0xff2D71A5.toInt(), 0xffB53145.toInt(), 0xff888888.toInt())
+//private val pieColors = intArrayOf(0xffC19835.toInt(), 0xffABBA33.toInt(),
+//        0xff2DA579.toInt(), 0xff2D38A5.toInt(), 0xffA62D98.toInt())
 
     var filter: Category?
         get() = viewModel.filter
@@ -113,15 +114,17 @@ class StatesFragment : Fragment() {
     }
 
     private fun showPieChart(pieSlices: List<PieSlice>) {
+        pieChart.clearData()
+
         for ((index, slice) in pieSlices.withIndex()) {
-            pieChart.addItemType(PieChartView.ItemType(getString(Category.valueOf(slice.name).nameRes), slice.value, pieColors[index]))
+            pieChart.addSector(PieChartView.Sector(getString(Category.valueOf(slice.name).nameRes), slice.value, pieColors[index]))
         }
 
-        pieChart.setAnimDuration(500)
         pieChart.setCell(4) // gap between slices
-        pieChart.setInnerRadius(0.7f)
+        pieChart.setInnerRadius(0.6f)
         pieChart.setBackGroundColor(0xff2E362F.toInt())
-        pieChart.setItemTextSize(21) // FIXME: size isn't consistent across devices
+        pieChart.setItemTextSize(21) // FIXME: text size isn't consistent across different devices
+        pieChart.setAnimDuration(500)
         pieChart.startAnim()
     }
 
