@@ -111,7 +111,7 @@
     <string name="state_weekday_with_most_purchases">روز هفته با بیشترین خرید:</string>
     <string name="state_average_purchase_cost">میانگین هزینه خرید:</string>
     <string name="state_most_purchased_category">بیشترین دسته‌بندی خرید شده:</string>
-    <string name="state_store_with_most_purchases">مغازه با بیشترین خرید:</string>
+    <string name="state_store_with_most_purchases">مغازه با بیشترین تعداد خرید:</string>
     <string name="state_number_of_purchases">تعداد خریدهای انجام شده:</string>
     <string name="notif_title_finding_store">در حال جستجوی مغازه</string>
     <string name="notif_channel_desc">کانال اصلی</string>
