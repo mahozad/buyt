@@ -16,19 +16,23 @@ import androidx.lifecycle.ViewModelProviders
 import com.db.chart.animation.Animation
 import com.db.chart.model.LineSet
 import com.db.chart.renderer.AxisRenderer.LabelPosition.NONE
-import com.pleon.buyt.R
+import com.pleon.buyt.database.DailyCost
+import com.pleon.buyt.database.PieSlice
 import com.pleon.buyt.model.Category
-import com.pleon.buyt.model.DailyCost
+import com.pleon.buyt.ui.PieChartView
 import com.pleon.buyt.viewmodel.StatisticsViewModel
 import kotlinx.android.synthetic.main.fragment_states.*
 import java.text.DecimalFormat
 import java.util.*
+
 
 class StatesFragment : Fragment() {
 
     val period get() = viewModel.period
     private lateinit var viewModel: StatisticsViewModel
     private val priceFormat = DecimalFormat("#,###")
+    private val pieColors = intArrayOf(0xff2DA579.toInt(), 0xffC1B435.toInt(),
+            0xffC15335.toInt(), 0xff2D71A5.toInt(), 0xff999999.toInt())
 
     var filter: Category?
         get() = viewModel.filter
@@ -49,19 +53,20 @@ class StatesFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedState: Bundle?): View {
-        return inflater.inflate(R.layout.fragment_states, container, false)
+        return inflater.inflate(com.pleon.buyt.R.layout.fragment_states, container, false)
     }
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
         viewModel = ViewModelProviders.of(this).get(StatisticsViewModel::class.java)
         activity?.registerReceiver(timeReceiver, IntentFilter(ACTION_TIME_TICK))
-        chartCaption.text = getString(R.string.chart_caption, viewModel.period.length)
+        chartCaption.text = getString(com.pleon.buyt.R.string.chart_caption, viewModel.period.length)
         showStatistics()
     }
 
     private fun showStatistics() {
         viewModel.statistics.observe(viewLifecycleOwner, Observer { statistics ->
-            showGraph(statistics.dailyCosts!!)
+            showLineChart(statistics.dailyCosts!!)
+            showPieChart(statistics.mostPurchasedCategories)
 
             textView3.text = priceFormat.format(statistics.totalPurchaseCost)
             textView.text = priceFormat.format(statistics.averagePurchaseCost)
@@ -80,7 +85,7 @@ class StatesFragment : Fragment() {
         })
     }
 
-    private fun showGraph(dailyCosts: List<DailyCost>) {
+    private fun showLineChart(dailyCosts: List<DailyCost>) {
         chart.reset()
 
         val dataSet = LineSet()
@@ -89,22 +94,34 @@ class StatesFragment : Fragment() {
         }
 
         if (viewModel.period.length <= 20) {
-            dataSet.setDotsColor(ContextCompat.getColor(context!!, R.color.colorPrimary))
+            dataSet.setDotsColor(ContextCompat.getColor(context!!, com.pleon.buyt.R.color.colorPrimary))
             dataSet.setDotsRadius(3f)
         }
         dataSet.isSmooth = false // TODO: Add an options in settings for the user to toggle this
-        dataSet.color = ContextCompat.getColor(context!!, R.color.colorPrimaryDark)
+        dataSet.color = ContextCompat.getColor(context!!, com.pleon.buyt.R.color.colorPrimaryDark)
         dataSet.thickness = 2.5f
 
-        val moneyFormat = DecimalFormat(getString(R.string.currency_format))
+        val moneyFormat = DecimalFormat(getString(com.pleon.buyt.R.string.currency_format))
         chart.setLabelsFormat(moneyFormat)
 
-        val colors = resources.getIntArray(R.array.lineChartGradient)
+        val colors = resources.getIntArray(com.pleon.buyt.R.array.lineChartGradient)
         val steps = floatArrayOf(0.0f, 0.5f, 1.0f)
         dataSet.setGradientFill(colors, steps)
         chart.addData(dataSet)
         chart.setXLabels(NONE)
         chart.show(Animation(500))
+    }
+
+    private fun showPieChart(pieSlices: List<PieSlice>) {
+        for ((index, slice) in pieSlices.withIndex()) {
+            pieChart.addItemType(PieChartView.ItemType(getString(Category.valueOf(slice.name).nameRes), slice.value, pieColors[index]))
+        }
+
+        pieChart.setAnimDuration(500)
+        pieChart.setCell(4) // gap between slices
+        pieChart.setInnerRadius(0.7f)
+        pieChart.setBackGroundColor(0xff2E362F.toInt())
+        pieChart.setItemTextSize(21) // FIXME: size isn't consistent across devices
     }
 
     override fun onDestroyView() {
@@ -114,7 +131,7 @@ class StatesFragment : Fragment() {
 
     fun togglePeriod() {
         viewModel.togglePeriod()
-        chartCaption.text = getString(R.string.chart_caption, viewModel.period.length)
+        chartCaption.text = getString(com.pleon.buyt.R.string.chart_caption, viewModel.period.length)
         showStatistics()
     }
 }

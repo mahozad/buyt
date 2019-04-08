@@ -1,5 +1,7 @@
 package com.pleon.buyt.model
 
+import com.pleon.buyt.database.DailyCost
+import com.pleon.buyt.database.PieSlice
 import java.text.NumberFormat
 
 class Statistics {
@@ -11,6 +13,7 @@ class Statistics {
     var numberOfPurchases: Int = 0
     var maxPurchaseCost: Long = 0
     var minPurchaseCost: Long = 0
+    lateinit var mostPurchasedCategories: List<PieSlice>
     private var weekdayWithMaxPurchases: Int = 0
     private var storeWithMaxPurchaseCount: Store? = null
 

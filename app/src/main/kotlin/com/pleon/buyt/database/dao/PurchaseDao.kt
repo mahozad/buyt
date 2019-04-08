@@ -4,8 +4,13 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import com.pleon.buyt.database.DailyCost
+import com.pleon.buyt.database.PieSlice
 import com.pleon.buyt.database.converter.DateConverter
-import com.pleon.buyt.model.*
+import com.pleon.buyt.model.Category
+import com.pleon.buyt.model.Purchase
+import com.pleon.buyt.model.Statistics
+import com.pleon.buyt.model.Store
 import java.text.DateFormat
 import java.util.*
 
@@ -39,6 +44,7 @@ interface PurchaseDao {
         statistics.minPurchaseCost = (getMinPurchaseCost(period, filter))
         statistics.setWeekdayWithMaxPurchases(getWeekdayWithMaxPurchaseCount(period, filter))
         statistics.setStoreWithMaxPurchaseCount(getStoreWithMaxPurchaseCount(period, filter))
+        statistics.mostPurchasedCategories = getMostPurchasedCategories(period, filter)
 
         return statistics
     }
@@ -136,4 +142,8 @@ interface PurchaseDao {
             "ON AllDates.date = DailyCosts.date " +
             "GROUP BY AllDates.date")
     fun getDailyCosts(period: Int, filter: Category?): List<DailyCost>
+
+    @Query("SELECT category as name, sum(totalPrice) as value FROM Item natural join purchase " +
+            "WHERE $PERIOD_AND_FILTER_CLAUSE group by category order by value desc limit 5")
+    fun getMostPurchasedCategories(period: Int, filter: Category?): List<PieSlice>
 }
