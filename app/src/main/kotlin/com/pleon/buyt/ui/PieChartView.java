@@ -19,96 +19,57 @@ import java.util.List;
 import androidx.annotation.Nullable;
 
 /**
- * [https://github.com/luweibin3118/PieChartView]
+ * Adopted from [https://github.com/luweibin3118/PieChartView]
  */
 public class PieChartView extends View {
 
-    private Paint mPaint;
+    private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
 
-    private Path mPath, drawLinePath = new Path();
-
+    private Path mPath = new Path(), drawLinePath = new Path();
     private PathMeasure mPathMeasure = new PathMeasure();
-
     private Canvas mCanvas;
-
     private int width, height;
-
-    private RectF pieRectF, tempRectF;
-
+    private RectF pieRectF = new RectF(), tempRectF = new RectF();
     private int radius;
-
-    private List<PieChartView.ItemType> itemTypeList, leftTypeList, rightTypeList;
-
-    private List<Point> itemPoints;
-
+    private List<PieChartView.ItemType> itemTypeList = new ArrayList<>(), leftTypeList = new ArrayList<>(), rightTypeList = new ArrayList<>();
+    private List<Point> itemPoints = new ArrayList<>();
     private int cell = 0;
-
     private float innerRadius = 0.0f;
-
     private float offRadius = 0, offLine;
-
     private int textAlpha;
-
     private Point firstPoint;
-
     private int backGroundColor = 0xffffffff;
-
     private int itemTextSize = 30, textPadding = 8;
-
     private int defaultStartAngle = -90;
-
     private float pieCell;
-
     private ValueAnimator animator;
-
     private long animDuration = 1000;
-
     private Point startPoint = new Point();
-
     private Point centerPoint = new Point();
-
     private Point endPoint = new Point();
-
     private Point tempPoint = new Point();
 
     public PieChartView(Context context) {
         super(context);
-        init();
     }
 
     public PieChartView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init();
     }
 
-    private void init() {
-        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
-        mPath = new Path();
-
-        pieRectF = new RectF();
-        tempRectF = new RectF();
-
-        itemTypeList = new ArrayList<>();
-        leftTypeList = new ArrayList<>();
-        rightTypeList = new ArrayList<>();
-        itemPoints = new ArrayList<>();
-    }
-
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        startAnim();
-    }
+//    @Override
+//    protected void onAttachedToWindow() {
+//        super.onAttachedToWindow();
+//        startAnim();
+//    }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (animator != null) {
-            animator.cancel();
-        }
+        if (animator != null) animator.cancel();
     }
 
-    private void startAnim() {
+    public void startAnim() {
         animator = ValueAnimator.ofFloat(0, 360f * 2);
         animator.setDuration(animDuration);
         animator.setInterpolator(new LinearInterpolator());
@@ -137,11 +98,11 @@ public class PieChartView extends View {
     }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
+    protected void onSizeChanged(int w, int h, int oldWid, int oldHei) {
+        super.onSizeChanged(w, h, oldWid, oldHei);
         this.width = w;
         this.height = h;
-        radius = Math.min(width, height) / 4;
+        radius = Math.min(width, height) / 3;
         pieRectF.set(width / 2 - radius, height / 2 - radius, width / 2 + radius, height / 2 + radius);
     }
 
@@ -338,11 +299,6 @@ public class PieChartView extends View {
         mPaint.setAlpha(256);
     }
 
-    /**
-     * 添加一条分类数据
-     *
-     * @param itemType
-     */
     public void addItemType(PieChartView.ItemType itemType) {
         if (itemTypeList != null) {
             itemTypeList.add(itemType);
@@ -350,7 +306,7 @@ public class PieChartView extends View {
     }
 
     /**
-     * 设置每条图之间的间歇大小
+     * Set the gap between slices.
      *
      * @param cell
      */
@@ -358,58 +314,35 @@ public class PieChartView extends View {
         this.cell = cell;
     }
 
-    /**
-     * 设置内部圆的半径比例，eg：0.5f
-     *
-     * @param innerRadius
-     */
     public void setInnerRadius(float innerRadius) {
-        if (innerRadius > 1.0f) {
-            innerRadius = 1.0f;
-        } else if (innerRadius < 0) {
-            innerRadius = 0;
-        }
+        if (innerRadius > 1f) innerRadius = 1f;
+        else if (innerRadius < 0) innerRadius = 0;
+
         this.innerRadius = innerRadius;
     }
 
-    /**
-     * 设置背景颜色
-     *
-     * @param backGroundColor
-     */
     public void setBackGroundColor(int backGroundColor) {
         this.backGroundColor = backGroundColor;
     }
 
-    /**
-     * 设置每条字体大小
-     *
-     * @param itemTextSize
-     */
     public void setItemTextSize(int itemTextSize) {
         this.itemTextSize = itemTextSize;
     }
 
     /**
-     * 设置字体距离横线的padding值
-     *
-     * @param textPadding
+     * Sets vertical padding between the text and its horizontal line
      */
     public void setTextPadding(int textPadding) {
         this.textPadding = textPadding;
     }
 
-    /**
-     * 设置动画时间
-     *
-     * @param animDuration
-     */
     public void setAnimDuration(long animDuration) {
         this.animDuration = animDuration;
     }
 
     public static class ItemType {
-        private static final DecimalFormat df = new DecimalFormat("0.0%");
+
+        private static final DecimalFormat formatter = new DecimalFormat("0.0%");
         String type;
         int widget;
         int color;
@@ -421,8 +354,8 @@ public class PieChartView extends View {
             this.color = color;
         }
 
-        public String getPercent() {
-            return df.format(radius / 360f);
+        String getPercent() {
+            return formatter.format(radius / 360f);
         }
     }
 }

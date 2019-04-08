@@ -122,6 +122,7 @@ class StatesFragment : Fragment() {
         pieChart.setInnerRadius(0.7f)
         pieChart.setBackGroundColor(0xff2E362F.toInt())
         pieChart.setItemTextSize(21) // FIXME: size isn't consistent across devices
+        pieChart.startAnim()
     }
 
     override fun onDestroyView() {
