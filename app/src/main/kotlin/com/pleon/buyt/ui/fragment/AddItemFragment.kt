@@ -57,12 +57,10 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
     private val isBoughtChecked get() = bought.isChecked
 
     private val price: Long
-        get() {
-            return try {
-                priceEd.text.toString().replace(Regex("[^\\d]"), "").toLong()
-            } catch (e: NumberFormatException) {
-                0
-            }
+        get() = try {
+            priceEd.text.toString().replace(Regex("[^\\d]"), "").toLong()
+        } catch (e: NumberFormatException) {
+            0
         }
 
     private val quantity: Item.Quantity
