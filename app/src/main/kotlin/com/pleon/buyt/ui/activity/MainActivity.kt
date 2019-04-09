@@ -74,6 +74,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback {
 
     // the app can be described as both a shopping list app and an expense manager app
 
+    // TODO: Localize the app: [poeditor.com]
     // TODO: Add an option so when a new item is added the fragment pop up be dismissed immediately
     // TODO: Make separate free and paid version flavors for the app
     // TODO: application with upgrade to paid option vs two separate free and paid flavors
