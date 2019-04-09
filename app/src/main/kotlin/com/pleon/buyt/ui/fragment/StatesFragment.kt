@@ -22,11 +22,13 @@ import com.pleon.buyt.R
 import com.pleon.buyt.database.DailyCost
 import com.pleon.buyt.database.PieSlice
 import com.pleon.buyt.model.Category
-import com.pleon.buyt.ui.PieChartView
+import com.pleon.buyt.ui.PieChartView.Slice
 import com.pleon.buyt.viewmodel.StatisticsViewModel
 import kotlinx.android.synthetic.main.fragment_states.*
 import java.text.DecimalFormat
 import java.util.*
+
+private const val PIE_CHART_MAX_SLICES = 5
 
 class StatesFragment : Fragment() {
 
@@ -35,7 +37,7 @@ class StatesFragment : Fragment() {
     private lateinit var viewModel: StatisticsViewModel
     private val priceFormat = DecimalFormat("#,###")
     private val pieSliceColors = intArrayOf(0xffC1B435.toInt(), 0xff2DA579.toInt(),
-            0xff2D71A5.toInt(), 0xffB53145.toInt(), 0xff888888.toInt())
+            0xff2D71A5.toInt(), 0xffB53145.toInt(), 0xff909090.toInt())
 //    private val pieSliceColors = intArrayOf(0xffC19835.toInt(), 0xffABBA33.toInt(),
 //            0xff2DA579.toInt(), 0xff2D38A5.toInt(), 0xffA62D98.toInt())
 
@@ -125,9 +127,17 @@ class StatesFragment : Fragment() {
     private fun showPieChart(pieSlices: List<PieSlice>) {
         pieChart.clearData()
 
+        var other = 0
         for ((index, slice) in pieSlices.withIndex()) {
-            val sliceName = getString(Category.valueOf(slice.name).nameRes)
-            pieChart.addSector(PieChartView.Slice(sliceName, slice.value, pieSliceColors[index]))
+            if (index < PIE_CHART_MAX_SLICES - 1) {
+                val sliceName = getString(Category.valueOf(slice.name).nameRes)
+                pieChart.addSector(Slice(sliceName, slice.value, pieSliceColors[index]))
+            } else {
+                other += slice.value
+            }
+        }
+        if (other > 0) {
+            pieChart.addSector(Slice(getString(R.string.pie_chart_other), other, pieSliceColors[PIE_CHART_MAX_SLICES - 1]))
         }
 
         pieChart.startAnim()

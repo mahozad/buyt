@@ -135,6 +135,6 @@ interface PurchaseDao {
     fun getDailyCosts(period: Int, filter: Category?): List<DailyCost>
 
     @Query("SELECT category as name, sum(totalPrice) as value FROM Item natural join purchase " +
-            "WHERE $PERIOD_CLAUSE group by category order by value desc limit 5")
+            "WHERE $PERIOD_CLAUSE group by category order by value desc")
     fun getMostPurchasedCategories(period: Int): List<PieSlice>
 }

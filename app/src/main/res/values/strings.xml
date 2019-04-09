@@ -89,7 +89,7 @@
     <!-- Change title of persian date picker button from "بیخیال" to this -->
     <string name="mdtp_cancel" translatable="false">لغو</string>
 
-    <string name="chart_caption">Expanses</string>
+    <string name="chart_caption">Expanses per day</string>
     <string name="checkbox_purchased">Already Bought</string>
     <string name="input_def_purchase_date">Today</string>
     <string name="input_hint_store_name">Store name</string>
@@ -171,5 +171,6 @@
     <string name="notif_channel_desc">Main Channel</string>
     <string name="notif_title_store_found">Store found</string>
     <string name="notif_content_store_found">Complete your purchase</string>
-    <string name="pieChart_caption">Most purchased categories</string>
+    <string name="pieChart_caption">Top purchased categories</string>
+    <string name="pie_chart_other">Other</string>
 </resources>
