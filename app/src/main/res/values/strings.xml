@@ -89,7 +89,7 @@
     <!-- Change title of persian date picker button from "بیخیال" to this -->
     <string name="mdtp_cancel" translatable="false">لغو</string>
 
-    <string name="chart_caption">Last %1$d days</string>
+    <string name="chart_caption">Expanses</string>
     <string name="checkbox_purchased">Already Bought</string>
     <string name="input_def_purchase_date">Today</string>
     <string name="input_hint_store_name">Store name</string>
@@ -105,6 +105,8 @@
     <string name="dialog_title_select_cat">Select category</string>
     <string name="dialog_title_select_search_dist">Select search distance</string>
     <string name="currency_format">¤##,###</string>
+
+    <string name="menu_text_period">last %1$d days</string>
 
     <string-array name="pref_theme_names">
         <item>@string/pref_theme_dark</item>
@@ -169,4 +171,5 @@
     <string name="notif_channel_desc">Main Channel</string>
     <string name="notif_title_store_found">Store found</string>
     <string name="notif_content_store_found">Complete your purchase</string>
+    <string name="pieChart_caption">Most purchased categories</string>
 </resources>

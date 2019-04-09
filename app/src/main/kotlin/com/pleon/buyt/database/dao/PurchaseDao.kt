@@ -31,20 +31,18 @@ interface PurchaseDao {
      */
     @Transaction
     fun getStatistics(period: Int, filter: Category?): Statistics {
-        var period = period
         val statistics = Statistics()
 
-        // This query returns one extra day so do --period
-        statistics.dailyCosts = getDailyCosts(--period, filter)
+        // This query returns one extra day so do period-1
+        statistics.dailyCosts = getDailyCosts(period - 1, filter)
         statistics.totalPurchaseCost = (getTotalPurchaseCost(period, filter))
         statistics.averagePurchaseCost = (getAveragePurchaseCost(period, filter))
-        statistics.setMostPurchasedCategory(getMostPurchasedCategory(period))
         statistics.numberOfPurchases = (getNumberOfPurchases(period, filter))
         statistics.maxPurchaseCost = (getMaxPurchaseCost(period, filter))
         statistics.minPurchaseCost = (getMinPurchaseCost(period, filter))
         statistics.setWeekdayWithMaxPurchases(getWeekdayWithMaxPurchaseCount(period, filter))
         statistics.setStoreWithMaxPurchaseCount(getStoreWithMaxPurchaseCount(period, filter))
-        statistics.mostPurchasedCategories = getMostPurchasedCategories(period, filter)
+        statistics.mostPurchasedCategories = getMostPurchasedCategories(period)
 
         return statistics
     }
@@ -53,13 +51,6 @@ interface PurchaseDao {
     @Query("SELECT sum(totalPrice) from purchase natural join item " +
             "where $PERIOD_AND_FILTER_CLAUSE")
     fun getTotalPurchaseCost(period: Int, filter: Category?): Long
-
-    // language=RoomSql see [https://youtrack.jetbrains.com/issue/KT-13233] if the issue is resolved
-    @Query("select category from purchase natural join item where" + PERIOD_CLAUSE +
-            "group by category " +
-            "order by count(category) desc " +
-            "limit 1;")
-    fun getMostPurchasedCategory(period: Int): Category
 
     // language=RoomSql see [https://youtrack.jetbrains.com/issue/KT-13233] if the issue is resolved
     @Query("select count(Distinct purchaseId) from purchase natural join item " +
@@ -144,6 +135,6 @@ interface PurchaseDao {
     fun getDailyCosts(period: Int, filter: Category?): List<DailyCost>
 
     @Query("SELECT category as name, sum(totalPrice) as value FROM Item natural join purchase " +
-            "WHERE $PERIOD_AND_FILTER_CLAUSE group by category order by value desc limit 5")
-    fun getMostPurchasedCategories(period: Int, filter: Category?): List<PieSlice>
+            "WHERE $PERIOD_CLAUSE group by category order by value desc limit 5")
+    fun getMostPurchasedCategories(period: Int): List<PieSlice>
 }

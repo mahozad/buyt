@@ -4,6 +4,7 @@ import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import com.pleon.buyt.R
 import com.pleon.buyt.model.Category
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
@@ -40,6 +41,12 @@ class StatesActivity : BaseActivity(), SelectDialogFragment.Callback {
         menu.findItem(R.id.action_toggle_period).setIcon(statesFragment.period.imageRes)
         (menu.getItem(0).icon as Animatable).start() // Animate icon to get its final shape
 
+        // Setting up "change period" action because it has custom layout
+        val menuItem = menu.findItem(R.id.action_toggle_period)
+        menuItem.actionView.setOnClickListener { onOptionsItemSelected(menuItem) }
+        menuItem.actionView.findViewById<TextView>(R.id.view).text =
+                getString(R.string.menu_text_period, statesFragment.period.length)
+
         return true
     }
 
@@ -52,8 +59,11 @@ class StatesActivity : BaseActivity(), SelectDialogFragment.Callback {
 
             R.id.action_toggle_period -> {
                 statesFragment.togglePeriod()
-                item.setIcon(statesFragment.period.imageRes)
-                (item.icon as Animatable).start()
+                item.actionView.findViewById<TextView>(R.id.view)
+                        .setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, statesFragment.period.imageRes, 0)
+                (item.actionView.findViewById<TextView>(R.id.view).compoundDrawablesRelative[2] as Animatable).start()
+                item.actionView.findViewById<TextView>(R.id.view).text =
+                        getString(R.string.menu_text_period, statesFragment.period.length)
             }
 
             android.R.id.home -> finish()
@@ -65,6 +75,6 @@ class StatesActivity : BaseActivity(), SelectDialogFragment.Callback {
         val selection = filterList[index]
         filterMenuItem!!.setIcon(selection.image)
         statesFragment.filter = if (selection.name == getString(R.string.no_filter))
-            null else Category.valueOf(selection.name!!)
+            null else Category.valueOf(selection.name)
     }
 }

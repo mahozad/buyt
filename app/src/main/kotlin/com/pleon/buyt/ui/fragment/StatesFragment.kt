@@ -36,8 +36,8 @@ class StatesFragment : Fragment() {
     private val priceFormat = DecimalFormat("#,###")
     private val pieSliceColors = intArrayOf(0xffC1B435.toInt(), 0xff2DA579.toInt(),
             0xff2D71A5.toInt(), 0xffB53145.toInt(), 0xff888888.toInt())
-    private val pieSliceColorsAlt = intArrayOf(0xffC19835.toInt(), 0xffABBA33.toInt(),
-            0xff2DA579.toInt(), 0xff2D38A5.toInt(), 0xffA62D98.toInt())
+//    private val pieSliceColors = intArrayOf(0xffC19835.toInt(), 0xffABBA33.toInt(),
+//            0xff2DA579.toInt(), 0xff2D38A5.toInt(), 0xffA62D98.toInt())
 
     var filter: Category?
         get() = viewModel.filter
@@ -64,7 +64,6 @@ class StatesFragment : Fragment() {
     override fun onViewCreated(view: View, savedState: Bundle?) {
         viewModel = ViewModelProviders.of(this).get(StatisticsViewModel::class.java)
         activity?.registerReceiver(timeReceiver, IntentFilter(ACTION_TIME_TICK))
-        chartCaption.text = getString(R.string.chart_caption, viewModel.period.length)
 
         val typedValue = TypedValue()
         context!!.theme.resolveAttribute(R.attr.pieChartBackgroundColor, typedValue, true)
@@ -85,10 +84,6 @@ class StatesFragment : Fragment() {
 
             textView3.text = priceFormat.format(statistics.totalPurchaseCost)
             textView.text = priceFormat.format(statistics.averagePurchaseCost)
-
-            if (statistics.mostPurchasedCategoryName != 0) textView13.setText(statistics.mostPurchasedCategoryName)
-            else textView13.text = "-"
-
             textView18.text = priceFormat.format(statistics.numberOfPurchases)
             textView6.text = priceFormat.format(statistics.maxPurchaseCost)
             textView7.text = priceFormat.format(statistics.minPurchaseCost)
@@ -143,9 +138,5 @@ class StatesFragment : Fragment() {
         activity?.unregisterReceiver(timeReceiver)
     }
 
-    fun togglePeriod() {
-        viewModel.togglePeriod()
-        chartCaption.text = getString(R.string.chart_caption, viewModel.period.length)
-        showStatistics()
-    }
+    fun togglePeriod() = viewModel.togglePeriod().also { showStatistics() }
 }

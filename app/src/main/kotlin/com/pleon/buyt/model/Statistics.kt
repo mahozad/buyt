@@ -9,16 +9,12 @@ class Statistics {
     var dailyCosts: List<DailyCost>? = null
     var totalPurchaseCost: Long = 0
     var averagePurchaseCost: Long = 0
-    private var mostPurchasedCategory: Category? = null
     var numberOfPurchases: Int = 0
     var maxPurchaseCost: Long = 0
     var minPurchaseCost: Long = 0
     lateinit var mostPurchasedCategories: List<PieSlice>
     private var weekdayWithMaxPurchases: Int = 0
     private var storeWithMaxPurchaseCount: Store? = null
-
-    val mostPurchasedCategoryName: Int
-        get() = if (mostPurchasedCategory == null) 0 else mostPurchasedCategory!!.nameRes
 
     val weekdayNameResWithMaxPurchases: Int
         get() {
@@ -35,10 +31,6 @@ class Statistics {
 
     fun getAveragePurchaseCost(): String {
         return NumberFormat.getInstance().format(averagePurchaseCost)
-    }
-
-    fun setMostPurchasedCategory(mostPurchasedCategory: Category?) {
-        this.mostPurchasedCategory = mostPurchasedCategory
     }
 
     fun getNumberOfPurchases(): String {
