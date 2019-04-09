@@ -447,7 +447,5 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
         return validated
     }
 
-    private fun isEmpty(editText: EditText): Boolean {
-        return editText.text.toString().trim { it <= ' ' }.isEmpty()
-    }
+    private fun isEmpty(et: EditText) = et.text.toString().trim { it <= ' ' }.isEmpty()
 }
