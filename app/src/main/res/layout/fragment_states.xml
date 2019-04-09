@@ -126,7 +126,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="16dp"
                     android:text="@string/state_max_purchase_cost"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView15" />
@@ -147,7 +147,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="TextView"
-                    android:textColor="#FF1744"
+                    android:textColor="#C03449"
                     app:layout_constraintBaseline_toBaselineOf="@+id/textView4"
                     app:layout_constraintStart_toEndOf="@+id/barrier" />
 
@@ -157,7 +157,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="TextView"
-                    android:textColor="#3D5AFE"
+                    android:textColor="#2D71A5"
                     app:layout_constraintBaseline_toBaselineOf="@+id/textView5"
                     app:layout_constraintStart_toEndOf="@+id/barrier" />
 
@@ -204,7 +204,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="TextView"
-                    android:textColor="#FFC400"
+                    android:textColor="#C1B435"
                     app:layout_constraintBaseline_toBaselineOf="@+id/textView12"
                     app:layout_constraintStart_toEndOf="@+id/barrier" />
 
