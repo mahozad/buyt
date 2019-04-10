@@ -89,7 +89,7 @@
     <!-- Change title of persian date picker button from "بیخیال" to this -->
     <string name="mdtp_cancel" translatable="false">لغو</string>
 
-    <string name="chart_caption">Expanses per day</string>
+    <string name="chart_caption">Expenses per day</string>
     <string name="checkbox_purchased">Already Bought</string>
     <string name="input_def_purchase_date">Today</string>
     <string name="input_hint_store_name">Store name</string>
