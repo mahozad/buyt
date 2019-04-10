@@ -10,8 +10,8 @@
     <string name="dialog_action_go_to_settings">برو به تنظیمات</string>
     <string name="snackbar_message_item_deleted">آیتم %1$s حذف شد</string>
     <string name="snackbar_action_undo">لغو</string>
-    <string name="snackbar_message_cart_empty">کالایی برای خریدن موجود نیست</string>
-    <string name="snackbar_message_no_item_selected">کالایی انتخاب نشده است</string>
+    <string name="snackbar_message_cart_empty">لیست خرید خالی است</string>
+    <string name="snackbar_message_no_item_selected">آیتمی انتخاب نشده است</string>
     <string name="snackbar_message_start_over">متأسفانه بایت به اجبار متوقف شد. در صورت امکان مجددا فرایند خرید را انجام دهید.</string>
     <string name="input_def_quantity">۱</string>
     <string name="input_hint_quantity">مقدار</string>
@@ -54,7 +54,7 @@
     <string name="dialog_action_skip">اکنون نه</string>
     <string name="dialog_action_exit">خروج</string>
     <string name="dialog_title_exit">خروج از برنامه؟</string>
-    <string name="dialog_message_exit">در صورت خروج از برنامه، پروسه‌ی خرید متوقف خواهد شد.</string>
+    <string name="dialog_message_exit">در صورت خروج از برنامه، فرایند خرید متوقف خواهد شد.</string>
     <string name="snackbar_message_no_store_found">مغازه‌ای از قبل ذخیره نشده است!</string>
     <string name="menu_text_new_store_found">جدید</string>
     <string name="menu_title_select_store">انتخاب مغازه</string>
