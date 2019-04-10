@@ -158,9 +158,9 @@ public class PieChartView extends View {
                 mPaint.setAlpha(textAlpha);
                 mCanvas.drawText(slice.type, centerPoint.x + (endPoint.x - centerPoint.x) / 2,
                         centerPoint.y - textPadding, mPaint);
-                mPaint.setTextSize(itemTextSize * 4 / 5);
+                mPaint.setTextSize(itemTextSize * 0.85f);
                 mCanvas.drawText(slice.getPercent(), centerPoint.x + (endPoint.x - centerPoint.x) / 2,
-                        centerPoint.y + (itemTextSize + textPadding) * 4 / 5, mPaint);
+                        centerPoint.y + (itemTextSize + textPadding) * 0.8f, mPaint);
             }
         }
 
@@ -202,9 +202,9 @@ public class PieChartView extends View {
                 mPaint.setAlpha(textAlpha);
                 mCanvas.drawText(slice.type, centerPoint.x + (endPoint.x - centerPoint.x) / 2,
                         centerPoint.y - textPadding, mPaint);
-                mPaint.setTextSize(itemTextSize * 4 / 5);
+                mPaint.setTextSize(itemTextSize * 0.85f);
                 mCanvas.drawText(slice.getPercent(), centerPoint.x + (endPoint.x - centerPoint.x) / 2,
-                        centerPoint.y + (itemTextSize + textPadding) * 4 / 5, mPaint);
+                        centerPoint.y + (itemTextSize + textPadding) * 0.8f, mPaint);
             }
         }
 
