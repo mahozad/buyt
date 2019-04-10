@@ -31,10 +31,10 @@ interface PurchaseDao {
      */
     @Transaction
     fun getStatistics(period: Int, filter: Category?): Statistics {
+        val period = period - 1 // The queries return one extra day so do period-1
         val statistics = Statistics()
 
-        // This query returns one extra day so do period-1
-        statistics.dailyCosts = getDailyCosts(period - 1, filter)
+        statistics.dailyCosts = getDailyCosts(period, filter)
         statistics.totalPurchaseCost = (getTotalPurchaseCost(period, filter))
         statistics.averagePurchaseCost = (getAveragePurchaseCost(period, filter))
         statistics.numberOfPurchases = (getNumberOfPurchases(period, filter))
