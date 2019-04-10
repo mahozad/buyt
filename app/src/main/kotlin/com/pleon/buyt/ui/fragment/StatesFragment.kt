@@ -9,6 +9,8 @@ import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
@@ -100,17 +102,22 @@ class StatesFragment : Fragment() {
     private fun showLineChart(dailyCosts: List<DailyCost>) {
         chart.reset()
 
+        var totalCosts = 0L
+
         val dataSet = LineSet()
         for (dailyCost in dailyCosts) {
             dataSet.addPoint(dailyCost.date, dailyCost.totalCost.toFloat())
+            totalCosts += dailyCost.totalCost
         }
 
         if (viewModel.period.length <= 20) {
-            dataSet.setDotsColor(ContextCompat.getColor(context!!, R.color.colorPrimary))
+            dataSet.setDotsColor(ContextCompat.getColor(context!!,
+                    if (totalCosts == 0L) R.color.chartEmptyColor else R.color.colorPrimary))
             dataSet.setDotsRadius(3f)
         }
         dataSet.isSmooth = false // TODO: Add an option in settings for the user to toggle this
-        dataSet.color = ContextCompat.getColor(context!!, R.color.colorPrimaryDark)
+        dataSet.color = ContextCompat.getColor(context!!,
+                if (totalCosts == 0L) R.color.chartEmptyColor else R.color.colorPrimaryDark)
         dataSet.thickness = 2.5f
 
         val moneyFormat = DecimalFormat(getString(R.string.currency_format))
@@ -127,6 +134,9 @@ class StatesFragment : Fragment() {
     private fun showPieChart(pieSlices: List<PieSlice>) {
         pieChart.clearData()
 
+        pieChart.visibility = if (pieSlices.isEmpty()) GONE else VISIBLE
+        emptyHint.visibility = if (pieSlices.isEmpty()) VISIBLE else GONE
+
         var other = 0
         for ((index, slice) in pieSlices.withIndex()) {
             if (index < PIE_CHART_MAX_SLICES - 1) {
@@ -138,6 +148,7 @@ class StatesFragment : Fragment() {
         }
         if (other > 0) {
             pieChart.addSector(Slice(getString(R.string.pie_chart_other), other, pieSliceColors[PIE_CHART_MAX_SLICES - 1]))
+
         }
 
         pieChart.startAnim()

@@ -16,6 +16,7 @@
 
     <color name="pieChartDarkBgColor">#FF2E362F</color>
     <color name="pieChartLightBgColor">#FFE9FFEA</color>
+    <color name="chartEmptyColor">#4D888888</color>
 
     <color name="unitUnfocusedDark">#6f6f6f</color>
     <color name="unitUnfocusedLight">#afafaf</color>
