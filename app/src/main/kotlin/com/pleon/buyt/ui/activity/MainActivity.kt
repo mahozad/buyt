@@ -244,9 +244,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback {
             override fun onSequenceCanceled(lastTarget: TapTarget?) {}
             override fun onSequenceFinish() {
                 preferences.edit().putBoolean("NEWBIE", false).apply()
-                reorderMenuItem.setIcon(R.drawable.avd_skip_reorder).also {
-                    (it.icon as Animatable).start()
-                }
+                reorderMenuItem.setIcon(R.drawable.avd_skip_reorder).also { (it.icon as Animatable).start() }
                 addMenuItem.setIcon(R.drawable.avd_add_glow).also { animateIconInfinitely(it.icon) }
             }
         }).start()
@@ -365,9 +363,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback {
                 bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
                 (bottom_bar.navigationIcon as Animatable).start()
 
-              val animation = AlphaAnimation(0f, 1f).apply { duration = 300 }
-              scrim.alpha = 1f
-              scrim.startAnimation(animation)
+                val animation = AlphaAnimation(0f, 1f).apply { duration = 300 }
+                scrim.alpha = 1f
+                scrim.startAnimation(animation)
             }
 
             R.id.action_reorder -> {

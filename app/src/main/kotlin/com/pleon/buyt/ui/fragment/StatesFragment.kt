@@ -159,5 +159,8 @@ class StatesFragment : Fragment() {
         activity?.unregisterReceiver(timeReceiver)
     }
 
-    fun togglePeriod() = viewModel.togglePeriod().also { showStatistics() }
+    fun togglePeriod() {
+        viewModel.togglePeriod()
+        showStatistics()
+    }
 }
