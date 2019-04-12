@@ -44,17 +44,17 @@ class ItemsFragment : Fragment(), ItemTouchHelperListener {
         viewModel.allItems.observe(viewLifecycleOwner, Observer {
             adapter.items = it.toMutableList()
             if (it.isEmpty()) {
-                emptyHint1.animate().alpha(0.25F).setDuration(200).setStartDelay(220).start()
-                emptyHint2.animate().alpha(0.6F).setDuration(200).setStartDelay(110).start()
+                emptyHint1.animate().alpha(0.25F).setDuration(200).setStartDelay(210).start()
+                emptyHint2.animate().alpha(0.6F).setDuration(200).setStartDelay(105).start()
                 emptyHint3.animate().alpha(1.0F).setDuration(200).setStartDelay(0).start()
-                emptyHint4.animate().alpha(0.6F).setDuration(200).setStartDelay(110).start()
-                emptyHint5.animate().alpha(0.25F).setDuration(200).setStartDelay(220).start()
+                emptyHint4.animate().alpha(0.6F).setDuration(200).setStartDelay(105).start()
+                emptyHint5.animate().alpha(0.25F).setDuration(200).setStartDelay(210).start()
             } else {
-                emptyHint1.animate().alpha(0f).setDuration(200).setStartDelay(220).start()
-                emptyHint2.animate().alpha(0f).setDuration(200).setStartDelay(110).start()
+                emptyHint1.animate().alpha(0f).setDuration(200).setStartDelay(210).start()
+                emptyHint2.animate().alpha(0f).setDuration(200).setStartDelay(105).start()
                 emptyHint3.animate().alpha(0f).setDuration(200).setStartDelay(0).start()
-                emptyHint4.animate().alpha(0f).setDuration(200).setStartDelay(110).start()
-                emptyHint5.animate().alpha(0f).setDuration(200).setStartDelay(220).start()
+                emptyHint4.animate().alpha(0f).setDuration(200).setStartDelay(105).start()
+                emptyHint5.animate().alpha(0f).setDuration(200).setStartDelay(210).start()
             }
         })
 
