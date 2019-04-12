@@ -76,7 +76,7 @@ class StatesFragment : Fragment() {
         pieChart.setInnerRadius(0.6f)
         pieChart.setBackGroundColor(pieBgColor)
         pieChart.setItemTextSize(21) // FIXME: text size isn't consistent across different devices
-        pieChart.setAnimDuration(500)
+        pieChart.setAnimDuration(480)
 
         showStatistics()
     }
@@ -142,13 +142,10 @@ class StatesFragment : Fragment() {
             if (index < PIE_CHART_MAX_SLICES - 1) {
                 val sliceName = getString(Category.valueOf(slice.name).nameRes)
                 pieChart.addSector(Slice(sliceName, slice.value, pieSliceColors[index]))
-            } else {
-                other += slice.value
-            }
+            } else other += slice.value
         }
         if (other > 0) {
             pieChart.addSector(Slice(getString(R.string.pie_chart_other), other, pieSliceColors[PIE_CHART_MAX_SLICES - 1]))
-
         }
 
         pieChart.startAnim()
