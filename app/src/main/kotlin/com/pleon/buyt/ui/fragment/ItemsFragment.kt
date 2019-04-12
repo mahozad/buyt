@@ -41,7 +41,22 @@ class ItemsFragment : Fragment(), ItemTouchHelperListener {
     override fun onViewCreated(view: View, savedState: Bundle?) {
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         // In fragments use getViewLifecycleOwner() as owner argument
-        viewModel.allItems.observe(viewLifecycleOwner, Observer { adapter.items = it.toMutableList() })
+        viewModel.allItems.observe(viewLifecycleOwner, Observer {
+            adapter.items = it.toMutableList()
+            if (it.isEmpty()) {
+                emptyHint1.animate().alpha(0.25F).setDuration(200).setStartDelay(220).start()
+                emptyHint2.animate().alpha(0.6F).setDuration(200).setStartDelay(110).start()
+                emptyHint3.animate().alpha(1.0F).setDuration(200).setStartDelay(0).start()
+                emptyHint4.animate().alpha(0.6F).setDuration(200).setStartDelay(110).start()
+                emptyHint5.animate().alpha(0.25F).setDuration(200).setStartDelay(220).start()
+            } else {
+                emptyHint1.animate().alpha(0f).setDuration(200).setStartDelay(220).start()
+                emptyHint2.animate().alpha(0f).setDuration(200).setStartDelay(110).start()
+                emptyHint3.animate().alpha(0f).setDuration(200).setStartDelay(0).start()
+                emptyHint4.animate().alpha(0f).setDuration(200).setStartDelay(110).start()
+                emptyHint5.animate().alpha(0f).setDuration(200).setStartDelay(220).start()
+            }
+        })
 
         // for swipe-to-delete and drag-n-drop of item
         touchHelperCallback = TouchHelperCallback(this)
