@@ -7,13 +7,17 @@ import android.view.MenuItem
 import android.widget.TextView
 import com.pleon.buyt.R
 import com.pleon.buyt.model.Category
+import com.pleon.buyt.ui.adapter.StatesPagerAdapter
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogRow
+import com.pleon.buyt.ui.fragment.StateDetailsFragment
 import com.pleon.buyt.ui.fragment.StatesFragment
+import kotlinx.android.synthetic.main.activity_states.*
 
 class StatesActivity : BaseActivity(), SelectDialogFragment.Callback {
 
     private lateinit var statesFragment: StatesFragment
+    private lateinit var detailsFragment: StateDetailsFragment
     private var filterList = ArrayList<SelectDialogRow>()
     private var filterMenuItem: MenuItem? = null
 
@@ -22,13 +26,18 @@ class StatesActivity : BaseActivity(), SelectDialogFragment.Callback {
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
 
-        statesFragment = supportFragmentManager.findFragmentById(R.id.statesFragment) as StatesFragment
-
         val noFilterEntry = SelectDialogRow(getString(R.string.no_filter), R.drawable.ic_filter)
         filterList.add(noFilterEntry)
         for (category in Category.values()) {
             filterList.add(SelectDialogRow(category.name, category.imageRes))
         }
+
+        val pagerAdapter = StatesPagerAdapter(this, supportFragmentManager)
+        viewPager.adapter = pagerAdapter
+        tabLayout.setupWithViewPager(viewPager)
+        // tabLayout.getTabAt(0)?.setIcon(R.drawable.ic_cart)
+        statesFragment = pagerAdapter.instantiateItem(viewPager, 0) as StatesFragment
+        detailsFragment = pagerAdapter.instantiateItem(viewPager, 1) as StateDetailsFragment
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

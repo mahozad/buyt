@@ -121,4 +121,6 @@
     <string name="pieChart_caption">دسته‌بندی‌های پرخرید</string>
     <string name="pie_chart_other">سایر</string>
     <string name="placeholder_empty">لیست خرید خالی است</string>
+    <string name="tab_title_charts">نمودار و آمار</string>
+    <string name="tab_title_details">ریز خریدها</string>
 </resources>
