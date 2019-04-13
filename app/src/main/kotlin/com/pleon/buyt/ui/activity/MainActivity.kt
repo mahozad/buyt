@@ -267,6 +267,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback {
             if (itemsFragment.isCartEmpty) showSnackbar(R.string.snackbar_message_cart_empty, LENGTH_SHORT)
             else {
                 itemsFragment.clearSelectedItems() // clear items of previous purchase
+                addMenuItem.setIcon(R.drawable.avd_add_hide).apply { (icon as Animatable).start() }
+                        .also { Handler().postDelayed({ it.isVisible = false }, 300) }
+
                 findLocation()
             }
         } else if (viewModel.state == SELECTING) { // act as done
@@ -609,6 +612,8 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback {
             storeMenuItem.isVisible = false
             reorderMenuItem.setIcon(R.drawable.avd_skip_reorder).setTitle(R.string.menu_hint_reorder_items).isVisible = true
             (reorderMenuItem.icon as Animatable).start()
+            addMenuItem.setIcon(R.drawable.avd_add_show).apply { (icon as Animatable).start() }
+                    .also { it.isVisible = true }
 
             (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).cancelAll()
         }
