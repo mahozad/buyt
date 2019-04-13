@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="none">
         <item
-            android:id="@+id/states"
+            android:id="@+id/stats"
             android:icon="@drawable/ic_chart"
             android:title="@string/nav_states" />
         <item

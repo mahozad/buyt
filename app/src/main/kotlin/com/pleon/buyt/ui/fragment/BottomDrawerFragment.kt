@@ -26,7 +26,7 @@ class BottomDrawerFragment : BottomSheetDialogFragment(), OnNavigationItemSelect
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
-            R.id.states -> startActivity(Intent(context, StatesActivity::class.java))
+            R.id.stats -> startActivity(Intent(context, StatesActivity::class.java))
             R.id.stores -> startActivity(Intent(context, StoresActivity::class.java))
             R.id.settings -> startActivity(Intent(context, SettingsActivity::class.java))
             R.id.help -> startActivity(Intent(context, HelpActivity::class.java))
