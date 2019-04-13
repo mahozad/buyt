@@ -42,7 +42,7 @@ interface PurchaseDao {
         statistics.minPurchaseCost = (getMinPurchaseCost(period, filter))
         statistics.setWeekdayWithMaxPurchases(getWeekdayWithMaxPurchaseCount(period, filter))
         statistics.setStoreWithMaxPurchaseCount(getStoreWithMaxPurchaseCount(period, filter))
-        statistics.mostPurchasedCategories = getMostPurchasedCategories(period)
+        statistics.mostPurchasedCategories = getMostPurchasedCategories(period, filter)
 
         return statistics
     }
@@ -135,6 +135,6 @@ interface PurchaseDao {
     fun getDailyCosts(period: Int, filter: Category?): List<DailyCost>
 
     @Query("SELECT category as name, sum(totalPrice) as value FROM Item natural join purchase " +
-            "WHERE $PERIOD_CLAUSE group by category order by value desc")
-    fun getMostPurchasedCategories(period: Int): List<PieSlice>
+            "WHERE $PERIOD_AND_FILTER_CLAUSE group by category order by value desc")
+    fun getMostPurchasedCategories(period: Int, filter: Category?): List<PieSlice>
 }
