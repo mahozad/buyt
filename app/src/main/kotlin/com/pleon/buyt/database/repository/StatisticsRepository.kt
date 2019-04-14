@@ -16,8 +16,8 @@ class StatisticsRepository(application: Application) { // TODO: make this class 
 
     fun getStatistics(period: Int, filter: Category?): LiveData<Statistics> {
         doAsync {
-            val states = purchaseDao.getStatistics(period, filter)
-            uiThread { statistics.value = states }
+            val stats = purchaseDao.getStatistics(period, filter)
+            uiThread { statistics.value = stats }
         }
         return statistics
     }

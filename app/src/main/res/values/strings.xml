@@ -96,7 +96,7 @@
     <string name="input_error_name">Name cannot be empty</string>
     <string name="input_error_quantity">Quantity should be specified</string>
     <string name="input_error_price">Price should be specified</string>
-    <string name="nav_states">States</string>
+    <string name="nav_stats">Stats</string>
     <string name="nav_stores">Stores</string>
     <string name="nav_settings">Settings</string>
     <string name="nav_help">Help</string>

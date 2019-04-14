@@ -25,7 +25,7 @@
             android:name=".ui.activity.SettingsActivity"
             android:parentActivityName=".ui.activity.MainActivity" />
         <activity
-            android:name=".ui.activity.StatesActivity"
+            android:name=".ui.activity.StatsActivity"
             android:parentActivityName=".ui.activity.MainActivity" /> <!-- android:windowSoftInputMode attribute is to prevent the bottom app bar to jump when keyboard appears -->
         <activity
             android:name=".ui.activity.MainActivity"

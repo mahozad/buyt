@@ -13,7 +13,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".ui.fragment.StatesFragment">
+        tools:context=".ui.fragment.StatsFragment">
 
         <!-- TODO: remove cardUseCompatPadding attribute if shadows display correctly -->
         <com.google.android.material.card.MaterialCardView

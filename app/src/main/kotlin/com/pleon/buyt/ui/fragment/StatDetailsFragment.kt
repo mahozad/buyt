@@ -10,17 +10,17 @@ import com.pleon.buyt.model.Statistics
 import com.pleon.buyt.ui.DateHeaderDecoration
 import com.pleon.buyt.ui.adapter.PurchaseDetailAdapter
 import com.pleon.buyt.viewmodel.StatisticsViewModel
-import kotlinx.android.synthetic.main.fragment_state_details.*
+import kotlinx.android.synthetic.main.fragment_stat_details.*
 import java.text.SimpleDateFormat
 
 
-class StateDetailsFragment : Fragment() {
+class StatDetailsFragment : Fragment() {
 
     private lateinit var adapter: PurchaseDetailAdapter
     private lateinit var viewModel: StatisticsViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedState: Bundle?)
-            : View = inflater.inflate(com.pleon.buyt.R.layout.fragment_state_details, container, false)
+            : View = inflater.inflate(com.pleon.buyt.R.layout.fragment_stat_details, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel = ViewModelProviders.of(activity!!).get(StatisticsViewModel::class.java)

@@ -8,5 +8,5 @@
     android:clipToPadding="false"
     android:paddingBottom="10dp"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    tools:context=".ui.fragment.StateDetailsFragment"
+    tools:context=".ui.fragment.StatDetailsFragment"
     tools:listitem="@layout/purchase_detail" />

@@ -5,18 +5,18 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.pleon.buyt.R
-import com.pleon.buyt.ui.fragment.StateDetailsFragment
-import com.pleon.buyt.ui.fragment.StatesFragment
+import com.pleon.buyt.ui.fragment.StatDetailsFragment
+import com.pleon.buyt.ui.fragment.StatsFragment
 
-class StatesPagerAdapter(private val cxt: Context, fragMgr: FragmentManager)
+class StatsPagerAdapter(private val cxt: Context, fragMgr: FragmentManager)
     : FragmentStatePagerAdapter(fragMgr) {
 
     override fun getCount(): Int = 2
 
     override fun getItem(position: Int): Fragment {
         return when (position) {
-            0 -> StatesFragment()
-            else -> StateDetailsFragment()
+            0 -> StatsFragment()
+            else -> StatDetailsFragment()
         }
     }
 

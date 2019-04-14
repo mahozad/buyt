@@ -13,19 +13,19 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.pleon.buyt.R
 import com.pleon.buyt.model.Category
-import com.pleon.buyt.ui.adapter.StatesPagerAdapter
+import com.pleon.buyt.ui.adapter.StatsPagerAdapter
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogRow
-import com.pleon.buyt.ui.fragment.StateDetailsFragment
-import com.pleon.buyt.ui.fragment.StatesFragment
+import com.pleon.buyt.ui.fragment.StatDetailsFragment
+import com.pleon.buyt.ui.fragment.StatsFragment
 import com.pleon.buyt.viewmodel.StatisticsViewModel
-import kotlinx.android.synthetic.main.activity_states.*
+import kotlinx.android.synthetic.main.activity_stats.*
 import java.util.*
 
-class StatesActivity : BaseActivity(), SelectDialogFragment.Callback {
+class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
 
-    private lateinit var statesFragment: StatesFragment
-    private lateinit var detailsFragment: StateDetailsFragment
+    private lateinit var statsFragment: StatsFragment
+    private lateinit var detailsFragment: StatDetailsFragment
     private var filterList = ArrayList<SelectDialogRow>()
     private var filterMenuItem: MenuItem? = null
     private lateinit var viewModel: StatisticsViewModel
@@ -41,7 +41,7 @@ class StatesActivity : BaseActivity(), SelectDialogFragment.Callback {
         }
     }
 
-    override fun layout() = R.layout.activity_states
+    override fun layout() = R.layout.activity_stats
 
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
@@ -55,18 +55,18 @@ class StatesActivity : BaseActivity(), SelectDialogFragment.Callback {
             filterList.add(SelectDialogRow(category.name, category.imageRes))
         }
 
-        val pagerAdapter = StatesPagerAdapter(this, supportFragmentManager)
+        val pagerAdapter = StatsPagerAdapter(this, supportFragmentManager)
         viewPager.adapter = pagerAdapter
         tabLayout.setupWithViewPager(viewPager)
         // tabLayout.getTabAt(0)?.setIcon(R.drawable.ic_cart)
-        statesFragment = pagerAdapter.instantiateItem(viewPager, 0) as StatesFragment
-        detailsFragment = pagerAdapter.instantiateItem(viewPager, 1) as StateDetailsFragment
+        statsFragment = pagerAdapter.instantiateItem(viewPager, 0) as StatsFragment
+        detailsFragment = pagerAdapter.instantiateItem(viewPager, 1) as StatDetailsFragment
 
         updateStats()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_bottom_states, menu)
+        menuInflater.inflate(R.menu.menu_bottom_stats, menu)
 
         filterMenuItem = menu.findItem(R.id.action_filter)
         filterMenuItem!!.setIcon(if (viewModel.filter == null)
@@ -108,7 +108,7 @@ class StatesActivity : BaseActivity(), SelectDialogFragment.Callback {
 
     private fun updateStats() {
         viewModel.statistics.observe(this, Observer { stats ->
-            statesFragment.showStats(stats)
+            statsFragment.showStats(stats)
             detailsFragment.showStats(stats)
         })
     }

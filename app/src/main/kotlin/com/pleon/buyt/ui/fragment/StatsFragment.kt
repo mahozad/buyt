@@ -21,12 +21,12 @@ import com.pleon.buyt.model.Category
 import com.pleon.buyt.model.Statistics
 import com.pleon.buyt.ui.PieChartView.Slice
 import com.pleon.buyt.viewmodel.StatisticsViewModel
-import kotlinx.android.synthetic.main.fragment_states.*
+import kotlinx.android.synthetic.main.fragment_stats.*
 import java.text.DecimalFormat
 
 private const val PIE_CHART_MAX_SLICES = 5
 
-class StatesFragment : Fragment() {
+class StatsFragment : Fragment() {
 
     @ColorRes private var pieBgColor: Int = 0 // This color varies based on the app theme
     private lateinit var viewModel: StatisticsViewModel
@@ -37,7 +37,7 @@ class StatesFragment : Fragment() {
 //            0xff2DA579.toInt(), 0xff2D38A5.toInt(), 0xffA62D98.toInt())
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedState: Bundle?)
-            : View = inflater.inflate(R.layout.fragment_states, container, false)
+            : View = inflater.inflate(R.layout.fragment_stats, container, false)
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
         viewModel = ViewModelProviders.of(activity!!).get(StatisticsViewModel::class.java)
