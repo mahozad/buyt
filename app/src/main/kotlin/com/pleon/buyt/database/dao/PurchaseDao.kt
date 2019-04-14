@@ -137,6 +137,6 @@ interface PurchaseDao {
             "WHERE $PERIOD_AND_FILTER_CLAUSE group by category order by value desc")
     fun getMostPurchasedCategories(period: Int, filter: Category?): List<PieSlice>
 
-    @Query("SELEct * FROM purchase natural join item where $PERIOD_AND_FILTER_CLAUSE group by purchaseId")
+    @Query("SELEct * FROM purchase natural join item where $PERIOD_AND_FILTER_CLAUSE group by purchaseId order by date desc")
     fun getPurchaseDetails(period: Int, filter: Category?): List<PurchaseDetail>
 }
