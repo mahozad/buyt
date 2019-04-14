@@ -5,8 +5,8 @@
     android:id="@+id/recyclerView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="56dp"
+    android:clipToPadding="false"
+    android:paddingBottom="10dp"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
     tools:context=".ui.fragment.StateDetailsFragment"
     tools:listitem="@layout/purchase_detail" />
-

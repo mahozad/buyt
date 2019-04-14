@@ -177,4 +177,7 @@
 
     <string name="tab_title_charts">Charts</string>
     <string name="tab_title_details">Details</string>
+    <string name="purchase_detail_price">"%1$s dollar"</string>
+    <string name="purchase_detail_store_name">Store name:</string>
+    <string name="purchase_detail_total_cost">Total cost:</string>
 </resources>

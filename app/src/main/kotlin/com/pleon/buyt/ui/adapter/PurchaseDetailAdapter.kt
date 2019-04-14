@@ -15,9 +15,14 @@ import ir.huri.jcal.JalaliCalendar
 import kotlinx.android.synthetic.main.date_header.view.*
 import kotlinx.android.synthetic.main.purchase_detail.view.*
 import org.jetbrains.anko.configuration
+import java.text.DecimalFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 class PurchaseDetailAdapter(private val cxt: Context) : Adapter<ViewHolder>(), StickyHeaderInterface {
+
+    private val priceFormat = DecimalFormat("#,###")
+    private val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
 
     var items = mutableListOf<Any>()
         set(value) {
@@ -70,19 +75,23 @@ class PurchaseDetailAdapter(private val cxt: Context) : Adapter<ViewHolder>(), S
     override fun isHeader(itemPosition: Int) = items[itemPosition] is Date
 
     private fun formatDate(date: Date): String {
-        val jalaliCalendar = JalaliCalendar(date)
-        return String.format(cxt.configuration.locale, "%s %d %s %d",
-                jalaliCalendar.dayOfWeekString, jalaliCalendar.day,
-                jalaliCalendar.monthString, jalaliCalendar.year)
+        return if (cxt.configuration.locale.displayName.contains("فارسی")) {
+            val jalaliCalendar = JalaliCalendar(date)
+            String.format(cxt.configuration.locale, "%s %d %s %d",
+                    jalaliCalendar.dayOfWeekString, jalaliCalendar.day,
+                    jalaliCalendar.monthString, jalaliCalendar.year)
+        } else dateFormat.format(date)
     }
 
     inner class PurchaseHolder(view: View) : BaseViewHolder(view) {
         fun bindItem(purchaseDetail: PurchaseDetail) {
             itemView.storeName.text = purchaseDetail.store[0].name
-            itemView.itemDetails.adapter = ItemDetailAdapter().apply { items = purchaseDetail.item.toMutableList() }
+            itemView.itemDetails.adapter = ItemDetailAdapter(cxt).apply {
+                items = purchaseDetail.item.toMutableList()
+            }
             var totalCost = 0L
             for (item in purchaseDetail.item) totalCost += item.totalPrice
-            itemView.totalCost.text = totalCost.toString()
+            itemView.totalCost.text = cxt.getString(R.string.purchase_detail_price, priceFormat.format(totalCost))
         }
 
     }
@@ -93,4 +102,3 @@ class PurchaseDetailAdapter(private val cxt: Context) : Adapter<ViewHolder>(), S
         }
     }
 }
-

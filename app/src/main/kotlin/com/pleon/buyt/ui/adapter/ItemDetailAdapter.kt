@@ -1,15 +1,20 @@
 package com.pleon.buyt.ui.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.pleon.buyt.R
 import com.pleon.buyt.model.Item
 import com.pleon.buyt.ui.BaseViewHolder
+import com.pleon.buyt.ui.adapter.ItemDetailAdapter.ItemDetailHolder
 import kotlinx.android.synthetic.main.item_detail.view.*
+import java.text.DecimalFormat
 
-class ItemDetailAdapter : RecyclerView.Adapter<ItemDetailAdapter.ItemDetailHolder>() {
+class ItemDetailAdapter(private val cxt: Context) : Adapter<ItemDetailHolder>() {
+
+    private val priceFormat = DecimalFormat("#,###")
 
     var items = mutableListOf<Item>()
         set(value) {
@@ -32,8 +37,9 @@ class ItemDetailAdapter : RecyclerView.Adapter<ItemDetailAdapter.ItemDetailHolde
     inner class ItemDetailHolder(view: View) : BaseViewHolder(view) {
         fun bindItem(item: Item) {
             itemView.itemName.text = item.name
-            itemView.itemQuantity.text = item.quantity.toString()
-            itemView.itemTotalPrice.text = item.totalPrice.toString()
+            itemView.itemQuantity.text = cxt.getString(R.string.item_quantity,
+                    item.quantity.quantity, cxt.getString(item.quantity.unit.nameRes))
+            itemView.itemTotalPrice.text = cxt.getString(R.string.purchase_detail_price, priceFormat.format(item.totalPrice))
         }
     }
 }

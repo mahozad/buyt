@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="نام مغازه:"
+            android:text="@string/purchase_detail_store_name"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,7 +26,7 @@
             android:id="@+id/storeName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             app:layout_constraintBaseline_toBaselineOf="@id/storeNameTv"
             app:layout_constraintStart_toEndOf="@id/storeNameTv"
             tools:text="Grocer's" />
@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="هزینه کل:"
+            android:text="@string/purchase_detail_total_cost"
             app:layout_constraintStart_toStartOf="@id/storeNameTv"
             app:layout_constraintTop_toBottomOf="@id/storeNameTv" />
 
@@ -44,7 +44,7 @@
             android:id="@+id/totalCost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             app:layout_constraintBaseline_toBaselineOf="@id/totalCostTv"
             app:layout_constraintStart_toEndOf="@id/totalCostTv"
             tools:text="4500" />
