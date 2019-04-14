@@ -1,10 +1,5 @@
 package com.pleon.buyt.ui.fragment
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.Intent.ACTION_TIME_TICK
-import android.content.IntentFilter
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -15,7 +10,6 @@ import android.view.ViewGroup
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.db.chart.animation.Animation
 import com.db.chart.model.LineSet
@@ -24,17 +18,16 @@ import com.pleon.buyt.R
 import com.pleon.buyt.database.DailyCost
 import com.pleon.buyt.database.PieSlice
 import com.pleon.buyt.model.Category
+import com.pleon.buyt.model.Statistics
 import com.pleon.buyt.ui.PieChartView.Slice
 import com.pleon.buyt.viewmodel.StatisticsViewModel
 import kotlinx.android.synthetic.main.fragment_states.*
 import java.text.DecimalFormat
-import java.util.*
 
 private const val PIE_CHART_MAX_SLICES = 5
 
 class StatesFragment : Fragment() {
 
-    val period get() = viewModel.period
     @ColorRes private var pieBgColor: Int = 0 // This color varies based on the app theme
     private lateinit var viewModel: StatisticsViewModel
     private val priceFormat = DecimalFormat("#,###")
@@ -43,31 +36,11 @@ class StatesFragment : Fragment() {
 //    private val pieSliceColors = intArrayOf(0xffC19835.toInt(), 0xffABBA33.toInt(),
 //            0xff2DA579.toInt(), 0xff2D38A5.toInt(), 0xffA62D98.toInt())
 
-    var filter: Category?
-        get() = viewModel.filter
-        set(filter) {
-            viewModel.filter = filter
-            showStatistics()
-        }
-
-    // Update the statistics when date changes (e.g. time changes from 23:59 to 00:00)
-    private var today = Date()
-    private val timeReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            if (Date().date != today.date) {
-                showStatistics()
-                today = Date()
-            }
-        }
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedState: Bundle?): View {
-        return inflater.inflate(R.layout.fragment_states, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedState: Bundle?)
+            : View = inflater.inflate(R.layout.fragment_states, container, false)
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
-        viewModel = ViewModelProviders.of(this).get(StatisticsViewModel::class.java)
-        activity?.registerReceiver(timeReceiver, IntentFilter(ACTION_TIME_TICK))
+        viewModel = ViewModelProviders.of(activity!!).get(StatisticsViewModel::class.java)
 
         val typedValue = TypedValue()
         context!!.theme.resolveAttribute(R.attr.pieChartBackgroundColor, typedValue, true)
@@ -77,26 +50,22 @@ class StatesFragment : Fragment() {
         pieChart.setBackGroundColor(pieBgColor)
         pieChart.setItemTextSize(21) // FIXME: text size isn't consistent across different devices
         pieChart.setAnimDuration(480)
-
-        showStatistics()
     }
 
-    private fun showStatistics() {
-        viewModel.statistics.observe(viewLifecycleOwner, Observer { statistics ->
-            showLineChart(statistics.dailyCosts!!)
-            showPieChart(statistics.mostPurchasedCategories)
+    fun showStats(stats: Statistics) {
+        showLineChart(stats.dailyCosts!!)
+        showPieChart(stats.mostPurchasedCategories)
 
-            textView3.text = priceFormat.format(statistics.totalPurchaseCost)
-            textView.text = priceFormat.format(statistics.averagePurchaseCost)
-            textView18.text = priceFormat.format(statistics.numberOfPurchases)
-            textView6.text = priceFormat.format(statistics.maxPurchaseCost)
-            textView7.text = priceFormat.format(statistics.minPurchaseCost)
+        textView3.text = priceFormat.format(stats.totalPurchaseCost)
+        textView.text = priceFormat.format(stats.averagePurchaseCost)
+        textView18.text = priceFormat.format(stats.numberOfPurchases)
+        textView6.text = priceFormat.format(stats.maxPurchaseCost)
+        textView7.text = priceFormat.format(stats.minPurchaseCost)
+        textView17.text = stats.storeNameWithMaxPurchaseCount
 
-            if (statistics.weekdayNameResWithMaxPurchases != 0) textView9.setText(statistics.weekdayNameResWithMaxPurchases)
-            else textView9.text = "-"
-
-            textView17.text = statistics.storeNameWithMaxPurchaseCount
-        })
+        if (stats.weekdayNameResWithMaxPurchases != 0)
+            textView9.setText(stats.weekdayNameResWithMaxPurchases)
+        else textView9.text = "-"
     }
 
     private fun showLineChart(dailyCosts: List<DailyCost>) {
@@ -110,7 +79,7 @@ class StatesFragment : Fragment() {
             totalCosts += dailyCost.totalCost
         }
 
-        if (viewModel.period.length <= 20) {
+        if (dailyCosts.size <= 20) {
             dataSet.setDotsColor(ContextCompat.getColor(context!!,
                     if (totalCosts == 0L) R.color.chartEmptyColor else R.color.colorPrimary))
             dataSet.setDotsRadius(3f)
@@ -135,8 +104,8 @@ class StatesFragment : Fragment() {
         pieChart.clearData()
 
         // If filter is set then the whole chart will be one category so better to show empty hint
-        pieChart.visibility = if (pieSlices.isEmpty() || filter != null) GONE else VISIBLE
-        emptyHint.visibility = if (pieSlices.isEmpty() || filter != null) VISIBLE else GONE
+        pieChart.visibility = if (pieSlices.isEmpty() || viewModel.filter != null) GONE else VISIBLE
+        emptyHint.visibility = if (pieSlices.isEmpty() || viewModel.filter != null) VISIBLE else GONE
 
         var other = 0
         for ((index, slice) in pieSlices.withIndex()) {
@@ -150,15 +119,5 @@ class StatesFragment : Fragment() {
         }
 
         pieChart.startAnim()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        activity?.unregisterReceiver(timeReceiver)
-    }
-
-    fun togglePeriod() {
-        viewModel.togglePeriod()
-        showStatistics()
     }
 }

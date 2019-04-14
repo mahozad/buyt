@@ -92,6 +92,7 @@
                 android:layout_height="134dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
+                android:visibility="gone"
                 app:srcCompat="@drawable/empty_pie" />
 
         </com.google.android.material.card.MaterialCardView>

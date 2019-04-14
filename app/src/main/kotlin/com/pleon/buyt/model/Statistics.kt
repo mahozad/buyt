@@ -15,6 +15,7 @@ class Statistics {
     lateinit var mostPurchasedCategories: List<PieSlice>
     private var weekdayWithMaxPurchases: Int = 0
     private var storeWithMaxPurchaseCount: Store? = null
+    var purchaseDetails: List<PurchaseDetail>? = null
 
     val weekdayNameResWithMaxPurchases: Int
         get() {
