@@ -31,27 +31,14 @@
             app:layout_constraintStart_toEndOf="@id/storeNameTv"
             tools:text="Grocer's" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/itemDetails"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/storeNameTv"
-            app:layout_constraintTop_toBottomOf="@id/storeNameTv"
-            tools:listitem="@layout/item_detail" />
-
         <TextView
             android:id="@+id/totalCostTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginTop="8dp"
             android:text="هزینه کل:"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/storeNameTv"
-            app:layout_constraintTop_toBottomOf="@id/itemDetails" />
+            app:layout_constraintTop_toBottomOf="@id/storeNameTv" />
 
         <TextView
             android:id="@+id/totalCost"
@@ -61,6 +48,19 @@
             app:layout_constraintBaseline_toBaselineOf="@id/totalCostTv"
             app:layout_constraintStart_toEndOf="@id/totalCostTv"
             tools:text="4500" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/itemDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/storeNameTv"
+            app:layout_constraintTop_toBottomOf="@id/totalCostTv"
+            tools:listitem="@layout/item_detail" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
