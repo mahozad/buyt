@@ -31,9 +31,8 @@ class StoreListFragment : Fragment(), ItemTouchHelperListener {
     private lateinit var adapter: StoreListAdapter
 
     // Unlike Activities, in a Fragment you inflate the fragment's view in onCreateView() method.
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedState: Bundle?): View {
-        return inflater.inflate(R.layout.fragment_store_list, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedState: Bundle?)
+            : View = inflater.inflate(R.layout.fragment_store_list, container, false)
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
         viewModel = ViewModelProviders.of(this).get(StoreListViewModel::class.java)

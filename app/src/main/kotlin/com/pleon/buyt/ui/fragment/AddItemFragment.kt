@@ -109,9 +109,8 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
      * @param savedState
      * @return
      */
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedState: Bundle?): View {
-        return inflater.inflate(R.layout.fragment_add_item, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedState: Bundle?)
+            : View = inflater.inflate(R.layout.fragment_add_item, container, false)
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
         unitRdbtns = arrayOf(unit, kilogram, gram)

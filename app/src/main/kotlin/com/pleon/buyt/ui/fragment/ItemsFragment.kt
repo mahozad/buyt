@@ -34,9 +34,8 @@ class ItemsFragment : Fragment(), ItemTouchHelperListener {
     val selectedItems get() = adapter.selectedItems
     val isCartEmpty get() = adapter.items.isEmpty()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedState: Bundle?): View {
-        return inflater.inflate(R.layout.fragment_item_list, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedState: Bundle?)
+            : View = inflater.inflate(R.layout.fragment_item_list, container, false)
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
