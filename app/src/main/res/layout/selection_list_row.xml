@@ -22,7 +22,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <ImageView
             android:id="@+id/storeIcon"
             android:layout_width="32dp"
             android:layout_height="32dp"
@@ -30,6 +30,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/storeRadioButton"
             app:layout_constraintTop_toTopOf="parent"
+            tools:ignore=",ContentDescription"
             tools:srcCompat="@drawable/ic_store" />
 
         <androidx.appcompat.widget.AppCompatTextView
