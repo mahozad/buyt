@@ -11,6 +11,8 @@ import com.pleon.buyt.R
 import com.pleon.buyt.model.PurchaseDetail
 import com.pleon.buyt.ui.BaseViewHolder
 import com.pleon.buyt.ui.DateHeaderDecoration.StickyHeaderInterface
+import com.pleon.buyt.ui.adapter.PurchaseDetailAdapter.ItemTypes.DATE
+import com.pleon.buyt.ui.adapter.PurchaseDetailAdapter.ItemTypes.ITEM
 import ir.huri.jcal.JalaliCalendar
 import kotlinx.android.synthetic.main.date_header.view.*
 import kotlinx.android.synthetic.main.purchase_detail.view.*
@@ -24,31 +26,36 @@ class PurchaseDetailAdapter(private val cxt: Context) : Adapter<ViewHolder>(), S
     private val priceFormat = DecimalFormat("#,###")
     private val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
 
+    enum class ItemTypes {
+        ITEM, DATE
+    }
+
     var items = mutableListOf<Any>()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
 
-    override fun getItemCount() = items.size
-
+    /**
+     * Note that unlike in ListView adapters, types don't have to be contiguous
+     */
     override fun getItemViewType(position: Int): Int {
-        // Just as an example, return 0 or 1 depending on position
-        // Note that unlike in ListView adapters, types don't have to be contiguous
-        return if (items[position] is PurchaseDetail) 0 else 1
+        return if (items[position] is PurchaseDetail) ITEM.ordinal else DATE.ordinal
     }
+
+    override fun getItemCount() = items.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
-            0 -> PurchaseHolder(inflater.inflate(com.pleon.buyt.R.layout.purchase_detail, parent, false))
-            else -> DateHolder(inflater.inflate(com.pleon.buyt.R.layout.date_header, parent, false))
+            ITEM.ordinal -> PurchaseHolder(inflater.inflate(R.layout.purchase_detail, parent, false))
+            else -> DateHolder(inflater.inflate(R.layout.date_header, parent, false))
         }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (holder.itemViewType) {
-            0 -> (holder as PurchaseHolder).bindItem(items[position] as PurchaseDetail)
+            ITEM.ordinal -> (holder as PurchaseHolder).bindItem(items[position] as PurchaseDetail)
             else -> (holder as DateHolder).bindItem(items[position] as Date)
         }
     }
