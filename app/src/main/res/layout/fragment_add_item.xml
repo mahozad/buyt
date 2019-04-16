@@ -46,76 +46,70 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <FrameLayout
-            android:id="@+id/quantity_container"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/quantity_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:hint="@string/input_hint_quantity"
+            app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="@id/name_layout"
             app:layout_constraintStart_toStartOf="@+id/name_layout"
             app:layout_constraintTop_toBottomOf="@+id/name_layout">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/quantity_layout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/quantityEd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/input_hint_quantity"
-                app:errorEnabled="true">
+                android:drawablePadding="8dp"
+                android:imeOptions="flagNoFullscreen"
+                android:inputType="numberDecimal"
+                android:maxLength="7"
+                android:selectAllOnFocus="true"
+                android:text="@string/input_def_quantity"
+                app:drawableStartCompat="@drawable/ic_quantity"
+                tools:text="Item quantity" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/quantityEd"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="8dp"
-                    android:imeOptions="flagNoFullscreen"
-                    android:inputType="numberDecimal"
-                    android:maxLength="7"
-                    android:selectAllOnFocus="true"
-                    android:text="@string/input_def_quantity"
-                    app:drawableStartCompat="@drawable/ic_quantity"
-                    tools:text="Item quantity" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/btnGrp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:layout_marginEnd="0.5dp"
+            android:layout_marginBottom="10.6dp"
+            app:checkedButton="@id/btn1"
+            app:layout_constraintBottom_toBottomOf="@id/quantity_layout"
+            app:layout_constraintEnd_toEndOf="@id/quantity_layout"
+            app:singleSelection="true">
 
-            <!-- wrapper for radio buttons to make the corners round -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/materialCardView"
-                android:layout_width="wrap_content"
-                android:layout_height="44dp"
-                android:layout_gravity="center|end"
-                android:layout_marginEnd="3dp"
-                android:layout_marginBottom="@dimen/quantity_margin"
-                app:cardCornerRadius="2dp"
-                app:cardElevation="0dp">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn1"
+                style="@style/unitButton"
+                android:layout_width="60dp"
+                android:layout_height="@dimen/unit_btn_height"
+                android:layout_alignParentBottom="true"
+                android:text="@string/qty_unit" />
 
-                <RadioGroup
-                    android:id="@+id/radio_group"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:checkedButton="@id/unit"
-                    android:orientation="horizontal">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn2"
+                style="@style/unitButton"
+                android:layout_width="60dp"
+                android:layout_height="@dimen/unit_btn_height"
+                android:layout_alignParentBottom="true"
+                android:text="@string/qty_kilogram" />
 
-                    <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/unit"
-                        style="@style/UnitToggleButton"
-                        android:text="@string/qty_unit" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn3"
+                style="@style/unitButton"
+                android:layout_width="60dp"
+                android:layout_height="@dimen/unit_btn_height"
+                android:layout_alignParentBottom="true"
+                android:text="@string/qty_gram" />
 
-                    <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/kilogram"
-                        style="@style/UnitToggleButton"
-                        android:text="@string/qty_kilogram" />
-
-                    <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/gram"
-                        style="@style/UnitToggleButton"
-                        android:text="@string/qty_gram" />
-
-                </RadioGroup>
-
-            </com.google.android.material.card.MaterialCardView>
-
-        </FrameLayout>
+        </com.google.android.material.button.MaterialButtonToggleGroup>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/description_layout"
@@ -125,9 +119,9 @@
             android:layout_marginTop="28dp"
             android:hint="@string/input_hint_description"
             app:counterMaxLength="30"
-            app:layout_constraintEnd_toEndOf="@id/quantity_container"
-            app:layout_constraintStart_toStartOf="@id/quantity_container"
-            app:layout_constraintTop_toBottomOf="@id/quantity_container">
+            app:layout_constraintEnd_toEndOf="@id/quantity_layout"
+            app:layout_constraintStart_toStartOf="@id/quantity_layout"
+            app:layout_constraintTop_toBottomOf="@id/quantity_layout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/description"
@@ -164,8 +158,8 @@
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
             android:background="?android:attr/listDivider"
-            app:layout_constraintEnd_toEndOf="@id/quantity_container"
-            app:layout_constraintStart_toStartOf="@id/quantity_container"
+            app:layout_constraintEnd_toEndOf="@id/quantity_layout"
+            app:layout_constraintStart_toStartOf="@id/quantity_layout"
             app:layout_constraintTop_toBottomOf="@id/urgent" />
 
         <androidx.appcompat.widget.AppCompatCheckBox

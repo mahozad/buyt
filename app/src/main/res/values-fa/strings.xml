@@ -47,7 +47,7 @@
     <string name="store_cat_icecream_shop">آبمیوه بستنی</string>
     <string name="store_cat_confectionery">شیرینی فروشی</string>
     <string name="qty_unit">عدد</string>
-    <string name="qty_kilogram">کیلوگرم</string>
+    <string name="qty_kilogram">کیلو</string>
     <string name="qty_gram">گرم</string>
     <string name="dialog_title_location_permission">مکان غیرفعال</string>
     <string name="dialog_title_location_off">مکان خاموش</string>

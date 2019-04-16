@@ -77,6 +77,11 @@
         <item name="android:backgroundTint">@color/date_picker_btn</item>
     </style>
 
+    <style name="unitButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeColor">@color/unit_btn_unfocused_color</item>
+        <!--<item name="strokeWidth">@dimen/mtrl_btn_stroke_size</item>-->
+    </style>
+
     <!--<style name="textViewStyle">-->
         <!--<item name="android:textSize">14sp</item>-->
     <!--</style>-->
