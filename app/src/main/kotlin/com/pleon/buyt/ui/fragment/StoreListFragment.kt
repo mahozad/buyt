@@ -37,7 +37,7 @@ class StoreListFragment : Fragment(), ItemTouchHelperListener {
     override fun onViewCreated(view: View, savedState: Bundle?) {
         viewModel = ViewModelProviders.of(this).get(StoreListViewModel::class.java)
         // In fragments use getViewLifecycleOwner() as owner argument
-        viewModel.allStores.observe(viewLifecycleOwner, Observer { adapter.stores = it.toMutableList() })
+        viewModel.allStores.observe(viewLifecycleOwner, Observer { adapter.stores = it })
 
         // for swipe-to-delete of store
         val touchHelperCallback = TouchHelperCallback(this)

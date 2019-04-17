@@ -27,7 +27,7 @@ class PurchaseDetailAdapter(private val cxt: Context) : Adapter<ViewHolder>(), S
 
     enum class ItemTypes { ITEM, DATE }
 
-    var items = mutableListOf<Any>()
+    var items = listOf<Any>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -89,7 +89,7 @@ class PurchaseDetailAdapter(private val cxt: Context) : Adapter<ViewHolder>(), S
         fun bindItem(purchaseDetail: PurchaseDetail) {
             itemView.storeName.text = purchaseDetail.store[0].name
             itemView.itemDetails.adapter = ItemDetailAdapter(cxt).apply {
-                items = purchaseDetail.item.toMutableList()
+                items = purchaseDetail.item
             }
             var totalCost = 0L
             for (item in purchaseDetail.item) totalCost += item.totalPrice

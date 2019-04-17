@@ -41,7 +41,7 @@ class ItemsFragment : Fragment(), ItemTouchHelperListener {
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         // In fragments use getViewLifecycleOwner() as owner argument
         viewModel.allItems.observe(viewLifecycleOwner, Observer {
-            adapter.items = it.toMutableList()
+            adapter.items = it
             if (it.isEmpty()) {
                 emptyHint1.animate().alpha(0.25F).setDuration(200).setStartDelay(210).start()
                 emptyHint2.animate().alpha(0.6F).setDuration(200).setStartDelay(105).start()
@@ -137,7 +137,7 @@ class ItemsFragment : Fragment(), ItemTouchHelperListener {
     }
 
     fun sortItemsByCategory(category: Category) {
-        adapter.items.sortWith(Comparator { item1, item2 ->
+        adapter.items = adapter.items.sortedWith(Comparator { item1, item2 ->
             when {
                 item1.category == item2.category -> 0
                 item1.category == category -> -1
@@ -148,7 +148,7 @@ class ItemsFragment : Fragment(), ItemTouchHelperListener {
     }
 
     fun sortItemsByOrder() {
-        adapter.items.sortWith(Comparator { item1, item2 ->
+        adapter.items = adapter.items.sortedWith(Comparator { item1, item2 ->
             if (item1.isUrgent != item2.isUrgent) if (item1.isUrgent) -1 else +1
             else item1.position - item2.position
         })

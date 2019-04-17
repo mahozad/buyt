@@ -25,7 +25,7 @@ import java.lang.Long.parseLong
 
 class ItemListAdapter(private val context: Context, private val itemTouchHelper: ItemTouchHelper) : Adapter<ItemHolder>() {
 
-    var items = mutableListOf<Item>()
+    var items = listOf<Item>()
         set(value) {
             field = value
             notifyDataSetChanged()

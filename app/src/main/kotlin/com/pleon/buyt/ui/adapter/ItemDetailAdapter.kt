@@ -16,7 +16,7 @@ class ItemDetailAdapter(private val cxt: Context) : Adapter<ItemDetailHolder>() 
 
     private val priceFormat = DecimalFormat("#,###")
 
-    var items = mutableListOf<Item>()
+    var items = listOf<Item>()
         set(value) {
             field = value
             notifyDataSetChanged()

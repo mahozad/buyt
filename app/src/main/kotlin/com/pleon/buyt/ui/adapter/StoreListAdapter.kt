@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.store_list_row.view.*
 
 class StoreListAdapter : Adapter<StoreListAdapter.StoreHolder>() {
 
-    var stores = mutableListOf<Store>()
+    var stores = listOf<Store>()
         set(stores) {
             field = stores
             notifyDataSetChanged()
