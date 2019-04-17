@@ -2,6 +2,7 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -19,6 +20,7 @@
         android:paddingBottom="42dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:context=".ui.fragment.ItemsFragment"
+        tools:itemCount="6"
         tools:listitem="@layout/item_list_row" />
 
     <ImageView
@@ -30,7 +32,8 @@
         android:layout_marginEnd="36dp"
         android:layout_marginBottom="80dp"
         android:alpha="0"
-        app:srcCompat="@drawable/empty_item" />
+        app:srcCompat="@drawable/empty_item"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/emptyHint2"
@@ -41,7 +44,8 @@
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="50dp"
         android:alpha="0"
-        app:srcCompat="@drawable/empty_item" />
+        app:srcCompat="@drawable/empty_item"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/emptyHint3"
@@ -63,7 +67,8 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="24dp"
         android:alpha="0"
-        app:srcCompat="@drawable/empty_item" />
+        app:srcCompat="@drawable/empty_item"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/emptyHint5"
@@ -74,6 +79,7 @@
         android:layout_marginTop="60dp"
         android:layout_marginEnd="36dp"
         android:alpha="0"
-        app:srcCompat="@drawable/empty_item" />
+        app:srcCompat="@drawable/empty_item"
+        tools:ignore="ContentDescription" />
 
 </FrameLayout>

@@ -16,7 +16,8 @@ see this very good explanation: https://stackoverflow.com/a/41495370/8583692
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    tools:layout_gravity="center">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/storeList"

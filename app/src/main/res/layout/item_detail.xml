@@ -15,7 +15,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Item name" />
+        tools:text="@sample/itemNames" />
 
     <TextView
         android:id="@+id/itemQuantity"
@@ -25,7 +25,7 @@
         app:layout_constraintEnd_toStartOf="@+id/itemTotalPrice"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/itemName"
-        tools:text="Item quantity" />
+        tools:text="@sample/quantities" />
 
     <TextView
         android:id="@+id/itemTotalPrice"
@@ -35,6 +35,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/itemQuantity"
-        tools:text="Item total price" />
+        tools:text="@sample/prices" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

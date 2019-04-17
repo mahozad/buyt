@@ -26,9 +26,7 @@ class PurchaseDetailAdapter(private val cxt: Context) : Adapter<ViewHolder>(), S
     private val priceFormat = DecimalFormat("#,###")
     private val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
 
-    enum class ItemTypes {
-        ITEM, DATE
-    }
+    enum class ItemTypes { ITEM, DATE }
 
     var items = mutableListOf<Any>()
         set(value) {
@@ -39,9 +37,7 @@ class PurchaseDetailAdapter(private val cxt: Context) : Adapter<ViewHolder>(), S
     /**
      * Note that unlike in ListView adapters, types don't have to be contiguous
      */
-    override fun getItemViewType(position: Int): Int {
-        return if (items[position] is PurchaseDetail) ITEM.ordinal else DATE.ordinal
-    }
+    override fun getItemViewType(pos: Int) = if (items[pos] is Date) DATE.ordinal else ITEM.ordinal
 
     override fun getItemCount() = items.size
 
@@ -74,10 +70,10 @@ class PurchaseDetailAdapter(private val cxt: Context) : Adapter<ViewHolder>(), S
     }
 
     override fun bindHeaderData(header: View, headerPosition: Int) {
-        header.findViewById<TextView>(R.id.dateText).text = formatDate(items[headerPosition] as Date)
+        header.findViewById<TextView>(R.id.headerText).text = formatDate(items[headerPosition] as Date)
     }
 
-    override fun getHeaderLayout(headerPosition: Int) = com.pleon.buyt.R.layout.date_header
+    override fun getHeaderLayout(headerPosition: Int) = R.layout.date_header
 
     override fun isHeader(itemPosition: Int) = items[itemPosition] is Date
 
@@ -105,7 +101,7 @@ class PurchaseDetailAdapter(private val cxt: Context) : Adapter<ViewHolder>(), S
 
     inner class DateHolder(view: View) : BaseViewHolder(view) {
         fun bindItem(date: Date) {
-            itemView.dateText.text = formatDate(date)
+            itemView.headerText.text = formatDate(date)
         }
     }
 }

@@ -10,7 +10,8 @@
         android:id="@+id/preferenceFragment"
         class="com.pleon.buyt.ui.fragment.PreferenceFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:layout="@xml/preferences" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/bar_container"
@@ -23,9 +24,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            app:navigationIcon="@drawable/avd_cancel_nav" />
+            app:navigationIcon="@drawable/avd_cancel_nav"
+            tools:menu="@menu/menu_bottom_settings" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

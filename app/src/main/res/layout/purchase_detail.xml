@@ -29,7 +29,7 @@
             android:layout_marginStart="8dp"
             app:layout_constraintBaseline_toBaselineOf="@id/storeNameTv"
             app:layout_constraintStart_toEndOf="@id/storeNameTv"
-            tools:text="Grocer's" />
+            tools:text="@sample/storeNames" />
 
         <TextView
             android:id="@+id/totalCostTv"
@@ -47,7 +47,7 @@
             android:layout_marginStart="8dp"
             app:layout_constraintBaseline_toBaselineOf="@id/totalCostTv"
             app:layout_constraintStart_toEndOf="@id/totalCostTv"
-            tools:text="4500" />
+            tools:text="@sample/totalPrices" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/itemDetails"
@@ -60,6 +60,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/storeNameTv"
             app:layout_constraintTop_toBottomOf="@id/totalCostTv"
+            tools:itemCount="4"
             tools:listitem="@layout/item_detail" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

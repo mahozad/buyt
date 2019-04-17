@@ -119,7 +119,8 @@
             app:fabAlignmentMode="center"
             app:fabAnimationMode="slide"
             app:fabCradleMargin="6dp"
-            app:navigationIcon="@drawable/avd_nav_cancel" />
+            app:navigationIcon="@drawable/avd_nav_cancel"
+            tools:menu="@menu/menu_bottom_home"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

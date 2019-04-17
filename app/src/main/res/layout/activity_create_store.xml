@@ -40,7 +40,8 @@
             android:gravity="start"
             app:fabAlignmentMode="end"
             app:fabCradleMargin="6dp"
-            app:navigationIcon="@drawable/avd_cancel_nav" />
+            app:navigationIcon="@drawable/avd_cancel_nav"
+            tools:menu="@menu/menu_add_store" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

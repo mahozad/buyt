@@ -31,9 +31,9 @@
             app:layout_constraintStart_toEndOf="@+id/storeRadioButton"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore=",ContentDescription"
-            tools:srcCompat="@drawable/ic_store" />
+            tools:srcCompat="@tools:sample/avatars" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <TextView
             android:id="@+id/storeName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/storeIcon"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Name" />
+            tools:text="@sample/itemNames" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

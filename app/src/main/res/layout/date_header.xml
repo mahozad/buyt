@@ -11,10 +11,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         app:cardBackgroundColor="?cardBgColor"
+        app:cardCornerRadius="20dp"
         app:cardElevation="0dp">
 
         <TextView
-            android:id="@+id/dateText"
+            android:id="@+id/headerText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -22,5 +23,14 @@
             tools:text="Sample Date" />
 
     </com.google.android.material.card.MaterialCardView>
+
+    <!-- FIXME: use this instead of the above material card view -->
+    <!--<com.google.android.material.chip.Chip-->
+    <!--android:id="@+id/dateChip"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:layout_marginTop="4dp"-->
+    <!--android:text="sasf" />-->
 
 </FrameLayout>

@@ -21,36 +21,23 @@ class DateHeaderDecoration(recyclerView: RecyclerView, private val mListener: St
                 } else false
             }
 
-            override fun onTouchEvent(recyclerView: RecyclerView, motionEvent: MotionEvent) {
-
-            }
-
-            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
-
-            }
+            override fun onTouchEvent(recyclerView: RecyclerView, motionEvent: MotionEvent) {}
+            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
         })
     }
 
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         super.onDrawOver(c, parent, state)
 
-        val topChild = parent.getChildAt(0)
-        if (topChild == null) {
-            return
-        }
+        val topChild = parent.getChildAt(0) ?: return
 
         val topChildPosition = parent.getChildAdapterPosition(topChild)
-        if (topChildPosition == RecyclerView.NO_POSITION) {
-            return
-        }
+        if (topChildPosition == RecyclerView.NO_POSITION) return
 
         val currentHeader = getHeaderViewForItem(topChildPosition, parent)
         fixLayoutSize(parent, currentHeader)
         val contactPoint = currentHeader.bottom
-        val childInContact = getChildInContact(parent, contactPoint)
-        if (childInContact == null) {
-            return
-        }
+        val childInContact = getChildInContact(parent, contactPoint) ?: return
 
         if (mListener.isHeader(parent.getChildAdapterPosition(childInContact))) {
             moveHeader(c, currentHeader, childInContact)
@@ -119,7 +106,7 @@ class DateHeaderDecoration(recyclerView: RecyclerView, private val mListener: St
 
     interface StickyHeaderInterface {
         /**
-         * This method gets called by [HeaderItemDecoration] to fetch the position of the header item in the adapter
+         * This method gets called by [DateHeaderDecoration] to fetch the position of the header item in the adapter
          * that is used for (represents) item at specified position.
          * @param itemPosition int. Adapter's position of the item for which to do the search of the position of the header item.
          * @return int. Position of the header item in the adapter.
@@ -127,21 +114,21 @@ class DateHeaderDecoration(recyclerView: RecyclerView, private val mListener: St
         fun getHeaderPositionForItem(itemPosition: Int): Int
 
         /**
-         * This method gets called by [HeaderItemDecoration] to get layout resource id for the header item at specified adapter's position.
+         * This method gets called by [DateHeaderDecoration] to get layout resource id for the header item at specified adapter's position.
          * @param headerPosition int. Position of the header item in the adapter.
          * @return int. Layout resource id.
          */
         fun getHeaderLayout(headerPosition: Int): Int
 
         /**
-         * This method gets called by [HeaderItemDecoration] to setup the header View.
+         * This method gets called by [DateHeaderDecoration] to setup the header View.
          * @param header View. Header to set the data on.
          * @param headerPosition int. Position of the header item in the adapter.
          */
         fun bindHeaderData(header: View, headerPosition: Int)
 
         /**
-         * This method gets called by [HeaderItemDecoration] to verify whether the item represents a header.
+         * This method gets called by [DateHeaderDecoration] to verify whether the item represents a header.
          * @param itemPosition int.
          * @return true, if item at the specified adapter's position represents a header.
          */
