@@ -9,4 +9,10 @@
         android:icon="@drawable/avd_add_glow"
         android:title="Add store"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_sort"
+        android:icon="@drawable/ic_sort"
+        android:title="Sort stores"
+        app:showAsAction="always" />
 </menu>
