@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.pleon.buyt.R
@@ -70,7 +69,7 @@ class PurchaseDetailAdapter(private val cxt: Context) : Adapter<ViewHolder>(), S
     }
 
     override fun bindHeaderData(header: View, headerPosition: Int) {
-        header.findViewById<TextView>(R.id.headerText).text = formatDate(items[headerPosition] as Date)
+        header.headerText.text = formatDate(items[headerPosition] as Date)
     }
 
     override fun getHeaderLayout(headerPosition: Int) = R.layout.date_header
