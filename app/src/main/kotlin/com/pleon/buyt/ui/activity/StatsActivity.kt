@@ -94,6 +94,7 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
             R.id.action_toggle_period -> {
                 viewModel.togglePeriod()
                 updateStats()
+                // FIXME: findView is very heavy operation. Do it only once
                 item.actionView.findViewById<TextView>(R.id.view)
                         .setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, viewModel.period.imageRes, 0)
                 (item.actionView.findViewById<TextView>(R.id.view).compoundDrawablesRelative[2] as Animatable).start()
@@ -109,7 +110,7 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
     private fun updateStats() {
         viewModel.statistics.observe(this, Observer { stats ->
             statsFragment.showStats(stats)
-            detailsFragment.showStats(stats)
+            detailsFragment.showStats(stats.purchaseDetails)
         })
     }
 

@@ -32,15 +32,14 @@ interface PurchaseDao {
         val statistics = Statistics()
 
         statistics.dailyCosts = getDailyCosts(period, filter)
-        statistics.totalPurchaseCost = (getTotalPurchaseCost(period, filter))
-        statistics.averagePurchaseCost = (getAveragePurchaseCost(period, filter))
-        statistics.numberOfPurchases = (getNumberOfPurchases(period, filter))
-        statistics.maxPurchaseCost = (getMaxPurchaseCost(period, filter))
-        statistics.minPurchaseCost = (getMinPurchaseCost(period, filter))
-        statistics.setWeekdayWithMaxPurchases(getWeekdayWithMaxPurchaseCount(period, filter))
-        statistics.setStoreWithMaxPurchaseCount(getStoreWithMaxPurchaseCount(period, filter))
+        statistics.totalPurchaseCost = getTotalPurchaseCost(period, filter)
+        statistics.averagePurchaseCost = getAveragePurchaseCost(period, filter)
+        statistics.numberOfPurchases = getNumberOfPurchases(period, filter)
+        statistics.maxPurchaseCost = getMaxPurchaseCost(period, filter)
+        statistics.minPurchaseCost = getMinPurchaseCost(period, filter)
+        statistics.weekdayWithMaxPurchases = getWeekdayWithMaxPurchaseCount(period, filter)
+        statistics.storeWithMaxPurchaseCount = getStoreWithMaxPurchaseCount(period, filter)
         statistics.mostPurchasedCategories = getMostPurchasedCategories(period, filter)
-
         statistics.purchaseDetails = getPurchaseDetails(period, filter)
 
         return statistics
