@@ -37,27 +37,25 @@ class StoreListFragment : Fragment(), ItemTouchHelperListener {
     override fun onViewCreated(view: View, savedState: Bundle?) {
         viewModel = ViewModelProviders.of(this).get(StoreListViewModel::class.java)
         // In fragments use getViewLifecycleOwner() as owner argument
-        viewModel.allStores.observe(viewLifecycleOwner, Observer { adapter.stores = it })
+        viewModel.storeDetails.observe(viewLifecycleOwner, Observer { adapter.stores = it })
 
         // for swipe-to-delete of store
         val touchHelperCallback = TouchHelperCallback(this)
         ItemTouchHelper(touchHelperCallback).attachToRecyclerView(recyclerView)
-        adapter = StoreListAdapter().also { recyclerView.adapter = it }
+        adapter = StoreListAdapter(context!!).also { recyclerView.adapter = it }
     }
 
-    override fun onMoved(oldPosition: Int, newPosition: Int) {
-        /* No action needed */
-    }
+    override fun onMoved(oldPosition: Int, newPosition: Int) = Unit /* No action needed */
 
     override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
         // Backup the item for undo purpose
-        val store = adapter.getStore(viewHolder.adapterPosition)
+        val storeDetail = adapter.getStore(viewHolder.adapterPosition)
 
-        store.isFlaggedForDeletion = true
-        viewModel.updateStore(store)
+        storeDetail.store.isFlaggedForDeletion = true
+        viewModel.updateStore(storeDetail.store)
 
         // TODO: Use Anko to show snackbar
-        showUndoSnackbar(store)
+        showUndoSnackbar(storeDetail.store)
     }
 
     private fun showUndoSnackbar(store: Store) { // FIXME: Duplicate method

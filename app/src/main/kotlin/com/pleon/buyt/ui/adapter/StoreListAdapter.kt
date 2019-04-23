@@ -1,17 +1,18 @@
 package com.pleon.buyt.ui.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.pleon.buyt.R
-import com.pleon.buyt.model.Store
+import com.pleon.buyt.database.dao.StoreDao.StoreDetail
 import com.pleon.buyt.ui.BaseViewHolder
 import kotlinx.android.synthetic.main.store_list_row.view.*
 
-class StoreListAdapter : Adapter<StoreListAdapter.StoreHolder>() {
+class StoreListAdapter(val cxt: Context) : Adapter<StoreListAdapter.StoreHolder>() {
 
-    var stores = listOf<Store>()
+    var stores = listOf<StoreDetail>()
         set(stores) {
             field = stores
             notifyDataSetChanged()
@@ -37,15 +38,17 @@ class StoreListAdapter : Adapter<StoreListAdapter.StoreHolder>() {
 
     override fun getItemCount() = stores.size
 
-    override fun getItemId(position: Int) = stores[position].storeId
+    override fun getItemId(position: Int) = stores[position].store.storeId
 
     fun getStore(position: Int) = stores[position]
 
     // Adapter (and RecyclerView) work with ViewHolders instead of direct Views.
     inner class StoreHolder(view: View) : BaseViewHolder(view) {
-        fun bindStore(store: Store) {
-            itemView.storeIcon.setImageResource(store.category.storeImageRes)
-            itemView.storeName.text = store.name
+        fun bindStore(storeDetail: StoreDetail) {
+            itemView.storeIcon.setImageResource(storeDetail.store.category.storeImageRes)
+            itemView.storeName.text = storeDetail.store.name
+            itemView.purchaseCount.text = cxt.resources.getQuantityString(R.plurals.store_detail_purchase_count, storeDetail.purchaseCount, storeDetail.purchaseCount)
+            itemView.totalSpending.text = cxt.resources.getQuantityString(R.plurals.store_detail_total_spending, storeDetail.totalSpending, storeDetail.totalSpending)
             itemView.circular_reveal.alpha = 0f // for the case of undo of deleted item
         }
     }

@@ -126,4 +126,12 @@
     <string name="purchase_detail_price">"%1$s تومان"</string>
     <string name="purchase_detail_store_name">نام مغازه:</string>
     <string name="purchase_detail_total_cost">هزینه کل:</string>
+    <plurals name="store_detail_purchase_count">
+        <item quantity="one">%1$d خرید</item>
+        <item quantity="other">%1$d خرید</item>
+    </plurals>
+    <plurals name="store_detail_total_spending">
+        <item quantity="one">%1$d تومان</item>
+        <item quantity="other">%1$d تومان</item>
+    </plurals>
 </resources>

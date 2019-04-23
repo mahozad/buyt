@@ -12,7 +12,7 @@ class StoreRepository(context: Context) {
 
     private val storeDao = getDatabase(context).storeDao()
     private val createdStore = SingleLiveEvent<Store>()
-    val allStores = storeDao.getAll()
+    val storeDetails = storeDao.getStoreDetails()
 
     fun insert(store: Store/*, publishRequired: Boolean*/): LiveData<Store> {
         doAsync {

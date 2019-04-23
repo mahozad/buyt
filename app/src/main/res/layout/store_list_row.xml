@@ -90,13 +90,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toTopOf="@+id/textView14"
+                app:layout_constraintBottom_toTopOf="@+id/purchaseCount"
                 app:layout_constraintStart_toEndOf="@+id/storeIcon"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@sample/storeNames" />
 
             <TextView
-                android:id="@+id/textView14"
+                android:id="@+id/purchaseCount"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
@@ -106,13 +106,13 @@
                 tools:text="۵ خرید" />
 
             <TextView
-                android:id="@+id/textView13"
+                android:id="@+id/totalSpending"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginStart="8dp"
-                tools:text="۱۲۰۰۰۰ تومان"
-                app:layout_constraintStart_toEndOf="@+id/textView14"
-                app:layout_constraintTop_toTopOf="@+id/textView14" />
+                android:layout_marginStart="16dp"
+                app:layout_constraintStart_toEndOf="@+id/purchaseCount"
+                app:layout_constraintTop_toTopOf="@+id/purchaseCount"
+                tools:text="۹۲۰۰۰ تومان" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

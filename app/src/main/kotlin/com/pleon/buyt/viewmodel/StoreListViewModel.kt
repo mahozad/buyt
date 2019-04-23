@@ -8,7 +8,7 @@ import com.pleon.buyt.model.Store
 class StoreListViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = StoreRepository(application)
-    val allStores = repository.allStores
+    val storeDetails = repository.storeDetails
 
     fun updateStore(store: Store) = repository.updateStore(store)
 
