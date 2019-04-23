@@ -54,6 +54,7 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
     private lateinit var unitBtns: Array<MaterialButton>
     private lateinit var viewModel: AddItemViewModel
     private var selectCategoryTxvi: TextView? = null
+    private lateinit var nameCats: Map<String, String>
 
     private val isBoughtChecked get() = bought.isChecked
 
@@ -120,10 +121,11 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
         setHasOptionsMenu(true) // for the onCreateOptionsMenu() method to be called
 
         // Setup auto complete for item name
-        viewModel.itemNames.observe(viewLifecycleOwner, Observer { names ->
+        viewModel.itemNameCats.observe(viewLifecycleOwner, Observer { nameCats ->
+            this.nameCats = nameCats
             val adapter = ArrayAdapter<String>(context!!,
-                    android.R.layout.simple_dropdown_item_1line, names)
-            name.setAdapter<ArrayAdapter<String>>(adapter)
+                    android.R.layout.simple_dropdown_item_1line, nameCats.keys.toList())
+            name.setAdapter(adapter)
         })
 
         val priceSuffix = getString(R.string.input_suffix_price)
@@ -344,9 +346,19 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
     }
 
     private fun onNameChanged() {
-        if (name.text.toString().isNotEmpty()) { // to prevent error with config change
+        val itemName = name.text.toString()
+        if (itemName.isNotEmpty()) {
             name_layout.error = null // clear error if exists
             setCounterEnabledIfInputLong(name_layout)
+
+            if (!isBoughtChecked) try {
+                val cat = Category.valueOf(nameCats.getValue(itemName))
+                viewModel.category = cat
+                selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(cat.imageRes, 0, 0, 0)
+                selectCategoryTxvi!!.setText(cat.nameRes)
+            } catch (e: Exception) {
+                // Do nothing
+            }
         }
     }
 

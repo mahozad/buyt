@@ -11,7 +11,7 @@ import java.util.*
 class AddItemViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = AddItemRepository(application)
-    val itemNames = repository.itemNames
+    val itemNameCats get() = repository.getItemNameCats()
     var category = GROCERY
     var storeList: List<Store>? = null
     var store: Store? = null

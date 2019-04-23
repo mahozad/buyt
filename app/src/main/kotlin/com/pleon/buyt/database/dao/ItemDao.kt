@@ -18,8 +18,15 @@ interface ItemDao {
     @Query("SELECT count(*) FROM Item")
     fun getCount(): Long
 
-    @Query("SELECT DISTINCT name from item")
-    fun getItemNames(): LiveData<Array<String>>
+    @Transaction
+    fun getItemNamesAndCats() = getNameCats().associateBy({ it.name }, { it.category })
+
+    // PRIVATE
+    @Query("SELECT name, category from item group by name")
+    fun getNameCats(): Array<NameCat>
+
+    // PRIVATE
+    class NameCat(val name: String, val category: String)
 
     @Transaction
     fun insertItem(item: Item) {
