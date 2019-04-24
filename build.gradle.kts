@@ -4,7 +4,7 @@
  by Gradle itself–not for your application */
 buildscript {
     var kotlinVersion: String by extra
-    kotlinVersion = "1.3.30" // FIXME: update the same variable in module build file too
+    kotlinVersion = "1.3.30"
 
     repositories {
         google()

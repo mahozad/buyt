@@ -5,10 +5,6 @@ plugins {
     id("kotlin-kapt")
 }
 
-// FIXME: use the variable in top-level build file
-var kotlinVersion: String by extra
-kotlinVersion = "1.3.30"
-
 android {
 
     signingConfigs {
@@ -109,7 +105,7 @@ dependencies {
     /* If you're targeting JDK 8, you can use extended versions of the Kotlin standard library
      * which contain additional extension functions for APIs added in new JDK versions.
      * So instead of "kotlin-stdlib", use "kotlin-stdlib-jdk8": */
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
+    implementation(embeddedKotlin("stdlib-jdk8"))
 
     // Alternative for Google map
     // implementation("com.mapbox.mapboxsdk:mapbox-android-sdk:7.2.0")
