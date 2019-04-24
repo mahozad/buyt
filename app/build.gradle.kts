@@ -5,23 +5,29 @@ plugins {
     id("kotlin-kapt")
 }
 
+// FIXME: use the variable in top-level build file
+var kotlinVersion: String by extra
+kotlinVersion = "1.3.30"
+
 android {
 
     signingConfigs {
-        buyt {
-            storeFile file(project.findProperty('signing.storeFilePath') as String ?: "$rootProject.projectDir/${System.getenv('SIGNING_STORE_FILE_PATH')}")
-            keyAlias project.findProperty('signing.keyAlias') as String ?: System.getenv('SIGNING_KEY_ALIAS')
-            keyPassword project.findProperty('signing.keyPassword') as String ?: System.getenv('SIGNING_KEY_PASSWORD')
-            storePassword project.findProperty('signing.storePassword') as String ?: System.getenv('SIGNING_STORE_PASSWORD')
+        create("buyt") {
+            storeFile = file(project.findProperty("signing.storeFilePath") as String? ?: "$rootProject.projectDir/${System.getenv("SIGNING_STORE_FILE_PATH")}")
+            keyAlias = project.findProperty("signing.keyAlias") as String? ?: System.getenv("SIGNING_KEY_ALIAS")
+            keyPassword = project.findProperty("signing.keyPassword") as String? ?: System.getenv("SIGNING_KEY_PASSWORD")
+            storePassword = project.findProperty("signing.storePassword") as String? ?: System.getenv("SIGNING_STORE_PASSWORD")
         }
     }
 
-    sourceSets { main.java.srcDirs += "src/main/kotlin" }
+    sourceSets {
+        getByName("main").java.srcDirs("src/main/kotlin")
+    }
 
-    buildToolsVersion("28.0.3")
+    buildToolsVersion = "28.0.3"
     compileOptions {
-        sourceCompatibility(JavaVersion.VERSION_1_8)
-        targetCompatibility(JavaVersion.VERSION_1_8)
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     compileSdkVersion(28)
     defaultConfig {
@@ -31,10 +37,11 @@ android {
         targetSdkVersion(28)
         versionCode = 1
         versionName = "0.9.1"
-        testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
-        javaCompileOptions { // Tell Room to export database schema info to keep a history of it
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            // Tell Room to export database schema info to keep a history of it
             annotationProcessorOptions {
-                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+                arguments = mapOf("room.schemaLocation" to "$projectDir/schemas")
             }
         }
 
@@ -53,25 +60,30 @@ android {
 
     lintOptions {
         // Disable lint checking for errors
-        checkReleaseBuilds = false
+        isCheckReleaseBuilds = false
         // Or, if you prefer, you can continue to check for errors in release builds,
         // but continue the build even when errors are found:
-        abortOnError = false
+        isAbortOnError = false
     }
 
-    buildTypes { // defines multiple different build types-typically debug and release
-        release {
-            minifyEnabled = true
-            shrinkResources = true
+    buildTypes {
+        // defines multiple different build types-typically debug and release
+        getByName("release") {
+            isMinifyEnabled = true
+            isShrinkResources = true
             // "proguard-android-optimize.txt" reduces size more than "proguard-android.txt"
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig = signingConfigs.buyt
+            signingConfig = signingConfigs.getByName("buyt")
         }
     }
 }
 
+//—————————————————————————————————————————————————————————————————————————————————————————————————
+// DEPENDENCIES
+//—————————————————————————————————————————————————————————————————————————————————————————————————
+
 dependencies {
-    implementation(fileTree(include: ["*.jar"], dir: "libs"))
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
     /* The AndroidX version of support library "com.android.support:appcompat-v7".
      * Support libraries provide capabilities of newer android versions to older devices and also
@@ -97,7 +109,7 @@ dependencies {
     /* If you're targeting JDK 8, you can use extended versions of the Kotlin standard library
      * which contain additional extension functions for APIs added in new JDK versions.
      * So instead of "kotlin-stdlib", use "kotlin-stdlib-jdk8": */
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
 
     // Alternative for Google map
     // implementation("com.mapbox.mapboxsdk:mapbox-android-sdk:7.2.0")

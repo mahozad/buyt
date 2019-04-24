@@ -3,7 +3,8 @@
 /* The buildscript node is used to indicate the repositories and dependencies that are used
  by Gradle itself–not for your application */
 buildscript {
-    ext.kotlin_version = '1.3.21'
+    var kotlinVersion: String by extra
+    kotlinVersion = "1.3.30" // FIXME: update the same variable in module build file too
 
     repositories {
         google()
@@ -11,8 +12,8 @@ buildscript {
     }
     dependencies {
         // This dependency version should be the same as the Android Studio version
-        classpath 'com.android.tools.build:gradle:3.3.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath("com.android.tools.build:gradle:3.4.0")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     }
 }
 
@@ -21,9 +22,10 @@ allprojects {
     repositories {
         google()
         jcenter()
+        // maven("https://maven.google.com")
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+tasks.register("clean", Delete::class.java) {
+    delete(rootProject.buildDir)
 }
