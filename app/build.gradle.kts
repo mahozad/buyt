@@ -99,7 +99,7 @@ dependencies {
     // ViewModel and LiveData
     implementation("androidx.lifecycle:lifecycle-extensions:2.1.0-alpha04")
     implementation("androidx.lifecycle:lifecycle-common-java8:2.1.0-alpha04")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.0-alpha3")
+    implementation("androidx.constraintlayout:constraintlayout:2.0.0-alpha4")
     implementation("androidx.coordinatorlayout:coordinatorlayout:1.1.0-alpha01")
     implementation("androidx.recyclerview:recyclerview:1.1.0-alpha04")
     implementation("androidx.preference:preference:1.1.0-alpha04")
