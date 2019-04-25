@@ -2,6 +2,7 @@ package com.pleon.buyt.ui;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -9,14 +10,18 @@ import android.graphics.PathMeasure;
 import android.graphics.Point;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
+
+import androidx.annotation.Nullable;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.Nullable;
+import static android.util.TypedValue.COMPLEX_UNIT_DIP;
+import static android.util.TypedValue.applyDimension;
 
 /**
  * Adopted from [https://github.com/luweibin3118/PieChartView]
@@ -324,8 +329,10 @@ public class PieChartView extends View {
         this.backGroundColor = backGroundColor;
     }
 
-    public void setItemTextSize(int itemTextSize) {
-        this.itemTextSize = itemTextSize;
+    public void setItemTextSize(float itemTextSize) {
+        DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
+        float textSize = applyDimension(COMPLEX_UNIT_DIP, itemTextSize, displayMetrics);
+        this.itemTextSize = (int) textSize;
     }
 
     /**

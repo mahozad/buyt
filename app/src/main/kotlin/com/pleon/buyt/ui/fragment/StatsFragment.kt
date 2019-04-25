@@ -48,7 +48,7 @@ class StatsFragment : Fragment() {
         pieChart.setCell(4) // gap between slices
         pieChart.setInnerRadius(0.6f)
         pieChart.setBackGroundColor(pieBgColor)
-        pieChart.setItemTextSize(21) // FIXME: text size isn't consistent across different devices
+        pieChart.setItemTextSize(13.5f)
         pieChart.setAnimDuration(480)
     }
 
