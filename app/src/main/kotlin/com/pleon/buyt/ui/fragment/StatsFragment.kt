@@ -104,8 +104,8 @@ class StatsFragment : Fragment() {
         pieChart.clearData()
 
         // If filter is set then the whole chart will be one category so better to show empty hint
-        pieChart.visibility = if (pieSlices.isEmpty() || viewModel.filter != null) GONE else VISIBLE
-        emptyHint.visibility = if (pieSlices.isEmpty() || viewModel.filter != null) VISIBLE else GONE
+        pieChart.visibility = if (pieSlices.isEmpty()) GONE else VISIBLE
+        emptyHint.visibility = if (pieSlices.isEmpty()) VISIBLE else GONE
 
         var other = 0
         for ((index, slice) in pieSlices.withIndex()) {
