@@ -119,8 +119,11 @@ class CreateStoreDialogFragment : AppCompatDialogFragment() {
     }
 
     private fun onShowMap() {
-        // or use "geo:0,0?q=lat,lng(label)" format to show a label on map as well
-        val uri: Uri = Uri.parse("geo:${location.latitude},${location.longitude}?z=15")
+        // or use Uri.parse("geo:${location.latitude},${location.longitude}?z=15")
+        val uri: Uri = Uri.parse("http://maps.google.com/maps?q=loc:" +
+                "${location.latitude}," +
+                "${location.longitude} " +
+                "(${getString(R.string.map_location_label)})")
         val intent = Intent(Intent.ACTION_VIEW).apply { data = uri }
         // intent.setPackage("com.google.android.apps.maps") // If desired, Make the Intent explicit
         if (intent.resolveActivity(activity!!.packageManager) != null) startActivity(intent)
