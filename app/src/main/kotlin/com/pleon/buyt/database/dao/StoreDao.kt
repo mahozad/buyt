@@ -1,16 +1,28 @@
 package com.pleon.buyt.database.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
+import androidx.sqlite.db.SimpleSQLiteQuery
+import androidx.sqlite.db.SupportSQLiteQuery
 import com.pleon.buyt.model.Store
+
 
 @Dao
 interface StoreDao {
 
-    @Query("SELECT store.*, sum(cost) as totalSpending, count(purchaseId) as purchaseCount  " +
-            "FROM Store join (select sum(totalPrice) as cost, purchaseId, purchase.storeId from item natural join purchase group by purchaseId) as ip on store.storeId=ip.storeId " +
-            "group by store.storeId")
-    fun getStoreDetails(): LiveData<List<StoreDetail>>
+    @Transaction
+    fun getStoreDetails(sort: String): List<StoreDetail> {
+        val query = SimpleSQLiteQuery("SELECT store.*, sum(cost) as totalSpending, count(purchaseId) as purchaseCount " +
+                "FROM Store join (select sum(totalPrice) as cost, purchaseId, purchase.storeId from item natural join purchase group by purchaseId) as ip on store.storeId=ip.storeId " +
+                "group by store.storeId " +
+                "order by $sort")
+        return getDetails(query)
+    }
+
+    /**
+     * @RawQuery is used because dynamic parameters cannot be used in ORDER BY clauses
+     */
+    @RawQuery
+    fun getDetails(query: SupportSQLiteQuery): List<StoreDetail>
 
     class StoreDetail {
         @Embedded

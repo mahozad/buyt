@@ -5,14 +5,33 @@
     tools:context=".ui.activity.StoresActivity">
 
     <item
-        android:id="@+id/action_add"
-        android:icon="@drawable/avd_add_glow"
-        android:title="Add store"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/action_sort"
         android:icon="@drawable/ic_sort"
         android:title="Sort stores"
-        app:showAsAction="always" />
+        app:showAsAction="always">
+
+        <menu>
+            <item
+                android:id="@+id/sort_total_spending"
+                android:icon="@drawable/ic_price"
+                android:title="مفدار خرید"
+                app:showAsAction="always" />
+            <item
+                android:id="@+id/sort_purchase_count"
+                android:icon="@drawable/ic_sigma"
+                android:title="تعداد خرید"
+                app:showAsAction="always" />
+            <item
+                android:id="@+id/sort_store_name"
+                android:icon="@drawable/ic_alphabet"
+                android:title="حروف الفبا"
+                app:showAsAction="always" />
+            <item
+                android:id="@+id/sort_category"
+                android:icon="@drawable/ic_category"
+                android:title="دسته‌بندی"
+                app:showAsAction="always" />
+        </menu>
+
+    </item>
 </menu>
