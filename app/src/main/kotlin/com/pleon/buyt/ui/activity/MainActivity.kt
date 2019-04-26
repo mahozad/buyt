@@ -1,7 +1,6 @@
 package com.pleon.buyt.ui.activity
 
 import android.Manifest.permission.ACCESS_FINE_LOCATION
-import android.app.Activity
 import android.app.NotificationManager
 import android.content.*
 import android.content.pm.PackageManager.PERMISSION_GRANTED
@@ -50,7 +49,6 @@ import com.pleon.buyt.model.Coordinates
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.ui.dialog.*
 import com.pleon.buyt.ui.dialog.Callback
-import com.pleon.buyt.ui.fragment.ARG_LOCATION
 import com.pleon.buyt.ui.fragment.AddItemFragment
 import com.pleon.buyt.ui.fragment.BottomDrawerFragment
 import com.pleon.buyt.ui.fragment.ItemsFragment
@@ -60,10 +58,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 private const val STATE_LOCATION = "com.pleon.buyt.state.LOCATION"
-private const val CREATE_STORE_REQUEST_CODE = 1
 private const val REQUEST_LOCATION_PERMISSION = 1
 
-class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback {
+class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, CreateStoreDialogFragment.Callback {
 
     // UI controllers such as activities and fragments are primarily intended to display UI data,
     // react to user actions, or handle operating system communication, such as permission requests.
@@ -379,9 +376,8 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback {
 
             R.id.action_add_store -> {
                 viewModel.shouldCompletePurchase = false
-                val intent = Intent(this, CreateStoreActivity::class.java)
-                intent.putExtra(ARG_LOCATION, viewModel.location)
-                startActivityForResult(intent, CREATE_STORE_REQUEST_CODE)
+                val createStoreDialog = CreateStoreDialogFragment.newInstance(viewModel.location!!)
+                createStoreDialog.show(supportFragmentManager, "CREATE_STORE_DIALOG")
             }
 
             /* If setSupportActionBar() is used to set up the BottomAppBar, navigation menu item
@@ -645,9 +641,8 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback {
         if (itemsFragment.validateSelectedItemsPrice()) {
             if (viewModel.foundStores.size == 0) {
                 viewModel.shouldCompletePurchase = true
-                val intent = Intent(this, CreateStoreActivity::class.java)
-                intent.putExtra(ARG_LOCATION, viewModel.location)
-                startActivityForResult(intent, CREATE_STORE_REQUEST_CODE)
+                val createStoreDialog = CreateStoreDialogFragment.newInstance(viewModel.location!!)
+                createStoreDialog.show(supportFragmentManager, "CREATE_STORE_DIALOG")
             } else if (viewModel.foundStores.size == 1) {
                 completeBuy(viewModel.foundStores[0])
             } else { // show store selection dialog
@@ -682,16 +677,12 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == CREATE_STORE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            val store = data?.getSerializableExtra("STORE") as Store
-            if (viewModel.shouldCompletePurchase) {
-                completeBuy(store)
-            } else {
-                viewModel.foundStores.add(store)
-                setStoreMenuItemIcon(viewModel.foundStores)
-            }
+    override fun onStoreCreated(store: Store) {
+        if (viewModel.shouldCompletePurchase) {
+            completeBuy(store)
+        } else {
+            viewModel.foundStores.add(store)
+            setStoreMenuItemIcon(viewModel.foundStores)
         }
     }
 

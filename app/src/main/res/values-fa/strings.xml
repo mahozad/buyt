@@ -16,6 +16,8 @@
     <string name="input_def_quantity">۱</string>
     <string name="input_hint_quantity">مقدار</string>
     <string name="input_hint_description">توضیحات (اختیاری)</string>
+    <string name="input_hint_store_category">دسته‌بندی</string>
+    <string name="button_text_view_on_map">نمایش روی نقشه</string>
     <string name="checkbox_urgent">ضروری</string>
     <string name="weekday_friday">جمعه</string>
     <string name="weekday_saturday">شنبه</string>
@@ -54,12 +56,12 @@
     <string name="dialog_action_skip">اکنون نه</string>
     <string name="dialog_action_exit">خروج</string>
     <string name="dialog_title_exit">خروج از برنامه؟</string>
+    <string name="dialog_title_create_store">ایجاد مغازه جدید</string>
     <string name="dialog_message_exit">در صورت خروج از برنامه، فرایند خرید متوقف خواهد شد.</string>
     <string name="snackbar_message_no_store_found">مغازه‌ای از قبل ذخیره نشده است!</string>
     <string name="menu_text_new_store_found">جدید</string>
     <string name="menu_title_select_store">انتخاب مغازه</string>
     <string name="menu_title_add_store">افزودن مغازه جدید</string>
-    <string name="menu_title_store_category">دسته‌بندی</string>
     <string name="menu_hint_skip_finding">رد کردن جستجو</string>
     <string name="menu_hint_reorder_items">تغییر ترتیب کالاها</string>
     <string name="menu_hint_toggle_period">تغییر طول دوره</string>
@@ -77,6 +79,7 @@
     <string name="input_hint_purchase_date">تاریخ خرید</string>
     <string name="input_hint_store_name">نام مغازه یا فروشگاه</string>
     <string name="input_error_name">نام نمی‌تواند خالی باشد</string>
+    <string name="input_error_store_name">نام نمی‌تواند خالی باشد</string>
     <string name="input_error_quantity">مقدار باید مشخص شود</string>
     <string name="input_error_price">قیمت باید مشخص شود</string>
     <string name="nav_stats">آمار و داده‌ها</string>

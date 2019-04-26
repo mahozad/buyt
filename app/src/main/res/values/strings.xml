@@ -25,7 +25,8 @@
     <string name="menu_text_new_store_found">New</string>
     <string name="menu_title_select_store">Select store</string>
     <string name="menu_title_add_store">Add new store</string>
-    <string name="menu_title_store_category">Category</string>
+    <string name="input_hint_store_category">Category</string>
+    <string name="button_text_view_on_map">View on map</string>
     <string name="menu_hint_add_item">Add item</string>
     <string name="menu_hint_skip_finding">Skip finding</string>
     <string name="menu_hint_reorder_items">Reorder items</string>
@@ -94,6 +95,7 @@
     <string name="input_def_purchase_date">Today</string>
     <string name="input_hint_store_name">Store name</string>
     <string name="input_error_name">Name cannot be empty</string>
+    <string name="input_error_store_name">Name cannot be empty</string>
     <string name="input_error_quantity">Quantity should be specified</string>
     <string name="input_error_price">Price should be specified</string>
     <string name="nav_stats">Stats</string>
@@ -104,6 +106,7 @@
     <string name="dialog_title_select_store">Select store</string>
     <string name="dialog_title_select_cat">Select category</string>
     <string name="dialog_title_select_search_dist">Select search distance</string>
+    <string name="dialog_title_create_store">Create new store</string>
     <string name="currency_format">¤##,###</string>
 
     <string name="menu_text_period">last %1$d days</string>
