@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
-    id("kotlin-android-extensions")
     id("kotlin-android")
+    id("kotlin-android-extensions")
     id("kotlin-kapt")
 }
 
@@ -95,12 +95,12 @@ dependencies {
     // ViewModel and LiveData
     implementation("androidx.lifecycle:lifecycle-extensions:2.1.0-alpha04")
     implementation("androidx.lifecycle:lifecycle-common-java8:2.1.0-alpha04")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.0-alpha4")
+    implementation("androidx.constraintlayout:constraintlayout:2.0.0-alpha5")
     implementation("androidx.coordinatorlayout:coordinatorlayout:1.1.0-alpha01")
     implementation("androidx.recyclerview:recyclerview:1.1.0-alpha04")
     implementation("androidx.preference:preference:1.1.0-alpha04")
-    implementation("androidx.room:room-runtime:2.1.0-alpha06")
-    kapt("androidx.room:room-compiler:2.1.0-alpha06")
+    implementation("androidx.room:room-runtime:2.1.0-alpha07")
+    kapt("androidx.room:room-compiler:2.1.0-alpha07")
 
     /* If you're targeting JDK 8, you can use extended versions of the Kotlin standard library
      * which contain additional extension functions for APIs added in new JDK versions.
