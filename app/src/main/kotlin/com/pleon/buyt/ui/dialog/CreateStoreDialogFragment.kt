@@ -2,7 +2,6 @@ package com.pleon.buyt.ui.dialog
 
 import android.app.Dialog
 import android.content.Context
-import android.content.DialogInterface.BUTTON_NEUTRAL
 import android.content.DialogInterface.BUTTON_POSITIVE
 import android.content.Intent
 import android.location.Location
@@ -94,13 +93,13 @@ class CreateStoreDialogFragment : AppCompatDialogFragment() {
                 .setView(customView).setTitle(getString(R.string.dialog_title_create_store))
                 .setPositiveButton(android.R.string.ok, null)
                 .setNegativeButton(android.R.string.cancel, null)
-                .setNeutralButton(R.string.button_text_view_on_map, null)
+                // .setNeutralButton(R.string.button_text_view_on_map, null)
                 .create()
 
         // To prevent the dialog to dismiss on button click, set the button listeners here
         dialog.setOnShowListener {
             dialog.getButton(BUTTON_POSITIVE).setOnClickListener { onDialogOk() }
-            dialog.getButton(BUTTON_NEUTRAL).setOnClickListener { onShowMap() }
+            // dialog.getButton(BUTTON_NEUTRAL).setOnClickListener { onShowMap() }
         }
 
         return dialog
