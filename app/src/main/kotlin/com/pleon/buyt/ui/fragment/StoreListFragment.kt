@@ -2,6 +2,7 @@ package com.pleon.buyt.ui.fragment
 
 import android.os.Bundle
 import android.view.*
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -28,7 +29,7 @@ class StoreListFragment : Fragment(), ItemTouchHelperListener {
 
     private lateinit var viewModel: StoreListViewModel
     private lateinit var adapter: StoreListAdapter
-    private lateinit var sortMenuItem: MenuItem
+    private lateinit var sortMenuItemView: TextView
 
     // Unlike Activities, in a Fragment you inflate the fragment's view in onCreateView() method.
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedState: Bundle?)
@@ -54,18 +55,22 @@ class StoreListFragment : Fragment(), ItemTouchHelperListener {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_bottom_stores, menu)
-        sortMenuItem = menu.findItem(R.id.action_sort)
+
+        // Setting up "Sort" action because it has custom layout
+        val menuItem = menu.findItem(R.id.action_sort)
+        sortMenuItemView = menu.findItem(R.id.action_sort).actionView as TextView
+        sortMenuItemView.text = getString(R.string.menu_text_sort_prefix, getString(viewModel.sort.nameRes))
+        sortMenuItemView.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, viewModel.sort.imgRes, 0)
+        sortMenuItemView.setOnClickListener { onOptionsItemSelected(menuItem) }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.sort_store_name -> viewModel.sort = StoreListViewModel.Sort.STORE_NAME
-            R.id.sort_category -> viewModel.sort = StoreListViewModel.Sort.STORE_CATEGORY
-            R.id.sort_purchase_count -> viewModel.sort = StoreListViewModel.Sort.PURCHASE_COUNT
-            R.id.sort_total_spending -> viewModel.sort = StoreListViewModel.Sort.TOTAL_SPENDING
+        if (item.itemId == R.id.action_sort) {
+            viewModel.toggleSort()
+            sortMenuItemView.text = getString(R.string.menu_text_sort_prefix, getString(viewModel.sort.nameRes))
+            sortMenuItemView.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, viewModel.sort.imgRes, 0)
+            getStores()
         }
-        sortMenuItem.setIcon(viewModel.sort.imgRes)
-        getStores()
         return false
     }
 

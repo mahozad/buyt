@@ -8,17 +8,23 @@ import com.pleon.buyt.model.Store
 
 class StoreListViewModel(application: Application) : AndroidViewModel(application) {
 
-    enum class Sort(val string: String, val imgRes: Int) {
-        STORE_NAME("name", R.drawable.ic_alphabet),
-        STORE_CATEGORY("category", R.drawable.ic_category),
-        TOTAL_SPENDING("totalSpending", R.drawable.ic_price),
-        PURCHASE_COUNT("purchaseCount", R.drawable.ic_sigma)
+    enum class Sort(val sqlString: String, val nameRes: Int, val imgRes: Int) {
+        TOTAL_SPENDING("totalSpending", R.string.menu_text_sort_totalSpending, R.drawable.ic_price),
+        PURCHASE_COUNT("purchaseCount", R.string.menu_text_sort_purchase_count, R.drawable.ic_sigma),
+        STORE_CATEGORY("category", R.string.menu_text_sort_category, R.drawable.ic_category),
+        STORE_NAME("name", R.string.menu_text_sort_alphabet, R.drawable.ic_alphabet)
     }
 
-    var sort = Sort.STORE_NAME
-    val storeDetails get() = repository.getStoreDetails(sort.string)
+    var sort = Sort.TOTAL_SPENDING
+        private set
+
+    val storeDetails get() = repository.getStoreDetails(sort.sqlString)
 
     private val repository = StoreRepository(application)
+
+    fun toggleSort() {
+        sort = Sort.values()[(sort.ordinal + 1) % Sort.values().size]
+    }
 
     fun updateStore(store: Store) = repository.updateStore(store)
 

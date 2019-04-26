@@ -5,7 +5,6 @@ import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
 import com.pleon.buyt.model.Store
 
-
 @Dao
 interface StoreDao {
 
@@ -14,7 +13,7 @@ interface StoreDao {
         val query = SimpleSQLiteQuery("SELECT store.*, sum(cost) as totalSpending, count(purchaseId) as purchaseCount " +
                 "FROM Store join (select sum(totalPrice) as cost, purchaseId, purchase.storeId from item natural join purchase group by purchaseId) as ip on store.storeId=ip.storeId " +
                 "group by store.storeId " +
-                "order by $sort")
+                "order by $sort desc")
         return getDetails(query)
     }
 

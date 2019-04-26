@@ -184,6 +184,12 @@
     <string name="purchase_detail_store_name">Store name:</string>
     <string name="purchase_detail_total_cost">Total cost:</string>
     <string name="map_location_label">New store</string>
+    <string name="menu_text_sort_totalSpending">spent money</string>
+    <string name="menu_text_sort_purchase_count">purchase count</string>
+    <string name="menu_text_sort_alphabet">name</string>
+    <string name="menu_text_sort_category">category</string>
+    <string name="menu_text_sort_prefix">Ordered by %1$s</string>
+    <string name="menu_title_sort_stores">Sort stores</string>
     <plurals name="store_detail_purchase_count">
         <item quantity="one">%1$d purchase</item>
         <item quantity="other">%1$d purchases</item>

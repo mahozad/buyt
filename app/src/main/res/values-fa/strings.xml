@@ -130,6 +130,12 @@
     <string name="purchase_detail_store_name">نام مغازه:</string>
     <string name="purchase_detail_total_cost">هزینه کل:</string>
     <string name="map_location_label">مغازه جدید</string>
+    <string name="menu_text_sort_totalSpending">مقدار خرید</string>
+    <string name="menu_text_sort_purchase_count">تعداد خرید</string>
+    <string name="menu_text_sort_alphabet">حروف الفبا</string>
+    <string name="menu_text_sort_category">دسته‌بندی</string>
+    <string name="menu_text_sort_prefix">ترتیب بر اساس %1$s</string>
+    <string name="menu_title_sort_stores">مرتب‌سازی مغازه‌ها</string>
     <plurals name="store_detail_purchase_count">
         <item quantity="one">%1$d خرید</item>
         <item quantity="other">%1$d خرید</item>
