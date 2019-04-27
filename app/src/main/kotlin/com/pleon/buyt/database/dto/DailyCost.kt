@@ -1,10 +1,7 @@
-package com.pleon.buyt.database
+package com.pleon.buyt.database.dto
 
 import androidx.annotation.StringRes
 import com.pleon.buyt.R
-
-private val internationalOrder = intArrayOf(1, 2, 3, 4, 5, 6, 0)
-private val iranianOrder = intArrayOf(6, 0, 1, 2, 3, 4, 5) // to show days RTL reverse it
 
 class DailyCost(val date: String, val totalCost: Long) {
 
@@ -16,7 +13,7 @@ class DailyCost(val date: String, val totalCost: Long) {
      * Although this is the international standard, several countries, including
      * the United States, Canada, and Australia consider Sunday as the start of the week.
      */
-    enum class Days constructor(@param:StringRes val nameStringRes: Int) {
+    enum class Days(@StringRes val nameStringRes: Int) {
         /**
          * Do NOT reorder the days. This is the order that is returned by sqlite (PurchaseDao).
          */

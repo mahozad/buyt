@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.pleon.buyt.R
-import com.pleon.buyt.model.PurchaseDetail
+import com.pleon.buyt.database.dto.PurchaseDetail
 import com.pleon.buyt.ui.BaseViewHolder
 import com.pleon.buyt.ui.DateHeaderDecoration.StickyHeaderInterface
 import com.pleon.buyt.ui.adapter.PurchaseDetailAdapter.ItemTypes.DATE

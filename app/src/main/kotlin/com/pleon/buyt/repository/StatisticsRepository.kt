@@ -1,11 +1,11 @@
-package com.pleon.buyt.database.repository
+package com.pleon.buyt.repository
 
 import android.app.Application
 import androidx.lifecycle.LiveData
 import com.pleon.buyt.database.SingleLiveEvent
+import com.pleon.buyt.database.dto.Statistics
 import com.pleon.buyt.database.getDatabase
 import com.pleon.buyt.model.Category
-import com.pleon.buyt.model.Statistics
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 

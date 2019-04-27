@@ -1,7 +1,10 @@
 package com.pleon.buyt.ui.fragment
 
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -20,27 +23,21 @@ import com.pleon.buyt.viewmodel.StoreListViewModel
 import kotlinx.android.synthetic.main.activity_stores.*
 import kotlinx.android.synthetic.main.fragment_store_list.*
 
-
 /**
  * Mandatory empty constructor for the fragment manager to instantiate the
  * fragment (e.g. upon screen orientation changes).
  */
-class StoreListFragment : Fragment(), ItemTouchHelperListener {
+class StoreListFragment : Fragment(R.layout.fragment_store_list), ItemTouchHelperListener {
 
     private lateinit var viewModel: StoreListViewModel
     private lateinit var adapter: StoreListAdapter
     private lateinit var sortMenuItemView: TextView
 
-    // Unlike Activities, in a Fragment you inflate the fragment's view in onCreateView() method.
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedState: Bundle?)
-            : View = inflater.inflate(R.layout.fragment_store_list, container, false)
-
     override fun onViewCreated(view: View, savedState: Bundle?) {
-        viewModel = ViewModelProviders.of(this).get(StoreListViewModel::class.java)
-
-        getStores()
-
         setHasOptionsMenu(true)
+
+        viewModel = ViewModelProviders.of(this).get(StoreListViewModel::class.java)
+        updateStoresList()
 
         // for swipe-to-delete of store
         val touchHelperCallback = TouchHelperCallback(this)
@@ -48,8 +45,10 @@ class StoreListFragment : Fragment(), ItemTouchHelperListener {
         adapter = StoreListAdapter(context!!).also { recyclerView.adapter = it }
     }
 
-    private fun getStores() {
-        // In fragments use getViewLifecycleOwner() as owner argument
+    /**
+     * In fragments use getViewLifecycleOwner() as owner argument
+     */
+    private fun updateStoresList() {
         viewModel.storeDetails.observe(viewLifecycleOwner, Observer { adapter.stores = it })
     }
 
@@ -57,27 +56,32 @@ class StoreListFragment : Fragment(), ItemTouchHelperListener {
         inflater.inflate(R.menu.menu_bottom_stores, menu)
 
         // Setting up "Sort" action because it has custom layout
-        val menuItem = menu.findItem(R.id.action_sort)
-        sortMenuItemView = menu.findItem(R.id.action_sort).actionView as TextView
+        val sortMenuItem = menu.findItem(R.id.action_sort)
+        sortMenuItemView = sortMenuItem.actionView as TextView
+        sortMenuItemView.setOnClickListener { onOptionsItemSelected(sortMenuItem) }
+        updateSortMenuItemView()
+    }
+
+    private fun updateSortMenuItemView() {
         sortMenuItemView.text = getString(R.string.menu_text_sort_prefix, getString(viewModel.sort.nameRes))
-        sortMenuItemView.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, viewModel.sort.imgRes, 0)
-        sortMenuItemView.setOnClickListener { onOptionsItemSelected(menuItem) }
+        sortMenuItemView.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                0, 0, viewModel.sort.imgRes, 0
+        )
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_sort) {
             viewModel.toggleSort()
-            sortMenuItemView.text = getString(R.string.menu_text_sort_prefix, getString(viewModel.sort.nameRes))
-            sortMenuItemView.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, viewModel.sort.imgRes, 0)
-            getStores()
+            updateSortMenuItemView()
+            updateStoresList()
         }
-        return false
+        return true
     }
 
-    override fun onMoved(oldPosition: Int, newPosition: Int) = Unit /* No action needed */
+    override fun onMoved(oldPosition: Int, newPosition: Int) = Unit // No action needed
 
     override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
-        // Backup the item for undo purpose
+        // Backup the store for undo purpose
         val storeDetail = adapter.getStore(viewHolder.adapterPosition)
 
         storeDetail.store.isFlaggedForDeletion = true

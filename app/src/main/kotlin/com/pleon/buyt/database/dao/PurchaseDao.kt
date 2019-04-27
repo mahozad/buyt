@@ -4,10 +4,14 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
-import com.pleon.buyt.database.DailyCost
-import com.pleon.buyt.database.PieSlice
 import com.pleon.buyt.database.converter.DateConverter
-import com.pleon.buyt.model.*
+import com.pleon.buyt.database.dto.DailyCost
+import com.pleon.buyt.database.dto.PieSlice
+import com.pleon.buyt.database.dto.PurchaseDetail
+import com.pleon.buyt.database.dto.Statistics
+import com.pleon.buyt.model.Category
+import com.pleon.buyt.model.Purchase
+import com.pleon.buyt.model.Store
 import java.text.DateFormat
 import java.util.*
 

@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.TypedValue
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import android.view.View.*
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
@@ -44,7 +47,9 @@ import java.util.*
  * This fragment requires a Toolbar as it needs to inflate and use a menu item for selection of
  * store category. So the activities using this fragment must have a Toolbar set.
  */
-class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDialogFragment.Callback, android.app.DatePickerDialog.OnDateSetListener {
+class AddItemFragment : Fragment(R.layout.fragment_add_item),
+        DatePickerDialog.OnDateSetListener, SelectDialogFragment.Callback,
+        android.app.DatePickerDialog.OnDateSetListener {
 
     // These colors vary based on the app theme
     @ColorRes private var colorOnSurface: Int = 0
@@ -111,8 +116,6 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
      * @param savedState
      * @return
      */
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedState: Bundle?)
-            : View = inflater.inflate(R.layout.fragment_add_item, container, false)
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
         unitBtns = arrayOf(btn1, btn2, btn3)
@@ -176,10 +179,14 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
 
         if (viewModel.store != null) {
             selectCategoryTxvi!!.text = viewModel.store!!.name
-            selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(viewModel.store!!.category.storeImageRes, 0, 0, 0)
+            selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                    viewModel.store!!.category.storeImageRes, 0, 0, 0
+            )
         } else if (bought.isChecked) {
             selectCategoryTxvi!!.setText(R.string.menu_title_select_store)
-            selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_store, 0, 0, 0)
+            selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                    R.drawable.ic_store, 0, 0, 0
+            )
         }
 
         // Setting up "Choose category" action because it has custom layout
@@ -324,7 +331,9 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
             selectCategoryTxvi!!.text = if (checked) getString(R.string.menu_title_select_store) else getString(viewModel.category.nameRes)
             selectCategoryTxvi!!.setTextColor(ContextCompat.getColor(context!!, colorOnSurface))
             @DrawableRes val icon = if (checked) R.drawable.avd_store_error else R.drawable.ic_item_grocery
-            selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(icon, 0, 0, 0)
+            selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                    icon, 0, 0, 0
+            )
         }
         bought_group.visibility = if (checked) VISIBLE else GONE
         price_layout.error = null
@@ -354,7 +363,9 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
             if (!isBoughtChecked) try {
                 val cat = Category.valueOf(nameCats.getValue(itemName))
                 viewModel.category = cat
-                selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(cat.imageRes, 0, 0, 0)
+                selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                        cat.imageRes, 0, 0, 0
+                )
                 selectCategoryTxvi!!.setText(cat.nameRes)
             } catch (e: Exception) {
                 // Do nothing
@@ -395,7 +406,9 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
             quantityEd.setText("1")
             btnGrp.check(R.id.btn1)
             setColorOfAllUnits(colorUnfocused)
-            selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_item_grocery, 0, 0, 0)
+            selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                    R.drawable.ic_item_grocery, 0, 0, 0
+            )
             selectCategoryTxvi!!.setTextColor(ContextCompat.getColor(context!!, colorOnSurface))
             selectCategoryTxvi!!.text = resources.getString(Category.GROCERY.nameRes)
             viewModel.category = Category.GROCERY
@@ -420,7 +433,9 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
             imageRes = category.imageRes
             viewModel.category = category
         }
-        selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(imageRes, 0, 0, 0)
+        selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                imageRes, 0, 0, 0
+        )
         selectCategoryTxvi!!.setTextColor(ContextCompat.getColor(context!!, colorOnSurface))
         selectCategoryTxvi!!.text = name
     }
@@ -443,7 +458,9 @@ class AddItemFragment : Fragment(), DatePickerDialog.OnDateSetListener, SelectDi
         }
         if (isBoughtChecked && viewModel.store == null) {
             selectCategoryTxvi!!.setTextColor(ContextCompat.getColor(context!!, colorError))
-            selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.avd_store_error, 0, 0, 0)
+            selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                    R.drawable.avd_store_error, 0, 0, 0
+            )
             (selectCategoryTxvi!!.compoundDrawablesRelative[0] as Animatable).start()
             validated = false
         }

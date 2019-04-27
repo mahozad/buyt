@@ -1,7 +1,10 @@
-package com.pleon.buyt.model
+package com.pleon.buyt.database.dto
 
 import androidx.room.Embedded
 import androidx.room.Relation
+import com.pleon.buyt.model.Item
+import com.pleon.buyt.model.Purchase
+import com.pleon.buyt.model.Store
 
 class PurchaseDetail {
 

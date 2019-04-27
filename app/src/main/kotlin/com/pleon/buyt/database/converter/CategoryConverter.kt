@@ -6,12 +6,8 @@ import com.pleon.buyt.model.Category
 class CategoryConverter {
 
     @TypeConverter
-    fun convertToItemCategory(name: String): Category {
-        return Category.valueOf(name)
-    }
+    fun convertToItemCategory(name: String) = Category.valueOf(name)
 
     @TypeConverter
-    fun convertToItemCategoryName(category: Category?): String? {
-        return category?.name
-    }
+    fun convertToItemCategoryName(category: Category?) = category?.name
 }

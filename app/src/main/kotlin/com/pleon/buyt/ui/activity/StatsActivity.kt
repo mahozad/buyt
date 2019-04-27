@@ -28,6 +28,7 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
     private lateinit var detailsFragment: StatDetailsFragment
     private var filterList = ArrayList<SelectDialogRow>()
     private var filterMenuItem: MenuItem? = null
+    private lateinit var periodMenuItemView: TextView
     private lateinit var viewModel: StatisticsViewModel
 
     // Update the statistics when date changes (e.g. time changes from 23:59 to 00:00)
@@ -49,11 +50,7 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
         viewModel = ViewModelProviders.of(this).get(StatisticsViewModel::class.java)
         registerReceiver(timeReceiver, IntentFilter(Intent.ACTION_TIME_TICK))
 
-        val noFilterEntry = SelectDialogRow(getString(R.string.no_filter), R.drawable.ic_filter)
-        filterList.add(noFilterEntry)
-        for (category in Category.values()) {
-            filterList.add(SelectDialogRow(category.name, category.imageRes))
-        }
+        initializeFilterList()
 
         val pagerAdapter = StatsPagerAdapter(this, supportFragmentManager)
         viewPager.adapter = pagerAdapter
@@ -65,6 +62,13 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
         updateStats()
     }
 
+    private fun initializeFilterList() {
+        filterList.add(SelectDialogRow(getString(R.string.no_filter), R.drawable.ic_filter))
+        for (category in Category.values()) {
+            filterList.add(SelectDialogRow(category.name, category.imageRes))
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_bottom_stats, menu)
 
@@ -72,16 +76,21 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
         filterMenuItem!!.setIcon(if (viewModel.filter == null)
             R.drawable.ic_filter else viewModel.filter!!.imageRes)
 
-        menu.findItem(R.id.action_toggle_period).setIcon(viewModel.period.imageRes)
-        (menu.getItem(0).icon as Animatable).start() // Animate icon to get its final shape
-
         // Setting up "change period" action because it has custom layout
-        val menuItem = menu.findItem(R.id.action_toggle_period)
-        menuItem.actionView.setOnClickListener { onOptionsItemSelected(menuItem) }
-        menuItem.actionView.findViewById<TextView>(R.id.view).text =
-                getString(R.string.menu_text_period, viewModel.period.length)
+        val periodMenuItem = menu.findItem(R.id.action_toggle_period)
+        periodMenuItemView = periodMenuItem.actionView as TextView
+        periodMenuItemView.setOnClickListener { onOptionsItemSelected(periodMenuItem) }
+        updatePeriodMenuItemView()
 
         return true
+    }
+
+    private fun updatePeriodMenuItemView() {
+        periodMenuItemView.text = getString(R.string.menu_text_period, viewModel.period.length)
+        periodMenuItemView.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                0, 0, viewModel.period.imageRes, 0
+        )
+        (periodMenuItemView.compoundDrawablesRelative[2] as Animatable).start()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -90,18 +99,11 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
                 val dialog = SelectDialogFragment.newInstance(this, R.string.dialog_title_select_filter, filterList)
                 dialog.show(supportFragmentManager, "SELECTION_DIALOG")
             }
-
             R.id.action_toggle_period -> {
                 viewModel.togglePeriod()
+                updatePeriodMenuItemView()
                 updateStats()
-                // FIXME: findView is very heavy operation. Do it only once
-                item.actionView.findViewById<TextView>(R.id.view)
-                        .setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, viewModel.period.imageRes, 0)
-                (item.actionView.findViewById<TextView>(R.id.view).compoundDrawablesRelative[2] as Animatable).start()
-                item.actionView.findViewById<TextView>(R.id.view).text =
-                        getString(R.string.menu_text_period, viewModel.period.length)
             }
-
             android.R.id.home -> finish()
         }
         return true
@@ -115,9 +117,9 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
     }
 
     override fun onSelected(index: Int) {
-        val flt = filterList[index]
-        filterMenuItem!!.setIcon(flt.image)
-        viewModel.filter = if (flt.name == getString(R.string.no_filter)) null else Category.valueOf(flt.name)
+        val filter = filterList[index]
+        filterMenuItem!!.setIcon(filter.image)
+        viewModel.filter = if (filter.name == getString(R.string.no_filter)) null else Category.valueOf(filter.name)
         updateStats()
     }
 

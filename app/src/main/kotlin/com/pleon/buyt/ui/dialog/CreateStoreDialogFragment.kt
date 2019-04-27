@@ -31,12 +31,12 @@ class CreateStoreDialogFragment : AppCompatDialogFragment() {
     private lateinit var spinner: Spinner
     private lateinit var location: Location
 
-    interface Callback {
+    interface CreateStoreListener {
         fun onStoreCreated(store: Store)
     }
 
     private lateinit var dialog: AlertDialog
-    private var callback: Callback? = null
+    private var createStoreListener: CreateStoreListener? = null
 
     /**
      * When you override `onCreateDialog`, Android COMPLETELY IGNORES several
@@ -111,7 +111,7 @@ class CreateStoreDialogFragment : AppCompatDialogFragment() {
             val store = Store(Coordinates(location), name, spinner.selectedItem as Category)
             // FIXME: "this" is used as the owner because "lifeCycleOwner" threw exception
             viewModel.addStore(store).observe(this, Observer {
-                callback!!.onStoreCreated(store)
+                createStoreListener!!.onStoreCreated(store)
                 dismiss()
             })
         }
@@ -144,13 +144,13 @@ class CreateStoreDialogFragment : AppCompatDialogFragment() {
 
     override fun onAttach(cxt: Context) {
         super.onAttach(cxt)
-        if (context is Callback) callback = context as Callback
-        else throw  RuntimeException("$context  must implement Callback")
+        if (context is CreateStoreListener) createStoreListener = context as CreateStoreListener
+        else throw  RuntimeException("$context  must implement CreateStoreListener")
     }
 
     override fun onDetach() {
         super.onDetach()
-        callback = null
+        createStoreListener = null
     }
 
     companion object {

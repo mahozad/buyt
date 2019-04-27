@@ -23,10 +23,10 @@ class CatsSpinnerAdapter(cxt: Context) : BaseAdapter() {
         val view = inflater.inflate(R.layout.spinner_category_entry, null)
 
         val cat = Category.values()[index]
-
-        val layout = view.findViewById<TextView>(R.id.spinnerEntry)
-        layout.setCompoundDrawablesRelativeWithIntrinsicBounds(cat.storeImageRes, 0, 0, 0)
-        layout.setText(cat.storeNameRes)
+        (view as TextView).setCompoundDrawablesRelativeWithIntrinsicBounds(
+                cat.storeImageRes, 0, 0, 0
+        )
+        view.setText(cat.storeNameRes)
 
         return view
     }

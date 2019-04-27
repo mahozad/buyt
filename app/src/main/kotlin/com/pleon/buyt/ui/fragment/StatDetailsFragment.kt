@@ -1,24 +1,19 @@
 package com.pleon.buyt.ui.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.pleon.buyt.R
-import com.pleon.buyt.model.PurchaseDetail
+import com.pleon.buyt.database.dto.PurchaseDetail
 import com.pleon.buyt.ui.DateHeaderDecoration
 import com.pleon.buyt.ui.adapter.PurchaseDetailAdapter
 import kotlinx.android.synthetic.main.fragment_stat_details.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class StatDetailsFragment : Fragment() {
+class StatDetailsFragment : Fragment(R.layout.fragment_stat_details) {
 
     private lateinit var adapter: PurchaseDetailAdapter
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedState: Bundle?)
-            : View = inflater.inflate(R.layout.fragment_stat_details, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         adapter = PurchaseDetailAdapter(context!!)

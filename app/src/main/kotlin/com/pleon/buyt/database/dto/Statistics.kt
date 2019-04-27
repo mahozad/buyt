@@ -1,7 +1,6 @@
-package com.pleon.buyt.model
+package com.pleon.buyt.database.dto
 
-import com.pleon.buyt.database.DailyCost
-import com.pleon.buyt.database.PieSlice
+import com.pleon.buyt.model.Store
 
 class Statistics {
 

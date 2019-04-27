@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="cardBgColor" format="reference|color" />
+    <attr name="bottomBarColor" format="reference" />
     <attr name="unitUnfocusedColor" format="reference" />
     <attr name="pieChartBackgroundColor" format="reference" />
 </resources>

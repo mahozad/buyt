@@ -1,9 +1,7 @@
 package com.pleon.buyt.ui.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -25,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_item_list.*
 import java.util.*
 import kotlin.Comparator
 
-class ItemsFragment : Fragment(), ItemTouchHelperListener {
+class ItemsFragment : Fragment(R.layout.fragment_item_list), ItemTouchHelperListener {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var adapter: ItemListAdapter
@@ -34,20 +32,17 @@ class ItemsFragment : Fragment(), ItemTouchHelperListener {
     val selectedItems get() = adapter.selectedItems
     val isCartEmpty get() = adapter.items.isEmpty()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedState: Bundle?)
-            : View = inflater.inflate(R.layout.fragment_item_list, container, false)
-
     override fun onViewCreated(view: View, savedState: Bundle?) {
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         // In fragments use getViewLifecycleOwner() as owner argument
         viewModel.allItems.observe(viewLifecycleOwner, Observer {
             adapter.items = it
             if (it.isEmpty()) {
-                emptyHint1.animate().alpha(0.25F).setDuration(200).setStartDelay(210).start()
-                emptyHint2.animate().alpha(0.6F).setDuration(200).setStartDelay(105).start()
+                emptyHint1.animate().alpha(0.30F).setDuration(200).setStartDelay(210).start()
+                emptyHint2.animate().alpha(0.65F).setDuration(200).setStartDelay(105).start()
                 emptyHint3.animate().alpha(1.0F).setDuration(200).setStartDelay(0).start()
-                emptyHint4.animate().alpha(0.6F).setDuration(200).setStartDelay(105).start()
-                emptyHint5.animate().alpha(0.25F).setDuration(200).setStartDelay(210).start()
+                emptyHint4.animate().alpha(0.65F).setDuration(200).setStartDelay(105).start()
+                emptyHint5.animate().alpha(0.30F).setDuration(200).setStartDelay(210).start()
             } else {
                 emptyHint1.animate().alpha(0f).setDuration(200).setStartDelay(210).start()
                 emptyHint2.animate().alpha(0f).setDuration(200).setStartDelay(105).start()

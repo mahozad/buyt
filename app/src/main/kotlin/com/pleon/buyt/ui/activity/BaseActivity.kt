@@ -7,7 +7,7 @@ import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.pleon.buyt.R
 import com.pleon.buyt.setLocale
 
-val <T : LifecycleOwner> T.TAG: String get() = javaClass.simpleName
+val <T : LifecycleOwner> T.TAG get() = javaClass.simpleName
 const val PREF_KEY_THEME = "theme"
 const val DEFAULT_THEME = "dark"
 const val PREF_KEY_LANG = "lang"

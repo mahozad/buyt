@@ -2,11 +2,9 @@ package com.pleon.buyt.ui.fragment
 
 import android.os.Bundle
 import android.util.TypedValue
-import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -15,10 +13,10 @@ import com.db.chart.animation.Animation
 import com.db.chart.model.LineSet
 import com.db.chart.renderer.AxisRenderer.LabelPosition.NONE
 import com.pleon.buyt.R
-import com.pleon.buyt.database.DailyCost
-import com.pleon.buyt.database.PieSlice
+import com.pleon.buyt.database.dto.DailyCost
+import com.pleon.buyt.database.dto.PieSlice
+import com.pleon.buyt.database.dto.Statistics
 import com.pleon.buyt.model.Category
-import com.pleon.buyt.model.Statistics
 import com.pleon.buyt.ui.PieChartView.Slice
 import com.pleon.buyt.viewmodel.StatisticsViewModel
 import kotlinx.android.synthetic.main.fragment_stats.*
@@ -26,7 +24,7 @@ import java.text.DecimalFormat
 
 private const val PIE_CHART_MAX_SLICES = 5
 
-class StatsFragment : Fragment() {
+class StatsFragment : Fragment(R.layout.fragment_stats) {
 
     @ColorRes private var pieBgColor: Int = 0 // This color varies based on the app theme
     private lateinit var viewModel: StatisticsViewModel
@@ -35,9 +33,6 @@ class StatsFragment : Fragment() {
             0xff2D71A5.toInt(), 0xffB53145.toInt(), 0xff909090.toInt())
 //    private val pieSliceColors = intArrayOf(0xffC19835.toInt(), 0xffABBA33.toInt(),
 //            0xff2DA579.toInt(), 0xff2D38A5.toInt(), 0xffA62D98.toInt())
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedState: Bundle?)
-            : View = inflater.inflate(R.layout.fragment_stats, container, false)
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
         viewModel = ViewModelProviders.of(activity!!).get(StatisticsViewModel::class.java)

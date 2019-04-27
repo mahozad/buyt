@@ -40,15 +40,16 @@ import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_END
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.*
-import com.pleon.buyt.ACTION_LOCATION_EVENT
-import com.pleon.buyt.EXTRA_LOCATION
-import com.pleon.buyt.GpsService
 import com.pleon.buyt.R
 import com.pleon.buyt.database.destroyDatabase
 import com.pleon.buyt.model.Coordinates
 import com.pleon.buyt.model.Store
+import com.pleon.buyt.service.ACTION_LOCATION_EVENT
+import com.pleon.buyt.service.EXTRA_LOCATION
+import com.pleon.buyt.service.GpsService
 import com.pleon.buyt.ui.dialog.*
 import com.pleon.buyt.ui.dialog.Callback
+import com.pleon.buyt.ui.dialog.CreateStoreDialogFragment.CreateStoreListener
 import com.pleon.buyt.ui.fragment.AddItemFragment
 import com.pleon.buyt.ui.fragment.BottomDrawerFragment
 import com.pleon.buyt.ui.fragment.ItemsFragment
@@ -60,7 +61,7 @@ import java.util.*
 private const val STATE_LOCATION = "com.pleon.buyt.state.LOCATION"
 private const val REQUEST_LOCATION_PERMISSION = 1
 
-class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, CreateStoreDialogFragment.Callback {
+class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, CreateStoreListener {
 
     // UI controllers such as activities and fragments are primarily intended to display UI data,
     // react to user actions, or handle operating system communication, such as permission requests.

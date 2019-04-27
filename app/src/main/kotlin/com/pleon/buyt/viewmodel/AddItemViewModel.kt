@@ -2,10 +2,10 @@ package com.pleon.buyt.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import com.pleon.buyt.database.repository.AddItemRepository
 import com.pleon.buyt.model.Category.GROCERY
 import com.pleon.buyt.model.Item
 import com.pleon.buyt.model.Store
+import com.pleon.buyt.repository.AddItemRepository
 import java.util.*
 
 class AddItemViewModel(application: Application) : AndroidViewModel(application) {

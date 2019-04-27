@@ -1,4 +1,4 @@
-package com.pleon.buyt.database.repository
+package com.pleon.buyt.repository
 
 import android.app.Application
 import androidx.lifecycle.LiveData

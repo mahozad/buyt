@@ -8,6 +8,7 @@
         <item name="colorSurface">#283028</item>
 
         <item name="cardBgColor">#4A5E4A</item>
+        <item name="bottomBarColor">@color/bottomBarDarkBgColor</item>
         <item name="pieChartBackgroundColor">@color/pieChartDarkBgColor</item>
         <item name="unitUnfocusedColor">@color/unitUnfocusedDark</item>
         <item name="bottomAppBarStyle">@style/bottomAppBarStyle</item>
@@ -30,9 +31,10 @@
         <!--<item name="android:textViewStyle">@style/textViewStyle</item>-->
 
         <item name="cardBgColor">#A9B8A9</item>
+        <item name="bottomBarColor">@color/bottomBarLightBgColor</item>
         <item name="pieChartBackgroundColor">@color/pieChartLightBgColor</item>
         <item name="unitUnfocusedColor">@color/unitUnfocusedLight</item>
-        <item name="bottomAppBarStyle">@style/lightBottomAppBarStyle</item>
+        <item name="bottomAppBarStyle">@style/bottomAppBarStyle</item>
         <item name="floatingActionButtonStyle">@style/fabStyle</item>
 
         <!-- To use normal parent themes above (without .NoActionBar) -->
@@ -63,12 +65,7 @@
     </style>
 
     <style name="bottomAppBarStyle" parent="Widget.MaterialComponents.BottomAppBar">
-        <item name="backgroundTint">#222822</item>
-        <!--<item name="backgroundTint">#232923</item>-->
-    </style>
-
-    <style name="lightBottomAppBarStyle" parent="Widget.MaterialComponents.BottomAppBar">
-        <item name="backgroundTint">#CaE7Ca</item>
+        <item name="backgroundTint">?bottomBarColor</item>
         <!--<item name="backgroundTint">#232923</item>-->
     </style>
 
@@ -83,7 +80,7 @@
     </style>
 
     <!--<style name="textViewStyle">-->
-        <!--<item name="android:textSize">14sp</item>-->
+    <!--<item name="android:textSize">14sp</item>-->
     <!--</style>-->
 
 </resources>

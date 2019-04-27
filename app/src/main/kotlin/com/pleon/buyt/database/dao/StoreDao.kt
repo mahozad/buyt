@@ -3,17 +3,26 @@ package com.pleon.buyt.database.dao
 import androidx.room.*
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
+import com.pleon.buyt.database.dto.StoreDetail
 import com.pleon.buyt.model.Store
+import com.pleon.buyt.viewmodel.StoreListViewModel.Sort
+import com.pleon.buyt.viewmodel.StoreListViewModel.Sort.*
 
 @Dao
 interface StoreDao {
 
     @Transaction
-    fun getStoreDetails(sort: String): List<StoreDetail> {
-        val query = SimpleSQLiteQuery("SELECT store.*, sum(cost) as totalSpending, count(purchaseId) as purchaseCount " +
-                "FROM Store join (select sum(totalPrice) as cost, purchaseId, purchase.storeId from item natural join purchase group by purchaseId) as ip on store.storeId=ip.storeId " +
-                "group by store.storeId " +
-                "order by $sort desc")
+    fun getStoreDetails(sort: Sort): List<StoreDetail> {
+        val sqlSortColumn = when (sort) {
+            TOTAL_SPENDING -> "totalSpending"
+            PURCHASE_COUNT -> "purchaseCount"
+            STORE_CATEGORY -> "category"
+            STORE_NAME -> "name"
+        }
+        val query = SimpleSQLiteQuery("SELECT Store.*, SUM(cost) AS totalSpending, COUNT(purchaseId) AS purchaseCount " +
+                "FROM Store JOIN (SELECT SUM(totalPrice) AS cost, purchaseId, purchase.storeId FROM Item NATURAL JOIN Purchase GROUP BY purchaseId) AS ip ON Store.storeId = ip.storeId " +
+                "GROUP BY Store.storeId " +
+                "ORDER BY $sqlSortColumn DESC")
         return getDetails(query)
     }
 
@@ -22,13 +31,6 @@ interface StoreDao {
      */
     @RawQuery
     fun getDetails(query: SupportSQLiteQuery): List<StoreDetail>
-
-    class StoreDetail {
-        @Embedded
-        lateinit var store: Store
-        var purchaseCount: Int = 0
-        var totalSpending: Int = 0
-    }
 
     @Query("SELECT * FROM Store")
     fun getAllList(): List<Store>

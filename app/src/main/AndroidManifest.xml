@@ -40,7 +40,7 @@
         <activity android:name=".ui.activity.CreateStoreActivity" />
 
         <service
-            android:name=".GpsService"
+            android:name=".service.GpsService"
             android:exported="false" />
     </application>
 

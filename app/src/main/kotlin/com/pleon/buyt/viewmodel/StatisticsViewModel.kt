@@ -3,8 +3,8 @@ package com.pleon.buyt.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import com.pleon.buyt.R
-import com.pleon.buyt.database.repository.StatisticsRepository
 import com.pleon.buyt.model.Category
+import com.pleon.buyt.repository.StatisticsRepository
 import com.pleon.buyt.viewmodel.StatisticsViewModel.Period.NARROW
 
 class StatisticsViewModel(application: Application) : AndroidViewModel(application) {

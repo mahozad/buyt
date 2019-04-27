@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.pleon.buyt.R
-import com.pleon.buyt.database.dao.StoreDao.StoreDetail
+import com.pleon.buyt.database.dto.StoreDetail
 import com.pleon.buyt.ui.BaseViewHolder
 import kotlinx.android.synthetic.main.store_list_row.view.*
 

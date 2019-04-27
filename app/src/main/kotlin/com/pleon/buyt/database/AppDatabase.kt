@@ -16,15 +16,13 @@ import com.pleon.buyt.model.Purchase
 import com.pleon.buyt.model.Store
 
 @Volatile private var INSTANCE: AppDatabase? = null
-private const val DATABASE_NAME = "buyt-database.db"
+private const val DB_NAME = "buyt-database.db"
 
 fun getDatabase(context: Context): AppDatabase {
     return INSTANCE ?: synchronized(AppDatabase::class) {
-        // Create database here
-        val instance = Room.databaseBuilder(context.applicationContext,
-                AppDatabase::class.java, DATABASE_NAME).build()
-        INSTANCE = instance
-        instance
+        INSTANCE = Room.databaseBuilder(context.applicationContext,
+                AppDatabase::class.java, DB_NAME).build()
+        return INSTANCE as AppDatabase
     }
 }
 

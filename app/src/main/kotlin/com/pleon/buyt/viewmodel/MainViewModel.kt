@@ -8,10 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
-import com.pleon.buyt.database.repository.MainRepository
 import com.pleon.buyt.model.Coordinates
 import com.pleon.buyt.model.Item
 import com.pleon.buyt.model.Store
+import com.pleon.buyt.repository.MainRepository
 import com.pleon.buyt.viewmodel.MainViewModel.State.IDLE
 import java.util.*
 import kotlin.math.cos

@@ -1,11 +1,8 @@
-package com.pleon.buyt
+package com.pleon.buyt.service
 
 import android.annotation.SuppressLint
-import android.app.NotificationChannel
-import android.app.NotificationManager
+import android.app.*
 import android.app.NotificationManager.IMPORTANCE_DEFAULT
-import android.app.PendingIntent
-import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.location.Location
@@ -17,6 +14,7 @@ import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.PRIORITY_DEFAULT
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.pleon.buyt.R
 import com.pleon.buyt.ui.activity.MainActivity
 
 const val ACTION_LOCATION_EVENT = "com.pleon.buyt.broadcast.LOCATION_EVENT"
@@ -49,18 +47,30 @@ class GpsService : Service(), LocationListener {
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
+        createNotificationChannel()
+
+        val notificationIntent = Intent(this, MainActivity::class.java)
+        pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
+
+        // note that apps targeting android P (API level 28) or later must declare the permission
+        // Manifest.permission.FOREGROUND_SERVICE in order to use startForeground()
+        startForeground(NOTIFICATION_ID, createFindingNotification())
+    }
+
+    /**
+     * If you want to remove the notification when service stopped, see onDestroy() below
+     */
+    private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel("Main", getString(R.string.app_name), IMPORTANCE_DEFAULT)
             channel.description = getString(R.string.notif_channel_desc)
             // channel.setShowBadge(false) // Disable the dot on app icon when notification is shown
             notificationManager.createNotificationChannel(channel)
         }
+    }
 
-        val notificationIntent = Intent(this, MainActivity::class.java)
-        pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
-
-        // If you want to remove the notification when service stopped, see onDestroy() below
-        val notification = NotificationCompat.Builder(this, "Main")
+    private fun createFindingNotification(): Notification? {
+        return NotificationCompat.Builder(this, "Main")
                 .setSmallIcon(R.drawable.ald_buyt_notification)
                 .setOngoing(true)
                 .setLights(resources.getColor(R.color.colorPrimary), 500, 600)
@@ -72,10 +82,6 @@ class GpsService : Service(), LocationListener {
                 .setContentIntent(pendingIntent)
                 // .addAction() // Implement the action to cancel the search
                 .build()
-
-        // note that apps targeting android P (API level 28) or later must declare the permission
-        // Manifest.permission.FOREGROUND_SERVICE in order to use startForeground()
-        startForeground(NOTIFICATION_ID, notification)
     }
 
     /**
@@ -93,7 +99,7 @@ class GpsService : Service(), LocationListener {
         locationManager.requestSingleUpdate(PROVIDER, this, null)
 
         // If we get killed, after returning from here, don't restart
-        return Service.START_NOT_STICKY
+        return START_NOT_STICKY
     }
 
     override fun onLocationChanged(location: Location) {
@@ -104,14 +110,17 @@ class GpsService : Service(), LocationListener {
         LocalBroadcastManager.getInstance(this).sendBroadcast(result)
 
         stopSelf()
-        val notification = NotificationCompat.Builder(this, "Main")
+        notificationManager.notify(NOTIFICATION_ID, createDoneNotification())
+    }
+
+    private fun createDoneNotification(): Notification? {
+        return NotificationCompat.Builder(this, "Main")
                 .setSmallIcon(R.drawable.vd_buyt_notif_20)
                 .setContentTitle(getString(R.string.notif_title_store_found))
                 .setContentText(getString(R.string.notif_content_store_found))
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true) // Dismiss the notification when user taps on it
                 .build()
-        notificationManager.notify(NOTIFICATION_ID, notification)
     }
 
     override fun onProviderDisabled(provider: String) {}

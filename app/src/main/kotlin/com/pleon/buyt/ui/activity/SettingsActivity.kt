@@ -4,6 +4,7 @@ import android.graphics.drawable.Animatable
 import android.view.Menu
 import android.view.MenuItem
 import androidx.preference.PreferenceManager
+import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.pleon.buyt.R
 
 class SettingsActivity : BaseActivity() {
@@ -19,12 +20,16 @@ class SettingsActivity : BaseActivity() {
         when (item.itemId) {
             R.id.action_reset -> {
                 (item.icon as Animatable).start()
-                val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-                preferences.edit().clear().apply()
-                PreferenceManager.setDefaultValues(this, R.xml.preferences, true)
+                resetPreferences()
             }
             android.R.id.home -> finish()
         }
         return true
+    }
+
+    private fun resetPreferences() {
+        val preferences = getDefaultSharedPreferences(this)
+        preferences.edit().clear().apply()
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, true)
     }
 }
