@@ -33,9 +33,9 @@ import com.pleon.buyt.model.Item.Quantity.Unit
 import com.pleon.buyt.ui.NumberInputWatcher
 import com.pleon.buyt.ui.activity.DEFAULT_THEME
 import com.pleon.buyt.ui.activity.PREF_KEY_THEME
-import com.pleon.buyt.ui.dialog.DatePickerFragment
+import com.pleon.buyt.ui.dialog.DatePickerDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
-import com.pleon.buyt.ui.dialog.SelectDialogRow
+import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
 import com.pleon.buyt.viewmodel.AddItemViewModel
 import com.pleon.buyt.viewmodel.MainViewModel
 import ir.huri.jcal.JalaliCalendar
@@ -236,7 +236,7 @@ class AddItemFragment : Fragment(R.layout.fragment_add_item),
      * DatePickerDialog.show() for persian calendar is passed getActivity().getFragmentManager()
      * because it requires android.app.FragmentManager instead of androidx version.
      *
-     * DatePickerFragment.show() is passed getChildFragmentManager() can get the parent (this)
+     * DatePickerDialogFragment.show() is passed getChildFragmentManager() can get the parent (this)
      * fragment and set it as the callback.
      */
     private fun onDateClicked() {
@@ -258,7 +258,7 @@ class AddItemFragment : Fragment(R.layout.fragment_add_item),
 
             datePicker.show(activity!!.fragmentManager, "DATE_PICKER")
         } else {
-            val datePicker = DatePickerFragment()
+            val datePicker = DatePickerDialogFragment()
             // datePicker.setRetainInstance(true);
             datePicker.show(childFragmentManager, "DATE_PICKER")
         }

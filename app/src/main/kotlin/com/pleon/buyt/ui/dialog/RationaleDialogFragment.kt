@@ -24,7 +24,6 @@ class RationaleDialogFragment : AppCompatDialogFragment() {
      *  * layout_width
      *  * layout_height
      *
-     *
      * See [this very good explanation](https://stackoverflow.com/a/41495370/8583692)
      *
      * @param savedState
@@ -42,7 +41,6 @@ class RationaleDialogFragment : AppCompatDialogFragment() {
                 .setNegativeButton(getString(R.string.dialog_action_skip)) { _, _ -> callback!!.onEnableLocationDenied() }
                 .create()
 
-        // getText is to preserve html formats
         dialog.setTitle(R.string.dialog_title_location_permission)
         dialog.setMessage(getText(R.string.dialog_message_location_permission))
         dialog.setCancelable(false) // Prevent dialog from getting dismissed on back key pressed

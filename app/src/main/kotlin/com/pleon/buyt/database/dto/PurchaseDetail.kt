@@ -15,5 +15,5 @@ class PurchaseDetail {
     lateinit var item: List<Item>
 
     @Relation(entityColumn = "storeId", parentColumn = "storeId")
-    lateinit var store: List<Store>
+    lateinit var store: List<Store> // for @Relation, type must be collection
 }

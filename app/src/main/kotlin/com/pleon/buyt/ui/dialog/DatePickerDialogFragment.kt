@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatDialogFragment
 import java.util.*
 
-class DatePickerFragment : AppCompatDialogFragment() {
+class DatePickerDialogFragment : AppCompatDialogFragment() {
 
     private var callback: DatePickerDialog.OnDateSetListener? = null
 
@@ -21,7 +21,7 @@ class DatePickerFragment : AppCompatDialogFragment() {
         try {
             callback = parentFragment as DatePickerDialog.OnDateSetListener?
         } catch (e: ClassCastException) {
-            throw ClassCastException("Calling fragment must implement OnDateSetListener interface")
+            throw ClassCastException("Calling fragment must implement $callback interface")
         }
 
         // Use the current date as the default date in the picker

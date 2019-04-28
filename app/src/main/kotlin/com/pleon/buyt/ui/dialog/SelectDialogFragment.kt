@@ -10,10 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.adapter.SelectionListAdapter
+import java.io.Serializable
 import java.util.*
 
 // DialogFragment is just another Fragment
 class SelectDialogFragment : AppCompatDialogFragment(), SelectionListAdapter.Callback {
+
+    class SelectDialogRow(val name: String, val imgRes: Int) : Serializable
 
     interface Callback {
         fun onSelected(index: Int)

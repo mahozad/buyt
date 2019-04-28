@@ -15,7 +15,7 @@ import com.pleon.buyt.R
 import com.pleon.buyt.model.Category
 import com.pleon.buyt.ui.adapter.StatsPagerAdapter
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
-import com.pleon.buyt.ui.dialog.SelectDialogRow
+import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
 import com.pleon.buyt.ui.fragment.StatDetailsFragment
 import com.pleon.buyt.ui.fragment.StatsFragment
 import com.pleon.buyt.viewmodel.StatisticsViewModel
@@ -118,7 +118,7 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
 
     override fun onSelected(index: Int) {
         val filter = filterList[index]
-        filterMenuItem!!.setIcon(filter.image)
+        filterMenuItem!!.setIcon(filter.imgRes)
         viewModel.filter = if (filter.name == getString(R.string.no_filter)) null else Category.valueOf(filter.name)
         updateStats()
     }

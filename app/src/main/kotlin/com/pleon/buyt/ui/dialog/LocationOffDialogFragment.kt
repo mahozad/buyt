@@ -23,7 +23,6 @@ class LocationOffDialogFragment : AppCompatDialogFragment() {
      *  * layout_width
      *  * layout_height
      *
-     *
      * See [this very good explanation](https://stackoverflow.com/a/41495370/8583692)
      *
      * @param savedState
@@ -50,7 +49,7 @@ class LocationOffDialogFragment : AppCompatDialogFragment() {
         if (context is Callback) {
             callback = context
         } else {
-            throw RuntimeException("$context must implement Callback")
+            throw RuntimeException("$context must implement $callback")
         }
     }
 

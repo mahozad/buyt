@@ -3,9 +3,7 @@ package com.pleon.buyt.ui.dialog
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface.BUTTON_POSITIVE
-import android.content.Intent
 import android.location.Location
-import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -117,7 +115,7 @@ class CreateStoreDialogFragment : AppCompatDialogFragment() {
         }
     }
 
-    private fun onShowMap() {
+/*    private fun onShowMap() {
         // or use Uri.parse("geo:${location.latitude},${location.longitude}?z=15")
         val uri: Uri = Uri.parse("http://maps.google.com/maps?q=loc:" +
                 "${location.latitude}," +
@@ -127,6 +125,7 @@ class CreateStoreDialogFragment : AppCompatDialogFragment() {
         // intent.setPackage("com.google.android.apps.maps") // If desired, Make the Intent explicit
         if (intent.resolveActivity(activity!!.packageManager) != null) startActivity(intent)
     }
+*/
 
     private fun onNameChanged() {
         if (name.text.isNotEmpty()) name_layout.error = null // clear error if exists

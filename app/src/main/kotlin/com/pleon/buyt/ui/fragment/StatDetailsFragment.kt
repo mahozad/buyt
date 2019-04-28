@@ -15,7 +15,7 @@ class StatDetailsFragment : Fragment(R.layout.fragment_stat_details) {
 
     private lateinit var adapter: PurchaseDetailAdapter
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedState: Bundle?) {
         adapter = PurchaseDetailAdapter(context!!)
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(DateHeaderDecoration(recyclerView, adapter))

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.adapter.SelectionListAdapter.StoreHolder
-import com.pleon.buyt.ui.dialog.SelectDialogRow
+import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
 import kotlinx.android.synthetic.main.selection_list_row.view.*
 
 class SelectionListAdapter(private val callback: Callback) : Adapter<StoreHolder>() {
@@ -60,7 +60,7 @@ class SelectionListAdapter(private val callback: Callback) : Adapter<StoreHolder
     inner class StoreHolder internal constructor(internal val view: View) : ViewHolder(view) {
         fun bindRow(selection: SelectDialogRow) {
             itemView.storeName.text = selection.name
-            itemView.storeIcon.setImageResource(selection.image)
+            itemView.storeIcon.setImageResource(selection.imgRes)
             itemView.storeRadioButton.isChecked = position == selectedIndex
         }
     }
