@@ -31,8 +31,4 @@ enum class Category(val nameRes: Int, val storeNameRes: Int, val imageRes: Int, 
     // CLOTHES_SHOP(R.string.store_cat_clothes_shop, R.drawable.ic_store_ice_creamy),
     // SHOE_SHOP(R.string.store_cat_shoe_shop, R.drawable.ic_store_ice_creamy),
     // OTHER(R.string.item_cat_other, R.drawable.ic_item_other)
-
-    fun alakaiiii() {
-
-    }
 }
