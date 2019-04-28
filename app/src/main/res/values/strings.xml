@@ -192,6 +192,7 @@
     <string name="menu_text_sort_prefix">Ordered by %1$s</string>
     <string name="menu_title_sort_stores">Sort stores</string>
     <string name="hint_store_not_available">N/A</string>
+    <string name="menu_hint_reset_settings">Reset settings</string>
     <plurals name="store_detail_purchase_count">
         <item quantity="one">%1$d purchase</item>
         <item quantity="other">%1$d purchases</item>
