@@ -9,6 +9,7 @@
     <string name="input_suffix_price">" تومان"</string>
     <string name="dialog_action_go_to_settings">برو به تنظیمات</string>
     <string name="snackbar_message_item_deleted">آیتم %1$s حذف شد</string>
+    <string name="snackbar_message_store_deleted">مغازه \"%1$s\" حذف شد</string>
     <string name="snackbar_action_undo">لغو</string>
     <string name="snackbar_message_cart_empty">لیست خرید خالی است</string>
     <string name="snackbar_message_no_item_selected">آیتمی انتخاب نشده است</string>
@@ -86,7 +87,7 @@
     <string name="nav_stores">مغازه‌ها</string>
     <string name="nav_settings">تنظیمات</string>
     <string name="nav_help">راهنمایی</string>
-    <string name="no_filter">No filter</string>
+    <string name="no_filter">بدون فیلتر</string>
     <string name="dialog_title_select_filter">انتخاب فیلتر</string>
     <string name="dialog_title_select_store">انتخاب مغازه</string>
     <string name="dialog_title_select_cat">انتخاب دسته‌بندی</string>

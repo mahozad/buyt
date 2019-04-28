@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.pleon.buyt.R
 import com.pleon.buyt.model.Category
+import com.pleon.buyt.model.getCategoryByString
 import com.pleon.buyt.ui.adapter.StatsPagerAdapter
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
@@ -65,7 +66,7 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
     private fun initializeFilterList() {
         filterList.add(SelectDialogRow(getString(R.string.no_filter), R.drawable.ic_filter))
         for (category in Category.values()) {
-            filterList.add(SelectDialogRow(category.name, category.imageRes))
+            filterList.add(SelectDialogRow(getString(category.nameRes), category.imageRes))
         }
     }
 
@@ -119,7 +120,7 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
     override fun onSelected(index: Int) {
         val filter = filterList[index]
         filterMenuItem!!.setIcon(filter.imgRes)
-        viewModel.filter = if (filter.name == getString(R.string.no_filter)) null else Category.valueOf(filter.name)
+        viewModel.filter = getCategoryByString(filter.name, applicationContext)
         updateStats()
     }
 

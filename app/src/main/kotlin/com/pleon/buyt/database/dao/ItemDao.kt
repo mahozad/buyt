@@ -51,7 +51,7 @@ interface ItemDao {
     @Transaction
     fun deleteItem(item: Item) {
         delete(item)
-        updateBelowItemsPosition(item.position)
+        updateItemPositions(item.position)
     }
 
     /**
@@ -61,5 +61,5 @@ interface ItemDao {
     fun delete(item: Item)
 
     @Query("UPDATE Item SET position = position - 1 WHERE position > :itemPosition")
-    fun updateBelowItemsPosition(itemPosition: Int)
+    fun updateItemPositions(itemPosition: Int)
 }

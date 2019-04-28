@@ -1,6 +1,12 @@
 package com.pleon.buyt.model
 
+import android.content.Context
 import com.pleon.buyt.R
+
+fun getCategoryByString(str: String, cxt: Context): Category? {
+    for (cat in Category.values()) if (cxt.getString(cat.nameRes) == str) return cat
+    return null
+}
 
 // TODO: store the enum as a separate table in the database.
 // see [https://softwareengineering.stackexchange.com/a/305153/311271]
@@ -16,7 +22,7 @@ enum class Category(val nameRes: Int, val storeNameRes: Int, val imageRes: Int, 
     FAST_FOOD(R.string.item_cat_fast_food, R.string.store_cat_fast_food, R.drawable.ic_item_fast_food, R.drawable.ic_store_fast_food),
     ICE_CREAM(R.string.item_cat_ice_cream, R.string.store_cat_icecream_shop, R.drawable.ic_item_icecream, R.drawable.ic_store_ice_creamy),
     PASTRY(R.string.item_cat_pastry, R.string.store_cat_confectionery, R.drawable.ic_item_pastry, R.drawable.ic_store_pastry),
-    TOOLS(R.string.item_cat_tools, R.string.store_cat_hardware_store, R.drawable.ic_item_tools, R.drawable.ic_store_hardwary)
+    TOOLS(R.string.item_cat_tools, R.string.store_cat_hardware_store, R.drawable.ic_item_tools, R.drawable.ic_store_hardwary);
     // DRUG_STORE(R.string.store_cat_drugstore, R.drawable.ic_store_ice_creamy),
     // FLOWER_SHOP(R.string.store_cat_flower_shop, R.drawable.ic_store_ice_creamy),
     // DRY_CLEANERS(R.string.store_cat_dry_cleaners, R.drawable.ic_store_ice_creamy),
@@ -25,4 +31,8 @@ enum class Category(val nameRes: Int, val storeNameRes: Int, val imageRes: Int, 
     // CLOTHES_SHOP(R.string.store_cat_clothes_shop, R.drawable.ic_store_ice_creamy),
     // SHOE_SHOP(R.string.store_cat_shoe_shop, R.drawable.ic_store_ice_creamy),
     // OTHER(R.string.item_cat_other, R.drawable.ic_item_other)
+
+    fun alakaiiii() {
+
+    }
 }

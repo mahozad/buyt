@@ -93,7 +93,7 @@ class StoreListFragment : Fragment(R.layout.fragment_store_list), ItemTouchHelpe
     }
 
     private fun showUndoSnackbar(store: Store) { // FIXME: Duplicate method
-        val snackbar = Snackbar.make(activity!!.snbContainer, getString(R.string.snackbar_message_item_deleted, store.name), LENGTH_LONG)
+        val snackbar = Snackbar.make(activity!!.snbContainer, getString(R.string.snackbar_message_store_deleted, store.name), LENGTH_LONG)
         snackbar.setAction(getString(R.string.snackbar_action_undo)) {
             store.isFlaggedForDeletion = false
             viewModel.updateStores(listOf(store))
