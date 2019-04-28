@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.pleon.buyt.R
-import com.pleon.buyt.ui.adapter.ItemListAdapter
 import kotlinx.android.synthetic.main.item_list_row.view.*
 import java.lang.Math.*
 
@@ -82,11 +81,11 @@ class TouchHelperCallback(private val listener: ItemTouchHelperListener) : ItemT
         dX = if (abs(dX) < maxSwipeDistInPx) dX else signum(dX) * maxSwipeDistInPx
 
         // Animate delete circular reveal
-        if (abs(dX) == maxSwipeDistInPx && !(viewHolder as ItemListAdapter.ItemHolder).delAnimating) {
+        if (abs(dX) == maxSwipeDistInPx && !viewHolder.delAnimating) {
             viewHolder.itemView.delete_icon.setImageResource(R.drawable.avd_delete_open)
             (viewHolder.itemView.delete_icon.drawable as Animatable).start()
             showCircularReveal(viewHolder, viewHolder.itemView.circular_reveal)
-        } else if (abs(dX) < maxSwipeDistInPx && (viewHolder as ItemListAdapter.ItemHolder).delAnimating) {
+        } else if (abs(dX) < maxSwipeDistInPx && viewHolder.delAnimating) {
             viewHolder.itemView.delete_icon.setImageResource(R.drawable.avd_delete_close)
             (viewHolder.itemView.delete_icon.drawable as Animatable).start()
             hideCircularReveal(viewHolder, viewHolder.itemView.circular_reveal)
@@ -96,7 +95,7 @@ class TouchHelperCallback(private val listener: ItemTouchHelperListener) : ItemT
     }
 
     private fun showCircularReveal(viewHolder: BaseViewHolder, revealView: View) {
-        (viewHolder as ItemListAdapter.ItemHolder).delAnimating = true
+        viewHolder.delAnimating = true
 
         val finalRadius = max(revealView.width, revealView.height) / 1.6f
         val centerX = revealView.width / 2
@@ -110,7 +109,7 @@ class TouchHelperCallback(private val listener: ItemTouchHelperListener) : ItemT
     }
 
     private fun hideCircularReveal(viewHolder: BaseViewHolder, revealView: View) {
-        (viewHolder as ItemListAdapter.ItemHolder).delAnimating = false
+        viewHolder.delAnimating = false
 
         val anim = AlphaAnimation(1.0f, 0.0f).also { it.duration = 100 }
         revealView.startAnimation(anim)

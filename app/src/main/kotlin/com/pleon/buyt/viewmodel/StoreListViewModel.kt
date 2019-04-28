@@ -24,7 +24,7 @@ class StoreListViewModel(application: Application) : AndroidViewModel(applicatio
         sort = Sort.values()[(sort.ordinal + 1) % Sort.values().size]
     }
 
-    fun updateStore(store: Store) = repository.updateStore(store)
+    fun updateStores(stores: Collection<Store>) = repository.updateStores(stores)
 
     fun deleteStore(store: Store) = repository.deleteStore(store)
 }

@@ -12,9 +12,9 @@ import kotlinx.android.synthetic.main.store_list_row.view.*
 
 class StoreListAdapter(val cxt: Context) : Adapter<StoreListAdapter.StoreHolder>() {
 
-    var stores = listOf<StoreDetail>()
-        set(stores) {
-            field = stores
+    var storeDetails = listOf<StoreDetail>()
+        set(storeDetails) {
+            field = storeDetails
             notifyDataSetChanged()
         }
 
@@ -32,15 +32,15 @@ class StoreListAdapter(val cxt: Context) : Adapter<StoreListAdapter.StoreHolder>
 
     override fun onBindViewHolder(holder: StoreHolder, position: Int) {
         // if (stores != null) {
-        holder.bindStore(stores[position])
+        holder.bindStore(storeDetails[position])
         // } else: case of data not being ready yet; set a placeholder or something
     }
 
-    override fun getItemCount() = stores.size
+    override fun getItemCount() = storeDetails.size
 
-    override fun getItemId(position: Int) = stores[position].store.storeId
+    override fun getItemId(position: Int) = storeDetails[position].store.storeId
 
-    fun getStore(position: Int) = stores[position]
+    fun getStore(position: Int) = storeDetails[position].store
 
     // Adapter (and RecyclerView) work with ViewHolders instead of direct Views.
     inner class StoreHolder(view: View) : BaseViewHolder(view) {

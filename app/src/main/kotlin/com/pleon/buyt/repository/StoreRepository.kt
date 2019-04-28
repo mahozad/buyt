@@ -33,7 +33,7 @@ class StoreRepository(application: Application) {
         return createdStore
     }
 
-    fun updateStore(store: Store) = doAsync { storeDao.update(store) }
+    fun updateStores(stores: Collection<Store>) = doAsync { storeDao.updateAll(stores) }
 
     fun deleteStore(store: Store) = doAsync { storeDao.delete(store) }
 }

@@ -49,7 +49,7 @@ class StoreListFragment : Fragment(R.layout.fragment_store_list), ItemTouchHelpe
      * In fragments use getViewLifecycleOwner() as owner argument
      */
     private fun updateStoresList() {
-        viewModel.storeDetails.observe(viewLifecycleOwner, Observer { adapter.stores = it })
+        viewModel.storeDetails.observe(viewLifecycleOwner, Observer { adapter.storeDetails = it })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -82,27 +82,28 @@ class StoreListFragment : Fragment(R.layout.fragment_store_list), ItemTouchHelpe
 
     override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
         // Backup the store for undo purpose
-        val storeDetail = adapter.getStore(viewHolder.adapterPosition)
+        val store = adapter.getStore(viewHolder.adapterPosition)
 
-        storeDetail.store.isFlaggedForDeletion = true
-        viewModel.updateStore(storeDetail.store)
+        store.isFlaggedForDeletion = true
+        viewModel.updateStores(listOf(store))
+        updateStoresList()
 
         // TODO: Use Anko to show snackbar
-        showUndoSnackbar(storeDetail.store)
+        showUndoSnackbar(store)
     }
 
     private fun showUndoSnackbar(store: Store) { // FIXME: Duplicate method
-        val snackbar = Snackbar.make(activity!!.snbContainer, getString(com.pleon.buyt.R.string.snackbar_message_item_deleted, store.name), LENGTH_LONG)
-        snackbar.setAction(getString(com.pleon.buyt.R.string.snackbar_action_undo)) {
+        val snackbar = Snackbar.make(activity!!.snbContainer, getString(R.string.snackbar_message_item_deleted, store.name), LENGTH_LONG)
+        snackbar.setAction(getString(R.string.snackbar_action_undo)) {
             store.isFlaggedForDeletion = false
-            viewModel.updateStore(store)
+            viewModel.updateStores(listOf(store))
+            updateStoresList()
         }
         snackbar.addCallback(object : BaseCallback<Snackbar>() {
             override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                if (event != DISMISS_EVENT_ACTION) { // If dismiss wasn't because of "UNDO"...
-                    // ... then delete the store from database
-                    viewModel.deleteStore(store)
-                }
+                if (event != DISMISS_EVENT_ACTION) viewModel.deleteStore(store)
+                // If dismiss wasn't because of "UNDO" then delete the store from database
+                // (the sql query also updates position of other stores)
             }
         })
         snackbar.show()

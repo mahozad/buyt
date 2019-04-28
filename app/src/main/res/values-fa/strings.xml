@@ -136,6 +136,7 @@
     <string name="menu_text_sort_category">دسته‌بندی</string>
     <string name="menu_text_sort_prefix">ترتیب بر اساس %1$s</string>
     <string name="menu_title_sort_stores">مرتب‌سازی مغازه‌ها</string>
+    <string name="hint_store_not_available">در دسترس نیست</string>
     <plurals name="store_detail_purchase_count">
         <item quantity="one">%1$d خرید</item>
         <item quantity="other">%1$d خرید</item>

@@ -87,7 +87,9 @@ class PurchaseDetailAdapter(private val cxt: Context) : Adapter<ViewHolder>(), S
 
     inner class PurchaseHolder(view: View) : BaseViewHolder(view) {
         fun bindItem(purchaseDetail: PurchaseDetail) {
-            itemView.storeName.text = purchaseDetail.store[0].name
+            itemView.storeName.text =
+                    if (purchaseDetail.store.isEmpty()) cxt.getString(R.string.hint_store_not_available) // store is deleted by user
+                    else purchaseDetail.store[0].name
             itemView.itemDetails.adapter = ItemDetailAdapter(cxt).apply {
                 items = purchaseDetail.item
             }
@@ -95,7 +97,6 @@ class PurchaseDetailAdapter(private val cxt: Context) : Adapter<ViewHolder>(), S
             for (item in purchaseDetail.item) totalCost += item.totalPrice
             itemView.totalCost.text = cxt.getString(R.string.purchase_detail_price, priceFormat.format(totalCost))
         }
-
     }
 
     inner class DateHolder(view: View) : BaseViewHolder(view) {

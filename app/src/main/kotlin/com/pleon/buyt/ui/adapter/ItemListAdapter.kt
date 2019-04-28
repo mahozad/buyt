@@ -97,8 +97,6 @@ class ItemListAdapter(private val context: Context, private val itemTouchHelper:
     // Adapter (and RecyclerView) work with ViewHolders instead of direct Views.
     inner class ItemHolder(view: View) : BaseViewHolder(view) {
 
-        var delAnimating: Boolean = false
-
         init {
             val suffix = context.getString(R.string.input_suffix_price)
             itemView.price.addTextChangedListener(NumberInputWatcher(itemView.price_layout, itemView.price, suffix))
