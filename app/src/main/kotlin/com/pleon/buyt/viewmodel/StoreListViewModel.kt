@@ -17,6 +17,8 @@ class StoreListViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     var sort = TOTAL_SPENDING
+        private set
+
     val storeDetails get() = repository.getStoreDetails(sort)
     private val repository = StoreRepository(application)
 
