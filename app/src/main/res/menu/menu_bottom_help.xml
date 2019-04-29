@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_feedback"
-        android:icon="@drawable/ic_feedback"
-        android:title="Send feedback"
+        android:id="@+id/action_translate"
+        android:icon="@drawable/ic_translate"
+        android:title="Help translate the app"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_release_history"
