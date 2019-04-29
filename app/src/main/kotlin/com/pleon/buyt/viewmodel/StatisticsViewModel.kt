@@ -29,19 +29,19 @@ class StatisticsViewModel(val app: Application) : AndroidViewModel(app) {
     }
 
     private val repository = StatisticsRepository(app)
+    val statistics get() = repository.getStatistics(period.length, filter)
+    var filter: Filterer = NoFilter
     var period = NARROW
         private set
-    var filter: Filterer = NoFilter
-    val statistics get() = repository.getStatistics(period.length, filter)
-    var filters = initializeFilters()
+    var filterList = initializeFilters()
         private set
 
     private fun initializeFilters(): ArrayList<SelectDialogRow> {
-        val filterList = arrayListOf(SelectDialogRow(app.getString(R.string.no_filter), R.drawable.ic_filter))
+        val filters = arrayListOf(SelectDialogRow(app.getString(R.string.no_filter), R.drawable.ic_filter))
         for (category in Category.values()) {
-            filterList.add(SelectDialogRow(app.getString(category.nameRes), category.imageRes))
+            filters.add(SelectDialogRow(app.getString(category.nameRes), category.imageRes))
         }
-        return filterList
+        return filters
     }
 
     fun togglePeriod() {

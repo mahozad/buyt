@@ -83,7 +83,7 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_filter -> {
-                val dialog = SelectDialogFragment.newInstance(this, R.string.dialog_title_select_filter, viewModel.filters)
+                val dialog = SelectDialogFragment.newInstance(this, R.string.dialog_title_select_filter, viewModel.filterList)
                 dialog.show(supportFragmentManager, "SELECTION_DIALOG")
             }
             R.id.action_toggle_period -> {
@@ -104,7 +104,7 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
     }
 
     override fun onSelected(index: Int) {
-        val filter = viewModel.filters[index]
+        val filter = viewModel.filterList[index]
         filterMenuItem.setIcon(filter.imgRes)
         viewModel.filter = viewModel.getFilterByString(filter.name)
         updateStats()
