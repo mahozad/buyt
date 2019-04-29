@@ -79,7 +79,7 @@ interface PurchaseDao {
 
     // language=RoomSql see [https://youtrack.jetbrains.com/issue/KT-13233] if the issue is resolved
     @Query("select store.* from purchase natural join store join item on purchase.purchaseId=item.purchaseId " +
-            "where" + PERIOD_CLAUSE + "and (:filter is null or item.category = :filter) " +
+            "where" + PERIOD_CLAUSE + "and (:filter = 'NoFilter' or item.category = :filter) " +
             "group by purchase.storeId " +
             "order by count(purchase.storeId) desc " +
             "limit 1;")
