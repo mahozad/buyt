@@ -12,11 +12,8 @@ import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.pleon.buyt.R
-import com.pleon.buyt.model.Category
-import com.pleon.buyt.model.getCategoryByString
 import com.pleon.buyt.ui.adapter.StatsPagerAdapter
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
-import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
 import com.pleon.buyt.ui.fragment.StatDetailsFragment
 import com.pleon.buyt.ui.fragment.StatsFragment
 import com.pleon.buyt.viewmodel.StatisticsViewModel
@@ -27,8 +24,7 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
 
     private lateinit var statsFragment: StatsFragment
     private lateinit var detailsFragment: StatDetailsFragment
-    private var filterList = ArrayList<SelectDialogRow>()
-    private var filterMenuItem: MenuItem? = null
+    private lateinit var filterMenuItem: MenuItem
     private lateinit var periodMenuItemView: TextView
     private lateinit var viewModel: StatisticsViewModel
 
@@ -51,8 +47,6 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
         viewModel = ViewModelProviders.of(this).get(StatisticsViewModel::class.java)
         registerReceiver(timeReceiver, IntentFilter(Intent.ACTION_TIME_TICK))
 
-        initializeFilterList()
-
         val pagerAdapter = StatsPagerAdapter(this, supportFragmentManager)
         viewPager.adapter = pagerAdapter
         tabLayout.setupWithViewPager(viewPager)
@@ -63,19 +57,11 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
         updateStats()
     }
 
-    private fun initializeFilterList() {
-        filterList.add(SelectDialogRow(getString(R.string.no_filter), R.drawable.ic_filter))
-        for (category in Category.values()) {
-            filterList.add(SelectDialogRow(getString(category.nameRes), category.imageRes))
-        }
-    }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_bottom_stats, menu)
 
         filterMenuItem = menu.findItem(R.id.action_filter)
-        filterMenuItem!!.setIcon(if (viewModel.filter == null)
-            R.drawable.ic_filter else viewModel.filter!!.imageRes)
+        filterMenuItem.setIcon(viewModel.filter.getImgRes())
 
         // Setting up "change period" action because it has custom layout
         val periodMenuItem = menu.findItem(R.id.action_toggle_period)
@@ -97,7 +83,7 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_filter -> {
-                val dialog = SelectDialogFragment.newInstance(this, R.string.dialog_title_select_filter, filterList)
+                val dialog = SelectDialogFragment.newInstance(this, R.string.dialog_title_select_filter, viewModel.filters)
                 dialog.show(supportFragmentManager, "SELECTION_DIALOG")
             }
             R.id.action_toggle_period -> {
@@ -118,9 +104,9 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
     }
 
     override fun onSelected(index: Int) {
-        val filter = filterList[index]
-        filterMenuItem!!.setIcon(filter.imgRes)
-        viewModel.filter = getCategoryByString(filter.name, applicationContext)
+        val filter = viewModel.filters[index]
+        filterMenuItem.setIcon(filter.imgRes)
+        viewModel.filter = viewModel.getFilterByString(filter.name)
         updateStats()
     }
 
