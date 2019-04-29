@@ -39,4 +39,27 @@
         android:key="lang"
         android:title="@string/pref_title_lang"
         app:useSimpleSummaryProvider="true" />
+
+    <!--<Preference-->
+        <!--android:icon="@drawable/ic_import"-->
+        <!--android:title="Import app data" />-->
+
+    <!--<Preference-->
+        <!--android:icon="@drawable/ic_export"-->
+        <!--android:title="Export app data" />-->
+
+    <!--<SwitchPreference-->
+        <!--android:icon="@drawable/ic_lock"-->
+        <!--android:key="passwordChBx"-->
+        <!--android:title="فعال سازی رمز عبور" />-->
+    <!--<EditTextPreference-->
+        <!--android:defaultValue="def value!"-->
+        <!--android:dependency="passwordChBx"-->
+        <!--android:hint="salam"-->
+        <!--android:inputType="textPassword"-->
+        <!--android:key="password"-->
+        <!--android:paddingStart="24dp"-->
+        <!--android:title="رمز عبور"-->
+        <!--app:iconSpaceReserved="true"-->
+        <!--app:useSimpleSummaryProvider="true" />-->
 </PreferenceScreen>
