@@ -36,11 +36,11 @@ class StoresViewModel(application: Application) : AndroidViewModel(application) 
 
     fun updateStores(stores: Collection<Store>) {
         repository.updateStores(stores)
-        sortLiveData.value = sortLiveData.value // to trigger switchMap
+        sortLiveData.value = sortLiveData.value // trigger switchMap
     }
 
     fun deleteStore(store: Store) {
         repository.deleteStore(store)
-        sortLiveData.value = sortLiveData.value // to trigger switchMap
+        sortLiveData.value = sortLiveData.value // trigger switchMap
     }
 }
