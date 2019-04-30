@@ -1,7 +1,7 @@
 package com.pleon.buyt.model
 
 import com.pleon.buyt.R
-import com.pleon.buyt.viewmodel.StatisticsViewModel.Filterer
+import com.pleon.buyt.viewmodel.StatsViewModel.Filterer
 
 // TODO: store the enum as a separate table in the database.
 // see [https://softwareengineering.stackexchange.com/a/305153/311271]

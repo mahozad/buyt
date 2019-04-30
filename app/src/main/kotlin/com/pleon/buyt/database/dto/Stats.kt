@@ -2,7 +2,7 @@ package com.pleon.buyt.database.dto
 
 import com.pleon.buyt.model.Store
 
-class Statistics {
+class Stats {
 
     var dailyCosts: List<DailyCost>? = null
     var storeWithMaxPurchaseCount: Store? = null

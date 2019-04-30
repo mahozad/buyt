@@ -8,11 +8,11 @@ import com.pleon.buyt.database.converter.DateConverter
 import com.pleon.buyt.database.dto.DailyCost
 import com.pleon.buyt.database.dto.PieSlice
 import com.pleon.buyt.database.dto.PurchaseDetail
-import com.pleon.buyt.database.dto.Statistics
+import com.pleon.buyt.database.dto.Stats
 import com.pleon.buyt.model.Category
 import com.pleon.buyt.model.Purchase
 import com.pleon.buyt.model.Store
-import com.pleon.buyt.viewmodel.StatisticsViewModel.Filterer
+import com.pleon.buyt.viewmodel.StatsViewModel.Filterer
 import java.text.DateFormat
 import java.util.*
 
@@ -32,23 +32,23 @@ interface PurchaseDao {
      * The transaction will fail when an exception is thrown in the method body.
      */
     @Transaction
-    fun getStatistics(period: Int, filter: Filterer): Statistics {
+    fun getStats(period: Int, filter: Filterer): Stats {
         val filter = filter.getName()
         val period = period - 1 // The queries return one extra day so do period-1
-        val statistics = Statistics()
+        val stats = Stats()
 
-        statistics.dailyCosts = getDailyCosts(period, filter)
-        statistics.totalPurchaseCost = getTotalPurchaseCost(period, filter)
-        statistics.averagePurchaseCost = getAveragePurchaseCost(period, filter)
-        statistics.numberOfPurchases = getNumberOfPurchases(period, filter)
-        statistics.maxPurchaseCost = getMaxPurchaseCost(period, filter)
-        statistics.minPurchaseCost = getMinPurchaseCost(period, filter)
-        statistics.weekdayWithMaxPurchases = getWeekdayWithMaxPurchaseCount(period, filter)
-        statistics.storeWithMaxPurchaseCount = getStoreWithMaxPurchaseCount(period, filter)
-        statistics.mostPurchasedCategories = getMostPurchasedCategories(period, filter)
-        statistics.purchaseDetails = getPurchaseDetails(period, filter)
+        stats.dailyCosts = getDailyCosts(period, filter)
+        stats.totalPurchaseCost = getTotalPurchaseCost(period, filter)
+        stats.averagePurchaseCost = getAveragePurchaseCost(period, filter)
+        stats.numberOfPurchases = getNumberOfPurchases(period, filter)
+        stats.maxPurchaseCost = getMaxPurchaseCost(period, filter)
+        stats.minPurchaseCost = getMinPurchaseCost(period, filter)
+        stats.weekdayWithMaxPurchases = getWeekdayWithMaxPurchaseCount(period, filter)
+        stats.storeWithMaxPurchaseCount = getStoreWithMaxPurchaseCount(period, filter)
+        stats.mostPurchasedCategories = getMostPurchasedCategories(period, filter)
+        stats.purchaseDetails = getPurchaseDetails(period, filter)
 
-        return statistics
+        return stats
     }
 
     // language=RoomSql see [https://youtrack.jetbrains.com/issue/KT-13233] if the issue is resolved

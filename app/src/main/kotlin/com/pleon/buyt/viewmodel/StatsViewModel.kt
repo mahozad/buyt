@@ -4,11 +4,11 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import com.pleon.buyt.R
 import com.pleon.buyt.model.Category
-import com.pleon.buyt.repository.StatisticsRepository
+import com.pleon.buyt.repository.StatsRepository
 import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
-import com.pleon.buyt.viewmodel.StatisticsViewModel.Period.NARROW
+import com.pleon.buyt.viewmodel.StatsViewModel.Period.NARROW
 
-class StatisticsViewModel(val app: Application) : AndroidViewModel(app) {
+class StatsViewModel(val app: Application) : AndroidViewModel(app) {
 
     interface Filterer {
         fun getImgRes(): Int
@@ -28,8 +28,8 @@ class StatisticsViewModel(val app: Application) : AndroidViewModel(app) {
         WIDE(90, R.drawable.avd_period_ext_wid)
     }
 
-    private val repository = StatisticsRepository(app)
-    val statistics get() = repository.getStatistics(period.length, filter)
+    private val repository = StatsRepository(app)
+    val stats get() = repository.getStats(period.length, filter)
     var filter: Filterer = NoFilter
     var period = NARROW
         private set

@@ -16,7 +16,7 @@ import com.pleon.buyt.ui.adapter.StatsPagerAdapter
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.ui.fragment.StatDetailsFragment
 import com.pleon.buyt.ui.fragment.StatsFragment
-import com.pleon.buyt.viewmodel.StatisticsViewModel
+import com.pleon.buyt.viewmodel.StatsViewModel
 import kotlinx.android.synthetic.main.activity_stats.*
 import java.util.*
 
@@ -26,9 +26,9 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
     private lateinit var detailsFragment: StatDetailsFragment
     private lateinit var filterMenuItem: MenuItem
     private lateinit var periodMenuItemView: TextView
-    private lateinit var viewModel: StatisticsViewModel
+    private lateinit var viewModel: StatsViewModel
 
-    // Update the statistics when date changes (e.g. time changes from 23:59 to 00:00)
+    // Update the stats when date changes (e.g. time changes from 23:59 to 00:00)
     private var today = Date()
     private val timeReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -44,7 +44,7 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
 
-        viewModel = ViewModelProviders.of(this).get(StatisticsViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(StatsViewModel::class.java)
         registerReceiver(timeReceiver, IntentFilter(Intent.ACTION_TIME_TICK))
 
         val pagerAdapter = StatsPagerAdapter(this, supportFragmentManager)
@@ -97,7 +97,7 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
     }
 
     private fun updateStats() {
-        viewModel.statistics.observe(this, Observer { stats ->
+        viewModel.stats.observe(this, Observer { stats ->
             statsFragment.showStats(stats)
             detailsFragment.showStats(stats.purchaseDetails)
         })

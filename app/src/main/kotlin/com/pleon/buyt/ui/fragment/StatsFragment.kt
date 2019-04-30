@@ -15,10 +15,10 @@ import com.db.chart.renderer.AxisRenderer.LabelPosition.NONE
 import com.pleon.buyt.R
 import com.pleon.buyt.database.dto.DailyCost
 import com.pleon.buyt.database.dto.PieSlice
-import com.pleon.buyt.database.dto.Statistics
+import com.pleon.buyt.database.dto.Stats
 import com.pleon.buyt.model.Category
 import com.pleon.buyt.ui.PieChartView.Slice
-import com.pleon.buyt.viewmodel.StatisticsViewModel
+import com.pleon.buyt.viewmodel.StatsViewModel
 import kotlinx.android.synthetic.main.fragment_stats.*
 import java.text.DecimalFormat
 
@@ -27,7 +27,7 @@ private const val PIE_CHART_MAX_SLICES = 5
 class StatsFragment : Fragment(R.layout.fragment_stats) {
 
     @ColorRes private var pieBgColor: Int = 0 // This color varies based on the app theme
-    private lateinit var viewModel: StatisticsViewModel
+    private lateinit var viewModel: StatsViewModel
     private val priceFormat = DecimalFormat("#,###")
     private val pieSliceColors = intArrayOf(0xffC1B435.toInt(), 0xff2DA579.toInt(),
             0xff2D71A5.toInt(), 0xffB53145.toInt(), 0xff909090.toInt())
@@ -35,7 +35,7 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
 //            0xff2DA579.toInt(), 0xff2D38A5.toInt(), 0xffA62D98.toInt())
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
-        viewModel = ViewModelProviders.of(activity!!).get(StatisticsViewModel::class.java)
+        viewModel = ViewModelProviders.of(activity!!).get(StatsViewModel::class.java)
 
         val typedValue = TypedValue()
         context!!.theme.resolveAttribute(R.attr.pieChartBackgroundColor, typedValue, true)
@@ -47,7 +47,7 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
         pieChart.setAnimDuration(480)
     }
 
-    fun showStats(stats: Statistics) {
+    fun showStats(stats: Stats) {
         showLineChart(stats.dailyCosts!!)
         showPieChart(stats.mostPurchasedCategories)
 
