@@ -121,7 +121,7 @@ class AddItemFragment : Fragment(R.layout.fragment_add_item),
         unitBtns = arrayOf(btn1, btn2, btn3)
         setColorOfAllUnits(colorUnfocused) // because sometimes the color is not right
 
-        setHasOptionsMenu(true) // for the onCreateOptionsMenu() method to be called
+        setHasOptionsMenu(true) // for onCreateOptionsMenu() to be called
 
         // Setup auto complete for item name
         viewModel.itemNameCats.observe(viewLifecycleOwner, Observer { nameCats ->

@@ -34,16 +34,15 @@ class StoresFragment : Fragment(R.layout.fragment_store_list), ItemTouchHelperLi
     private lateinit var sortMenuItemView: TextView
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
-        setHasOptionsMenu(true)
+        setHasOptionsMenu(true) // for onCreateOptionsMenu() to be called
 
         viewModel = ViewModelProviders.of(this).get(StoresViewModel::class.java)
-        // In fragments use getViewLifecycleOwner() as owner argument
         viewModel.storeDetails.observe(viewLifecycleOwner, Observer { adapter.storeDetails = it })
+        adapter = StoresAdapter(context!!).also { recyclerView.adapter = it }
 
         // for swipe-to-delete of store
         val touchHelperCallback = TouchHelperCallback(this)
         ItemTouchHelper(touchHelperCallback).attachToRecyclerView(recyclerView)
-        adapter = StoresAdapter(context!!).also { recyclerView.adapter = it }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
