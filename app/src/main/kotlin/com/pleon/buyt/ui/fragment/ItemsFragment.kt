@@ -74,11 +74,11 @@ class ItemsFragment : Fragment(R.layout.fragment_item_list), ItemTouchHelperList
                 onDismiss = { viewModel.deleteItem(item) })
     }
 
-    /**
-     * From Android 3.0 Honeycomb on, it is guaranteed that this method is called before
-     * the app process is killed. Also the onPause() method should be kept as
-     * light as possible so this method is the preferred place to update items.
-     */
+    ///**
+    // * From Android 3.0 Honeycomb on, it is guaranteed that this method is called before
+    // * the app process is killed. Also the onPause() method should be kept as
+    // * light as possible so this method is the preferred place to update items.
+    // */
     // override fun onStop() {
     //     super.onStop()
     //     if (itemsReordered) {
