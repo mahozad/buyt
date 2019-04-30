@@ -5,8 +5,8 @@ import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
 import com.pleon.buyt.database.dto.StoreDetail
 import com.pleon.buyt.model.Store
-import com.pleon.buyt.viewmodel.StoreListViewModel.Sort
-import com.pleon.buyt.viewmodel.StoreListViewModel.Sort.*
+import com.pleon.buyt.viewmodel.StoresViewModel.Sort
+import com.pleon.buyt.viewmodel.StoresViewModel.Sort.*
 
 @Dao
 interface StoreDao {

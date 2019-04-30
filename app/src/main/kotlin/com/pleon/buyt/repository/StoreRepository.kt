@@ -6,7 +6,7 @@ import com.pleon.buyt.database.SingleLiveEvent
 import com.pleon.buyt.database.dto.StoreDetail
 import com.pleon.buyt.database.getDatabase
 import com.pleon.buyt.model.Store
-import com.pleon.buyt.viewmodel.StoreListViewModel.Sort
+import com.pleon.buyt.viewmodel.StoresViewModel.Sort
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 

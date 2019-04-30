@@ -19,7 +19,7 @@ import com.pleon.buyt.model.Store
 import com.pleon.buyt.ui.TouchHelperCallback
 import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener
 import com.pleon.buyt.ui.adapter.StoreListAdapter
-import com.pleon.buyt.viewmodel.StoreListViewModel
+import com.pleon.buyt.viewmodel.StoresViewModel
 import kotlinx.android.synthetic.main.activity_stores.*
 import kotlinx.android.synthetic.main.fragment_store_list.*
 
@@ -27,17 +27,18 @@ import kotlinx.android.synthetic.main.fragment_store_list.*
  * Mandatory empty constructor for the fragment manager to instantiate the
  * fragment (e.g. upon screen orientation changes).
  */
-class StoreListFragment : Fragment(R.layout.fragment_store_list), ItemTouchHelperListener {
+class StoresFragment : Fragment(R.layout.fragment_store_list), ItemTouchHelperListener {
 
-    private lateinit var viewModel: StoreListViewModel
+    private lateinit var viewModel: StoresViewModel
     private lateinit var adapter: StoreListAdapter
     private lateinit var sortMenuItemView: TextView
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
         setHasOptionsMenu(true)
 
-        viewModel = ViewModelProviders.of(this).get(StoreListViewModel::class.java)
-        updateStoresList()
+        viewModel = ViewModelProviders.of(this).get(StoresViewModel::class.java)
+        // In fragments use getViewLifecycleOwner() as owner argument
+        viewModel.storeDetails.observe(viewLifecycleOwner, Observer { adapter.storeDetails = it })
 
         // for swipe-to-delete of store
         val touchHelperCallback = TouchHelperCallback(this)
@@ -45,17 +46,10 @@ class StoreListFragment : Fragment(R.layout.fragment_store_list), ItemTouchHelpe
         adapter = StoreListAdapter(context!!).also { recyclerView.adapter = it }
     }
 
-    /**
-     * In fragments use getViewLifecycleOwner() as owner argument
-     */
-    private fun updateStoresList() {
-        viewModel.storeDetails.observe(viewLifecycleOwner, Observer { adapter.storeDetails = it })
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_bottom_stores, menu)
 
-        // Setting up "Sort" action because it has custom layout
+        // Setting up "Sort" menu item because it has custom layout
         val sortMenuItem = menu.findItem(R.id.action_sort)
         sortMenuItemView = sortMenuItem.actionView as TextView
         sortMenuItemView.setOnClickListener { onOptionsItemSelected(sortMenuItem) }
@@ -63,9 +57,9 @@ class StoreListFragment : Fragment(R.layout.fragment_store_list), ItemTouchHelpe
     }
 
     private fun updateSortMenuItemView() {
-        sortMenuItemView.text = getString(R.string.menu_text_sort_prefix, getString(viewModel.sort.nameRes))
+        sortMenuItemView.text = getString(R.string.menu_text_sort_prefix, getString(viewModel.getSort().nameRes))
         sortMenuItemView.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                0, 0, viewModel.sort.imgRes, 0
+                0, 0, viewModel.getSort().imgRes, 0
         )
     }
 
@@ -73,7 +67,6 @@ class StoreListFragment : Fragment(R.layout.fragment_store_list), ItemTouchHelpe
         if (item.itemId == R.id.action_sort) {
             viewModel.toggleSort()
             updateSortMenuItemView()
-            updateStoresList()
         }
         return true
     }
@@ -86,24 +79,22 @@ class StoreListFragment : Fragment(R.layout.fragment_store_list), ItemTouchHelpe
 
         store.isFlaggedForDeletion = true
         viewModel.updateStores(listOf(store))
-        updateStoresList()
 
         // TODO: Use Anko to show snackbar
         showUndoSnackbar(store)
     }
 
-    private fun showUndoSnackbar(store: Store) { // FIXME: Duplicate method
+    // FIXME: Duplicate method
+    private fun showUndoSnackbar(store: Store) {
         val snackbar = Snackbar.make(activity!!.snbContainer, getString(R.string.snackbar_message_store_deleted, store.name), LENGTH_LONG)
         snackbar.setAction(getString(R.string.snackbar_action_undo)) {
             store.isFlaggedForDeletion = false
             viewModel.updateStores(listOf(store))
-            updateStoresList()
         }
         snackbar.addCallback(object : BaseCallback<Snackbar>() {
             override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                if (event != DISMISS_EVENT_ACTION) viewModel.deleteStore(store)
                 // If dismiss wasn't because of "UNDO" then delete the store from database
-                // (the sql query also updates position of other stores)
+                if (event != DISMISS_EVENT_ACTION) viewModel.deleteStore(store)
             }
         })
         snackbar.show()

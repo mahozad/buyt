@@ -14,6 +14,6 @@
     android:paddingTop="6dp"
     android:paddingBottom="42dp"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    tools:context=".ui.fragment.StoreListFragment"
+    tools:context=".ui.fragment.StoresFragment"
     tools:itemCount="8"
     tools:listitem="@layout/store_list_row" />
