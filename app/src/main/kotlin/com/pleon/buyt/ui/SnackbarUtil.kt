@@ -6,6 +6,12 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_LONG
 import com.pleon.buyt.R
 
+fun showSnackbar(container: View, message: Int, length: Int, action: Int = 0) {
+    val snackbar = Snackbar.make(container, message, length)
+    if (action != 0) snackbar.setAction(action) { /* to dismiss on click */ }
+    snackbar.show()
+}
+
 fun showUndoSnackbar(container: View, message: String, onUndo: () -> Unit, onDismiss: () -> Unit) {
     val snackbar = Snackbar.make(container, message, LENGTH_LONG)
 

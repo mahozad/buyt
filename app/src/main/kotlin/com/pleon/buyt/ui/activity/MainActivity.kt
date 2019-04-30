@@ -38,7 +38,6 @@ import com.getkeepsafe.taptargetview.TapTargetSequence
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_END
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.*
 import com.pleon.buyt.R
 import com.pleon.buyt.database.destroyDatabase
@@ -54,6 +53,7 @@ import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
 import com.pleon.buyt.ui.fragment.AddItemFragment
 import com.pleon.buyt.ui.fragment.BottomDrawerFragment
 import com.pleon.buyt.ui.fragment.ItemsFragment
+import com.pleon.buyt.ui.showSnackbar
 import com.pleon.buyt.viewmodel.MainViewModel
 import com.pleon.buyt.viewmodel.MainViewModel.State.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -264,7 +264,8 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
         if (isAddingItem) {
             addItemFragment.onDonePressed()
         } else if (viewModel.state == IDLE) { // act as find
-            if (itemsFragment.isCartEmpty) showSnackbar(R.string.snackbar_message_cart_empty, LENGTH_SHORT)
+            if (itemsFragment.isCartEmpty)
+                showSnackbar(snbContainer, R.string.snackbar_message_cart_empty, LENGTH_SHORT)
             else {
                 itemsFragment.clearSelectedItems() // clear items of previous purchase
                 addMenuItem.setIcon(R.drawable.avd_add_hide).apply { (icon as Animatable).start() }
@@ -273,7 +274,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
                 findLocation()
             }
         } else if (viewModel.state == SELECTING) { // act as done
-            if (itemsFragment.isSelectedEmpty) showSnackbar(R.string.snackbar_message_no_item_selected, LENGTH_SHORT)
+            if (itemsFragment.isSelectedEmpty) showSnackbar(snbContainer, R.string.snackbar_message_no_item_selected, LENGTH_SHORT)
             else buySelectedItems()
         }
     }
@@ -473,7 +474,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
                 // was not true, so this is restore from a PROCESS KILL
                 // val location = savedState.getParcelable<Location>(STATE_LOCATION)
                 // bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
-                showSnackbar(R.string.snackbar_message_start_over, LENGTH_INDEFINITE, android.R.string.ok)
+                showSnackbar(snbContainer, R.string.snackbar_message_start_over, LENGTH_INDEFINITE, android.R.string.ok)
         }
     }
 
@@ -535,7 +536,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
         viewModel.foundStores = foundStores.toMutableList()
         if (foundStores.isEmpty()) {
             if (viewModel.isFindingSkipped) {
-                showSnackbar(R.string.snackbar_message_no_store_found, LENGTH_LONG)
+                showSnackbar(snbContainer, R.string.snackbar_message_no_store_found, LENGTH_LONG)
                 viewModel.isFindingSkipped = false // Reset the flag
             } else {
                 viewModel.storeIcon = R.drawable.ic_store // to use on config change
@@ -554,14 +555,6 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
             setStoreMenuItemIcon(viewModel.foundStores)
             storeMenuItem.isVisible = true
         }
-    }
-
-    private fun showSnackbar(message: Int, length: Int, action: Int? = null) {
-        val snackbar = Snackbar.make(snbContainer, message, length)
-        if (action != null) {
-            snackbar.setAction(action) { /* to dismiss snackbar on click */ }
-        }
-        snackbar.show()
     }
 
     private fun shiftToFindingState() {
@@ -588,7 +581,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
             (bottom_bar.navigationIcon as Animatable).start()
         }
         reorderMenuItem.isVisible = false
-        bottom_bar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_END
+        bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
 
         fab.setImageResource(R.drawable.avd_find_done)
         (fab.drawable as Animatable).start()
