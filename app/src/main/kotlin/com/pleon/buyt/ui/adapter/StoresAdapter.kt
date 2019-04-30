@@ -8,9 +8,10 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.pleon.buyt.R
 import com.pleon.buyt.database.dto.StoreDetail
 import com.pleon.buyt.ui.BaseViewHolder
+import com.pleon.buyt.ui.adapter.StoresAdapter.StoreHolder
 import kotlinx.android.synthetic.main.store_list_row.view.*
 
-class StoreListAdapter(val cxt: Context) : Adapter<StoreListAdapter.StoreHolder>() {
+class StoresAdapter(val cxt: Context) : Adapter<StoreHolder>() {
 
     var storeDetails = listOf<StoreDetail>()
         set(storeDetails) {
@@ -19,8 +20,6 @@ class StoreListAdapter(val cxt: Context) : Adapter<StoreListAdapter.StoreHolder>
         }
 
     init {
-        // setHasStableIds is an optimization hint that you give to the RecyclerView
-        // and tell it "when I provide a ViewHolder, its id is unique and will not change."
         setHasStableIds(true)
     }
 
@@ -31,9 +30,7 @@ class StoreListAdapter(val cxt: Context) : Adapter<StoreListAdapter.StoreHolder>
     }
 
     override fun onBindViewHolder(holder: StoreHolder, position: Int) {
-        // if (stores != null) {
         holder.bindStore(storeDetails[position])
-        // } else: case of data not being ready yet; set a placeholder or something
     }
 
     override fun getItemCount() = storeDetails.size
@@ -42,7 +39,6 @@ class StoreListAdapter(val cxt: Context) : Adapter<StoreListAdapter.StoreHolder>
 
     fun getStore(position: Int) = storeDetails[position].store
 
-    // Adapter (and RecyclerView) work with ViewHolders instead of direct Views.
     inner class StoreHolder(view: View) : BaseViewHolder(view) {
         fun bindStore(storeDetail: StoreDetail) {
             itemView.storeIcon.setImageResource(storeDetail.store.category.storeImageRes)

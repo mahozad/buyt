@@ -18,7 +18,7 @@ import com.pleon.buyt.R
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.ui.TouchHelperCallback
 import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener
-import com.pleon.buyt.ui.adapter.StoreListAdapter
+import com.pleon.buyt.ui.adapter.StoresAdapter
 import com.pleon.buyt.viewmodel.StoresViewModel
 import kotlinx.android.synthetic.main.activity_stores.*
 import kotlinx.android.synthetic.main.fragment_store_list.*
@@ -30,7 +30,7 @@ import kotlinx.android.synthetic.main.fragment_store_list.*
 class StoresFragment : Fragment(R.layout.fragment_store_list), ItemTouchHelperListener {
 
     private lateinit var viewModel: StoresViewModel
-    private lateinit var adapter: StoreListAdapter
+    private lateinit var adapter: StoresAdapter
     private lateinit var sortMenuItemView: TextView
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
@@ -43,7 +43,7 @@ class StoresFragment : Fragment(R.layout.fragment_store_list), ItemTouchHelperLi
         // for swipe-to-delete of store
         val touchHelperCallback = TouchHelperCallback(this)
         ItemTouchHelper(touchHelperCallback).attachToRecyclerView(recyclerView)
-        adapter = StoreListAdapter(context!!).also { recyclerView.adapter = it }
+        adapter = StoresAdapter(context!!).also { recyclerView.adapter = it }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -56,19 +56,19 @@ class StoresFragment : Fragment(R.layout.fragment_store_list), ItemTouchHelperLi
         updateSortMenuItemView()
     }
 
-    private fun updateSortMenuItemView() {
-        sortMenuItemView.text = getString(R.string.menu_text_sort_prefix, getString(viewModel.getSort().nameRes))
-        sortMenuItemView.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                0, 0, viewModel.getSort().imgRes, 0
-        )
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_sort) {
             viewModel.toggleSort()
             updateSortMenuItemView()
         }
         return true
+    }
+
+    private fun updateSortMenuItemView() {
+        sortMenuItemView.text = getString(R.string.menu_text_sort_prefix, getString(viewModel.getSort().nameRes))
+        sortMenuItemView.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                0, 0, viewModel.getSort().imgRes, 0
+        )
     }
 
     override fun onMoved(oldPosition: Int, newPosition: Int) = Unit // No action needed
