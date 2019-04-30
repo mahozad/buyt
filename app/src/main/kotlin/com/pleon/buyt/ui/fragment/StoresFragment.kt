@@ -11,16 +11,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.google.android.material.snackbar.BaseTransientBottomBar.BaseCallback
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.snackbar.Snackbar.LENGTH_LONG
 import com.pleon.buyt.R
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.ui.TouchHelperCallback
 import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener
 import com.pleon.buyt.ui.adapter.StoresAdapter
+import com.pleon.buyt.ui.showUndoSnackbar
 import com.pleon.buyt.viewmodel.StoresViewModel
-import kotlinx.android.synthetic.main.activity_stores.*
 import kotlinx.android.synthetic.main.fragment_store_list.*
 
 /**
@@ -79,23 +76,12 @@ class StoresFragment : Fragment(R.layout.fragment_store_list), ItemTouchHelperLi
         store.isFlaggedForDeletion = true
         viewModel.updateStores(listOf(store))
 
-        // TODO: Use Anko to show snackbar
-        showUndoSnackbar(store)
+        showUndoSnackbar(snbContainer, getString(R.string.snackbar_message_store_deleted, store.name),
+                onUndo = { undoStoreDelete(store) }, onDismiss = { viewModel.deleteStore(store) })
     }
 
-    // FIXME: Duplicate method
-    private fun showUndoSnackbar(store: Store) {
-        val snackbar = Snackbar.make(activity!!.snbContainer, getString(R.string.snackbar_message_store_deleted, store.name), LENGTH_LONG)
-        snackbar.setAction(getString(R.string.snackbar_action_undo)) {
-            store.isFlaggedForDeletion = false
-            viewModel.updateStores(listOf(store))
-        }
-        snackbar.addCallback(object : BaseCallback<Snackbar>() {
-            override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                // If dismiss wasn't because of "UNDO" then delete the store from database
-                if (event != DISMISS_EVENT_ACTION) viewModel.deleteStore(store)
-            }
-        })
-        snackbar.show()
+    private fun undoStoreDelete(store: Store) {
+        store.isFlaggedForDeletion = false
+        viewModel.updateStores(listOf(store))
     }
 }

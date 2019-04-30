@@ -1,19 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- "paddingBottom" is for the last item (also set "clipToPadding" to "false" so children are not clipped) -->
-
-<!-- To remove scroll glow when at the end of the list, set "android:overScrollMode" to "never" -->
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/recyclerView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clipToPadding="false"
-    android:overScrollMode="never"
-    android:paddingTop="6dp"
-    android:paddingBottom="42dp"
-    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    tools:context=".ui.fragment.StoresFragment"
-    tools:itemCount="8"
-    tools:listitem="@layout/store_list_row" />
+    android:layout_height="match_parent">
+
+    <!-- "paddingBottom" is for the last item (also set "clipToPadding" to "false" so children are not clipped) -->
+    <!-- To remove scroll glow when at the end of the list, set "android:overScrollMode" to "never" -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingTop="6dp"
+        android:paddingBottom="42dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:context=".ui.fragment.StoresFragment"
+        tools:itemCount="8"
+        tools:listitem="@layout/store_list_row" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/snbContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="86dp" />
+
+</FrameLayout>

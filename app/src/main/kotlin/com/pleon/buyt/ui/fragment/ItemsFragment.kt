@@ -7,9 +7,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.google.android.material.snackbar.BaseTransientBottomBar.BaseCallback
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.snackbar.Snackbar.LENGTH_LONG
 import com.google.android.material.textfield.TextInputLayout
 import com.pleon.buyt.R
 import com.pleon.buyt.model.Category
@@ -17,8 +14,8 @@ import com.pleon.buyt.model.Item
 import com.pleon.buyt.ui.TouchHelperCallback
 import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener
 import com.pleon.buyt.ui.adapter.ItemListAdapter
+import com.pleon.buyt.ui.showUndoSnackbar
 import com.pleon.buyt.viewmodel.MainViewModel
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_item_list.*
 import java.util.*
 import kotlin.Comparator
@@ -76,23 +73,13 @@ class ItemsFragment : Fragment(R.layout.fragment_item_list), ItemTouchHelperList
         item.isFlaggedForDeletion = true
         viewModel.updateItems(listOf(item))
 
-        showUndoSnackbar(item)
+        showUndoSnackbar(snbContainer, getString(R.string.snackbar_message_item_deleted, item.name),
+                onUndo = { undoItemDelete(item) }, onDismiss = { viewModel.deleteItem(item) })
     }
 
-    private fun showUndoSnackbar(item: Item) {
-        val snackbar = Snackbar.make(activity!!.snbContainer, getString(R.string.snackbar_message_item_deleted, item.name), LENGTH_LONG)
-        snackbar.setAction(getString(R.string.snackbar_action_undo)) {
-            item.isFlaggedForDeletion = false
-            viewModel.updateItems(listOf(item))
-        }
-        snackbar.addCallback(object : BaseCallback<Snackbar>() {
-            override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                if (event != DISMISS_EVENT_ACTION) viewModel.deleteItem(item)
-                // If dismiss wasn't because of "UNDO" then delete the item from database
-                // (the sql query also updates position of other items)
-            }
-        })
-        snackbar.show()
+    private fun undoItemDelete(item: Item) {
+        item.isFlaggedForDeletion = false
+        viewModel.updateItems(listOf(item))
     }
 
     /**
@@ -100,13 +87,13 @@ class ItemsFragment : Fragment(R.layout.fragment_item_list), ItemTouchHelperList
      * the app process is killed. Also the onPause() method should be kept as
      * light as possible so this method is the preferred place to update items.
      */
-//    override fun onStop() {
-//        super.onStop()
-//        if (itemsReordered) {
-//            viewModel.updateItems(adapter.items)
-//            itemsReordered = false
-//        }
-//    }
+    // override fun onStop() {
+    //     super.onStop()
+    //     if (itemsReordered) {
+    //         viewModel.updateItems(adapter.items)
+    //         itemsReordered = false
+    //     }
+    // }
 
     fun toggleEditMode() {
         adapter.toggleEditMode()
