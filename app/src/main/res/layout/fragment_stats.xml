@@ -8,9 +8,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context=".ui.fragment.StatsFragment">
@@ -71,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="214dp"
                 android:layout_marginStart="1dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginEnd="1dp" />
 
             <TextView
@@ -89,7 +87,8 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
                 android:visibility="gone"
-                app:srcCompat="@drawable/empty_pie" />
+                app:srcCompat="@drawable/empty_pie"
+                tools:ignore="ContentDescription" />
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -122,9 +121,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="TextView"
                     app:layout_constraintBaseline_toBaselineOf="@+id/textView2"
-                    app:layout_constraintStart_toEndOf="@+id/barrier" />
+                    app:layout_constraintStart_toEndOf="@+id/barrier"
+                    tools:text="TextView" />
 
                 <TextView
                     android:id="@+id/textView4"
@@ -151,20 +150,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="TextView"
                     android:textColor="#C03449"
                     app:layout_constraintBaseline_toBaselineOf="@+id/textView4"
-                    app:layout_constraintStart_toEndOf="@+id/barrier" />
+                    app:layout_constraintStart_toEndOf="@+id/barrier"
+                    tools:text="TextView" />
 
                 <TextView
                     android:id="@+id/textView7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="TextView"
                     android:textColor="#2D71A5"
                     app:layout_constraintBaseline_toBaselineOf="@+id/textView5"
-                    app:layout_constraintStart_toEndOf="@+id/barrier" />
+                    app:layout_constraintStart_toEndOf="@+id/barrier"
+                    tools:text="TextView" />
 
                 <TextView
                     android:id="@+id/textView8"
@@ -189,9 +188,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="TextView"
                     app:layout_constraintBaseline_toBaselineOf="@+id/textView8"
-                    app:layout_constraintStart_toEndOf="@+id/barrier" />
+                    app:layout_constraintStart_toEndOf="@+id/barrier"
+                    tools:text="TextView" />
 
                 <TextView
                     android:id="@+id/textView12"
@@ -208,10 +207,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="TextView"
                     android:textColor="#C1B435"
                     app:layout_constraintBaseline_toBaselineOf="@+id/textView12"
-                    app:layout_constraintStart_toEndOf="@+id/barrier" />
+                    app:layout_constraintStart_toEndOf="@+id/barrier"
+                    tools:text="TextView" />
 
                 <TextView
                     android:id="@+id/textView16"
@@ -230,9 +229,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="TextView"
                     app:layout_constraintBaseline_toBaselineOf="@+id/textView16"
-                    app:layout_constraintStart_toEndOf="@+id/barrier" />
+                    app:layout_constraintStart_toEndOf="@+id/barrier"
+                    tools:text="TextView" />
 
                 <TextView
                     android:id="@+id/textView15"
@@ -249,9 +248,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="TextView"
                     app:layout_constraintBaseline_toBaselineOf="@+id/textView15"
-                    app:layout_constraintStart_toEndOf="@+id/barrier" />
+                    app:layout_constraintStart_toEndOf="@+id/barrier"
+                    tools:text="TextView" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
