@@ -137,13 +137,17 @@ dependencies {
     debugImplementation("com.amitshekhar.android:debug-db:1.0.6")
 
     // Dependencies for local unit tests (JUnit 5 framework)
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.4.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.4.2")
+    testImplementation("org.mockito:mockito-core:2.27.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:2.27.0")
     // Dependencies for instrumented tests
     androidTestImplementation("androidx.test.ext:junit:1.1.1-alpha04")
     androidTestImplementation("androidx.test:runner:1.2.0-alpha04")
     androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
+    androidTestImplementation("org.mockito:mockito-android:2.27.0")
+    androidTestImplementation("org.mockito:mockito-junit-jupiter:2.27.0")
     androidTestImplementation("androidx.room:room-testing:2.1.0-alpha07")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0-alpha04")
     androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.0.0")
