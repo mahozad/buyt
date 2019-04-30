@@ -136,14 +136,16 @@ dependencies {
     // Another library for debugging android databases and shared preferences
     debugImplementation("com.amitshekhar.android:debug-db:1.0.6")
 
+    // Dependencies for local unit tests (JUnit 5 framework)
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.4.2")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.4.2")
-    androidTestImplementation("androidx.room:room-testing:2.1.0-alpha06")
-    androidTestImplementation("androidx.test.ext:junit:1.1.0")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.1.1")
-    androidTestImplementation("androidx.test:runner:1.1.1")
+    // Dependencies for instrumented tests
+    androidTestImplementation("androidx.test.ext:junit:1.1.1-alpha04")
+    androidTestImplementation("androidx.test:runner:1.2.0-alpha04")
     androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
+    androidTestImplementation("androidx.room:room-testing:2.1.0-alpha07")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0-alpha04")
     androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.0.0")
     androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.0.0")
 }
