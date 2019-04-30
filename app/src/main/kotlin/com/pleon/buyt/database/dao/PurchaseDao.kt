@@ -12,7 +12,7 @@ import com.pleon.buyt.database.dto.Stats
 import com.pleon.buyt.model.Category
 import com.pleon.buyt.model.Purchase
 import com.pleon.buyt.model.Store
-import com.pleon.buyt.viewmodel.StatsViewModel.Filterer
+import com.pleon.buyt.viewmodel.StatsViewModel.Filter
 import java.text.DateFormat
 import java.util.*
 
@@ -32,7 +32,7 @@ interface PurchaseDao {
      * The transaction will fail when an exception is thrown in the method body.
      */
     @Transaction
-    fun getStats(period: Int, filter: Filterer): Stats {
+    fun getStats(period: Int, filter: Filter): Stats {
         val filter = filter.getName()
         val period = period - 1 // The queries return one extra day so do period-1
         val stats = Stats()

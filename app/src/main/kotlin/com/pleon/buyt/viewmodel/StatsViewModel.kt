@@ -10,13 +10,13 @@ import com.pleon.buyt.viewmodel.StatsViewModel.Period.NARROW
 
 class StatsViewModel(val app: Application) : AndroidViewModel(app) {
 
-    interface Filterer {
+    interface Filter {
         fun getImgRes(): Int
         fun getName(): String
     }
 
     // Special Case Design Pattern
-    object NoFilter : Filterer {
+    object NoFilter : Filter {
         override fun getImgRes() = R.drawable.ic_filter
         override fun getName() = "NoFilter"
     }
@@ -30,7 +30,7 @@ class StatsViewModel(val app: Application) : AndroidViewModel(app) {
 
     private val repository = StatsRepository(app)
     val stats get() = repository.getStats(period.length, filter)
-    var filter: Filterer = NoFilter
+    var filter: Filter = NoFilter
     var period = NARROW
         private set
     var filterList = initializeFilters()
@@ -50,7 +50,7 @@ class StatsViewModel(val app: Application) : AndroidViewModel(app) {
         period = Period.values()[index]
     }
 
-    fun getFilterByString(str: String): Filterer {
+    fun getFilterByString(str: String): Filter {
         for (cat in Category.values()) if (app.getString(cat.nameRes) == str) return cat
         return NoFilter
     }

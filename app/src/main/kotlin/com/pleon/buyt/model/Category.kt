@@ -1,12 +1,12 @@
 package com.pleon.buyt.model
 
 import com.pleon.buyt.R
-import com.pleon.buyt.viewmodel.StatsViewModel.Filterer
+import com.pleon.buyt.viewmodel.StatsViewModel.Filter
 
 // TODO: store the enum as a separate table in the database.
 // see [https://softwareengineering.stackexchange.com/a/305153/311271]
 enum class Category(val nameRes: Int, val imageRes: Int,
-                    val storeNameRes: Int, val storeImageRes: Int) : Filterer {
+                    val storeNameRes: Int, val storeImageRes: Int) : Filter {
 
     GROCERY(R.string.item_cat_grocery, R.drawable.ic_item_grocery, R.string.store_cat_grocery_store, R.drawable.ic_store_grocery),
     BREAD(R.string.item_cat_bread, R.drawable.ic_item_bread, R.string.store_cat_bakery, R.drawable.ic_store_bakery),
