@@ -46,6 +46,7 @@ import com.pleon.buyt.model.Store
 import com.pleon.buyt.service.ACTION_LOCATION_EVENT
 import com.pleon.buyt.service.EXTRA_LOCATION
 import com.pleon.buyt.service.GpsService
+import com.pleon.buyt.ui.SnackbarUtil.showSnackbar
 import com.pleon.buyt.ui.dialog.*
 import com.pleon.buyt.ui.dialog.Callback
 import com.pleon.buyt.ui.dialog.CreateStoreDialogFragment.CreateStoreListener
@@ -53,7 +54,6 @@ import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
 import com.pleon.buyt.ui.fragment.AddItemFragment
 import com.pleon.buyt.ui.fragment.BottomDrawerFragment
 import com.pleon.buyt.ui.fragment.ItemsFragment
-import com.pleon.buyt.ui.showSnackbar
 import com.pleon.buyt.viewmodel.MainViewModel
 import com.pleon.buyt.viewmodel.MainViewModel.State.*
 import kotlinx.android.synthetic.main.activity_main.*
