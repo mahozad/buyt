@@ -29,16 +29,17 @@ interface ItemDao {
     class NameCat(val name: String, val category: String)
 
     @Transaction
-    fun insertItem(item: Item) {
-        val itemId = insert(item)
+    fun insertItem(item: Item): Long {
+        val itemId = insertPRIVATE(item)
         if (!item.isBought) updateItemPosition(itemId) // no need to update position of purchased item
+        return itemId
     }
 
     /**
      * Do NOT call this function; It is a private member of the interface. Call [insertItem] instead.
      */
     @Insert(onConflict = REPLACE)
-    fun insert(item: Item): Long
+    fun insertPRIVATE(item: Item): Long
 
     @Query("UPDATE Item SET position = (SELECT MAX(position) + 1 FROM Item) WHERE itemId = :itemId")
     fun updateItemPosition(itemId: Long)
@@ -50,7 +51,7 @@ interface ItemDao {
 
     @Transaction
     fun deleteItem(item: Item) {
-        delete(item)
+        deletePRIVATE(item)
         updateItemPositions(item.position)
     }
 
@@ -58,7 +59,7 @@ interface ItemDao {
      * Do NOT call this function; It is a private member of the interface. Call [deleteItem] instead.
      */
     @Delete
-    fun delete(item: Item)
+    fun deletePRIVATE(item: Item)
 
     @Query("UPDATE Item SET position = position - 1 WHERE position > :itemPosition")
     fun updateItemPositions(itemPosition: Int)
