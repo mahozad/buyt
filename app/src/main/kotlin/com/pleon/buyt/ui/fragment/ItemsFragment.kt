@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.android.material.textfield.TextInputLayout
 import com.pleon.buyt.R
 import com.pleon.buyt.model.Category
-import com.pleon.buyt.model.Item
 import com.pleon.buyt.ui.TouchHelperCallback
 import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener
 import com.pleon.buyt.ui.adapter.ItemListAdapter
@@ -67,20 +66,12 @@ class ItemsFragment : Fragment(R.layout.fragment_item_list), ItemTouchHelperList
     }
 
     override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
-        // Backup the item for undo purpose
         val item = adapter.getItem(viewHolder.adapterPosition)
-
-        item.isFlaggedForDeletion = true
-        viewModel.updateItems(listOf(item))
+        viewModel.flagItemForDeletion(item)
 
         showUndoSnackbar(snbContainer, getString(R.string.snackbar_message_item_deleted, item.name),
-                onUndo = { undoDeletedItem(item) },
+                onUndo = { viewModel.restoreDeletedItem(item) },
                 onDismiss = { viewModel.deleteItem(item) })
-    }
-
-    private fun undoDeletedItem(item: Item) {
-        item.isFlaggedForDeletion = false
-        viewModel.updateItems(listOf(item))
     }
 
     /**

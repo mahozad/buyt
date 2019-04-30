@@ -58,7 +58,17 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun updateItems(items: Collection<Item>) = repository.updateItems(items)
 
+    fun flagItemForDeletion(item: Item) {
+        item.isFlaggedForDeletion = true
+        updateItems(listOf(item))
+    }
+
     fun deleteItem(item: Item) = repository.deleteItem(item)
+
+    fun restoreDeletedItem(item: Item) {
+        item.isFlaggedForDeletion = false
+        updateItems(listOf(item))
+    }
 
     fun resetFoundStores() = foundStores.clear()
 

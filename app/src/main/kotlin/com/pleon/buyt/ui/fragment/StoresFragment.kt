@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.pleon.buyt.R
-import com.pleon.buyt.model.Store
 import com.pleon.buyt.ui.TouchHelperCallback
 import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener
 import com.pleon.buyt.ui.adapter.StoresAdapter
@@ -70,19 +69,11 @@ class StoresFragment : Fragment(R.layout.fragment_store_list), ItemTouchHelperLi
     override fun onMoved(oldPosition: Int, newPosition: Int) = Unit // No action needed
 
     override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
-        // Backup the store for undo purpose
         val store = adapter.getStore(viewHolder.adapterPosition)
-
-        store.isFlaggedForDeletion = true
-        viewModel.updateStores(listOf(store))
+        viewModel.flagStoreForDeletion(store)
 
         showUndoSnackbar(snbContainer, getString(R.string.snackbar_message_store_deleted, store.name),
-                onUndo = { undoDeletedStore(store) },
+                onUndo = { viewModel.restoreDeletedStore(store) },
                 onDismiss = { viewModel.deleteStore(store) })
-    }
-
-    private fun undoDeletedStore(store: Store) {
-        store.isFlaggedForDeletion = false
-        viewModel.updateStores(listOf(store))
     }
 }

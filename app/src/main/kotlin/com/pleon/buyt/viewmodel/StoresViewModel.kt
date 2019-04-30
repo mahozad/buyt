@@ -39,8 +39,18 @@ class StoresViewModel(application: Application) : AndroidViewModel(application) 
         sortLiveData.value = sortLiveData.value // trigger switchMap
     }
 
+    fun flagStoreForDeletion(store: Store) {
+        store.isFlaggedForDeletion = true
+        updateStores(listOf(store))
+    }
+
     fun deleteStore(store: Store) {
         repository.deleteStore(store)
         sortLiveData.value = sortLiveData.value // trigger switchMap
+    }
+
+    fun restoreDeletedStore(store: Store) {
+        store.isFlaggedForDeletion = false
+        updateStores(listOf(store))
     }
 }
