@@ -1,25 +1,26 @@
-package com.pleon.buyt
-
+package com.pleon.buyt.database
 
 import androidx.room.Room
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.pleon.buyt.database.AppDatabase
 import com.pleon.buyt.database.dao.ItemDao
+import com.pleon.buyt.model.Category
 import com.pleon.buyt.model.Item
-import org.junit.After
-import org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.runner.RunWith
+import org.junit.Assert
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
-// Instrumented test, which will execute on an Android device.
-@RunWith(AndroidJUnit4::class)
-class DatabaseTest {
+/**
+ * Instrumentation tests execute only on API level 26 (Android 8.0) and above.
+ * This is because JUnit 5 requires an environment built on top of Java 8.
+ * Therefore these tests are just ignored on older API levels.
+ */
+class AppDatabaseTest {
 
     private var database: AppDatabase? = null
     private var itemDao: ItemDao? = null
 
-    @Before
+    @BeforeEach
     fun setUp() {
         // Context of the app under test.
         val context = InstrumentationRegistry.getInstrumentation().context
@@ -27,16 +28,17 @@ class DatabaseTest {
         itemDao = database!!.itemDao()
     }
 
+    @Test
     fun addOneItem() {
-        val item = Item("Chocolate", "1225", 1, "None")
+        val item = Item("Chocolate", Item.Quantity(1, Item.Quantity.Unit.UNIT), Category.GROCERY, isUrgent = false, isBought = false)
 
         itemDao!!.insert(item)
 
         val itemCount = itemDao!!.getCount()
-        assertEquals(1, itemCount)
+        Assert.assertEquals(2, itemCount)
     }
 
-    @After
+    @AfterEach
     fun tearDown() {
         database!!.close()
     }

@@ -3,6 +3,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-android-extensions")
     id("kotlin-kapt")
+    id("de.mannodermaus.android-junit5")
 }
 
 android {
@@ -43,6 +44,12 @@ android {
             }
         }
 
+        /* For JUnit 5, Make sure to use the AndroidJUnitRunner, or a subclass of it.
+         * This requires a dependency on androidx.test:runner */
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        // Connect JUnit 5 to the runner
+        testInstrumentationRunnerArgument("runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder")
+
         /* The Gradle resource shrinker removes only resources that are not referenced by your app code,
          * which means it will not remove alternative resources for different device configurations.
          * If necessary, you can use the Android Gradle plugin's resConfigs property to
@@ -51,9 +58,13 @@ android {
          * Google Play Services), then your APK includes all translated language strings for the messages
          * in those libraries whether the rest of your app is translated to the same languages or not.
          * If you'd like to keep only the languages that your app officially supports, you can specify those
-         * languages using the resConfig property. Any resources for languages not specified are removed.
-         */
+         * languages using the resConfig property. Any resources for languages not specified are removed. */
         resConfigs("en", "fa")
+    }
+
+    // JUnit 5 will bundle in files with identical paths; exclude them
+    packagingOptions {
+        exclude("META-INF/LICENSE*")
     }
 
     lintOptions {
@@ -125,8 +136,14 @@ dependencies {
     // Another library for debugging android databases and shared preferences
     debugImplementation("com.amitshekhar.android:debug-db:1.0.6")
 
-    testImplementation("junit:junit:4.12")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.4.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.4.2")
     androidTestImplementation("androidx.room:room-testing:2.1.0-alpha06")
     androidTestImplementation("androidx.test.ext:junit:1.1.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.1.1")
+    androidTestImplementation("androidx.test:runner:1.1.1")
+    androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
+    androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.0.0")
+    androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.0.0")
 }
