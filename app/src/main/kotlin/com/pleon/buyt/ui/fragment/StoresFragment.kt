@@ -77,10 +77,11 @@ class StoresFragment : Fragment(R.layout.fragment_store_list), ItemTouchHelperLi
         viewModel.updateStores(listOf(store))
 
         showUndoSnackbar(snbContainer, getString(R.string.snackbar_message_store_deleted, store.name),
-                onUndo = { undoStoreDelete(store) }, onDismiss = { viewModel.deleteStore(store) })
+                onUndo = { undoDeletedStore(store) },
+                onDismiss = { viewModel.deleteStore(store) })
     }
 
-    private fun undoStoreDelete(store: Store) {
+    private fun undoDeletedStore(store: Store) {
         store.isFlaggedForDeletion = false
         viewModel.updateStores(listOf(store))
     }
