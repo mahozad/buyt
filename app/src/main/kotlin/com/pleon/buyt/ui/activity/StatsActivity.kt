@@ -22,18 +22,18 @@ import java.util.*
 
 class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
 
+    private lateinit var viewModel: StatsViewModel
     private lateinit var statsFragment: StatsFragment
     private lateinit var detailsFragment: StatDetailsFragment
     private lateinit var filterMenuItem: MenuItem
     private lateinit var periodMenuItemView: TextView
-    private lateinit var viewModel: StatsViewModel
 
     // Update the stats when date changes (e.g. time changes from 23:59 to 00:00)
     private var today = Date()
     private val timeReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
+        override fun onReceive(cxt: Context, intent: Intent) {
             if (Date().date != today.date) {
-                updateStats()
+                viewModel.triggerUpdate()
                 today = Date()
             }
         }
@@ -45,16 +45,18 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
         super.onCreate(savedState)
 
         viewModel = ViewModelProviders.of(this).get(StatsViewModel::class.java)
+        viewModel.stats.observe(this, Observer { stats ->
+            statsFragment.showStats(stats)
+            detailsFragment.showStats(stats.purchaseDetails)
+        })
+
         registerReceiver(timeReceiver, IntentFilter(Intent.ACTION_TIME_TICK))
 
         val pagerAdapter = StatsPagerAdapter(this, supportFragmentManager)
         viewPager.adapter = pagerAdapter
         tabLayout.setupWithViewPager(viewPager)
-        // tabLayout.getTabAt(0)?.setIcon(R.drawable.ic_cart)
         statsFragment = pagerAdapter.instantiateItem(viewPager, 0) as StatsFragment
         detailsFragment = pagerAdapter.instantiateItem(viewPager, 1) as StatDetailsFragment
-
-        updateStats()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -63,7 +65,7 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
         filterMenuItem = menu.findItem(R.id.action_filter)
         filterMenuItem.setIcon(viewModel.filter.getImgRes())
 
-        // Setting up "change period" action because it has custom layout
+        // Setting up "change period" menu item because it has custom layout
         val periodMenuItem = menu.findItem(R.id.action_toggle_period)
         periodMenuItemView = periodMenuItem.actionView as TextView
         periodMenuItemView.setOnClickListener { onOptionsItemSelected(periodMenuItem) }
@@ -89,25 +91,15 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
             R.id.action_toggle_period -> {
                 viewModel.togglePeriod()
                 updatePeriodMenuItemView()
-                updateStats()
             }
             android.R.id.home -> finish()
         }
         return true
     }
 
-    private fun updateStats() {
-        viewModel.stats.observe(this, Observer { stats ->
-            statsFragment.showStats(stats)
-            detailsFragment.showStats(stats.purchaseDetails)
-        })
-    }
-
     override fun onSelected(index: Int) {
-        val filter = viewModel.filterList[index]
-        filterMenuItem.setIcon(filter.imgRes)
-        viewModel.filter = viewModel.getFilterByString(filter.name)
-        updateStats()
+        viewModel.setFilter(index)
+        filterMenuItem.setIcon(viewModel.filter.getImgRes())
     }
 
     override fun onDestroy() {
