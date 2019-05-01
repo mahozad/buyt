@@ -124,7 +124,7 @@ class AddItemFragment : Fragment(R.layout.fragment_add_item),
         setHasOptionsMenu(true) // for onCreateOptionsMenu() to be called
 
         // Setup auto complete for item name
-        viewModel.itemNameCats.observe(viewLifecycleOwner, Observer { nameCats ->
+        viewModel.getItemNameCats().observe(viewLifecycleOwner, Observer { nameCats ->
             this.nameCats = nameCats
             val adapter = ArrayAdapter<String>(context!!,
                     android.R.layout.simple_dropdown_item_1line, nameCats.keys.toList())

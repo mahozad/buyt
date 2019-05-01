@@ -2,16 +2,34 @@ package com.pleon.buyt.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import com.pleon.buyt.R
 import com.pleon.buyt.model.Category.GROCERY
 import com.pleon.buyt.model.Item
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.repository.AddItemRepository
+import java.io.InputStreamReader
 import java.util.*
 
-class AddItemViewModel(application: Application) : AndroidViewModel(application) {
+class AddItemViewModel(app: Application) : AndroidViewModel(app) {
 
-    private val repository = AddItemRepository(application)
-    val itemNameCats get() = repository.getItemNameCats()
+    private val repository = AddItemRepository(app)
+    private val nameCatsMediator = MediatorLiveData<Map<String, String>>()
+    private val defaultItemNameCats by lazy {
+        InputStreamReader(app.resources.openRawResource(R.raw.item_names)).readLines()
+                .associateBy({ it.substringBefore(':') }, { it.substringAfter(':') })
+                .toMutableMap()
+    }
+
+    fun getItemNameCats(): LiveData<Map<String, String>> {
+        nameCatsMediator.addSource(repository.getItemNameCats()) { dbNameCats ->
+            // Do NOT reorder the operands in the following + operation
+            nameCatsMediator.value = defaultItemNameCats + dbNameCats
+        }
+        return nameCatsMediator
+    }
+
     var category = GROCERY
     var storeList: List<Store>? = null
     var store: Store? = null
