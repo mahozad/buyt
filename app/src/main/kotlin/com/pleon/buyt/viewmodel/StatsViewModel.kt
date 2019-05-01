@@ -10,6 +10,13 @@ import com.pleon.buyt.viewmodel.StatsViewModel.Period.NARROW
 
 class StatsViewModel(val app: Application) : AndroidViewModel(app) {
 
+    enum class Period(var length: Int, val imageRes: Int) {
+        NARROW(7, R.drawable.avd_period_wid_nar),
+        MEDIUM(15, R.drawable.avd_period_nar_med),
+        EXTENDED(30, R.drawable.avd_period_med_ext),
+        WIDE(90, R.drawable.avd_period_ext_wid)
+    }
+
     interface Filter {
         fun getImgRes(): Int
         fun getName(): String
@@ -21,20 +28,13 @@ class StatsViewModel(val app: Application) : AndroidViewModel(app) {
         override fun getName() = "NoFilter"
     }
 
-    enum class Period(var length: Int, val imageRes: Int) {
-        NARROW(7, R.drawable.avd_period_wid_nar),
-        MEDIUM(15, R.drawable.avd_period_nar_med),
-        EXTENDED(30, R.drawable.avd_period_med_ext),
-        WIDE(90, R.drawable.avd_period_ext_wid)
-    }
-
-    private val repository = StatsRepository(app)
     val stats get() = repository.getStats(period.length, filter)
     var filter: Filter = NoFilter
-    var period = NARROW
-        private set
     var filterList = initializeFilters()
         private set
+    var period = NARROW
+        private set
+    private val repository = StatsRepository(app)
 
     private fun initializeFilters(): ArrayList<SelectDialogRow> {
         val filters = arrayListOf(SelectDialogRow(app.getString(R.string.no_filter), R.drawable.ic_filter))
