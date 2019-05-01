@@ -14,12 +14,14 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:overScrollMode="never"
+        android:paddingStart="6dp"
         android:paddingTop="6dp"
+        android:paddingEnd="6dp"
         android:paddingBottom="42dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:context=".ui.fragment.ItemsFragment"
         tools:itemCount="6"
-        tools:listitem="@layout/item_list_row" />
+        tools:listitem="@layout/item_list_row"
+        tools:padding="4dp" />
 
     <ImageView
         android:id="@+id/emptyHint1"

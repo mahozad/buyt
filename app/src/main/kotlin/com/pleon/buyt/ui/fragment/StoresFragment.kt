@@ -9,9 +9,11 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.pleon.buyt.R
+import com.pleon.buyt.ui.ItemSpacingDecoration
 import com.pleon.buyt.ui.SnackbarUtil.showUndoSnackbar
 import com.pleon.buyt.ui.TouchHelperCallback
 import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener
@@ -35,6 +37,10 @@ class StoresFragment : Fragment(R.layout.fragment_store_list), ItemTouchHelperLi
         viewModel = ViewModelProviders.of(this).get(StoresViewModel::class.java)
         viewModel.storeDetails.observe(viewLifecycleOwner, Observer { adapter.storeDetails = it })
         adapter = StoresAdapter(context!!).also { recyclerView.adapter = it }
+        val columns = resources.getInteger(R.integer.layout_columns)
+        val isRtl = resources.getBoolean(R.bool.isRtl)
+        recyclerView.layoutManager = GridLayoutManager(context, columns)
+        recyclerView.addItemDecoration(ItemSpacingDecoration(columns, isRtl))
 
         // for swipe-to-delete of store
         val touchHelperCallback = TouchHelperCallback(this)

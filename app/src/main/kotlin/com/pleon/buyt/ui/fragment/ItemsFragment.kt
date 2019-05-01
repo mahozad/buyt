@@ -5,11 +5,13 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.android.material.textfield.TextInputLayout
 import com.pleon.buyt.R
 import com.pleon.buyt.model.Category
+import com.pleon.buyt.ui.ItemSpacingDecoration
 import com.pleon.buyt.ui.SnackbarUtil.showUndoSnackbar
 import com.pleon.buyt.ui.TouchHelperCallback
 import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener
@@ -51,6 +53,10 @@ class ItemsFragment : Fragment(R.layout.fragment_item_list), ItemTouchHelperList
         // for swipe-to-delete and drag-n-drop of item
         touchHelperCallback = TouchHelperCallback(this)
         val touchHelper = ItemTouchHelper(touchHelperCallback)
+        val columns = resources.getInteger(R.integer.layout_columns)
+        val isRtl = resources.getBoolean(R.bool.isRtl)
+        recyclerView.layoutManager = GridLayoutManager(context, columns)
+        recyclerView.addItemDecoration(ItemSpacingDecoration(columns, isRtl))
         touchHelper.attachToRecyclerView(recyclerView)
         adapter = ItemListAdapter(context!!, touchHelper).also { recyclerView.adapter = it }
     }
