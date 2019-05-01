@@ -84,17 +84,21 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_filter -> {
-                val dialog = SelectDialogFragment.newInstance(this, R.string.dialog_title_select_filter, viewModel.filterList)
-                dialog.show(supportFragmentManager, "SELECTION_DIALOG")
-            }
-            R.id.action_toggle_period -> {
-                viewModel.togglePeriod()
-                updatePeriodMenuItemView()
-            }
+            R.id.action_filter -> onFilterMenuItemClick()
+            R.id.action_toggle_period -> onTogglePeriodClick()
             android.R.id.home -> finish()
         }
         return true
+    }
+
+    private fun onFilterMenuItemClick() {
+        val dialog = SelectDialogFragment.newInstance(this, R.string.dialog_title_select_filter, viewModel.filterList)
+        dialog.show(supportFragmentManager, "SELECTION_DIALOG")
+    }
+
+    private fun onTogglePeriodClick() {
+        viewModel.togglePeriod()
+        updatePeriodMenuItemView()
     }
 
     override fun onSelected(index: Int) {
