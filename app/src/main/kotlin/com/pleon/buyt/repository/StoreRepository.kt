@@ -18,7 +18,7 @@ class StoreRepository(application: Application) {
 
     fun getStoreDetails(sort: Sort): LiveData<List<StoreDetail>> {
         doAsync {
-            val details = storeDao.getStoreDetails(sort)
+            val details = storeDao.getDetails(sort)
             uiThread { storeDetails.value = details }
         }
         return storeDetails

@@ -27,7 +27,7 @@ class MainRepository(application: Application) { // TODO: make this class single
 
     fun updateItems(items: Collection<Item>) = doAsync { itemDao.updateAll(items) }
 
-    fun deleteItem(item: Item) = doAsync { itemDao.deleteItem(item) }
+    fun deleteItem(item: Item) = doAsync { itemDao.delete(item) }
 
     fun buy(items: Collection<Item>, store: Store, purchaseDate: Date) {
         doAsync {
@@ -48,7 +48,7 @@ class MainRepository(application: Application) { // TODO: make this class single
 
     fun getAllStores(): LiveData<List<Store>> {
         doAsync {
-            val stores = storeDao.getAllList()
+            val stores = storeDao.getAllSync()
             uiThread { allStores.value = stores }
         }
         return allStores

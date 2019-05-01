@@ -17,13 +17,13 @@ class AddItemRepository(application: Application) {
     private val purchaseDao = getDatabase(application).purchaseDao()
     private val itemNameCats = SingleLiveEvent<Map<String, String>>()
 
-    fun addItem(item: Item) = doAsync { itemDao.insertItem(item) }
+    fun addItem(item: Item) = doAsync { itemDao.insert(item) }
 
     fun addPurchasedItem(item: Item, store: Store, purchaseDate: Date) {
         doAsync {
             val purchase = Purchase(store.storeId, purchaseDate)
             purchaseDao.insert(purchase).also { item.purchaseId = it }
-            itemDao.insertItem(item)
+            itemDao.insert(item)
         }
     }
 

@@ -9,10 +9,10 @@ import com.pleon.buyt.viewmodel.StoresViewModel.Sort
 import com.pleon.buyt.viewmodel.StoresViewModel.Sort.*
 
 @Dao
-interface StoreDao {
+abstract class StoreDao {
 
     @Transaction
-    fun getStoreDetails(sort: Sort): List<StoreDetail> {
+    open fun getDetails(sort: Sort): List<StoreDetail> {
         val sqlSortColumn = when (sort) {
             TOTAL_SPENDING -> "totalSpending"
             PURCHASE_COUNT -> "purchaseCount"
@@ -24,27 +24,27 @@ interface StoreDao {
                 "WHERE Store.isFlaggedForDeletion = 0 " +
                 "GROUP BY Store.storeId " +
                 "ORDER BY $sqlSortColumn DESC")
-        return getDetails(query)
+        return getStoreDetails(query)
     }
 
     /**
      * @RawQuery is used because dynamic parameters cannot be used in ORDER BY clauses
      */
     @RawQuery
-    fun getDetails(query: SupportSQLiteQuery): List<StoreDetail>
+    protected abstract fun getStoreDetails(query: SupportSQLiteQuery): List<StoreDetail>
 
     @Query("SELECT * FROM Store")
-    fun getAllList(): List<Store>
+    abstract fun getAllSync(): List<Store>
 
     @Query("SELECT * FROM Store WHERE :sinLat * sinLat + :cosLat * cosLat * (cosLng * :cosLng + sinLng * :sinLng) > :maxDistance")
-    fun getNearStores(sinLat: Double, cosLat: Double, sinLng: Double, cosLng: Double, maxDistance: Double): List<Store>
+    abstract fun getNearStores(sinLat: Double, cosLat: Double, sinLng: Double, cosLng: Double, maxDistance: Double): List<Store>
 
     @Insert
-    fun insert(store: Store): Long
+    abstract fun insert(store: Store): Long
 
     @Update
-    fun updateAll(stores: Collection<Store>)
+    abstract fun updateAll(stores: Collection<Store>)
 
     @Delete
-    fun delete(store: Store)
+    abstract fun delete(store: Store)
 }

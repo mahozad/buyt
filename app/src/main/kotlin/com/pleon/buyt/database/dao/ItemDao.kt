@@ -7,60 +7,52 @@ import com.pleon.buyt.model.Item
 
 // In DAOs, we specify SQL queries and associate them with method calls
 @Dao
-interface ItemDao {
+abstract class ItemDao {
 
     // language=RoomSql see [https://youtrack.jetbrains.com/issue/KT-13233] if the issue is resolved
     @Query("SELECT * FROM Item " +
             "WHERE isBought = 0 AND isFlaggedForDeletion = 0 " +
             "ORDER BY isUrgent DESC, position ASC")
-    fun getAll(): LiveData<List<Item>>
+    abstract fun getAll(): LiveData<List<Item>>
 
     @Query("SELECT count(*) FROM Item")
-    fun getCount(): Long
+    abstract fun getCount(): Long
 
     @Transaction
-    fun getItemNamesAndCats() = getNameCats().associateBy({ it.name }, { it.category })
+    open fun getItemNamesAndCats() = getNameCats().associateBy({ it.name }, { it.category })
 
-    // PRIVATE
     @Query("SELECT name, category from item group by name")
-    fun getNameCats(): Array<NameCat>
+    protected abstract fun getNameCats(): Array<NameCat>
 
-    // PRIVATE
-    class NameCat(val name: String, val category: String)
+    protected class NameCat(val name: String, val category: String)
 
     @Transaction
-    fun insertItem(item: Item): Long {
-        val itemId = insertPRIVATE(item)
-        if (!item.isBought) updateItemPosition(itemId) // no need to update position of purchased item
+    open fun insert(item: Item): Long {
+        val itemId = insertItem(item)
+        if (!item.isBought) updatePosition(itemId) // no need to update position of purchased item
         return itemId
     }
 
-    /**
-     * Do NOT call this function; It is a private member of the interface. Call [insertItem] instead.
-     */
     @Insert(onConflict = REPLACE)
-    fun insertPRIVATE(item: Item): Long
+    protected abstract fun insertItem(item: Item): Long
 
     @Query("UPDATE Item SET position = (SELECT MAX(position) + 1 FROM Item) WHERE itemId = :itemId")
-    fun updateItemPosition(itemId: Long)
+    protected abstract fun updatePosition(itemId: Long)
 
     // FIXME: very heavy operation. @Update method, updates all fields of an entity
     // so this method updates all fields of all of the given items!
     @Update
-    fun updateAll(items: Collection<Item>)
+    abstract fun updateAll(items: Collection<Item>)
 
     @Transaction
-    fun deleteItem(item: Item) {
-        deletePRIVATE(item)
-        updateItemPositions(item.position)
+    open fun delete(item: Item) {
+        deleteItem(item)
+        updateOtherPositions(item.position)
     }
 
-    /**
-     * Do NOT call this function; It is a private member of the interface. Call [deleteItem] instead.
-     */
     @Delete
-    fun deletePRIVATE(item: Item)
+    protected abstract fun deleteItem(item: Item)
 
     @Query("UPDATE Item SET position = position - 1 WHERE position > :itemPosition")
-    fun updateItemPositions(itemPosition: Int)
+    protected abstract fun updateOtherPositions(itemPosition: Int)
 }
