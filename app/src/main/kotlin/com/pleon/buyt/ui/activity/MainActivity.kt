@@ -73,92 +73,24 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
 
     // the app can be described as both a shopping list app and an expense manager app
 
-    // TODO: Remove all nullable values and null checks
-    // TODO: Localize the app: [poeditor.com]
-    // TODO: Add an option so when a new item is added the fragment pop up be dismissed immediately
-    // TODO: Make separate free and paid version flavors for the app
-    // TODO: application with upgrade to paid option vs two separate free and paid flavors
-    // TODO: Limit the max buys in a day in free version to 3
-
-    // TODO: Suggestion: instead of embedding map in the application, the app can use an implicit
-    // intent to show map provided by other apps (e.g. google map)
-    // see [https://developer.android.com/training/basics/intents/sending]
-
-    // FIXME: The bug that sometimes occur when expanding an item (the bottom item jumps up one moment),
-    // is produced when another item was swiped partially
-
-    // TODO: In onDestroy(), onPause() and... do the reverse things you did in onCreate(), onResume() and...
-    // TODO: Use kotlin coroutines see[https://medium.com/androiddevelopers/room-coroutines-422b786dc4c5]
-    /*
-     * DONE: if the bottomAppBar is hidden (by scrolling) and then you expand an Item, the fab jumps up
-     * The bug seems to have nothing to do with the expanding animation and persists even without that animation
-     */
-    // FIXME: Use srcCompat instead of src in layout files
-    // FIXME: the bottom shadow (elevation) of item cards is broken. Maybe because of swipe-to-delete background layer
-    // TODO: For testing app components see [https://developer.android.com/jetpack/docs/guide#test-components]
-    // FIXME: when dragging items, in some situations** item moves from behind of other cards
-    // **: this happens if the card being dragged over by this card, has itself dragged over this card in the past.
-    // steps to reproduce: drag card1 over card2 and then drop it (you can also drop it to its previous position).
-    // now drag card2 over card1. Then again drag card1 over card2; it moves behind of card2 and in front of other cards.
-    // NOTE: This is caused by "public void clearView..." method in TouchHelperCallback class
-    // see the following to probably fix it:
-    // https://github.com/brianwernick/RecyclerExt/blob/master/library/src/main/java/com/devbrackets/android/recyclerext/adapter/helper/SimpleElevationItemTouchHelperCallback.java
-
     // FIXME: Shift to idle state if the app is in finding state and all items are deleted meanwhile
-    // OR disable swipe-to-delete when the state is not in IDLE
+    //     OR disable swipe-to-delete when the state is not in IDLE
     // FIXME: Slide-up bottom bar if it was hidden (because of scroll) and some items were deleted and
-    // now cannot scroll to make it slide up again
-    // TODO: Use a ViewStub in AddItemFragment layout for the part that is not shown until bought is checked
-    // see [https://developer.android.com/training/improving-layouts/loading-ondemand]
-    // TODO: Redesign the logo in 24 by 24 grid in inkscape to make it crisp (like standard icons)
-    // TODO: Add widgets for the app see[https://developer.android.com/guide/topics/appwidgets/overview]
-    // TODO: Make icons animation durations consistent
-    // TODO: Convert the logo to path (with "path -> stroke to path" option) and then recreate the logo
+    //     now cannot scroll to make it slide up again
     // FIXME: Update position field of items if an item is deleted
-    // TODO: Add option in settings to enable/disable showing urgent items at top of the list
-    // DONE: Add a button (custom view) at the end of SelectionListAdapter to create a new Store
-    // DONE: Add a separator (e.g. comma) in every 3 digits of price and other numeric fields
-    // TODO: Add option in settings to set the default item quantity in add new item activity (1 seems good)
-    // TODO: Reimplement item unit switch button with this approach: https://stackoverflow.com/a/48640424/8583692
-    // TODO: Add a functionality to merge another device data to a device (e.g. can merge all family spending data to father's phone)
-    // TODO: Add an action in bottomAppBar in Add Item activity to select a date for showing the item in home page
-    // TODO: Use DiffUtil class (google it!) instead of calling notifyDataSetChanged() method of adapter
-    // TODO: For correct margins of cards, Texts, ... see the page of that component in design section of material.io
-    // TODO: disable the reorder items icon in bottomAppBar when number of items is less than 2 (by 'enabled' property of the menu item)
-    // TODO: Embed ads in between of regular items
-    // TODO: Add an option in settings for the user to be able to add a pinned shortcut to e.g. add item screen
-    // see [https://developer.android.com/guide/topics/ui/shortcuts/creating-shortcuts]
-    // TODO: Add snap to center for recyclerView items
-    // DONE: Convert the main screen layout to ConstraintLayout and animate it (it seems possible with the help of guidelines)
-    // TODO: Collapse the chart when scrolling down (with coordinatorLayout)
-    // TODO: extract margins and dimensions into xml files
-    // DONE: Add feature to select a date to see its costs
-    // TODO: for the item list to only one item be expanded see https://stackoverflow.com/q/27203817/8583692
-    // TODO: I can request the necessary permissions in the end of the app tutorial
     // FIXME: Correct all names and ids according to best practices
     // FIXME: Fix the query for chart data to start from the beginning of the first day (instead of just -7 days)
-    // TODO: Enable the user to disable location rationale dialog and always enter stores manually
-    // TODO: What is Spherical Law of Cosines? (for locations)
-    // TODO: Add the functionality to export and import all app data
-    // TODO: Try to first provide an MVP (minimally viable product) version of the app
-    // TODO: Make viewing stores on map a premium feature
-    // TODO: Add ability to remove all app data
-    // TODO: Add android.support.annotation to the app
-    // TODO: For every new version of the app display a what's new page on first app open
-    // TODO: Use list-item selection in recycler view;
-    // see [https://developer.android.com/guide/topics/ui/layout/recyclerview#select]
-    // TODO: Convert all ...left and ...right attributes to ...start and ...end
-    // TODO: Show a small progress bar of how much has been spent if user has set a limit on spends
-    // TODO: use downloadable fonts instead of integrating the font in the app to reduce the app size
-    // TODO: new version of MaterialCardView will include a setCheckedIcon. check it out
-    /* TODO: Show a prompt (or an emoji or whatever) when there is no items in the home screen
-     * to do this, add a new View to the layout and play with its setVisibility as appropriate
-     */
-
-    /* TODO: Do you have multiple tables in your database and find yourself copying the same Insert,
-     * Update and Delete methods? DAOs support inheritance, so create a BaseDao<T> class, and define
-     * your generic @Insert,... there. Have each DAO extend the BaseDao and add methods specific to each of them.
-     */
+    // FIXME: The bug that sometimes occur when expanding an item (the bottom item jumps up one moment),
+    //     is produced when another item was swiped partially
+    // FIXME: Use srcCompat instead of src in layout files
+    // FIXME: the bottom shadow (elevation) of item cards is broken. Maybe because of swipe-to-delete background layer
+    // FIXME: when dragging items, in some situations** item moves from behind of other cards
+    //   this happens if the card being dragged over by this card, has itself dragged over this card in the past.
+    //   steps to reproduce: drag card1 over card2 and then drop it (you can also drop it to its previous position).
+    //   now drag card2 over card1. Then again drag card1 over card2; it moves behind of card2 and in front of other cards.
+    //   NOTE: This is caused by "public void clearView..." method in TouchHelperCallback class
+    //   see the following to probably fix it:
+    //   https://github.com/brianwernick/RecyclerExt/blob/master/library/src/main/java/com/devbrackets/android/recyclerext/adapter/helper/SimpleElevationItemTouchHelperCallback.java
 
     private lateinit var viewModel: MainViewModel
     private lateinit var itemsFragment: ItemsFragment
