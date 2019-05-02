@@ -1,5 +1,6 @@
 package com.pleon.buyt.ui.fragment
 
+import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.android.material.textfield.TextInputLayout
 import com.pleon.buyt.R
 import com.pleon.buyt.model.Category
+import com.pleon.buyt.model.Item
 import com.pleon.buyt.ui.ItemSpacingDecoration
 import com.pleon.buyt.ui.SnackbarUtil.showUndoSnackbar
 import com.pleon.buyt.ui.TouchHelperCallback
@@ -33,21 +35,9 @@ class ItemsFragment : Fragment(R.layout.fragment_item_list), ItemTouchHelperList
     override fun onViewCreated(view: View, savedState: Bundle?) {
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         // In fragments use getViewLifecycleOwner() as owner argument
-        viewModel.allItems.observe(viewLifecycleOwner, Observer {
-            adapter.items = it
-            if (it.isEmpty()) {
-                emptyHint1.animate().alpha(0.30F).setDuration(200).setStartDelay(210).start()
-                emptyHint2.animate().alpha(0.65F).setDuration(200).setStartDelay(105).start()
-                emptyHint3.animate().alpha(1.0F).setDuration(200).setStartDelay(0).start()
-                emptyHint4.animate().alpha(0.65F).setDuration(200).setStartDelay(105).start()
-                emptyHint5.animate().alpha(0.30F).setDuration(200).setStartDelay(210).start()
-            } else {
-                emptyHint1.animate().alpha(0f).setDuration(200).setStartDelay(210).start()
-                emptyHint2.animate().alpha(0f).setDuration(200).setStartDelay(105).start()
-                emptyHint3.animate().alpha(0f).setDuration(200).setStartDelay(0).start()
-                emptyHint4.animate().alpha(0f).setDuration(200).setStartDelay(105).start()
-                emptyHint5.animate().alpha(0f).setDuration(200).setStartDelay(210).start()
-            }
+        viewModel.allItems.observe(viewLifecycleOwner, Observer { items ->
+            adapter.items = items
+            showHideEmptyHintIfNeeded(items)
         })
 
         // for swipe-to-delete and drag-n-drop of item
@@ -59,6 +49,18 @@ class ItemsFragment : Fragment(R.layout.fragment_item_list), ItemTouchHelperList
         recyclerView.addItemDecoration(ItemSpacingDecoration(columns, isRtl))
         touchHelper.attachToRecyclerView(recyclerView)
         adapter = ItemListAdapter(context!!, touchHelper).also { recyclerView.adapter = it }
+    }
+
+    private fun showHideEmptyHintIfNeeded(items: List<Item>) {
+        if (items.isEmpty()) {
+            emptyHint.setBackgroundResource(R.drawable.avd_list_empty)
+            (emptyHint.background as Animatable).start()
+            emptyHint.setText(R.string.placeholder_empty)
+        } else if (emptyHint.text.isNotEmpty()) {
+            emptyHint.setBackgroundResource(R.drawable.avd_list_filled)
+            (emptyHint.background as Animatable).start()
+            emptyHint.text = ""
+        }
     }
 
     override fun onMoved(oldPosition: Int, newPosition: Int) {
