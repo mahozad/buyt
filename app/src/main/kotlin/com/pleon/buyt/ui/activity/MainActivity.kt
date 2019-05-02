@@ -35,7 +35,6 @@ import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTarget.forToolbarMenuItem
 import com.getkeepsafe.taptargetview.TapTarget.forView
 import com.getkeepsafe.taptargetview.TapTargetSequence
-import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_END
 import com.google.android.material.snackbar.Snackbar.*
@@ -101,9 +100,6 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
     private lateinit var reorderMenuItem: MenuItem
     private lateinit var storeMenuItem: MenuItem
     private lateinit var addStorePopup: PopupMenu
-
-    private lateinit var addItemFragment: AddItemFragment
-    private var isAddingItem = false
 
     override fun layout() = R.layout.activity_main
 
@@ -193,7 +189,8 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
     }
 
     private fun onFabClick() {
-        if (isAddingItem) {
+        if (viewModel.isAddingItem) {
+            val addItemFragment = supportFragmentManager.findFragmentById(R.id.addItemFragment) as AddItemFragment
             addItemFragment.onDonePressed()
         } else if (viewModel.state == IDLE) { // act as find
             if (itemsFragment.isCartEmpty)
@@ -201,8 +198,8 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
             else {
                 itemsFragment.clearSelectedItems() // clear items of previous purchase
                 addMenuItem.setIcon(R.drawable.avd_add_hide).apply { (icon as Animatable).start() }
+                        // disable effect of tapping on add menu item
                         .also { Handler().postDelayed({ it.isVisible = false }, 300) }
-
                 findLocation()
             }
         } else if (viewModel.state == SELECTING) { // act as done
@@ -219,7 +216,10 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
         initializeAddStorePopup(storeMenuItem.actionView)
         storeMenuItem.actionView.setOnClickListener { showAddStorePopup() }
 
-        if (viewModel.state == FINDING) {
+        if (viewModel.state != IDLE) addMenuItem.isVisible = false
+
+        if (viewModel.isAddingItem) bottom_bar.setNavigationIcon(R.drawable.avd_cancel_nav)
+        else if (viewModel.state == FINDING) {
             bottom_bar.setNavigationIcon(R.drawable.avd_cancel_nav)
             reorderMenuItem.setIcon(R.drawable.avd_skip_reorder).setTitle(R.string.menu_hint_skip_finding)
         } else if (viewModel.state == SELECTING) {
@@ -231,7 +231,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
                 storeMenuItem.isVisible = true
             }
             reorderMenuItem.isVisible = false
-            bottom_bar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_END
+            bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
         }
 
         // Enable/Disable add menuItem animation
@@ -279,11 +279,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_add -> {
-                addItemFragment = AddItemFragment()
-
                 supportFragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.slide_up, 0, 0, R.anim.slide_down)
-                        .replace(R.id.frag_container, addItemFragment)
+                        .replace(R.id.addItemFragment, AddItemFragment())
                         .addToBackStack(null)
                         .commit()
 
@@ -292,7 +290,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
                 // onCreateOptionsMenu() method of the AddItemFragment(). It also seems that with
                 // removing the fragment, the menu items are unhidden automatically
 
-                isAddingItem = true
+                viewModel.isAddingItem = true
                 bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
                 fab.setImageResource(R.drawable.avd_find_done)
                 (fab.drawable as Animatable).start()
@@ -319,7 +317,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
             /* If setSupportActionBar() is used to set up the BottomAppBar, navigation menu item
              * can be identified by checking if the id of menu item equals android.R.id.home. */
             android.R.id.home -> when {
-                isAddingItem -> {
+                viewModel.isAddingItem -> {
                     supportFragmentManager.popBackStack()
                     val animation = AlphaAnimation(1f, 0f).apply { duration = 300 }.also { it.fillAfter = true }
                     scrim.startAnimation(animation)
@@ -346,7 +344,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
     override fun onBackPressed() {
         when {
             viewModel.state == FINDING -> stopService(Intent(this, GpsService::class.java))
-            isAddingItem -> {
+            viewModel.isAddingItem -> {
                 supportFragmentManager.popBackStack()
                 val animation = AlphaAnimation(1f, 0f).apply { duration = 300 }.also { it.fillAfter = true }
                 scrim.startAnimation(animation)
@@ -392,6 +390,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
         // NOTE: menu items are restored in onCreateOptionsMenu()
 
         when {
+            viewModel.isAddingItem -> fab.setImageResource(R.drawable.ic_done)
             viewModel.state == FINDING -> {
                 fab.setImageResource(R.drawable.avd_finding)
                 (fab.drawable as Animatable).start()
@@ -523,7 +522,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
 
     private fun shiftToIdleState() {
         itemsFragment.sortItemsByOrder()
-        if (viewModel.state == FINDING || viewModel.state == SELECTING || isAddingItem) {
+        if (viewModel.state == FINDING || viewModel.state == SELECTING || viewModel.isAddingItem) {
             itemsFragment.toggleItemsCheckbox(false)
 
             fab.setImageResource(if (viewModel.state == FINDING) R.drawable.avd_buyt_reverse
@@ -545,7 +544,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
         viewModel.shouldCompletePurchase = false
         viewModel.shouldAnimateNavIcon = false
         viewModel.isFindingSkipped = false
-        isAddingItem = false
+        viewModel.isAddingItem = false
         viewModel.state = IDLE // this should be the last statement (because of the if above)
     }
 

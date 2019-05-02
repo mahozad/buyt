@@ -41,6 +41,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     var foundStores = mutableListOf<Store>()
     var shouldCompletePurchase = false
     var shouldAnimateNavIcon = false
+    var isAddingItem = false
     @DrawableRes var storeIcon = 0
     @StringRes var storeTitle = 0
 
