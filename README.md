@@ -1,4 +1,4 @@
-![Buyt logo](https://octodex.github.com/images/yaktocat.png)
+![Buyt logo](https://raw.githubusercontent.com/mahozad/buyt/master/app/src/main/web_2_hi_res_512.png?token=AHCNTO3VBALFVEC4DVISBZ24ZLQZ4)
 
 TODO list:
 
