@@ -49,7 +49,7 @@
     <target android:name="path_1_1">
         <aapt:attr name="android:animation">
             <objectAnimator
-                android:duration="120"
+                android:duration="200"
                 android:interpolator="@android:interpolator/fast_out_slow_in"
                 android:propertyName="trimPathStart"
                 android:valueFrom="0"
@@ -60,7 +60,7 @@
     <target android:name="path_1_2">
         <aapt:attr name="android:animation">
             <objectAnimator
-                android:duration="120"
+                android:duration="200"
                 android:interpolator="@android:interpolator/fast_out_slow_in"
                 android:propertyName="trimPathStart"
                 android:valueFrom="0"
@@ -71,7 +71,7 @@
     <target android:name="path_1_3">
         <aapt:attr name="android:animation">
             <objectAnimator
-                android:duration="120"
+                android:duration="200"
                 android:interpolator="@android:interpolator/fast_out_slow_in"
                 android:propertyName="trimPathStart"
                 android:valueFrom="0"
@@ -82,7 +82,7 @@
     <target android:name="path_1_4">
         <aapt:attr name="android:animation">
             <objectAnimator
-                android:duration="120"
+                android:duration="200"
                 android:interpolator="@android:interpolator/fast_out_slow_in"
                 android:propertyName="trimPathStart"
                 android:valueFrom="0"
@@ -93,7 +93,7 @@
     <target android:name="path_1_5">
         <aapt:attr name="android:animation">
             <objectAnimator
-                android:duration="120"
+                android:duration="200"
                 android:interpolator="@android:interpolator/fast_out_slow_in"
                 android:propertyName="trimPathStart"
                 android:valueFrom="0"
@@ -104,7 +104,7 @@
     <target android:name="path_1_6">
         <aapt:attr name="android:animation">
             <objectAnimator
-                android:duration="120"
+                android:duration="200"
                 android:interpolator="@android:interpolator/fast_out_slow_in"
                 android:propertyName="trimPathStart"
                 android:valueFrom="0"
