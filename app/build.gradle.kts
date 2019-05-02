@@ -144,13 +144,13 @@ dependencies {
     testImplementation("org.mockito:mockito-junit-jupiter:2.27.0")
     testImplementation("org.hamcrest:hamcrest-library:2.1")
     // Dependencies for instrumented tests
-    androidTestImplementation("androidx.test.ext:junit:1.1.1-alpha04")
-    androidTestImplementation("androidx.test:runner:1.2.0-alpha04")
+    androidTestImplementation("androidx.test.ext:junit:1.1.1-alpha05")
+    androidTestImplementation("androidx.test:runner:1.2.0-alpha05")
     androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
     androidTestImplementation("org.mockito:mockito-android:2.27.0")
     androidTestImplementation("org.mockito:mockito-junit-jupiter:2.27.0")
     androidTestImplementation("androidx.room:room-testing:2.1.0-alpha07")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0-alpha04")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0-alpha05")
     androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.0.0")
     androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.0.0")
 }
