@@ -16,24 +16,24 @@ class AddItemViewModel(app: Application) : AndroidViewModel(app) {
 
     private val repository = AddItemRepository(app)
     private val nameCatsMediator = MediatorLiveData<Map<String, String>>()
+    val itemNameCats: LiveData<Map<String, String>> = nameCatsMediator
+    var category = GROCERY
+    var storeList: List<Store>? = null
+    var store: Store? = null
+    var purchaseDate = Date()
+
+    init {
+        nameCatsMediator.addSource(repository.getItemNameCats()) { dbNameCats ->
+            // Do NOT reorder the operands in the following + operation
+            nameCatsMediator.value = defaultItemNameCats + dbNameCats
+        }
+    }
+
     private val defaultItemNameCats by lazy {
         InputStreamReader(app.resources.openRawResource(R.raw.item_names)).readLines()
                 .associateBy({ it.substringBefore(':') }, { it.substringAfter(':') })
                 .toMutableMap()
     }
-
-    fun getItemNameCats(): LiveData<Map<String, String>> {
-        nameCatsMediator.addSource(repository.getItemNameCats()) { dbNameCats ->
-            // Do NOT reorder the operands in the following + operation
-            nameCatsMediator.value = defaultItemNameCats + dbNameCats
-        }
-        return nameCatsMediator
-    }
-
-    var category = GROCERY
-    var storeList: List<Store>? = null
-    var store: Store? = null
-    var purchaseDate = Date()
 
     fun addItem(item: Item, isPurchased: Boolean) {
         if (isPurchased) repository.addPurchasedItem(item, store!!, purchaseDate)
