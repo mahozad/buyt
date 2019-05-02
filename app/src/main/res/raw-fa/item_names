@@ -1,5 +1,216 @@
-پنیر:DAIRY
+نان لواش:BREAD
+نان تافتون:BREAD
+نان بربری:BREAD
+نان سنگک:BREAD
+نان فانتزی:BREAD
+نان محلی:BREAD
+نان قندی:BREAD
+شیر فله‌ای:DAIRY
+شیر بطری:DAIRY
+شیر پاکتی:DAIRY
+پنیر پاستوریزه:DAIRY
+پنیر خامه‌ای:DAIRY
+پنیر گچی:DAIRY
+کره حیوانی:DAIRY
+کره گیاهی:DAIRY
+ماست:DAIRY
+خامه:DAIRY
 سیب:FRUIT
-شکلات:GROCERY
-هواپیما:TOOLS
+پرتقال:FRUIT
+نارنگی:FRUIT
+آلو:FRUIT
+لیو شیرین:FRUIT
+لیمو ترش:FRUIT
+آلوچه:FRUIT
+آلبالو:FRUIT
+گیلاس:FRUIT
+انار:FRUIT
+کیوی:FRUIT
+زردآلو:FRUIT
+گلابی:FRUIT
+خیارسبز:FRUIT
+گوجه فرنگی:FRUIT
+توت:FRUIT
+توت فرنگی:FRUIT
+پیاز:FRUIT
+سیب زمینی:FRUIT
+سیب ترشی:FRUIT
+سیر:FRUIT
+چغندر:FRUIT
+شلغم:FRUIT
+گوجه سبز:FRUIT
+هندوانه:FRUIT
+خربزه:FRUIT
+قارچ:FRUIT
+نخود فرنگی:FRUIT
+کاهو:FRUIT
+فلفل دلمه‌ای:FRUIT
+بادمجان:FRUIT
+کدو:FRUIT
+کلم:FRUIT
+زنجبیل:FRUIT
+کرفس:FRUIT
+انجیر:FRUIT
+انگور:FRUIT
+گریپ فروت:FRUIT
+بلال:FRUIT
+ذرت:FRUIT
+خرمالو:FRUIT
+عناب:FRUIT
+طالبی:FRUIT
+هلو:FRUIT
+خرما:FRUIT
+رطب:FRUIT
+شلیل:FRUIT
+نارگیل:FRUIT
+آناناس:FRUIT
+موز:FRUIT
+سبزی:FRUIT
+هویج:FRUIT
 انبه:FRUIT
+باقلا:FRUIT
+سبزی خوردن:FRUIT
+سبزی آشی:FRUIT
+سبزی خورشتی:FRUIT
+سبزی کوکویی:FRUIT
+نوشابه خانواده:GROCERY
+نوشابه کولا:GROCERY
+نوشابه پرتقالی:GROCERY
+ماکارونی:GROCERY
+پاستا:GROCERY
+اسنک:GROCERY
+کشمش:GROCERY
+آجیل:GROCERY
+پسته:GROCERY
+بادام:GROCERY
+مغز بادام:GROCERY
+خلال بادام:GROCERY
+گردو:GROCERY
+مغز گردو:GROCERY
+تخمه کدو:GROCERY
+تخمه هندوانه:GROCERY
+تخمه ژاپنی:GROCERY
+تخمه آفتابگردان:GROCERY
+زعفران:GROCERY
+عدس:GROCERY
+ماش:GROCERY
+لوبیا قرمز:GROCERY
+لوبیا چیتی:GROCERY
+نخود:GROCERY
+لپه:GROCERY
+سویا:GROCERY
+پودر سوخاری:GROCERY
+پودر کیک:GROCERY
+پودر ژله:GROCERY
+ژله:GROCERY
+نمک:GROCERY
+فلفل:GROCERY
+زردچوبه:GROCERY
+دارچین:GROCERY
+گندم:GROCERY
+جو:GROCERY
+رشته آشی:GROCERY
+رشته سوپی:GROCERY
+تخم مرغ:GROCERY
+تخم بلدرچین:GROCERY
+تن ماهی:GROCERY
+حلواارده:GROCERY
+ارده:GROCERY
+دمنوش:GROCERY
+ماءالشعیر:GROCERY
+دلستر:GROCERY
+نودل:GROCERY
+کلوچه:GROCERY
+آدامس:GROCERY
+آرد:GROCERY
+شربت:GROCERY
+زیتون:GROCERY
+برنج:GROCERY
+GROCERY:پنیر پیتزا
+روغن سرخ کردنی:GROCERY
+روغن مایع:GROCERY
+روغن زیتون:GROCERY
+روغن کنجد:GROCERY
+پفک:GROCERY
+چیپس:GROCERY
+چیپس خلالی:GROCERY
+کیک:GROCERY
+بیسکویت:GROCERY
+ویفر:GROCERY
+شکلات:GROCERY
+شکلات تلخ:GROCERY
+لواشک:GROCERY
+سوسیس:GROCERY
+کالباس:GROCERY
+کوکتل:GROCERY
+تمر هندی:GROCERY
+کنسرو خوراک:GROCERY
+کمپوت:GROCERY
+آبمیوه:GROCERY
+قند:GROCERY
+قند حبه:GROCERY
+شکر:GROCERY
+نبات:GROCERY
+سس گوجه فرنگی:GROCERY
+سس کچاپ:GROCERY
+سس هزار جزیره:GROCERY
+سس مایونز:GROCERY
+سس تند:GROCERY
+سس فرانسوی:GROCERY
+رب گوجه فرنگی:GROCERY
+رب انار:GROCERY
+مربا:GROCERY
+عسل:GROCERY
+خیارشور:GROCERY
+ترشی:GROCERY
+ترشی مخلوط:GROCERY
+ترشی لیته:GROCERY
+ترشی بندری:GROCERY
+آبلیمو:GROCERY
+آبغوره:GROCERY
+سرکه:GROCERY
+سرکه سفید:GROCERY
+چای:GROCERY
+قهوه:GROCERY
+مایع ظرفشویی:GROCERY
+مابع ماشین لباسشویی:GROCERY
+پودر ماشین لباسشویی:GROCERY
+پودر دستی لباسشویی:GROCERY
+شیشه پاک کن:GROCERY
+مرغ:CHICKEN
+ران مرغ:CHICKEN
+سینه مرغ:CHICKEN
+ماهی:FISH
+میگو:FISH
+کتاب:STATIONARY
+خودکار:STATIONARY
+مداد:STATIONARY
+قلم:STATIONARY
+دفتر:STATIONARY
+مقوا:STATIONARY
+کاغذ کادو:STATIONARY
+پاکت هدیه:STATIONARY
+کاغذ:STATIONARY
+سالنامه:STATIONARY
+مجله:STATIONARY
+فالوده:ICE_CREAM
+بستنی:ICE_CREAM
+شیرینی:PASTRY
+سوهان:PASTRY
+گز:PASTRY
+قطاب:PASTRY
+باقلوا:PASTRY
+پشمک:PASTRY
+حاجی بادام:PASTRY
+خمیر دندان:PASTRY
+نخ دندان:DRUG
+خلال دندان:DRUG
+مسواک:DRUG
+کرم ضدآفتاب:DRUG
+شامپو:DRUG
+نرم کننده:DRUG
+صابون:DRUG
+اسپری خوش بو کننده:DRUG
+لامپ:TOOLS
+چراغ:TOOLS
+گل:FLOWER
