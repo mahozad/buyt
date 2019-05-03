@@ -52,6 +52,7 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
 
         registerReceiver(timeReceiver, IntentFilter(Intent.ACTION_TIME_TICK))
 
+        // TODO: Use new ViewPager2 (supports RTL and...). TabLayout is not yet ready for that
         val pagerAdapter = StatsPagerAdapter(this, supportFragmentManager)
         viewPager.adapter = pagerAdapter
         tabLayout.setupWithViewPager(viewPager)
