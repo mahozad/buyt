@@ -131,9 +131,7 @@ dependencies {
     implementation("com.getkeepsafe.taptargetview:taptargetview:1.12.0")
     implementation("com.mohamadamin:persianmaterialdatetimepicker:1.2.1")
     implementation("com.diogobernardino:williamchart:2.5.0")
-    implementation ("com.github.bleeding182.pager-indicator:all:master-SNAPSHOT")
     implementation("ir.huri:JalaliCalendar:1.3.3")
-    implementation("com.heinrichreimersoftware:material-intro:1.6") // Do NOT update
     implementation("com.scwang.wave:MultiWaveHeader:1.0.0-alpha-1")
     // For using doAsync{} and other features
     implementation("org.jetbrains.anko:anko-commons:0.10.8")
