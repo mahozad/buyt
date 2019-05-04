@@ -63,18 +63,19 @@ class IntroActivity : BaseActivity() {
 
             override fun onPageSelected(position: Int) {
                 if (position == adapter.itemCount - 1) {
-                    nextButtonIcon.setImageResource(R.drawable.avd_next_done)
-                    (nextButtonIcon.drawable as Animatable).start()
+                    nextButton.setImageResource(R.drawable.avd_next_done)
+                    (nextButton.drawable as Animatable).start()
                 } else if (position == adapter.itemCount - 2 && pagerLastPage == adapter.itemCount - 1) {
-                    nextButtonIcon.setImageResource(R.drawable.avd_done_next)
-                    (nextButtonIcon.drawable as Animatable).start()
+                    nextButton.setImageResource(R.drawable.avd_done_next)
+                    (nextButton.drawable as Animatable).start()
                 }
                 pagerLastPage = position
             }
         })
 
         backButton.setOnClickListener { viewPager.currentItem = viewPager.currentItem - 1 }
-        nextButtonIcon.setOnClickListener {
+        nextButton.setOnClickListener {
+            if (viewPager.currentItem == adapter.itemCount - 1) finish()
             viewPager.currentItem = min(viewPager.currentItem + 1, adapter.itemCount - 1)
         }
 
