@@ -77,6 +77,10 @@ class IntroActivity : BaseActivity() {
         nextButtonIcon.setOnClickListener {
             viewPager.currentItem = min(viewPager.currentItem + 1, adapter.itemCount - 1)
         }
+
+        for ((index, dot) in dots.withIndex()) {
+            dot.setOnClickListener { viewPager.currentItem = index }
+        }
     }
 
     // override fun onBackPressed() {}
