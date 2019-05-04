@@ -31,10 +31,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat.registerAnimationCallback
-import com.getkeepsafe.taptargetview.TapTarget
-import com.getkeepsafe.taptargetview.TapTarget.forToolbarMenuItem
-import com.getkeepsafe.taptargetview.TapTarget.forView
-import com.getkeepsafe.taptargetview.TapTargetSequence
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_END
 import com.google.android.material.snackbar.Snackbar.*
@@ -93,7 +89,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
 
     private lateinit var viewModel: MainViewModel
     private lateinit var itemsFragment: ItemsFragment
-    private lateinit var preferences: SharedPreferences
+    private lateinit var prefs: SharedPreferences
     private lateinit var locationMgr: LocationManager
     private lateinit var locationReceiver: BroadcastReceiver
     private lateinit var addMenuItem: MenuItem
@@ -115,14 +111,14 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
      */
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
-        preferences = getDefaultSharedPreferences(this)
+        prefs = getDefaultSharedPreferences(this)
 
-        if (preferences.getBoolean("configChanged", false)) { // Restore drawer
+        if (prefs.getBoolean("NEWBIE", true)) showIntro()
+
+        if (prefs.getBoolean("configChanged", false)) { // Restore drawer
             BottomDrawerFragment().show(supportFragmentManager, "BOTTOM_SHEET")
-            preferences.edit().putBoolean("configChanged", false).apply()
+            prefs.edit().putBoolean("configChanged", false).apply()
         }
-
-        if (preferences.getBoolean("NEWBIE", true)) showTutorial()
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         itemsFragment = supportFragmentManager.findFragmentById(R.id.itemsFragment) as ItemsFragment
@@ -158,28 +154,10 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
                 .registerReceiver(locationReceiver, IntentFilter(ACTION_LOCATION_EVENT))
     }
 
-    private fun showTutorial() {
-        bottom_bar.inflateMenu(R.menu.menu_bottom_home) // To ensure menu item is ready
-        TapTargetSequence(this).targets(
-                forToolbarMenuItem(bottom_bar, R.id.action_add, getString(R.string.tutorial_add_item))
-                        .transparentTarget(true).cancelable(false).targetRadius(36),
-                forView(fab, getString(R.string.tutorial_tap_buyt))
-                        .transparentTarget(true).cancelable(false),
-                forToolbarMenuItem(bottom_bar, R.id.action_reorder, getString(R.string.tutorial_skip_finding))
-                        .transparentTarget(true).cancelable(false).targetRadius(36)
-        ).listener(object : TapTargetSequence.Listener {
-            override fun onSequenceStep(lastTarget: TapTarget?, clicked: Boolean) {}
-            override fun onSequenceCanceled(lastTarget: TapTarget?) {}
-            override fun onSequenceFinish() {
-                preferences.edit().putBoolean("NEWBIE", false).apply()
-                reorderMenuItem.setIcon(R.drawable.avd_skip_reorder).also { (it.icon as Animatable).start() }
-                addMenuItem.setIcon(R.drawable.avd_add_glow).also { animateIconInfinitely(it.icon) }
-            }
-        }).start()
-    }
+    private fun showIntro() = startActivity(Intent(this, IntroActivity::class.java))
 
     private fun onLocationFound(intent: Intent) {
-        if (preferences.getBoolean("vibrate", true)) {
+        if (prefs.getBoolean("vibrate", true)) {
             val vibrator = getSystemService(VIBRATOR_SERVICE) as Vibrator
             vibrator.vibrate(150) // FIXME: Deprecated method
         }
@@ -237,14 +215,14 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
         // Enable/Disable add menuItem animation
         viewModel.allItems.observe(this, Observer { items ->
             // If user is newbie don't animate icon; the tutorial will animate it at the end
-            if (items.isEmpty() && !preferences.getBoolean("NEWBIE", true)) {
+            if (items.isEmpty() && !prefs.getBoolean("NEWBIE", true)) {
                 addMenuItem.setIcon(R.drawable.avd_add_glow)
                 animateIconInfinitely(addMenuItem.icon)
             } else addMenuItem.setIcon(R.drawable.avd_add_hide)
         })
 
         // Set icon for the tutorial; At the end of tutorial the icon is corrected
-        if (preferences.getBoolean("NEWBIE", true))
+        if (prefs.getBoolean("NEWBIE", true))
             reorderMenuItem.setIcon(R.drawable.avd_skip_reorder)
 
         return true

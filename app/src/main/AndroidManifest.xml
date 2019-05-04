@@ -19,7 +19,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.HelpActivity"></activity>
+        <activity android:name=".ui.activity.SplashActivity"></activity>
+        <activity android:name=".ui.activity.IntroActivity" android:configChanges="layoutDirection"></activity>
+        <activity android:name=".ui.activity.HelpActivity" />
         <activity android:name=".ui.activity.StoresActivity" />
         <activity
             android:name=".ui.activity.SettingsActivity"
@@ -31,14 +33,14 @@
             android:name=".ui.activity.MainActivity"
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustPan">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity> <!-- android:windowSoftInputMode attribute is to prevent the bottom app bar to jump when keyboard appears -->
-        <activity android:name=".ui.activity.CreateStoreActivity" />
-
         <service
             android:name=".service.GpsService"
             android:exported="false" />
