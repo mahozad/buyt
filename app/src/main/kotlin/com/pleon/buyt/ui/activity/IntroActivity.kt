@@ -8,7 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.animation.ArgbEvaluatorCompat
 import com.pleon.buyt.R
-import com.pleon.buyt.ui.adapter.IntroPagerAdapter
+import com.pleon.buyt.ui.adapter.IntroPageAdapter
 import kotlinx.android.synthetic.main.activity_intro.*
 import kotlin.math.max
 import kotlin.math.min
@@ -27,7 +27,7 @@ class IntroActivity : BaseActivity() {
         dots = arrayOf(dot1, dot2, dot3)
         val colors = resources.getIntArray(R.array.introColors)
 
-        val adapter = IntroPagerAdapter(supportFragmentManager, lifecycle)
+        val adapter = IntroPageAdapter(supportFragmentManager, lifecycle)
         viewPager.adapter = adapter
 
         viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
