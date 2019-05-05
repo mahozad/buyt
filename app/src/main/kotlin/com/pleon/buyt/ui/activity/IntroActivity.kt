@@ -41,11 +41,9 @@ class IntroActivity : BaseActivity() {
                 params.setMargins(params.leftMargin, params.topMargin, params.rightMargin, margin)
                 backButton.layoutParams = params
 
-                if (position <= viewPager.childCount && position < colors.size - 1) {
-                    parentLayout.setBackgroundColor(argbEvaluator.evaluate(positionOffset, colors[position], colors[position + 1]) as Int)
-                } else {
-                    parentLayout.setBackgroundColor(colors[colors.size - 1])
-                }
+                val color = argbEvaluator.evaluate(positionOffset, colors[position], colors[min(position + 1, adapter.itemCount - 1)])
+                parentLayout.setBackgroundColor(color)
+                window.statusBarColor = color
 
                 if (positionOffset >= pagerLastOffset) {
                     dots[position].alpha = max(1 - positionOffset, 0.2f)
