@@ -15,8 +15,8 @@ import kotlin.math.min
 
 class IntroActivity : BaseActivity() {
 
-    var pagerLastPage = 0
-    var pagerLastOffset = 0f
+    var lastPage = 0
+    var lastOffset = 0f
     lateinit var dots: Array<ImageView>
 
     override fun layout() = R.layout.activity_intro
@@ -45,7 +45,7 @@ class IntroActivity : BaseActivity() {
                 parentLayout.setBackgroundColor(color)
                 window.statusBarColor = color
 
-                if (positionOffset >= pagerLastOffset) {
+                if (positionOffset >= lastOffset) {
                     dots[position].alpha = max(1 - positionOffset, 0.2f)
                     if (position < adapter.itemCount - 1) dots[position + 1].alpha = max(0.2f, positionOffset)
                 } else {
@@ -58,11 +58,11 @@ class IntroActivity : BaseActivity() {
                 if (position == adapter.itemCount - 1) {
                     nextButton.setImageResource(R.drawable.avd_next_done)
                     (nextButton.drawable as Animatable).start()
-                } else if (position == adapter.itemCount - 2 && pagerLastPage == adapter.itemCount - 1) {
+                } else if (position < adapter.itemCount - 1 && lastPage == adapter.itemCount - 1) {
                     nextButton.setImageResource(R.drawable.avd_done_next)
                     (nextButton.drawable as Animatable).start()
                 }
-                pagerLastPage = position
+                lastPage = position
             }
         })
 
