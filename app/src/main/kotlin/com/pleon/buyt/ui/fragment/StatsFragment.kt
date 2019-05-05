@@ -29,17 +29,16 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
     @ColorRes private var pieBgColor: Int = 0 // This color varies based on the app theme
     private lateinit var viewModel: StatsViewModel
     private val priceFormat = DecimalFormat("#,###")
-    private val pieSliceColors = intArrayOf(0xffC1B435.toInt(), 0xff2DA579.toInt(),
-            0xff2D71A5.toInt(), 0xffB53145.toInt(), 0xff909090.toInt())
-//    private val pieSliceColors = intArrayOf(0xffC19835.toInt(), 0xffABBA33.toInt(),
-//            0xff2DA579.toInt(), 0xff2D38A5.toInt(), 0xffA62D98.toInt())
+    private lateinit var pieSliceColors: IntArray
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
         viewModel = ViewModelProviders.of(activity!!).get(StatsViewModel::class.java)
 
+        pieSliceColors = resources.getIntArray(R.array.pieChartColors)
         val typedValue = TypedValue()
         context!!.theme.resolveAttribute(R.attr.pieChartBackgroundColor, typedValue, true)
         pieBgColor = typedValue.data
+
         pieChart.setCell(4) // gap between slices
         pieChart.setInnerRadius(0.6f)
         pieChart.setBackGroundColor(pieBgColor)

@@ -27,7 +27,7 @@ class IntroActivity : BaseActivity() {
         super.onCreate(savedState)
 
         dots = arrayOf(dot1, dot2, dot3)
-        val colors = resources.getIntArray(R.array.introColors)
+        val colors = resources.getIntArray(R.array.introPageColors)
 
         val adapter = IntroPageAdapter(supportFragmentManager, lifecycle)
         viewPager.adapter = adapter

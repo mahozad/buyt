@@ -30,7 +30,23 @@
         <item>#01259600</item>
     </array>
 
-    <array name="introColors">
+    <array name="pieChartColors">
+        <item>#ffC1B435</item>
+        <item>#ff2DA579</item>
+        <item>#ff2D71A5</item>
+        <item>#ffB53145</item>
+        <item>#ff909090</item>
+    </array>
+
+    <array name="pieChartColorsAlt">
+        <item>#C19835</item>
+        <item>#ABBA33</item>
+        <item>#2DA579</item>
+        <item>#2D38A5</item>
+        <item>#A62D98</item>
+    </array>
+
+    <array name="introPageColors">
         <item>#F44336</item>
         <item>#2196F3</item>
         <item>#FFEB3B</item>
