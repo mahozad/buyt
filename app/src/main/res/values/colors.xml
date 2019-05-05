@@ -30,4 +30,10 @@
         <item>#01259600</item>
     </array>
 
+    <array name="introColors">
+        <item>#F44336</item>
+        <item>#2196F3</item>
+        <item>#FFEB3B</item>
+    </array>
+
 </resources>

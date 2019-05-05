@@ -25,12 +25,7 @@ class IntroActivity : BaseActivity() {
         super.onCreate(savedState)
 
         dots = arrayOf(dot1, dot2, dot3)
-
-        val colors = intArrayOf(
-                resources.getColor(R.color.bottomBarDarkBgColor),
-                resources.getColor(R.color.chartEmptyColor),
-                resources.getColor(R.color.colorAccent)
-        )
+        val colors = resources.getIntArray(R.array.introColors)
 
         val adapter = IntroPagerAdapter(supportFragmentManager, lifecycle)
         viewPager.adapter = adapter
@@ -47,9 +42,9 @@ class IntroActivity : BaseActivity() {
                 backButton.layoutParams = params
 
                 if (position <= viewPager.childCount && position < colors.size - 1) {
-                    viewPager.setBackgroundColor(argbEvaluator.evaluate(positionOffset, colors[position], colors[position + 1]) as Int)
+                    parentLayout.setBackgroundColor(argbEvaluator.evaluate(positionOffset, colors[position], colors[position + 1]) as Int)
                 } else {
-                    viewPager.setBackgroundColor(colors[colors.size - 1])
+                    parentLayout.setBackgroundColor(colors[colors.size - 1])
                 }
 
                 if (positionOffset >= pagerLastOffset) {
