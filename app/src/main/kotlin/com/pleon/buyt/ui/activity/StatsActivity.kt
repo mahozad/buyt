@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.adapter.StatsPagerAdapter
@@ -45,10 +44,6 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
         super.onCreate(savedState)
 
         viewModel = ViewModelProviders.of(this).get(StatsViewModel::class.java)
-        viewModel.stats.observe(this, Observer { stats ->
-            statsFragment.showStats(stats)
-            detailsFragment.showStats(stats.purchaseDetails)
-        })
 
         registerReceiver(timeReceiver, IntentFilter(Intent.ACTION_TIME_TICK))
 

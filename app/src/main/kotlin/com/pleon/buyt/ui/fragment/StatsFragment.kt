@@ -8,6 +8,7 @@ import android.view.View.VISIBLE
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.db.chart.animation.Animation
 import com.db.chart.model.LineSet
@@ -33,6 +34,7 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
         viewModel = ViewModelProviders.of(activity!!).get(StatsViewModel::class.java)
+        viewModel.stats.observe(this, Observer { stats -> showStats(stats) })
 
         pieSliceColors = resources.getIntArray(R.array.pieChartColors)
         val typedValue = TypedValue()
@@ -46,7 +48,7 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
         pieChart.setAnimDuration(480)
     }
 
-    fun showStats(stats: Stats) {
+    private fun showStats(stats: Stats) {
         showLineChart(stats.dailyCosts!!)
         showPieChart(stats.mostPurchasedCategories)
 

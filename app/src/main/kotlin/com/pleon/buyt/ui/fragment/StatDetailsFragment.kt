@@ -3,10 +3,13 @@ package com.pleon.buyt.ui.fragment
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.pleon.buyt.R
 import com.pleon.buyt.database.dto.PurchaseDetail
 import com.pleon.buyt.ui.DateHeaderDecoration
 import com.pleon.buyt.ui.adapter.PurchaseDetailAdapter
+import com.pleon.buyt.viewmodel.StatsViewModel
 import kotlinx.android.synthetic.main.fragment_stat_details.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -19,9 +22,12 @@ class StatDetailsFragment : Fragment(R.layout.fragment_stat_details) {
         adapter = PurchaseDetailAdapter(context!!)
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(DateHeaderDecoration(recyclerView, adapter))
+
+        val viewModel = ViewModelProviders.of(activity!!).get(StatsViewModel::class.java)
+        viewModel.stats.observe(this, Observer { stats -> showStats(stats.purchaseDetails) })
     }
 
-    fun showStats(purchaseDetails: List<PurchaseDetail>) {
+    private fun showStats(purchaseDetails: List<PurchaseDetail>) {
         if (purchaseDetails.isEmpty()) {
             adapter.items = emptyList()
             return
