@@ -1,3 +1,4 @@
+نان:BREAD
 نان لواش:BREAD
 نان تافتون:BREAD
 نان بربری:BREAD
@@ -5,9 +6,11 @@
 نان فانتزی:BREAD
 نان محلی:BREAD
 نان قندی:BREAD
+شیر:DAIRY
 شیر فله‌ای:DAIRY
 شیر بطری:DAIRY
 شیر پاکتی:DAIRY
+پنیر:DAIRY
 پنیر پاستوریزه:DAIRY
 پنیر خامه‌ای:DAIRY
 پنیر گچی:DAIRY
