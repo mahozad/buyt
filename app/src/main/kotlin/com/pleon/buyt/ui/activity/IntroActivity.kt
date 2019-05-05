@@ -1,10 +1,12 @@
 package com.pleon.buyt.ui.activity
 
+import android.graphics.Color
 import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.util.TypedValue
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.graphics.ColorUtils
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.animation.ArgbEvaluatorCompat
 import com.pleon.buyt.R
@@ -43,7 +45,7 @@ class IntroActivity : BaseActivity() {
 
                 val color = argbEvaluator.evaluate(positionOffset, colors[position], colors[min(position + 1, adapter.itemCount - 1)])
                 parentLayout.setBackgroundColor(color)
-                window.statusBarColor = color
+                window.statusBarColor = ColorUtils.blendARGB(color, Color.BLACK, 0.3f)
 
                 if (positionOffset >= lastOffset) {
                     dots[position].alpha = max(1 - positionOffset, 0.2f)
