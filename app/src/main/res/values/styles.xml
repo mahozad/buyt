@@ -13,6 +13,7 @@
         <item name="unitUnfocusedColor">@color/unitUnfocusedDark</item>
         <item name="bottomAppBarStyle">@style/bottomAppBarStyle</item>
         <item name="floatingActionButtonStyle">@style/fabStyle</item>
+        <item name="alertDialogTheme">@style/customDialogTheme</item>
 
         <!-- To use normal parent themes above (without .NoActionBar) -->
         <item name="windowActionBar">false</item>
@@ -36,6 +37,7 @@
         <item name="unitUnfocusedColor">@color/unitUnfocusedLight</item>
         <item name="bottomAppBarStyle">@style/bottomAppBarStyle</item>
         <item name="floatingActionButtonStyle">@style/fabStyle</item>
+        <item name="alertDialogTheme">@style/customDialogTheme</item>
 
         <!-- To use normal parent themes above (without .NoActionBar) -->
         <item name="windowActionBar">false</item>
@@ -54,6 +56,11 @@
         <item name="android:paddingStart">10dp</item>
         <item name="android:paddingEnd">10dp</item>
         <item name="android:gravity">center</item>
+    </style>
+
+    <!-- TODO: Update background color of persian date picker as well -->
+    <style name="customDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="android:background">?attr/colorSurface</item>
     </style>
 
     <style name="fabStyle" parent="Widget.MaterialComponents.FloatingActionButton">
