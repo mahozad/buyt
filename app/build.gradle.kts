@@ -109,7 +109,7 @@ dependencies {
     /* The AndroidX version of "com.android.support:design"
      * Another support library that adds support for material components such as NavigationDrawer,
      * SnackBar, FAB and Tab for older android versions. */
-    implementation("com.google.android.material:material:1.1.0-alpha05")
+    implementation("com.google.android.material:material:1.1.0-alpha06")
     // ViewModel and LiveData
     implementation("androidx.lifecycle:lifecycle-extensions:2.1.0-alpha04")
     implementation("androidx.lifecycle:lifecycle-common-java8:2.1.0-alpha04")
@@ -128,7 +128,6 @@ dependencies {
 
     // Alternative for Google map
     // implementation("com.mapbox.mapboxsdk:mapbox-android-sdk:7.2.0")
-    implementation("com.getkeepsafe.taptargetview:taptargetview:1.12.0")
     implementation("com.mohamadamin:persianmaterialdatetimepicker:1.2.1")
     implementation("com.diogobernardino:williamchart:2.5.0")
     implementation("ir.huri:JalaliCalendar:1.3.3")
@@ -151,7 +150,7 @@ dependencies {
     testImplementation("org.hamcrest:hamcrest-library:2.1")
     // Dependencies for instrumented tests
     androidTestImplementation("androidx.test.ext:junit:1.1.1-alpha05")
-    androidTestImplementation("androidx.test:runner:1.2.0-alpha05")
+    androidTestImplementation("androidx.test:runner:1.2.0-beta01")
     androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
     androidTestImplementation("org.mockito:mockito-android:2.27.0")
     androidTestImplementation("org.mockito:mockito-junit-jupiter:2.27.0")
