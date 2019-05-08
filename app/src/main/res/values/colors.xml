@@ -14,7 +14,7 @@
 
     <color name="ic_launcher_background">#FFFFFF</color>
 
-    <color name="pieChartDarkBgColor">#FF2E362F</color>
+    <color name="pieChartDarkBgColor">#FF323A33</color>
     <color name="pieChartLightBgColor">#FFE9FFEA</color>
     <color name="chartEmptyColor">#5A888888</color>
 
