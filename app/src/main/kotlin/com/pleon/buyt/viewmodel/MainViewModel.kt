@@ -12,17 +12,19 @@ import com.pleon.buyt.model.Coordinates
 import com.pleon.buyt.model.Item
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.repository.MainRepository
+import com.pleon.buyt.ui.fragment.PREF_SEARCH_DIST
+import com.pleon.buyt.ui.fragment.PREF_SEARCH_DIST_DEF
 import com.pleon.buyt.viewmodel.MainViewModel.State.IDLE
 import java.util.*
 import kotlin.math.cos
 
 private const val EARTH_RADIUS = 6_371_000.0 // In meters
 
-// Every screen in the app (an activity with all its fragments) has one corresponding viewModel for itself.
-// A ViewModel acts as a communication center between the Repository and the UI.
-// You can also use a ViewModel to share data between fragments.
-
 /**
+ * Every screen in the app (an activity with all its fragments) has one corresponding viewModel for itself.
+ * A ViewModel acts as a communication center between the Repository and the UI.
+ * You can also use a ViewModel to share data between fragments.
+ *
  * [ViewModels][androidx.lifecycle.ViewModel] only survive configuration changes and not
  * force-kills. So to survive process stops, implement
  * [AppCompatActivity.onSaveInstanceState] method in your activity/fragment.
@@ -33,8 +35,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         IDLE, FINDING, SELECTING
     }
 
-    private val preferences = getDefaultSharedPreferences(application)
-    private val repository = MainRepository(application)
     @Volatile var state = IDLE
     var location: Location? = null
     var isFindingSkipped = false
@@ -44,15 +44,17 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     var isAddingItem = false
     @DrawableRes var storeIcon = 0
     @StringRes var storeTitle = 0
+    private val prefs = getDefaultSharedPreferences(application)
+    private val repository = MainRepository(application)
 
-    // TODO: Use paging library architecture component
+    // TODO: Use paging architecture component library
     val allItems = repository.allItems
     val allStores get() = repository.getAllStores()
 
     fun findNearStores(origin: Coordinates): LiveData<List<Store>> {
-        val distInMeters = preferences.getString("distance", "50")!!.toInt()
-        val nearStoresDistance = cos(distInMeters / EARTH_RADIUS)
-        return repository.findNearStores(origin, nearStoresDistance)
+        val searchDistInMeters = prefs.getString(PREF_SEARCH_DIST, PREF_SEARCH_DIST_DEF)!!.toInt()
+        val searchDist = cos(searchDistInMeters / EARTH_RADIUS)
+        return repository.findNearStores(origin, searchDist)
     }
 
     fun buy(items: Collection<Item>, store: Store, date: Date) = repository.buy(items, store, date)

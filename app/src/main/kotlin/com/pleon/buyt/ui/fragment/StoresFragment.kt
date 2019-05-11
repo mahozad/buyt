@@ -14,10 +14,10 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.ItemSpacingDecoration
-import com.pleon.buyt.ui.SnackbarUtil.showUndoSnackbar
 import com.pleon.buyt.ui.TouchHelperCallback
 import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener
 import com.pleon.buyt.ui.adapter.StoresAdapter
+import com.pleon.buyt.util.SnackbarUtil.showUndoSnackbar
 import com.pleon.buyt.viewmodel.StoresViewModel
 import kotlinx.android.synthetic.main.fragment_store_list.*
 

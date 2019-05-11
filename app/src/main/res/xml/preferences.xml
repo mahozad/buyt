@@ -5,7 +5,7 @@
     <SwitchPreference
         android:defaultValue="true"
         android:icon="@drawable/ic_vibration"
-        android:key="vibrate"
+        android:key="VIBRATE"
         android:title="@string/pref_title_vibrate" />
 
     <ListPreference
@@ -14,7 +14,7 @@
         android:entries="@array/pref_search_dist_names"
         android:entryValues="@array/pref_search_dist_vals"
         android:icon="@drawable/ic_distance"
-        android:key="distance"
+        android:key="DISTANCE"
         android:title="@string/pref_title_search_radius"
         app:useSimpleSummaryProvider="true" />
 
@@ -26,7 +26,7 @@
         android:entries="@array/pref_theme_names"
         android:entryValues="@array/pref_theme_vals"
         android:icon="@drawable/ic_theme"
-        android:key="theme"
+        android:key="THEME"
         android:title="@string/pref_title_theme"
         app:useSimpleSummaryProvider="true" />
 
@@ -36,7 +36,7 @@
         android:entries="@array/pref_lang_names"
         android:entryValues="@array/pref_lang_vals"
         android:icon="@drawable/ic_language"
-        android:key="lang"
+        android:key="LANG"
         android:title="@string/pref_title_lang"
         app:useSimpleSummaryProvider="true" />
 

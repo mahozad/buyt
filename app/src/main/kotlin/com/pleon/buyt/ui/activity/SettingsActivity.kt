@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.preference.PreferenceManager
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.pleon.buyt.R
+import com.pleon.buyt.ui.fragment.PREF_NEWBIE
 
 class SettingsActivity : BaseActivity() {
 
@@ -37,9 +38,9 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun resetPreferences() {
-        val preferences = getDefaultSharedPreferences(this)
-        preferences.edit().clear().apply()
+        val prefs = getDefaultSharedPreferences(this)
+        prefs.edit().clear().apply()
         PreferenceManager.setDefaultValues(this, R.xml.preferences, true)
-        preferences.edit().putBoolean("NEWBIE", false).apply()
+        prefs.edit().putBoolean(PREF_NEWBIE, false).apply() // We don't want tutorial again!
     }
 }

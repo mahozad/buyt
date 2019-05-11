@@ -6,11 +6,10 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.pleon.buyt.R
 import com.pleon.buyt.setLocale
+import com.pleon.buyt.ui.fragment.PREF_THEME
+import com.pleon.buyt.ui.fragment.PREF_THEME_DEF
 
 val <T : LifecycleOwner> T.TAG get() = javaClass.simpleName
-const val PREF_KEY_THEME = "theme"
-const val DEFAULT_THEME = "dark"
-const val PREF_KEY_LANG = "lang"
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -26,8 +25,8 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     private fun setTheme() {
-        val preferences = getDefaultSharedPreferences(this)
-        val theme = preferences.getString(PREF_KEY_THEME, DEFAULT_THEME)
-        setTheme(if (theme == DEFAULT_THEME) R.style.AppTheme else R.style.LightTheme)
+        val prefs = getDefaultSharedPreferences(this)
+        val theme = prefs.getString(PREF_THEME, PREF_THEME_DEF)
+        setTheme(if (theme == PREF_THEME_DEF) R.style.AppTheme else R.style.LightTheme)
     }
 }

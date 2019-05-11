@@ -5,19 +5,19 @@ import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
+import com.pleon.buyt.ui.fragment.PREF_LANG
 import java.util.*
 
 fun setLocale(context: Context): Context {
-    val lang = getDefaultSharedPreferences(context).getString("lang", "auto")
+    val lang = getDefaultSharedPreferences(context).getString(PREF_LANG, "auto")
     val locale = if (lang == "auto") Resources.getSystem().configuration.locale else Locale(lang)
     Locale.setDefault(locale)
 
-    val res = context.resources
-    val config = Configuration(res.configuration)
+    val config = Configuration(context.resources.configuration)
     config.setLocale(locale)
 
     val cxt = context.createConfigurationContext(config)
-    res.updateConfiguration(config, res.displayMetrics)
+    context.resources.updateConfiguration(config, context.resources.displayMetrics)
 
     return cxt
 }

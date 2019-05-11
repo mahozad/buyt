@@ -5,14 +5,10 @@ import android.app.NotificationManager
 import android.content.*
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.graphics.drawable.Animatable
-import android.graphics.drawable.Drawable
-import android.location.Location
 import android.location.LocationManager
 import android.location.LocationManager.GPS_PROVIDER
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
-import android.os.Vibrator
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -23,14 +19,13 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
+import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
-import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback
-import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat.registerAnimationCallback
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_END
 import com.google.android.material.snackbar.Snackbar.*
@@ -41,14 +36,14 @@ import com.pleon.buyt.model.Store
 import com.pleon.buyt.service.ACTION_LOCATION_EVENT
 import com.pleon.buyt.service.EXTRA_LOCATION
 import com.pleon.buyt.service.GpsService
-import com.pleon.buyt.ui.SnackbarUtil.showSnackbar
 import com.pleon.buyt.ui.dialog.*
 import com.pleon.buyt.ui.dialog.Callback
 import com.pleon.buyt.ui.dialog.CreateStoreDialogFragment.CreateStoreListener
 import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
-import com.pleon.buyt.ui.fragment.AddItemFragment
-import com.pleon.buyt.ui.fragment.BottomDrawerFragment
-import com.pleon.buyt.ui.fragment.ItemsFragment
+import com.pleon.buyt.ui.fragment.*
+import com.pleon.buyt.util.AnimationUtil
+import com.pleon.buyt.util.SnackbarUtil.showSnackbar
+import com.pleon.buyt.util.VibrationUtil.vibrate
 import com.pleon.buyt.viewmodel.MainViewModel
 import com.pleon.buyt.viewmodel.MainViewModel.State.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -57,29 +52,20 @@ import java.util.*
 private const val STATE_LOCATION = "com.pleon.buyt.state.LOCATION"
 private const val REQUEST_LOCATION_PERMISSION = 1
 
+/**
+ * UI controllers such as activities and fragments are primarily intended to display UI data,
+ * react to user actions, or handle operating system communication, such as permission requests.
+ */
 class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, CreateStoreListener {
-
-    // UI controllers such as activities and fragments are primarily intended to display UI data,
-    // react to user actions, or handle operating system communication, such as permission requests.
 
     // To force kill the app, go to the desired activity, press home button and then run this command:
     // adb shell am kill com.pleon.buyt
     // return to the app from recent apps screen (or maybe by pressing its launcher icon)
 
-    // the app can be described as both a shopping list app and an expense manager app
-
-    // FIXME: Shift to idle state if the app is in finding state and all items are deleted meanwhile
-    //     OR disable swipe-to-delete when the state is not in IDLE
-    // FIXME: Slide-up bottom bar if it was hidden (because of scroll) and some items were deleted and
-    //     now cannot scroll to make it slide up again
-    // FIXME: Update position field of items if an item is deleted
     // FIXME: Correct all names and ids according to best practices
-    // FIXME: Fix the query for chart data to start from the beginning of the first day (instead of just -7 days)
     // FIXME: The bug that sometimes occur when expanding an item (the bottom item jumps up one moment),
     //     is produced when another item was swiped partially
-    // FIXME: Use srcCompat instead of src in layout files
-    // FIXME: the bottom shadow (elevation) of item cards is broken. Maybe because of swipe-to-delete background layer
-    // FIXME: when dragging items, in some situations** item moves from behind of other cards
+    // FIXME: when dragging items, in some situations item moves from behind of other cards
     //   this happens if the card being dragged over by this card, has itself dragged over this card in the past.
     //   steps to reproduce: drag card1 over card2 and then drop it (you can also drop it to its previous position).
     //   now drag card2 over card1. Then again drag card1 over card2; it moves behind of card2 and in front of other cards.
@@ -88,8 +74,8 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
     //   https://github.com/brianwernick/RecyclerExt/blob/master/library/src/main/java/com/devbrackets/android/recyclerext/adapter/helper/SimpleElevationItemTouchHelperCallback.java
 
     private lateinit var viewModel: MainViewModel
-    private lateinit var itemsFragment: ItemsFragment
     private lateinit var prefs: SharedPreferences
+    private lateinit var itemsFragment: ItemsFragment
     private lateinit var locationMgr: LocationManager
     private lateinit var locationReceiver: BroadcastReceiver
     private lateinit var addMenuItem: MenuItem
@@ -107,63 +93,65 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
      * onCreate()/onDestroy() to register/unregister. (Note there are other ways to implement
      * this kind of functionality.)" See this answer: [https://stackoverflow.com/a/44526685/8583692]
      *
+     * // If the activity is re-created due to a config change, any fragments added using the
+     * // Fragment Manager will automatically be re-added. As a result, we only add a new fragment
+     * // if this is not a configuration-change restart (by checking the savedInstanceState bundle)
+     * if (savedInstanceState == null) {
+     *     itemListFragment = ItemListFragment.newInstance();
+     *     // call commit to add the fragment to the UI queue asynchronously, or
+     *     // commitNow (preferred) to block until the transaction is fully complete.
+     *     fragMgr.beginTransaction().add(R.id.fragment_items, itemListFragment).commitNow();
+     * } else {
+     *     itemListFragment = ((ItemListFragment) fragMgr.findFragmentById(R.id.fragment_items));
+     * }
+     *
+     *
+     *
+     * for fragment example see [https://developer.android.com/guide/components/fragments#Example]
+     * As in android developers guild, make this variable a field if needed:
+     * boolean wideLayout = findViewById(R.id.chart) != null;
+     * if (wideLayout) {
+     *     Do whatever needed
+     * }
+     *
      * @param savedState
      */
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
+
         prefs = getDefaultSharedPreferences(this)
-
-        if (prefs.getBoolean("NEWBIE", true)) showIntro()
-
-        if (prefs.getBoolean("configChanged", false)) { // Restore drawer
-            BottomDrawerFragment().show(supportFragmentManager, "BOTTOM_SHEET")
-            prefs.edit().putBoolean("configChanged", false).apply()
-        }
-
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         itemsFragment = supportFragmentManager.findFragmentById(R.id.itemsFragment) as ItemsFragment
-        locationMgr = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
-        fab.setOnClickListener { onFabClick() }
-
-        // for fragment example see [https://developer.android.com/guide/components/fragments#Example]
-        // As in android developers guild, make this variable a field if needed:
-        // boolean wideLayout = findViewById(R.id.chart) != null;
-        // if (wideLayout) {
-        //      Do whatever needed
-        // }
-
-        /*
-         * // If the activity is re-created due to a config change, any fragments added using the
-         * // Fragment Manager will automatically be re-added. As a result, we only add a new fragment
-         * // if this is not a configuration-change restart (by checking the savedInstanceState bundle)
-         * if (savedInstanceState == null) {
-         *     itemListFragment = ItemListFragment.newInstance();
-         *     // call commit to add the fragment to the UI queue asynchronously, or
-         *     // commitNow (preferred) to block until the transaction is fully complete.
-         *     fragMgr.beginTransaction().add(R.id.fragment_items, itemListFragment).commitNow();
-         * } else {
-         *     itemListFragment = ((ItemListFragment) fragMgr.findFragmentById(R.id.fragment_items));
-         * }
-         */
-
+        locationMgr = getSystemService(LOCATION_SERVICE) as LocationManager
         locationReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) = onLocationFound(intent)
         }
+
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(locationReceiver, IntentFilter(ACTION_LOCATION_EVENT))
+        fab.setOnClickListener { onFabClick() }
+
+        showIntroIfNeeded()
+        restoreBottomDrawerIfNeeded()
     }
 
-    private fun showIntro() = startActivity(Intent(this, IntroActivity::class.java))
+    private fun showIntroIfNeeded() {
+        if (prefs.getBoolean(PREF_NEWBIE, true))
+            startActivity(Intent(this, IntroActivity::class.java))
+    }
+
+    private fun restoreBottomDrawerIfNeeded() {
+        if (prefs.getBoolean(PREF_TASK_RECREATED, false)) {
+            BottomDrawerFragment().show(supportFragmentManager, "BOTTOM_SHEET")
+            prefs.edit().putBoolean(PREF_TASK_RECREATED, false).apply()
+        }
+    }
 
     private fun onLocationFound(intent: Intent) {
-        if (prefs.getBoolean("vibrate", true)) {
-            val vibrator = getSystemService(VIBRATOR_SERVICE) as Vibrator
-            vibrator.vibrate(150) // FIXME: Deprecated method
-        }
+        if (prefs.getBoolean(PREF_VIBRATE, true)) vibrate(this, 200, 255)
         viewModel.location = intent.getParcelableExtra(EXTRA_LOCATION)
-        val here = Coordinates(viewModel.location as Location)
-        viewModel.findNearStores(here).observe(this@MainActivity, Observer { onStoresFound(it) })
+        val here = Coordinates(viewModel.location!!)
+        viewModel.findNearStores(here).observe(this, Observer { onStoresFound(it) })
     }
 
     private fun onFabClick() {
@@ -176,7 +164,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
             else {
                 itemsFragment.clearSelectedItems() // clear items of previous purchase
                 addMenuItem.setIcon(R.drawable.avd_add_hide).apply { (icon as Animatable).start() }
-                        // disable effect of tapping on add menu item
+                        // disable effect of tapping on the menu item
                         .also { Handler().postDelayed({ it.isVisible = false }, 300) }
                 findLocation()
             }
@@ -212,18 +200,13 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
             bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
         }
 
-        // Enable/Disable add menuItem animation
+        // Enable/Disable addMenuItem animation
         viewModel.allItems.observe(this, Observer { items ->
-            // If user is newbie don't animate icon; the tutorial will animate it at the end
-            if (items.isEmpty() && !prefs.getBoolean("NEWBIE", true)) {
+            if (items.isEmpty()) {
                 addMenuItem.setIcon(R.drawable.avd_add_glow)
-                animateIconInfinitely(addMenuItem.icon)
+                AnimationUtil.animateIconInfinitely(addMenuItem.icon)
             } else addMenuItem.setIcon(R.drawable.avd_add_hide)
         })
-
-        // Set icon for the tutorial; At the end of tutorial the icon is corrected
-        if (prefs.getBoolean("NEWBIE", true))
-            reorderMenuItem.setIcon(R.drawable.avd_skip_reorder)
 
         return true
     }
@@ -231,27 +214,13 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
     private fun initializeAddStorePopup(view: View) {
         addStorePopup = PopupMenu(this, view)
         addStorePopup.menuInflater.inflate(R.menu.menu_popup_add_store, addStorePopup.menu)
-        addStorePopup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener {
-            onOptionsItemSelected(it)
-            return@OnMenuItemClickListener false
+        addStorePopup.setOnMenuItemClickListener(OnMenuItemClickListener {
+            return@OnMenuItemClickListener onOptionsItemSelected(it)
         })
     }
 
     private fun showAddStorePopup() {
-        if (!viewModel.isFindingSkipped && viewModel.foundStores.isNotEmpty())
-            addStorePopup.show()
-    }
-
-    private fun animateIconInfinitely(icon: Drawable) {
-        // Make plus icon glow a little bit if the user is a newbie!
-        // see this answer [https://stackoverflow.com/a/49431260/8583692] for why we are doing this!
-        registerAnimationCallback(icon, object : AnimationCallback() {
-            private val handler = Handler(Looper.getMainLooper())
-            override fun onAnimationEnd(drawable: Drawable) {
-                handler.post { (drawable as Animatable).start() }
-            }
-        })
-        (icon as Animatable).start()
+        if (!viewModel.isFindingSkipped && viewModel.foundStores.isNotEmpty()) addStorePopup.show()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -420,8 +389,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
         LocalBroadcastManager.getInstance(this).unregisterReceiver(locationReceiver)
         // TODO: Move AppDatabase.destroyDatabase() to the onCleared() method of the viewModel
         // see [https://developer.android.com/guide/components/activities/activity-lifecycle#ondestroy]
-        // if activity being destroyed is because of back button (not because of config change)
-        if (isFinishing) {
+        if (isFinishing) { // if activity being destroyed because of back button (not because of config change)
             stopService(Intent(this, GpsService::class.java))
             destroyDatabase()
         }

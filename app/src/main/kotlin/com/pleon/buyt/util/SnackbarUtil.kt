@@ -1,4 +1,4 @@
-package com.pleon.buyt.ui
+package com.pleon.buyt.util
 
 import android.view.View
 import com.google.android.material.snackbar.BaseTransientBottomBar.BaseCallback

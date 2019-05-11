@@ -31,8 +31,6 @@ import com.pleon.buyt.model.Category
 import com.pleon.buyt.model.Item
 import com.pleon.buyt.model.Item.Quantity.Unit
 import com.pleon.buyt.ui.NumberInputWatcher
-import com.pleon.buyt.ui.activity.DEFAULT_THEME
-import com.pleon.buyt.ui.activity.PREF_KEY_THEME
 import com.pleon.buyt.ui.dialog.DatePickerDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
@@ -244,8 +242,8 @@ class AddItemFragment : Fragment(R.layout.fragment_add_item),
             val persianCal = PersianCalendar()
             val datePicker = DatePickerDialog.newInstance(this, persianCal.persianYear,
                     persianCal.persianMonth, persianCal.persianDay)
-            val theme = getDefaultSharedPreferences(context).getString(PREF_KEY_THEME, DEFAULT_THEME)
-            datePicker.isThemeDark = (theme == DEFAULT_THEME) // if you want to change colors see colors.xml
+            val theme = getDefaultSharedPreferences(context).getString(PREF_THEME, PREF_THEME_DEF)
+            datePicker.isThemeDark = (theme == PREF_THEME_DEF) // for changing colors see colors.xml
             datePicker.retainInstance = true
 
             val selectableDays = arrayOfNulls<PersianCalendar>(10)

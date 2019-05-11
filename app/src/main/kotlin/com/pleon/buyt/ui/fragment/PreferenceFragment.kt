@@ -8,11 +8,19 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Bundle
 import androidx.core.app.TaskStackBuilder
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.PreferenceManager
+import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.activity.MainActivity
-import com.pleon.buyt.ui.activity.PREF_KEY_LANG
-import com.pleon.buyt.ui.activity.PREF_KEY_THEME
+
+const val PREF_LANG = "LANG"
+const val PREF_THEME = "THEME"
+const val PREF_NEWBIE = "NEWBIE"
+const val PREF_VIBRATE = "VIBRATE"
+const val PREF_SEARCH_DIST = "DISTANCE"
+const val PREF_TASK_RECREATED = "TASK_RECREATED"
+
+const val PREF_THEME_DEF = "dark"
+const val PREF_SEARCH_DIST_DEF = "50"
 
 class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeListener {
 
@@ -23,23 +31,22 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
 
     override fun onCreatePreferences(savedState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
-
-        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-        preferences.registerOnSharedPreferenceChangeListener(this)
+        getDefaultSharedPreferences(context).registerOnSharedPreferenceChangeListener(this)
     }
 
-    override fun onSharedPreferenceChanged(preferences: SharedPreferences, key: String) {
-        if (key == PREF_KEY_THEME || key == PREF_KEY_LANG) {
-            preferences.edit().putBoolean("configChanged", true).apply()
-            // Recreate the back stack so the new theme or language is applied to parent activities
-            // (their onCreate() method is called which in turn invokes setTheme() or setLocale() method)
+    override fun onSharedPreferenceChanged(prefs: SharedPreferences, key: String) {
+        if (key == PREF_THEME || key == PREF_LANG) {
+            prefs.edit().putBoolean(PREF_TASK_RECREATED, true).apply()
             recreateTask()
-            // An alternative way would be to call setTheme() in onResume() callback of the main activity
         }
     }
 
     /**
-     * Use the [.activity] field initialized in [onAttach()][.onAttach]
+     * Recreate the back stack so the new theme or language is applied to parent activities
+     * (their onCreate() method is called which in turn invokes setTheme() or setLocale() method).
+     * An alternative way would be to call setTheme() in onResume() callback of the main activity.
+     *
+     * Note: Use the [.activity] field initialized in [onAttach()][.onAttach]
      * as context to prevent exception when reset icon is pressed multiple times in a row.
      */
     private fun recreateTask() {
@@ -49,8 +56,8 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
                 .startActivities()
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        this.activity = context as Activity
+    override fun onAttach(cxt: Context) {
+        super.onAttach(cxt)
+        this.activity = cxt as Activity
     }
 }

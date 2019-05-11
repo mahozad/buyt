@@ -14,10 +14,10 @@ import com.pleon.buyt.R
 import com.pleon.buyt.model.Category
 import com.pleon.buyt.model.Item
 import com.pleon.buyt.ui.ItemSpacingDecoration
-import com.pleon.buyt.ui.SnackbarUtil.showUndoSnackbar
 import com.pleon.buyt.ui.TouchHelperCallback
 import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener
 import com.pleon.buyt.ui.adapter.ItemListAdapter
+import com.pleon.buyt.util.SnackbarUtil.showUndoSnackbar
 import com.pleon.buyt.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.fragment_item_list.*
 import java.util.*

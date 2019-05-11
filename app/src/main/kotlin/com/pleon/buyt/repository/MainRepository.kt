@@ -38,9 +38,9 @@ class MainRepository(application: Application) { // TODO: make this class single
         }
     }
 
-    fun findNearStores(cor: Coordinates, maxDistance: Double): LiveData<List<Store>> {
+    fun findNearStores(cor: Coordinates, searchDist: Double): LiveData<List<Store>> {
         doAsync {
-            val stores = storeDao.getNearStores(cor.sinLat, cor.cosLat, cor.sinLng, cor.cosLng, maxDistance)
+            val stores = storeDao.getNearStores(cor.sinLat, cor.cosLat, cor.sinLng, cor.cosLng, searchDist)
             uiThread { nearStores.value = stores }
         }
         return nearStores
