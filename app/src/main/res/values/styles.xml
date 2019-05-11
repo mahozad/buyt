@@ -13,7 +13,7 @@
         <item name="unitUnfocusedColor">@color/unitUnfocusedDark</item>
         <item name="bottomAppBarStyle">@style/bottomAppBarStyle</item>
         <item name="floatingActionButtonStyle">@style/fabStyle</item>
-        <item name="alertDialogTheme">@style/customDialogTheme</item>
+        <!--<item name="alertDialogTheme">@style/customDialogTheme</item>-->
 
         <!-- To use normal parent themes above (without .NoActionBar) -->
         <item name="windowActionBar">false</item>
@@ -37,7 +37,7 @@
         <item name="unitUnfocusedColor">@color/unitUnfocusedLight</item>
         <item name="bottomAppBarStyle">@style/bottomAppBarStyle</item>
         <item name="floatingActionButtonStyle">@style/fabStyle</item>
-        <item name="alertDialogTheme">@style/customDialogTheme</item>
+        <!--<item name="alertDialogTheme">@style/customDialogTheme</item>-->
 
         <!-- To use normal parent themes above (without .NoActionBar) -->
         <item name="windowActionBar">false</item>
