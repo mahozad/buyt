@@ -30,7 +30,7 @@ class ItemsFragment : Fragment(R.layout.fragment_item_list), ItemTouchHelperList
     private lateinit var touchHelperCallback: TouchHelperCallback
     val isSelectedEmpty get() = adapter.selectedItems.isEmpty()
     val selectedItems get() = adapter.selectedItems
-    val isCartEmpty get() = adapter.items.isEmpty()
+    val isListEmpty get() = adapter.items.isEmpty()
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)

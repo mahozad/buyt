@@ -23,14 +23,14 @@ class StatsViewModel(val app: Application) : AndroidViewModel(app) {
     }
 
     interface Filter {
-        fun getImgRes(): Int
-        fun getName(): String
+        val criterion: String
+        val imgRes: Int
     }
 
     // Special Case Design Pattern
     object NoFilter : Filter {
-        override fun getImgRes() = R.drawable.ic_filter
-        override fun getName() = "NoFilter"
+        override val criterion = "NoFilter"
+        override val imgRes = R.drawable.ic_filter
     }
 
     private val repository = StatsRepository(app)
@@ -39,11 +39,10 @@ class StatsViewModel(val app: Application) : AndroidViewModel(app) {
         return@Function repository.getStats(period.length, filter)
     })
 
-    var period = NARROW
-        private set
-    var filterList = initializeFilters()
-        private set
+    val filterList = initializeFilters()
     var filter: Filter = NoFilter
+        private set
+    var period = NARROW
         private set
 
     private fun initializeFilters(): ArrayList<SelectDialogRow> {

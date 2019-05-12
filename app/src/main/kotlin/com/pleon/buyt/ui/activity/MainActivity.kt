@@ -62,7 +62,6 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
     // adb shell am kill com.pleon.buyt
     // return to the app from recent apps screen (or maybe by pressing its launcher icon)
 
-    // FIXME: Correct all names and ids according to best practices
     // FIXME: The bug that sometimes occur when expanding an item (the bottom item jumps up one moment),
     //     is produced when another item was swiped partially
     // FIXME: when dragging items, in some situations item moves from behind of other cards
@@ -104,8 +103,6 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
      * } else {
      *     itemListFragment = ((ItemListFragment) fragMgr.findFragmentById(R.id.fragment_items));
      * }
-     *
-     *
      *
      * for fragment example see [https://developer.android.com/guide/components/fragments#Example]
      * As in android developers guild, make this variable a field if needed:
@@ -159,7 +156,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
             val addItemFragment = supportFragmentManager.findFragmentById(R.id.addItemFragment) as AddItemFragment
             addItemFragment.onDonePressed()
         } else if (viewModel.state == IDLE) { // act as find
-            if (itemsFragment.isCartEmpty)
+            if (itemsFragment.isListEmpty)
                 showSnackbar(snbContainer, R.string.snackbar_message_cart_empty, LENGTH_SHORT)
             else {
                 itemsFragment.clearSelectedItems() // clear items of previous purchase
@@ -182,14 +179,14 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
         initializeAddStorePopup(storeMenuItem.actionView)
         storeMenuItem.actionView.setOnClickListener { showAddStorePopup() }
 
-        if (viewModel.state != IDLE) addMenuItem.isVisible = false
-
-        if (viewModel.isAddingItem) bottom_bar.setNavigationIcon(R.drawable.avd_cancel_nav)
-        else if (viewModel.state == FINDING) {
+        if (viewModel.state != IDLE || viewModel.isAddingItem) {
+            addMenuItem.isVisible = false
             bottom_bar.setNavigationIcon(R.drawable.avd_cancel_nav)
+        }
+
+        if (viewModel.state == FINDING) {
             reorderMenuItem.setIcon(R.drawable.avd_skip_reorder).setTitle(R.string.menu_hint_skip_finding)
         } else if (viewModel.state == SELECTING) {
-            bottom_bar.setNavigationIcon(R.drawable.avd_cancel_nav)
             with(storeMenuItem.actionView) {
                 this.findViewById<FrameLayout>(R.id.textContainer).visibility = if (viewModel.foundStores.size == 1) GONE else VISIBLE
                 this.findViewById<ImageView>(R.id.icon).setImageResource(viewModel.storeIcon)
@@ -251,7 +248,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
 
             R.id.action_reorder -> {
                 if (viewModel.state == IDLE) {
-                    if (!itemsFragment.isCartEmpty) itemsFragment.toggleEditMode()
+                    if (!itemsFragment.isListEmpty) itemsFragment.toggleEditMode()
                 } else skipFinding()
             }
 

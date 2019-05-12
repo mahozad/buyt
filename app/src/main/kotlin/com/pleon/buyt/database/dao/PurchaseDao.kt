@@ -33,8 +33,8 @@ abstract class PurchaseDao {
      */
     @Transaction
     open fun getStats(period: Int, filter: Filter): Stats {
-        val filter = filter.getName()
         val period = period - 1 // The queries return one extra day so do period-1
+        val filter = filter.criterion
         val stats = Stats()
 
         stats.dailyCosts = getDailyCosts(period, filter)

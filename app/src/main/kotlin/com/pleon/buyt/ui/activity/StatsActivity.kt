@@ -59,7 +59,7 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
         menuInflater.inflate(R.menu.menu_bottom_stats, menu)
 
         filterMenuItem = menu.findItem(R.id.action_filter)
-        filterMenuItem.setIcon(viewModel.filter.getImgRes())
+        filterMenuItem.setIcon(viewModel.filter.imgRes)
 
         // Setting up "change period" menu item because it has custom layout
         val periodMenuItem = menu.findItem(R.id.action_toggle_period)
@@ -99,7 +99,7 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
 
     override fun onSelected(index: Int) {
         viewModel.setFilter(index)
-        filterMenuItem.setIcon(viewModel.filter.getImgRes())
+        filterMenuItem.setIcon(viewModel.filter.imgRes)
     }
 
     override fun onDestroy() {

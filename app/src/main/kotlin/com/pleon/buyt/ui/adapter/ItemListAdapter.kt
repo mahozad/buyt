@@ -166,14 +166,14 @@ class ItemListAdapter(private val context: Context, private val itemTouchHelper:
         private fun onCardClick() {
             if (selectionModeEnabled) {
                 itemView.selectCheckBox.performClick() // delegate to chBx listener
-            } else if (!itemView.description.text.toString().isEmpty()) {
+            } else if (itemView.description.text.toString().isNotEmpty()) {
                 itemView.expandDragButton.post { itemView.expandDragButton.performClick() }
             }
         }
 
         fun onPriceChanged() {
             val priceString = itemView.price.text.toString().replace("[^\\d]".toRegex(), "")
-            if (!priceString.isEmpty()) {
+            if (priceString.isNotEmpty()) {
                 val price = parseLong(priceString)
                 val item = items[adapterPosition]
                 item.totalPrice = price

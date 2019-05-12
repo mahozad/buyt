@@ -28,7 +28,6 @@ enum class Category(val nameRes: Int, val imageRes: Int,
     // SHOE_SHOP(R.string.store_cat_shoe_shop, R.drawable.ic_store_ice_creamy),
     // OTHER(R.string.item_cat_other, R.drawable.ic_item_other)
 
-    override fun getImgRes() = imageRes
-    override fun getName() = name
+    override val criterion = name
+    override val imgRes = imageRes
 }
-
