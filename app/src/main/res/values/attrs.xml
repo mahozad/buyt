@@ -2,6 +2,7 @@
 <resources>
     <attr name="cardBgColor" format="reference|color" />
     <attr name="bottomBarColor" format="reference" />
+    <attr name="emptyHintColor" format="reference" />
     <attr name="unitUnfocusedColor" format="reference" />
     <attr name="pieChartBackgroundColor" format="reference" />
     <bool name="isRtl">false</bool>

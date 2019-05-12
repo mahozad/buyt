@@ -21,6 +21,9 @@
     <color name="bottomBarDarkBgColor">#222822</color>
     <color name="bottomBarLightBgColor">#CaE7Ca</color>
 
+    <color name="emptyHintDarkColor">#3A443A</color>
+    <color name="emptyHintLightColor">#B8DFB8</color>
+
     <color name="unitUnfocusedDark">#6f6f6f</color>
     <color name="unitUnfocusedLight">#afafaf</color>
 

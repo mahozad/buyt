@@ -9,6 +9,7 @@
 
         <item name="cardBgColor">#4A5E4A</item>
         <item name="bottomBarColor">@color/bottomBarDarkBgColor</item>
+        <item name="emptyHintColor">@color/emptyHintDarkColor</item>
         <item name="pieChartBackgroundColor">@color/pieChartDarkBgColor</item>
         <item name="unitUnfocusedColor">@color/unitUnfocusedDark</item>
         <item name="bottomAppBarStyle">@style/bottomAppBarStyle</item>
@@ -33,6 +34,7 @@
 
         <item name="cardBgColor">#A9B8A9</item>
         <item name="bottomBarColor">@color/bottomBarLightBgColor</item>
+        <item name="emptyHintColor">@color/emptyHintLightColor</item>
         <item name="pieChartBackgroundColor">@color/pieChartLightBgColor</item>
         <item name="unitUnfocusedColor">@color/unitUnfocusedLight</item>
         <item name="bottomAppBarStyle">@style/bottomAppBarStyle</item>
