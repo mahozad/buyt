@@ -27,6 +27,6 @@ abstract class BaseActivity : AppCompatActivity() {
     private fun setTheme() {
         val prefs = getDefaultSharedPreferences(this)
         val theme = prefs.getString(PREF_THEME, PREF_THEME_DEF)
-        setTheme(if (theme == PREF_THEME_DEF) R.style.AppTheme else R.style.LightTheme)
+        setTheme(if (theme == PREF_THEME_DEF) R.style.DarkTheme else R.style.LightTheme)
     }
 }
