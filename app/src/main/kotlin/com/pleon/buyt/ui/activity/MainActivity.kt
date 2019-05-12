@@ -115,6 +115,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
      */
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
+        fab.setOnClickListener { onFabClick() }
 
         prefs = getDefaultSharedPreferences(this)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
@@ -124,9 +125,8 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
             override fun onReceive(context: Context, intent: Intent) = onLocationFound(intent)
         }
 
-        LocalBroadcastManager.getInstance(this)
-                .registerReceiver(locationReceiver, IntentFilter(ACTION_LOCATION_EVENT))
-        fab.setOnClickListener { onFabClick() }
+        val broadcastMgr = LocalBroadcastManager.getInstance(this)
+        broadcastMgr.registerReceiver(locationReceiver, IntentFilter(ACTION_LOCATION_EVENT))
 
         showIntroIfNeeded()
         restoreBottomDrawerIfNeeded()
@@ -159,10 +159,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
             if (itemsFragment.isListEmpty)
                 showSnackbar(snbContainer, R.string.snackbar_message_cart_empty, LENGTH_SHORT)
             else {
-                itemsFragment.clearSelectedItems() // clear items of previous purchase
                 addMenuItem.setIcon(R.drawable.avd_add_hide).apply { (icon as Animatable).start() }
-                        // disable effect of tapping on the menu item
-                        .also { Handler().postDelayed({ it.isVisible = false }, 300) }
+                // disable effect of tapping on the menu item and its ripple
+                Handler().postDelayed({ addMenuItem.isVisible = false }, 300)
                 findLocation()
             }
         } else if (viewModel.state == SELECTING) { // act as done
@@ -247,9 +246,8 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
             }
 
             R.id.action_reorder -> {
-                if (viewModel.state == IDLE) {
-                    if (!itemsFragment.isListEmpty) itemsFragment.toggleEditMode()
-                } else skipFinding()
+                if (viewModel.state == FINDING) skipFinding()
+                else if (!itemsFragment.isListEmpty) itemsFragment.toggleDragMode()
             }
 
             R.id.action_add_store -> {
@@ -426,7 +424,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
         } else {
             stopService(Intent(this, GpsService::class.java)) // for the case if finding skipped
             shiftToSelectingState()
-            setStoreMenuItemIcon(viewModel.foundStores)
+            setStoreMenuItemIcon()
             storeMenuItem.isVisible = true
         }
     }
@@ -529,20 +527,20 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
         }
     }
 
-    private fun setStoreMenuItemIcon(stores: List<Store>) {
-        if (stores.size == 1) {
-            val icon = stores[0].category.storeImageRes
+    private fun setStoreMenuItemIcon() {
+        if (viewModel.foundStores.size == 1) {
+            val icon = viewModel.foundStores[0].category.storeImageRes
             viewModel.storeIcon = icon // to use on config change
             storeMenuItem.actionView.findViewById<FrameLayout>(R.id.textContainer).visibility = GONE
             storeMenuItem.actionView.findViewById<ImageView>(R.id.icon).setImageResource(viewModel.storeIcon)
-            itemsFragment.sortItemsByCategory(stores[0].category) // TODO: move this to another method
+            itemsFragment.sortItemsByCategory(viewModel.foundStores[0].category) // TODO: move this to another method
         } else { // if MORE than one store found
             viewModel.storeIcon = R.drawable.ic_store // to use on config change
             viewModel.storeTitle = 0 // fixme
             with(storeMenuItem.actionView) {
                 this.findViewById<FrameLayout>(R.id.textContainer).visibility = VISIBLE
                 this.findViewById<ImageView>(R.id.icon).setImageResource(viewModel.storeIcon)
-                this.findViewById<TextView>(R.id.text).text = stores.size.toString()
+                this.findViewById<TextView>(R.id.text).text = viewModel.foundStores.size.toString()
             }
         }
     }
@@ -552,7 +550,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
             completeBuy(store)
         } else {
             viewModel.foundStores.add(store)
-            setStoreMenuItemIcon(viewModel.foundStores)
+            setStoreMenuItemIcon()
         }
     }
 
@@ -564,7 +562,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
     override fun onSelected(index: Int) = completeBuy(viewModel.foundStores[index])
 
     private fun completeBuy(store: Store) {
-        viewModel.buy(itemsFragment.selectedItems, store, Date())
+        // With toList(), a new list is passed to buy() so clearing selected items wont effect it
+        viewModel.buy(itemsFragment.selectedItems.toList(), store, Date())
+        itemsFragment.clearSelectedItems()
         shiftToIdleState()
     }
 }

@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.android.material.textfield.TextInputLayout
 import com.pleon.buyt.R
 import com.pleon.buyt.model.Category
-import com.pleon.buyt.model.Item
 import com.pleon.buyt.ui.ItemSpacingDecoration
 import com.pleon.buyt.ui.TouchHelperCallback
 import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener
@@ -37,22 +36,22 @@ class ItemsFragment : Fragment(R.layout.fragment_item_list), ItemTouchHelperList
         // In fragments use getViewLifecycleOwner() as owner argument
         viewModel.allItems.observe(viewLifecycleOwner, Observer { items ->
             adapter.items = items
-            showHideEmptyHintIfNeeded(items)
+            updateEmptyHint(items.isEmpty())
         })
 
         // for swipe-to-delete and drag-n-drop of item
         touchHelperCallback = TouchHelperCallback(this)
         val touchHelper = ItemTouchHelper(touchHelperCallback)
+        touchHelper.attachToRecyclerView(recyclerView)
         val columns = resources.getInteger(R.integer.layout_columns)
         val isRtl = resources.getBoolean(R.bool.isRtl)
         recyclerView.layoutManager = GridLayoutManager(context, columns)
         recyclerView.addItemDecoration(ItemSpacingDecoration(columns, isRtl))
-        touchHelper.attachToRecyclerView(recyclerView)
         adapter = ItemListAdapter(context!!, touchHelper).also { recyclerView.adapter = it }
     }
 
-    private fun showHideEmptyHintIfNeeded(items: List<Item>) {
-        if (items.isEmpty()) {
+    private fun updateEmptyHint(isListEmpty: Boolean) {
+        if (isListEmpty) {
             emptyHint.setBackgroundResource(R.drawable.avd_list_empty)
             (emptyHint.background as Animatable).start()
             emptyHint.setText(R.string.placeholder_empty)
@@ -76,13 +75,12 @@ class ItemsFragment : Fragment(R.layout.fragment_item_list), ItemTouchHelperList
     override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
         val item = adapter.getItem(viewHolder.adapterPosition)
         viewModel.flagItemForDeletion(item)
-
         showUndoSnackbar(snbContainer, getString(R.string.snackbar_message_item_deleted, item.name),
                 onUndo = { viewModel.restoreDeletedItem(item) },
                 onDismiss = { viewModel.deleteItem(item) })
     }
 
-    ///**
+    // **
     // * From Android 3.0 Honeycomb on, it is guaranteed that this method is called before
     // * the app process is killed. Also the onPause() method should be kept as
     // * light as possible so this method is the preferred place to update items.
@@ -95,8 +93,8 @@ class ItemsFragment : Fragment(R.layout.fragment_item_list), ItemTouchHelperList
     //     }
     // }
 
-    fun toggleEditMode() {
-        adapter.toggleEditMode()
+    fun toggleDragMode() {
+        adapter.toggleDragMode()
         touchHelperCallback.toggleDragMode()
     }
 

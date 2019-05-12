@@ -82,7 +82,7 @@ class ItemListAdapter(private val context: Context, private val itemTouchHelper:
 
     fun clearSelectedItems() = selectedItems.clear()
 
-    fun toggleEditMode() {
+    fun toggleDragMode() {
         if (items.isNotEmpty()) { // toggle only if there is any item
             dragModeEnabled = !dragModeEnabled
             notifyDataSetChanged()

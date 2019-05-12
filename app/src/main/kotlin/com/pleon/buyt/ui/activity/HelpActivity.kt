@@ -8,24 +8,27 @@ import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
 import android.view.animation.AlphaAnimation
+import com.pleon.buyt.R
 import kotlinx.android.synthetic.main.activity_help.*
+
+private const val TRANSLATION_PAGE_URL = "https://pleonco.oneskyapp.com/collaboration/project?id=158739"
 
 class HelpActivity : BaseActivity() {
 
-    override fun layout() = com.pleon.buyt.R.layout.activity_help
+    override fun layout() = R.layout.activity_help
 
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
         waveHeader.start()
         animateBrand()
         logo.setOnClickListener {
-            logo.setImageResource(com.pleon.buyt.R.drawable.avd_logo)
+            logo.setImageResource(R.drawable.avd_logo)
             (logo.drawable as Animatable).start()
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(com.pleon.buyt.R.menu.menu_bottom_help, menu)
+        menuInflater.inflate(R.menu.menu_bottom_help, menu)
         return true
     }
 
@@ -41,12 +44,14 @@ class HelpActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.action_translate -> openTranslationPage()
             android.R.id.home -> finish()
-            com.pleon.buyt.R.id.action_translate -> {
-                val uri = Uri.parse("https://pleonco.oneskyapp.com/collaboration/project?id=158739")
-                startActivity(Intent(Intent.ACTION_VIEW, uri))
-            }
         }
         return true
+    }
+
+    private fun openTranslationPage() {
+        val uri = Uri.parse(TRANSLATION_PAGE_URL)
+        startActivity(Intent(Intent.ACTION_VIEW, uri))
     }
 }
