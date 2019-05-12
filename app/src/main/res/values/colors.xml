@@ -47,9 +47,9 @@
     </array>
 
     <array name="introPageColors">
-        <item>#F44336</item>
-        <item>#2196F3</item>
-        <item>#FFEB3B</item>
+        <item>#8E24AA</item>
+        <item>#3949AB</item>
+        <item>#00897B</item>
     </array>
 
 </resources>
