@@ -10,11 +10,12 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.tabs.TabLayout
 import com.pleon.buyt.R
+import com.pleon.buyt.ui.TabLayoutMediator
+import com.pleon.buyt.ui.TabLayoutMediator.OnConfigureTabCallback
 import com.pleon.buyt.ui.adapter.StatsPagerAdapter
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
-import com.pleon.buyt.ui.fragment.StatDetailsFragment
-import com.pleon.buyt.ui.fragment.StatsFragment
 import com.pleon.buyt.viewmodel.StatsViewModel
 import kotlinx.android.synthetic.main.activity_stats.*
 import java.util.*
@@ -22,8 +23,6 @@ import java.util.*
 class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
 
     private lateinit var viewModel: StatsViewModel
-    private lateinit var statsFragment: StatsFragment
-    private lateinit var detailsFragment: StatDetailsFragment
     private lateinit var filterMenuItem: MenuItem
     private lateinit var periodMenuItemView: TextView
 
@@ -47,12 +46,17 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
 
         registerReceiver(timeReceiver, IntentFilter(Intent.ACTION_TIME_TICK))
 
-        // TODO: Use new ViewPager2 (supports RTL and...). TabLayout is not yet ready for that
-        val pagerAdapter = StatsPagerAdapter(this, supportFragmentManager)
+        val pagerAdapter = StatsPagerAdapter(this)
         viewPager.adapter = pagerAdapter
-        tabLayout.setupWithViewPager(viewPager)
-        statsFragment = pagerAdapter.instantiateItem(viewPager, 0) as StatsFragment
-        detailsFragment = pagerAdapter.instantiateItem(viewPager, 1) as StatDetailsFragment
+        TabLayoutMediator(tabLayout, viewPager, object : OnConfigureTabCallback {
+            override fun onConfigureTab(tab: TabLayout.Tab, position: Int) {
+                viewPager.setCurrentItem(tab.position, true)
+                tab.text = when (position) {
+                    0 -> getString(R.string.tab_title_charts)
+                    else -> getString(R.string.tab_title_details)
+                }
+            }
+        }).attach()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
