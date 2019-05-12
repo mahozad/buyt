@@ -7,10 +7,12 @@ import android.util.TypedValue
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.ColorUtils
+import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.animation.ArgbEvaluatorCompat
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.adapter.IntroPageAdapter
+import com.pleon.buyt.ui.fragment.PREF_NEWBIE
 import kotlinx.android.synthetic.main.activity_intro.*
 import kotlin.math.max
 import kotlin.math.min
@@ -29,8 +31,9 @@ class IntroActivity : BaseActivity() {
         dots = arrayOf(dot1, dot2, dot3)
         val colors = resources.getIntArray(R.array.introPageColors)
 
-        val adapter = IntroPageAdapter(supportFragmentManager, lifecycle)
+        val adapter = IntroPageAdapter(this)
         viewPager.adapter = adapter
+        viewPager.offscreenPageLimit = 2 // to cache pages for smooth scrolling
 
         viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
             private val argbEvaluator = ArgbEvaluatorCompat()
@@ -70,7 +73,10 @@ class IntroActivity : BaseActivity() {
 
         backButton.setOnClickListener { viewPager.currentItem = viewPager.currentItem - 1 }
         nextButton.setOnClickListener {
-            if (viewPager.currentItem == adapter.itemCount - 1) finish()
+            if (viewPager.currentItem == adapter.itemCount - 1) {
+                getDefaultSharedPreferences(this).edit().putBoolean(PREF_NEWBIE, false).apply()
+                finish()
+            }
             viewPager.currentItem = min(viewPager.currentItem + 1, adapter.itemCount - 1)
         }
 
@@ -79,5 +85,6 @@ class IntroActivity : BaseActivity() {
         }
     }
 
-    // override fun onBackPressed() {}
+    override fun onBackPressed() {/* Do nothing */
+    }
 }
