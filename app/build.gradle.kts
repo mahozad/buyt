@@ -105,21 +105,21 @@ dependencies {
      * you don't have to add ONE big library (and include unwanted libs) and make your apk huge.
      * The following library for example adds support for ActionBar, AppCompatActivity and
      * some other for devices down to api v7. */
-    implementation("androidx.appcompat:appcompat:1.1.0-alpha04")
+    implementation("androidx.appcompat:appcompat:1.1.0-alpha05")
     /* The AndroidX version of "com.android.support:design"
      * Another support library that adds support for material components such as NavigationDrawer,
      * SnackBar, FAB and Tab for older android versions. */
     implementation("com.google.android.material:material:1.1.0-alpha06")
     // ViewModel and LiveData
-    implementation("androidx.lifecycle:lifecycle-extensions:2.1.0-alpha04")
-    implementation("androidx.lifecycle:lifecycle-common-java8:2.1.0-alpha04")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.0-alpha5")
+    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0-alpha01")
+    implementation("androidx.lifecycle:lifecycle-common-java8:2.2.0-alpha01")
+    implementation("androidx.constraintlayout:constraintlayout:2.0.0-beta1")
     implementation("androidx.coordinatorlayout:coordinatorlayout:1.1.0-alpha01")
-    implementation("androidx.recyclerview:recyclerview:1.1.0-alpha04")
-    implementation("androidx.preference:preference:1.1.0-alpha04")
-    implementation("androidx.viewpager2:viewpager2:1.0.0-alpha03")
-    implementation("androidx.room:room-runtime:2.1.0-alpha07")
-    kapt("androidx.room:room-compiler:2.1.0-alpha07")
+    implementation("androidx.recyclerview:recyclerview:1.1.0-alpha05")
+    implementation("androidx.preference:preference:1.1.0-alpha05")
+    implementation("androidx.viewpager2:viewpager2:1.0.0-alpha04")
+    implementation("androidx.room:room-runtime:2.1.0-beta01")
+    kapt("androidx.room:room-compiler:2.1.0-beta01")
 
     /* If you're targeting JDK 8, you can use extended versions of the Kotlin standard library
      * which contain additional extension functions for APIs added in new JDK versions.
@@ -149,13 +149,13 @@ dependencies {
     testImplementation("org.mockito:mockito-junit-jupiter:2.27.0")
     testImplementation("org.hamcrest:hamcrest-library:2.1")
     // Dependencies for instrumented tests
-    androidTestImplementation("androidx.test.ext:junit:1.1.1-alpha05")
+    androidTestImplementation("androidx.test.ext:junit:1.1.1-beta01")
     androidTestImplementation("androidx.test:runner:1.2.0-beta01")
     androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
     androidTestImplementation("org.mockito:mockito-android:2.27.0")
     androidTestImplementation("org.mockito:mockito-junit-jupiter:2.27.0")
-    androidTestImplementation("androidx.room:room-testing:2.1.0-alpha07")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0-alpha05")
+    androidTestImplementation("androidx.room:room-testing:2.1.0-beta01")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0-beta01")
     androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.0.0")
     androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.0.0")
 }
