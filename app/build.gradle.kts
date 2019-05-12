@@ -40,7 +40,7 @@ android {
         minSdkVersion(21)
         targetSdkVersion(28)
         versionCode = 1
-        versionName = "0.9.1"
+        versionName = "1.0.0-beta" // alpha -> beta -> rc -> final
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             // Tell Room to export database schema info to keep a history of it
