@@ -48,6 +48,7 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
 
         val pagerAdapter = StatsPagerAdapter(this)
         viewPager.adapter = pagerAdapter
+        // FIXME: Use ViewPager2 native tab layout if introduced in new releases
         TabLayoutMediator(tabLayout, viewPager, object : OnConfigureTabCallback {
             override fun onConfigureTab(tab: TabLayout.Tab, position: Int) {
                 viewPager.setCurrentItem(tab.position, true)
