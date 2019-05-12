@@ -14,6 +14,7 @@ import com.pleon.buyt.R
 import com.pleon.buyt.ui.adapter.IntroPageAdapter
 import com.pleon.buyt.ui.fragment.PREF_NEWBIE
 import kotlinx.android.synthetic.main.activity_intro.*
+import kotlinx.android.synthetic.main.fragment_intro_1.view.*
 import kotlin.math.max
 import kotlin.math.min
 
@@ -70,6 +71,12 @@ class IntroActivity : BaseActivity() {
                 lastPage = position
             }
         })
+
+        // For parallax effect
+        viewPager.setPageTransformer { page, pos ->
+            if (pos >= -1 && pos <= 1) page.img.translationX = -pos * page.width / 2
+            else page.alpha = 1f
+        }
 
         backButton.setOnClickListener { viewPager.currentItem = viewPager.currentItem - 1 }
         nextButton.setOnClickListener {
