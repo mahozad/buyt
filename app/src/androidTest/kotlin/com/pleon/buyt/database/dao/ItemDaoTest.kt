@@ -54,7 +54,7 @@ class ItemDaoTests {
     fun addOneItem() {
         val item = Item("Chocolate", Quantity(1, UNIT), GROCERY, false, false)
 
-        itemDao.insertPRIVATE(item)
+        itemDao.insert(item)
 
         val itemCount = itemDao.getCount()
         Assert.assertEquals(1, itemCount)
@@ -64,8 +64,8 @@ class ItemDaoTests {
     fun deleteOneItem() {
         val item = Item("Chocolate", Quantity(1, UNIT), GROCERY, false, false)
 
-        itemDao.insertItem(item).also { item.itemId = it }
-        itemDao.deleteItem(item)
+        itemDao.insert(item).also { item.itemId = it }
+        itemDao.delete(item)
 
         val itemCount = itemDao.getCount()
         Assert.assertEquals(0, itemCount)

@@ -109,12 +109,10 @@ class AddItemFragment : Fragment(R.layout.fragment_add_item),
      * If the activity's implementation of the on-item-selected callback does not handle the
      * selected item, then the event is passed to the fragment's callback.
      *
-     * @param inflater
-     * @param container
+     * @param view
      * @param savedState
      * @return
      */
-
     override fun onViewCreated(view: View, savedState: Bundle?) {
         unitBtns = arrayOf(btn1, btn2, btn3)
         setColorOfAllUnits(colorUnfocused) // because sometimes the color is not right

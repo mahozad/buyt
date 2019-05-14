@@ -9,7 +9,8 @@ import com.pleon.buyt.setLocale
 import com.pleon.buyt.ui.fragment.PREF_THEME
 import com.pleon.buyt.ui.fragment.PREF_THEME_DEF
 
-val <T : LifecycleOwner> T.TAG get() = javaClass.simpleName
+@Suppress("unused")
+val <T : LifecycleOwner> T.TAG: String get() = javaClass.simpleName
 
 abstract class BaseActivity : AppCompatActivity() {
 

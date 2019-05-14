@@ -58,9 +58,8 @@ class TabLayoutMediator(private val mTabLayout: TabLayout, private val mViewPage
      * @param tabLayout The tab bar to link
      * @param viewPager The view pager to link
      */
-    constructor(tabLayout: TabLayout, viewPager: ViewPager2,
-                onConfigureTabCallback: OnConfigureTabCallback) : this(tabLayout, viewPager, true, onConfigureTabCallback) {
-    }
+    constructor(tabLayout: TabLayout, viewPager: ViewPager2, callback: OnConfigureTabCallback)
+            : this(tabLayout, viewPager, true, callback)
 
     /**
      * Link the TabLayout and the ViewPager2 together.
