@@ -26,7 +26,7 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
     private lateinit var filterMenuItem: MenuItem
     private lateinit var periodMenuItemView: TextView
 
-    // Update the stats when date changes (e.g. time changes from 23:59 to 00:00)
+    // Update the stats when date changes (i.e. time changes from 23:59 to 00:00)
     private var today = Date()
     private val timeReceiver = object : BroadcastReceiver() {
         override fun onReceive(cxt: Context, intent: Intent) {
@@ -43,19 +43,14 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
         super.onCreate(savedState)
 
         viewModel = ViewModelProviders.of(this).get(StatsViewModel::class.java)
-
         registerReceiver(timeReceiver, IntentFilter(Intent.ACTION_TIME_TICK))
 
-        val pagerAdapter = StatsPagerAdapter(this)
-        viewPager.adapter = pagerAdapter
+        viewPager.adapter = StatsPagerAdapter(this)
         // FIXME: Use ViewPager2 native tab layout if introduced in new releases
         TabLayoutMediator(tabLayout, viewPager, object : OnConfigureTabCallback {
             override fun onConfigureTab(tab: TabLayout.Tab, position: Int) {
                 viewPager.setCurrentItem(tab.position, true)
-                tab.text = when (position) {
-                    0 -> getString(R.string.tab_title_charts)
-                    else -> getString(R.string.tab_title_details)
-                }
+                tab.text = if (position == 0) getString(R.string.tab_title_charts) else getString(R.string.tab_title_details)
             }
         }).attach()
     }
