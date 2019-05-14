@@ -4,11 +4,11 @@
     <item
         android:id="@+id/action_translate"
         android:icon="@drawable/ic_translate"
-        android:title="Help translate the app"
+        android:title="@string/menu_hint_translate_app"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_release_history"
         android:icon="@drawable/ic_release_info"
-        android:title="See release history"
+        android:title="@string/menu_hint_release_history"
         app:showAsAction="always" />
 </menu>

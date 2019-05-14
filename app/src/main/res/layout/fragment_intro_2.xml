@@ -25,7 +25,7 @@
         android:layout_marginBottom="88dp"
         android:paddingStart="32dp"
         android:paddingEnd="32dp"
-        android:text="داخل یا در نزدیکی مغازه (مثل داخل اتومبیل) دکمه‌ی جستجو را زده تا مغازه پیدا شود. اقلام خریداری شده را انتخاب و خرید خود را ثبت نمایید. اگر مغازه از قبل ذخیره شده است می‌توانید مرحله جستجو را رد کنید."
+        android:text="@string/intro_description_2"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/img"

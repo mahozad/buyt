@@ -25,7 +25,7 @@
         android:layout_marginBottom="88dp"
         android:paddingStart="32dp"
         android:paddingEnd="32dp"
-        android:text="اقلام مورد نیاز خود را به لیست خرید اضافه نمایید. با درج چند حرف، بایت به شما آیتم‌های مربوط را پیشنهاد داده و دسته‌بندی نیز می‌تواند به صورت خودکار تعیین شود."
+        android:text="@string/intro_description_1"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/img"

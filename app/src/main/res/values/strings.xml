@@ -192,8 +192,13 @@
     <string name="menu_text_sort_prefix">Ordered by %1$s</string>
     <string name="menu_title_sort_stores">Sort stores</string>
     <string name="hint_store_not_available">N/A</string>
-    <string name="menu_hint_reset_settings">Reset settings</string>
-    <string name="appNameVersion">Buyt v1.0.0</string>
+    <string name="menu_text_reset_settings">Reset settings</string>
+    <string name="appNameVersion">Buyt v1.0.0-beta</string>
+    <string name="menu_hint_translate_app">Help translate the app</string>
+    <string name="menu_hint_release_history">See release history</string>
+    <string name="intro_description_1">Add your items to the shopping list. Typing a couple chars, Buyt will suggest related items and corresponding category</string>
+    <string name="intro_description_2">Inside or near the store (for example in your car) press the search button to find the store. Select purchased items from the list and complete your buy. Note that you can skip the finding step if the store is saved already.</string>
+    <string name="intro_description_3">Stats, charts and purchase details are provided with the ability to change the period and set filter on results.</string>
     <plurals name="store_detail_purchase_count">
         <item quantity="one">%1$d purchase</item>
         <item quantity="other">%1$d purchases</item>

@@ -40,7 +40,6 @@
                 android:layout_gravity="top|center_horizontal"
                 android:background="@drawable/shape_rounded_rectangle"
                 android:paddingHorizontal="1dp"
-                android:text="new"
                 android:textColor="?attr/colorOnSurface"
                 android:textSize="10sp" />
         </FrameLayout>

@@ -25,7 +25,7 @@
         android:layout_marginBottom="88dp"
         android:paddingStart="32dp"
         android:paddingEnd="32dp"
-        android:text="نمودارها، آمار و ریز خریدهای خود را در دوره‌های مختلف و با قابلیت اعمال فیلتر مشاهده نمایید"
+        android:text="@string/intro_description_3"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/img"

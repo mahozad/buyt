@@ -11,6 +11,6 @@
     android:gravity="start|center_vertical"
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
-    android:text="Reset settings"
+    android:text="@string/menu_text_reset_settings"
     android:textColor="?attr/colorOnSurface"
     app:drawableEndCompat="@drawable/avd_reset" />

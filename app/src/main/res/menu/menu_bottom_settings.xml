@@ -6,7 +6,7 @@
 
     <item
         android:id="@+id/action_reset"
-        android:title="@string/menu_hint_reset_settings"
+        android:title="@string/menu_text_reset_settings"
         app:actionLayout="@layout/action_reset_settings"
         app:showAsAction="always" />
 </menu>
