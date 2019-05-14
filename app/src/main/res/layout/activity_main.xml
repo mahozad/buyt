@@ -30,8 +30,8 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/addItemFragment"
-        android:layout_width="match_parent"
+        android:id="@+id/fragContainer"
+        android:layout_width="0dp"
         android:layout_height="263dp"
         app:cardBackgroundColor="@android:color/transparent"
         app:cardCornerRadius="8dp"

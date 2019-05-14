@@ -153,7 +153,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
 
     private fun onFabClick() {
         if (viewModel.isAddingItem) {
-            val addItemFragment = supportFragmentManager.findFragmentById(R.id.addItemFragment) as AddItemFragment
+            val addItemFragment = supportFragmentManager.findFragmentById(R.id.fragContainer) as AddItemFragment
             addItemFragment.onDonePressed()
         } else if (viewModel.state == IDLE) { // act as find
             if (itemsFragment.isListEmpty)
@@ -179,8 +179,14 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
         storeMenuItem.actionView.setOnClickListener { showAddStorePopup() }
 
         if (viewModel.state != IDLE || viewModel.isAddingItem) {
+            bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
+            (bottom_bar.navigationIcon as Animatable).start()
             addMenuItem.isVisible = false
-            bottom_bar.setNavigationIcon(R.drawable.avd_cancel_nav)
+            reorderMenuItem.isVisible = false
+            // Because setting fab alignment was buggy in onOptionsItemSelected we set it here
+            bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
+            fab.setImageResource(R.drawable.avd_find_done)
+            (fab.drawable as Animatable).start()
         }
 
         if (viewModel.state == FINDING) {
@@ -222,23 +228,16 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_add -> {
+                viewModel.isAddingItem = true
+
+                // Note that because AddItemFragment has setHasOptionsMenu(true) every time the
+                // fragment manager adds or replaces that fragment, the onCreateOptionsMenu() of
+                // this activity is called.
                 supportFragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.slide_up, 0, 0, R.anim.slide_down)
-                        .replace(R.id.addItemFragment, AddItemFragment())
-                        .addToBackStack(null)
+                        .replace(R.id.fragContainer, AddItemFragment())
+                        .addToBackStack("tag")
                         .commit()
-
-                // FIXME: Because hiding menu items here did not have effect (if the commit() method
-                // above is commented, hiding takes effect), the menu items are hidden in
-                // onCreateOptionsMenu() method of the AddItemFragment(). It also seems that with
-                // removing the fragment, the menu items are unhidden automatically
-
-                viewModel.isAddingItem = true
-                bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
-                fab.setImageResource(R.drawable.avd_find_done)
-                (fab.drawable as Animatable).start()
-                bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
-                (bottom_bar.navigationIcon as Animatable).start()
 
                 val animation = AlphaAnimation(0f, 1f).apply { duration = 300 }
                 scrim.alpha = 1f

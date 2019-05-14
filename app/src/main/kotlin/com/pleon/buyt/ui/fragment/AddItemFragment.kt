@@ -188,11 +188,6 @@ class AddItemFragment : Fragment(R.layout.fragment_add_item),
         // Setting up "Choose category" action because it has custom layout
         val menuItem = menu.findItem(R.id.action_item_category)
         menuItem.actionView.setOnClickListener { onOptionsItemSelected(menuItem) }
-
-        // FIXME: Because setting these menu items invisible did not have effect when adding this
-        // fragment to the main activity, we hide them here
-        menu.findItem(R.id.action_add).isVisible = false
-        menu.findItem(R.id.action_reorder).isVisible = false
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
