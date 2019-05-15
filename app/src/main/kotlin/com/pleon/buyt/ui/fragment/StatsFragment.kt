@@ -89,7 +89,7 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
         chart.setLabelsFormat(moneyFormat)
 
         val colors = resources.getIntArray(R.array.lineChartGradient)
-        val steps = floatArrayOf(0.0f, 0.5f, 1.0f)
+        val steps = floatArrayOf(0.0f, 0.2f, 0.5f, 1.0f)
         dataSet.setGradientFill(colors, steps)
         chart.addData(dataSet)
         chart.setXLabels(NONE)

@@ -28,7 +28,8 @@
     <color name="unitUnfocusedLight">#afafaf</color>
 
     <array name="lineChartGradient">
-        <item>#80259600</item>
+        <item>#66259600</item>
+        <item>#4D259600</item>
         <item>#33259600</item>
         <item>#01259600</item>
     </array>
