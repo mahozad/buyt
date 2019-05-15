@@ -1,5 +1,6 @@
 package com.pleon.buyt.ui.fragment
 
+import android.content.res.ColorStateList
 import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.text.Editable
@@ -50,6 +51,7 @@ class AddItemFragment : Fragment(R.layout.fragment_add_item),
         android.app.DatePickerDialog.OnDateSetListener {
 
     // These colors vary based on the app theme
+    @ColorRes private var colorSurface: Int = 0
     @ColorRes private var colorOnSurface: Int = 0
     @ColorRes private var colorError: Int = 0
     @ColorRes private var colorUnfocused: Int = 0
@@ -87,6 +89,9 @@ class AddItemFragment : Fragment(R.layout.fragment_add_item),
         val typedValue = TypedValue()
         context!!.theme.resolveAttribute(R.attr.colorError, typedValue, true)
         colorError = typedValue.resourceId
+
+        context!!.theme.resolveAttribute(R.attr.colorSurface, typedValue, true)
+        colorSurface = typedValue.resourceId
 
         context!!.theme.resolveAttribute(R.attr.colorOnSurface, typedValue, true)
         colorOnSurface = typedValue.resourceId
@@ -335,13 +340,22 @@ class AddItemFragment : Fragment(R.layout.fragment_add_item),
     private fun onQuantityFocusChanged(hasFocus: Boolean) {
         var color = colorError
         if (hasFocus && quantity_layout.error == null) color = R.color.colorPrimary
-        else if (!hasFocus && quantity_layout.error == null) color = R.color.unit_btn_unfocused_color
+        else if (!hasFocus && quantity_layout.error == null) color = colorUnfocused
 
         setColorOfAllUnits(color)
     }
 
     private fun setColorOfAllUnits(color: Int) {
-        for (btn in unitBtns) btn.setStrokeColorResource(color)
+        for (btn in unitBtns) {
+            btn.setStrokeColorResource(color)
+
+            val states = arrayOf(
+                    intArrayOf(android.R.attr.state_checked), // checked
+                    intArrayOf(android.R.attr.state_checked * -1) // unchecked
+            )
+            val colors = intArrayOf(resources.getColor(color), colorSurface)
+            btn.backgroundTintList = ColorStateList(states, colors)
+        }
     }
 
     private fun onNameChanged() {
