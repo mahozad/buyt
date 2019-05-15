@@ -178,6 +178,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_bottom_home, menu)
         addMenuItem = menu.findItem(R.id.action_add)
+        if (itemsFragment.isListEmpty) AnimationUtil.animateIconInfinitely(addMenuItem.icon)
         reorderMenuItem = menu.findItem(R.id.action_reorder)
         storeMenuItem = menu.findItem(R.id.found_stores)
         initializeAddStorePopup(storeMenuItem.actionView)
