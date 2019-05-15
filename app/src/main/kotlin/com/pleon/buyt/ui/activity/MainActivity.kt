@@ -188,22 +188,19 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
             bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
             (bottom_bar.navigationIcon as Animatable).start()
             addMenuItem.isVisible = false
-            reorderMenuItem.isVisible = false
-            // Because setting fab alignment was buggy in onOptionsItemSelected we set it here
-            bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
-            fab.setImageResource(R.drawable.avd_find_done)
-            (fab.drawable as Animatable).start()
+            if (viewModel.isAddingItem) {
+                reorderMenuItem.isVisible = false
+                // Because setting fab alignment was buggy in onOptionsItemSelected we set it here
+                bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
+                fab.setImageResource(R.drawable.avd_find_done)
+                (fab.drawable as Animatable).start()
+            }
         }
 
         if (viewModel.state == FINDING) {
             reorderMenuItem.setIcon(R.drawable.avd_skip_reorder).setTitle(R.string.menu_hint_skip_finding)
         } else if (viewModel.state == SELECTING) {
-            with(storeMenuItem.actionView) {
-                this.findViewById<FrameLayout>(R.id.textContainer).visibility = if (viewModel.foundStores.size == 1) GONE else VISIBLE
-                this.findViewById<ImageView>(R.id.icon).setImageResource(viewModel.storeIcon)
-                this.findViewById<TextView>(R.id.text).text = viewModel.getStoreTitle()
-                storeMenuItem.isVisible = true
-            }
+            setStoreMenuItemIcon()
             reorderMenuItem.isVisible = false
             bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
         }
@@ -408,21 +405,14 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
                 showSnackbar(snbContainer, R.string.snackbar_message_no_store_found, LENGTH_LONG)
                 viewModel.isFindingSkipped = false // Reset the flag
             } else {
-                viewModel.storeIcon = R.drawable.ic_store // to use on config change
-                viewModel.storeTitle = R.string.menu_text_new_store_found
-                with(storeMenuItem.actionView) {
-                    this.findViewById<FrameLayout>(R.id.textContainer).visibility = VISIBLE
-                    this.findViewById<ImageView>(R.id.icon).setImageResource(viewModel.storeIcon)
-                    this.findViewById<TextView>(R.id.text).text = viewModel.getStoreTitle()
-                    storeMenuItem.isVisible = true
-                }
+                setStoreMenuItemIcon()
                 shiftToSelectingState()
             }
         } else {
             stopService(Intent(this, GpsService::class.java)) // for the case if finding skipped
             shiftToSelectingState()
+            itemsFragment.sortItemsByCategory(viewModel.foundStores[0].category)
             setStoreMenuItemIcon()
-            storeMenuItem.isVisible = true
         }
     }
 
@@ -526,21 +516,13 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
     }
 
     private fun setStoreMenuItemIcon() {
-        if (viewModel.foundStores.size == 1) {
-            val icon = viewModel.foundStores[0].category.storeImageRes
-            viewModel.storeIcon = icon // to use on config change
-            storeMenuItem.actionView.findViewById<FrameLayout>(R.id.textContainer).visibility = GONE
-            storeMenuItem.actionView.findViewById<ImageView>(R.id.icon).setImageResource(viewModel.storeIcon)
-            itemsFragment.sortItemsByCategory(viewModel.foundStores[0].category) // TODO: move this to another method
-        } else { // if MORE than one store found
-            viewModel.storeIcon = R.drawable.ic_store // to use on config change
-            viewModel.storeTitle = 0 // fixme
-            with(storeMenuItem.actionView) {
-                this.findViewById<FrameLayout>(R.id.textContainer).visibility = VISIBLE
-                this.findViewById<ImageView>(R.id.icon).setImageResource(viewModel.storeIcon)
-                this.findViewById<TextView>(R.id.text).text = viewModel.foundStores.size.toString()
-            }
+        with(storeMenuItem.actionView) {
+            val visibility = if (viewModel.foundStores.size == 1) GONE else VISIBLE
+            this.findViewById<FrameLayout>(R.id.textContainer).visibility = visibility
+            this.findViewById<ImageView>(R.id.icon).setImageResource(viewModel.getStoreIcon())
+            this.findViewById<TextView>(R.id.text).text = viewModel.getStoreTitle()
         }
+        storeMenuItem.isVisible = true
     }
 
     override fun onStoreCreated(store: Store) {

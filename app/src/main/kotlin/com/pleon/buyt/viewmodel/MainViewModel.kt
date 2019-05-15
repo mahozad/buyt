@@ -2,12 +2,11 @@ package com.pleon.buyt.viewmodel
 
 import android.app.Application
 import android.location.Location
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
+import com.pleon.buyt.R
 import com.pleon.buyt.model.Coordinates
 import com.pleon.buyt.model.Item
 import com.pleon.buyt.model.Store
@@ -15,6 +14,7 @@ import com.pleon.buyt.repository.MainRepository
 import com.pleon.buyt.ui.fragment.PREF_SEARCH_DIST
 import com.pleon.buyt.ui.fragment.PREF_SEARCH_DIST_DEF
 import com.pleon.buyt.viewmodel.MainViewModel.State.IDLE
+import java.text.NumberFormat
 import java.util.*
 import kotlin.math.cos
 
@@ -29,7 +29,7 @@ private const val EARTH_RADIUS = 6_371_000.0 // In meters
  * force-kills. So to survive process stops, implement
  * [AppCompatActivity.onSaveInstanceState] method in your activity/fragment.
  */
-class MainViewModel(application: Application) : AndroidViewModel(application) {
+class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     enum class State {
         IDLE, FINDING, SELECTING
@@ -42,10 +42,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     var shouldCompletePurchase = false
     var shouldAnimateNavIcon = false
     var isAddingItem = false
-    @DrawableRes var storeIcon = 0
-    @StringRes var storeTitle = 0
-    private val prefs = getDefaultSharedPreferences(application)
-    private val repository = MainRepository(application)
+    private val prefs = getDefaultSharedPreferences(app)
+    private val repository = MainRepository(app)
 
     // TODO: Use paging architecture component library
     val allItems = repository.allItems
@@ -75,8 +73,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun resetFoundStores() = foundStores.clear()
 
-    fun getStoreTitle(): String {
-        return if (foundStores.size == 1) foundStores[0].name
-        else getApplication<Application>().getString(storeTitle)
+    fun getStoreIcon() = if (foundStores.size != 1) R.drawable.ic_store
+    else foundStores[0].category.storeImageRes
+
+    fun getStoreTitle(): String = when (foundStores.size) {
+        0 -> getApplication<Application>().getString(R.string.menu_text_new_store_found)
+        1 -> foundStores[0].name
+        else -> NumberFormat.getInstance().format(foundStores.size)
     }
 }
