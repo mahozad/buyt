@@ -51,7 +51,8 @@ class ItemsFragment : Fragment(R.layout.fragment_item_list), ItemTouchHelperList
     }
 
     private fun updateEmptyHint(isListEmpty: Boolean) {
-        if (isListEmpty) {
+        if (isListEmpty && emptyHint.text == getString(R.string.placeholder_empty)) return
+        if (isListEmpty ) {
             emptyHint.setBackgroundResource(R.drawable.avd_list_empty)
             (emptyHint.background as Animatable).start()
             emptyHint.setText(R.string.placeholder_empty)
