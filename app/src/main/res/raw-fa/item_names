@@ -10,14 +10,25 @@
 شیر فله‌ای:DAIRY
 شیر بطری:DAIRY
 شیر پاکتی:DAIRY
+شیرکاکائو:DAIRY
+شیرموز:DAIRY
+دوغ:DAIRY
+کشک:DAIRY
 پنیر:DAIRY
 پنیر پاستوریزه:DAIRY
 پنیر خامه‌ای:DAIRY
 پنیر گچی:DAIRY
+کره:DAIRY
 کره حیوانی:DAIRY
 کره گیاهی:DAIRY
 ماست:DAIRY
+ماست محلی:DAIRY
+ماست چکیده:DAIRY
+ماست موسیر:DAIRY
 خامه:DAIRY
+خامه عسلی:DAIRY
+خامه کاکائویی:DAIRY
+خامه شکلاتی:DAIRY
 سیب:FRUIT
 پرتقال:FRUIT
 نارنگی:FRUIT
@@ -79,8 +90,11 @@
 نوشابه خانواده:GROCERY
 نوشابه کولا:GROCERY
 نوشابه پرتقالی:GROCERY
-ماکارونی:GROCERY
 پاستا:GROCERY
+ماکارونی:GROCERY
+اسپاگتی:GROCERY
+لازانیا:GROCERY
+نودل:GROCERY
 اسنک:GROCERY
 کشمش:GROCERY
 آجیل:GROCERY
@@ -118,11 +132,11 @@
 تخم بلدرچین:GROCERY
 تن ماهی:GROCERY
 حلواارده:GROCERY
+حلواشکری:GROCERY
 ارده:GROCERY
 دمنوش:GROCERY
 ماءالشعیر:GROCERY
 دلستر:GROCERY
-نودل:GROCERY
 کلوچه:GROCERY
 آدامس:GROCERY
 آرد:GROCERY
@@ -133,7 +147,9 @@ GROCERY:پنیر پیتزا
 روغن سرخ کردنی:GROCERY
 روغن مایع:GROCERY
 روغن زیتون:GROCERY
+کنجد:GROCERY
 روغن کنجد:GROCERY
+روغن ذرت:GROCERY
 پفک:GROCERY
 چیپس:GROCERY
 چیپس خلالی:GROCERY
@@ -154,6 +170,7 @@ GROCERY:پنیر پیتزا
 قند حبه:GROCERY
 شکر:GROCERY
 نبات:GROCERY
+نبات زعفرانی:GROCERY
 سس گوجه فرنگی:GROCERY
 سس کچاپ:GROCERY
 سس هزار جزیره:GROCERY
@@ -163,6 +180,12 @@ GROCERY:پنیر پیتزا
 رب گوجه فرنگی:GROCERY
 رب انار:GROCERY
 مربا:GROCERY
+مربا هویج:GROCERY
+مربا آلبالو:GROCERY
+مربا بالنگ:GROCERY
+مربا توت فرنگی:GROCERY
+مربا انجیر:GROCERY
+مربا به:GROCERY
 عسل:GROCERY
 خیارشور:GROCERY
 ترشی:GROCERY
@@ -173,6 +196,9 @@ GROCERY:پنیر پیتزا
 آبغوره:GROCERY
 سرکه:GROCERY
 سرکه سفید:GROCERY
+سرکه قرمز:GROCERY
+سرکه سیب:GROCERY
+سرکه انار:GROCERY
 چای:GROCERY
 قهوه:GROCERY
 مایع ظرفشویی:GROCERY
@@ -183,6 +209,9 @@ GROCERY:پنیر پیتزا
 مرغ:CHICKEN
 ران مرغ:CHICKEN
 سینه مرغ:CHICKEN
+بال مرغ:CHICKEN
+گوشت بلدرچین:CHICKEN
+گوشت بوقلمون:CHICKEN
 ماهی:FISH
 میگو:FISH
 کتاب:STATIONARY
@@ -201,6 +230,7 @@ GROCERY:پنیر پیتزا
 شیرینی:PASTRY
 سوهان:PASTRY
 گز:PASTRY
+پولکی:PASTRY
 قطاب:PASTRY
 باقلوا:PASTRY
 پشمک:PASTRY
