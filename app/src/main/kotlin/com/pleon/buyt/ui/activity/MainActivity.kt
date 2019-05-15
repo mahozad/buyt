@@ -64,13 +64,6 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
 
     // FIXME: The bug that sometimes occur when expanding an item (the bottom item jumps up one moment),
     //     is produced when another item was swiped partially
-    // FIXME: when dragging items, in some situations item moves from behind of other cards
-    //   this happens if the card being dragged over by this card, has itself dragged over this card in the past.
-    //   steps to reproduce: drag card1 over card2 and then drop it (you can also drop it to its previous position).
-    //   now drag card2 over card1. Then again drag card1 over card2; it moves behind of card2 and in front of other cards.
-    //   NOTE: This is caused by "public void clearView..." method in TouchHelperCallback class
-    //   see the following to probably fix it:
-    //   https://github.com/brianwernick/RecyclerExt/blob/master/library/src/main/java/com/devbrackets/android/recyclerext/adapter/helper/SimpleElevationItemTouchHelperCallback.java
 
     private lateinit var viewModel: MainViewModel
     private lateinit var prefs: SharedPreferences
@@ -115,7 +108,6 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
      */
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
-        fab.setOnClickListener { onFabClick() }
 
         prefs = getDefaultSharedPreferences(this)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
@@ -128,8 +120,22 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
         val broadcastMgr = LocalBroadcastManager.getInstance(this)
         broadcastMgr.registerReceiver(locationReceiver, IntentFilter(ACTION_LOCATION_EVENT))
 
+        fab.setOnClickListener { onFabClick() }
+        setupAddMenuItemAnimation()
         showIntroIfNeeded()
         restoreBottomDrawerIfNeeded()
+    }
+
+    private fun setupAddMenuItemAnimation() {
+        Handler().postDelayed({
+            if (!::addMenuItem.isInitialized) return@postDelayed
+            viewModel.allItems.observe(this@MainActivity, Observer { items ->
+                if (items.isEmpty()) {
+                    addMenuItem.setIcon(R.drawable.avd_add_glow)
+                    AnimationUtil.animateIconInfinitely(addMenuItem.icon)
+                } else addMenuItem.setIcon(R.drawable.avd_add_hide)
+            })
+        }, 1000)
     }
 
     private fun showIntroIfNeeded() {
@@ -201,15 +207,6 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
             reorderMenuItem.isVisible = false
             bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
         }
-
-        // Enable/Disable addMenuItem animation
-        viewModel.allItems.observe(this, Observer { items ->
-            if (items.isEmpty()) {
-                addMenuItem.setIcon(R.drawable.avd_add_glow)
-                AnimationUtil.animateIconInfinitely(addMenuItem.icon)
-            } else addMenuItem.setIcon(R.drawable.avd_add_hide)
-        })
-
         return true
     }
 
@@ -225,6 +222,10 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
         if (!viewModel.isFindingSkipped && viewModel.foundStores.isNotEmpty()) addStorePopup.show()
     }
 
+    /**
+     * If setSupportActionBar() is used to set up the BottomAppBar, navigation menu item
+     * can be identified by checking if the id of menu item equals android.R.id.home.
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_add -> {
@@ -255,8 +256,6 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
                 createStoreDialog.show(supportFragmentManager, "CREATE_STORE_DIALOG")
             }
 
-            /* If setSupportActionBar() is used to set up the BottomAppBar, navigation menu item
-             * can be identified by checking if the id of menu item equals android.R.id.home. */
             android.R.id.home -> when {
                 viewModel.isAddingItem -> {
                     supportFragmentManager.popBackStack()
@@ -292,7 +291,6 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
             }
             viewModel.state != SELECTING -> super.onBackPressed()
         }
-
         shiftToIdleState()
     }
 
@@ -462,6 +460,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
 
     private fun shiftToIdleState() {
         itemsFragment.sortItemsByOrder()
+        itemsFragment.clearSelectedItems()
         if (viewModel.state == FINDING || viewModel.state == SELECTING || viewModel.isAddingItem) {
             itemsFragment.toggleItemsCheckbox(false)
 
@@ -563,7 +562,6 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
     private fun completeBuy(store: Store) {
         // With toList(), a new list is passed to buy() so clearing selected items wont effect it
         viewModel.buy(itemsFragment.selectedItems.toList(), store, Date())
-        itemsFragment.clearSelectedItems()
         shiftToIdleState()
     }
 }
