@@ -1,7 +1,6 @@
 package com.pleon.buyt.ui.adapter
 
 import android.content.Context
-import android.graphics.drawable.Animatable
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -105,8 +104,7 @@ class ItemListAdapter(private val context: Context, private val itemTouchHelper:
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             })
-            itemView.expandDragButton.setOnTouchListener { _, event -> onDragHandleTouch(event) }
-            itemView.expandDragButton.setOnClickListener { onExpandToggle() }
+            itemView.dragButton.setOnTouchListener { _, event -> onDragHandleTouch(event) }
             itemView.cardForeground.setOnClickListener { onCardClick() }
             itemView.selectCheckBox.setOnCheckedChangeListener { _, isChecked -> onItemSelected(isChecked) }
         }
@@ -119,25 +117,17 @@ class ItemListAdapter(private val context: Context, private val itemTouchHelper:
                     item.quantity.quantity, context.getString(item.quantity.unit.nameRes))
             itemView.urgentIcon.visibility = if (item.isUrgent) VISIBLE else INVISIBLE
             itemView.selectCheckBox.isChecked = selectedItems.contains(item)
-            itemView.description.visibility = if (selectionModeEnabled || !item.isExpanded) GONE else VISIBLE
+            itemView.description.visibility = if (item.description.isNullOrEmpty()) GONE else VISIBLE
             itemView.circular_reveal.alpha = 0f // for the case of undo of deleted item
             itemView.price.setText(if (item.totalPrice != 0L) item.totalPrice.toString() else "")
 
             if (selectionModeEnabled) {
                 itemView.selectCheckBox.visibility = VISIBLE
-                itemView.expandDragButton.visibility = INVISIBLE
+                itemView.dragButton.visibility = INVISIBLE
             } else {
                 itemView.selectCheckBox.visibility = INVISIBLE
                 itemView.price_container.visibility = GONE
-                if (dragModeEnabled) {
-                    itemView.expandDragButton.setImageResource(R.drawable.ic_drag_handle)
-                    itemView.expandDragButton.visibility = VISIBLE
-                } else if (item.description != null) {
-                    itemView.expandDragButton.setImageResource(if (item.isExpanded) R.drawable.avd_collapse else R.drawable.avd_expand)
-                    itemView.expandDragButton.visibility = VISIBLE
-                } else {
-                    itemView.expandDragButton.visibility = INVISIBLE
-                }
+                itemView.dragButton.visibility = if (dragModeEnabled) VISIBLE else INVISIBLE
             }
         }
 
@@ -145,30 +135,13 @@ class ItemListAdapter(private val context: Context, private val itemTouchHelper:
             if (event.actionMasked == ACTION_DOWN) {
                 // disabled in clearView() method of the touch helper
                 if (dragModeEnabled) itemView.cardForeground.isDragged = true
-
                 itemTouchHelper.startDrag(this)
             }
             return false
         }
 
-        private fun onExpandToggle() {
-            val item = items[adapterPosition]
-
-            itemView.expandDragButton.setImageResource(if (item.isExpanded) R.drawable.avd_collapse else R.drawable.avd_expand)
-            (itemView.expandDragButton.drawable as Animatable).start()
-
-            beginDelayedTransition(recyclerView, ChangeBounds().setDuration(200))
-
-            itemView.description.visibility = if (itemView.description.visibility == GONE) VISIBLE else GONE
-            item.isExpanded = itemView.description.visibility == VISIBLE
-        }
-
         private fun onCardClick() {
-            if (selectionModeEnabled) {
-                itemView.selectCheckBox.performClick() // delegate to chBx listener
-            } else if (itemView.description.text.toString().isNotEmpty()) {
-                itemView.expandDragButton.post { itemView.expandDragButton.performClick() }
-            }
+            if (selectionModeEnabled) itemView.selectCheckBox.performClick()
         }
 
         fun onPriceChanged() {

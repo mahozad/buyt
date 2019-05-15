@@ -1,6 +1,9 @@
 package com.pleon.buyt.model
 
-import androidx.room.*
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.PrimaryKey
 import com.pleon.buyt.R
 
 @Entity
@@ -23,8 +26,6 @@ class Item(val name: String, @Embedded val quantity: Quantity, var category: Cat
     var totalPrice: Long = 0
 
     // For display purposes
-    @Ignore
-    var isExpanded = false
     var position: Int = 0
     // To fix the bug that happens when two items are deleted in row (the first appears again)
     var isFlaggedForDeletion = false
