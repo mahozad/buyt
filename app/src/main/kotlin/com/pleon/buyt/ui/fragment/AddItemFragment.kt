@@ -29,7 +29,7 @@ import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import com.pleon.buyt.R
 import com.pleon.buyt.model.Category
 import com.pleon.buyt.model.Item
-import com.pleon.buyt.model.Item.Quantity.Unit
+import com.pleon.buyt.model.Item.Quantity.Unit.*
 import com.pleon.buyt.ui.NumberInputWatcher
 import com.pleon.buyt.ui.dialog.DatePickerDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
@@ -71,12 +71,11 @@ class AddItemFragment : Fragment(R.layout.fragment_add_item),
     private val quantity: Item.Quantity
         get() {
             val quantity = quantityEd.text.toString().replace(Regex("[^\\d]"), "").toLong()
-
-            val idOfSelectedUnit = btnGrp.checkedButtonId
-            val selectedUnit = view!!.findViewById<MaterialButton>(idOfSelectedUnit)
-            val indexOfSelectedUnit = btnGrp.indexOfChild(selectedUnit)
-            val unit = Unit.values()[indexOfSelectedUnit]
-
+            val unit = when (btnGrp.checkedButtonId) {
+                R.id.btn1 -> UNIT
+                R.id.btn2 -> KILOGRAM
+                else -> GRAM
+            }
             return Item.Quantity(quantity, unit)
         }
 

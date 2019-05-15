@@ -9,8 +9,7 @@ class Item(val name: String, @Embedded val quantity: Quantity, var category: Cat
 
     class Quantity(val quantity: Long, val unit: Unit) {
         enum class Unit(val nameRes: Int) {
-            // FIXME: due to a bug in add item fragment the units are arranges in reverse order
-            KILOGRAM(R.string.qty_kilogram), GRAM(R.string.qty_gram), UNIT(R.string.qty_unit)
+            UNIT(R.string.qty_unit), KILOGRAM(R.string.qty_kilogram), GRAM(R.string.qty_gram)
         }
 
         override fun toString() = "$quantity ${unit.toString().toLowerCase()}"
