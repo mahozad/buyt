@@ -133,4 +133,9 @@ class ItemsFragment : Fragment(R.layout.fragment_item_list), ItemTouchHelperList
             else item1.position - item2.position
         })
     }
+
+    fun emphasisEmpty() {
+        emptyHint.setBackgroundResource(R.drawable.avd_empty_emphasis)
+        (emptyHint.background as Animatable).start()
+    }
 }

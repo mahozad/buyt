@@ -162,8 +162,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
             val addItemFragment = supportFragmentManager.findFragmentById(R.id.fragContainer) as AddItemFragment
             addItemFragment.onDonePressed()
         } else if (viewModel.state == IDLE) { // act as find
-            if (itemsFragment.isListEmpty)
-                showSnackbar(snbContainer, R.string.snackbar_message_cart_empty, LENGTH_SHORT)
+            if (itemsFragment.isListEmpty) itemsFragment.emphasisEmpty()
             else {
                 addMenuItem.setIcon(R.drawable.avd_add_hide).apply { (icon as Animatable).start() }
                 // disable effect of tapping on the menu item and its ripple
