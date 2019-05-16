@@ -32,6 +32,9 @@
 سیب:FRUIT
 پرتقال:FRUIT
 نارنگی:FRUIT
+نارنج:FRUIT
+ترنج:FRUIT
+به:FRUIT
 آلو:FRUIT
 لیو شیرین:FRUIT
 لیمو ترش:FRUIT
@@ -46,20 +49,24 @@
 گوجه فرنگی:FRUIT
 توت:FRUIT
 توت فرنگی:FRUIT
+تمشک:FRUIT
 پیاز:FRUIT
 سیب زمینی:FRUIT
 سیب ترشی:FRUIT
 سیر:FRUIT
+سنجد:FRUIT
 چغندر:FRUIT
 شلغم:FRUIT
 گوجه سبز:FRUIT
 هندوانه:FRUIT
 خربزه:FRUIT
+زغال اخته:FRUIT
 قارچ:FRUIT
 نخود فرنگی:FRUIT
 کاهو:FRUIT
 فلفل دلمه‌ای:FRUIT
 بادمجان:FRUIT
+ریواس:FRUIT
 کدو:FRUIT
 کلم:FRUIT
 زنجبیل:FRUIT
@@ -72,10 +79,12 @@
 خرمالو:FRUIT
 عناب:FRUIT
 طالبی:FRUIT
+گرمک:FRUIT
 هلو:FRUIT
+شلیل:FRUIT
+شفتالو:FRUIT
 خرما:FRUIT
 رطب:FRUIT
-شلیل:FRUIT
 نارگیل:FRUIT
 آناناس:FRUIT
 موز:FRUIT
@@ -87,6 +96,7 @@
 سبزی آشی:FRUIT
 سبزی خورشتی:FRUIT
 سبزی کوکویی:FRUIT
+نوشابه:GROCERY
 نوشابه خانواده:GROCERY
 نوشابه کولا:GROCERY
 نوشابه پرتقالی:GROCERY
@@ -98,16 +108,23 @@
 اسنک:GROCERY
 کشمش:GROCERY
 آجیل:GROCERY
+برگه هلو:GROCERY
+برگه زردآلو:GROCERY
+برگه شفتالو:GROCERY
+برگه سیب:GROCERY
 پسته:GROCERY
+مغز پسته:GROCERY
+فندق:GROCERY
 بادام:GROCERY
 مغز بادام:GROCERY
 خلال بادام:GROCERY
 گردو:GROCERY
 مغز گردو:GROCERY
-تخمه کدو:GROCERY
-تخمه هندوانه:GROCERY
-تخمه ژاپنی:GROCERY
+تخمه:GROCERY
 تخمه آفتابگردان:GROCERY
+تخمه هندوانه:GROCERY
+تخمه کدو:GROCERY
+تخمه ژاپنی:GROCERY
 زعفران:GROCERY
 عدس:GROCERY
 ماش:GROCERY
@@ -239,11 +256,21 @@ GROCERY:پنیر پیتزا
 نخ دندان:DRUG
 خلال دندان:DRUG
 مسواک:DRUG
+گوش پاک‌کن:DRUG
+کرم:DRUG
 کرم ضدآفتاب:DRUG
+کرم مرطوب کننده:DRUG
+ژل موی سر:DRUG
 شامپو:DRUG
-نرم کننده:DRUG
+شامپو ضدشوره:DRUG
+شامپو بدن:DRUG
+ماسک مو:DRUG
+نرم کننده مو:DRUG
 صابون:DRUG
+صابون بدن:DRUG
 اسپری خوش بو کننده:DRUG
+اسپری ضد تعریق:DRUG
+دئودرانت:DRUG
 لامپ:TOOLS
 چراغ:TOOLS
 گل:FLOWER
