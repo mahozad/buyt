@@ -26,7 +26,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.db.chart.view.LineChartView
-                android:id="@+id/chart"
+                android:id="@+id/lineChart"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp"

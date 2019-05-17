@@ -65,7 +65,7 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
     }
 
     private fun showLineChart(dailyCosts: List<DailyCost>) {
-        chart.reset()
+        lineChart.reset()
 
         var totalCosts = 0L
 
@@ -86,14 +86,14 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
         dataSet.thickness = 2.5f
 
         val moneyFormat = DecimalFormat(getString(R.string.currency_format))
-        chart.setLabelsFormat(moneyFormat)
+        lineChart.setLabelsFormat(moneyFormat)
 
         val colors = resources.getIntArray(R.array.lineChartGradient)
         val steps = floatArrayOf(0.0f, 0.2f, 0.5f, 1.0f)
         dataSet.setGradientFill(colors, steps)
-        chart.addData(dataSet)
-        chart.setXLabels(NONE)
-        chart.show(Animation(500))
+        lineChart.addData(dataSet)
+        lineChart.setXLabels(NONE)
+        lineChart.show(Animation(500))
     }
 
     private fun showPieChart(pieSlices: List<PieSlice>) {
