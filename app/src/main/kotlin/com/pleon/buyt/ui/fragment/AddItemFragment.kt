@@ -55,6 +55,7 @@ class AddItemFragment : Fragment(R.layout.fragment_add_item),
     @ColorRes private var colorOnSurface: Int = 0
     @ColorRes private var colorError: Int = 0
     @ColorRes private var colorUnfocused: Int = 0
+    @ColorRes private var colorUnfocusedBorder: Int = 0
 
     private lateinit var unitBtns: Array<MaterialButton>
     private lateinit var viewModel: AddItemViewModel
@@ -98,6 +99,9 @@ class AddItemFragment : Fragment(R.layout.fragment_add_item),
 
         context!!.theme.resolveAttribute(R.attr.unitUnfocusedColor, typedValue, true)
         colorUnfocused = typedValue.resourceId
+
+        context!!.theme.resolveAttribute(R.attr.unitBorderUnfocusedColor, typedValue, true)
+        colorUnfocusedBorder = typedValue.resourceId
     }
 
     /**
@@ -347,7 +351,7 @@ class AddItemFragment : Fragment(R.layout.fragment_add_item),
 
     private fun setColorOfAllUnits(color: Int) {
         for (btn in unitBtns) {
-            btn.setStrokeColorResource(color)
+            btn.setStrokeColorResource(if (color == colorUnfocused) colorUnfocusedBorder else color)
 
             val states = arrayOf(
                     intArrayOf(android.R.attr.state_checked), // checked

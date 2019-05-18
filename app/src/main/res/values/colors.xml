@@ -24,8 +24,10 @@
     <color name="emptyHintDarkColor">#3A443A</color>
     <color name="emptyHintLightColor">#B8DFB8</color>
 
-    <color name="unitUnfocusedDark">#6f6f6f</color>
-    <color name="unitUnfocusedLight">#afafaf</color>
+    <color name="unitUnfocusedDark">#806F6F6F</color>
+    <color name="unitUnfocusedLight">#80afafaf</color>
+    <color name="unitBorderUnfocusedDark">#6F6F6F</color>
+    <color name="unitBorderUnfocusedLight">#afafaf</color>
 
     <array name="lineChartGradient">
         <item>#66259600</item>
