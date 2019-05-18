@@ -2,4 +2,5 @@
 <resources>
     <dimen name="chart_bar_spacing">24dp</dimen>
     <dimen name="quantity_margin">5dp</dimen>
+    <dimen name="unit_btn_height">61.5dp</dimen>
 </resources>
