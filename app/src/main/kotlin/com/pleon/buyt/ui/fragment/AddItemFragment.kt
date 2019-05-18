@@ -350,6 +350,7 @@ class AddItemFragment : Fragment(R.layout.fragment_add_item),
     }
 
     private fun setColorOfAllUnits(color: Int) {
+        if (color == R.color.colorPrimary && !quantityEd.hasFocus()) return
         for (btn in unitBtns) {
             btn.setStrokeColorResource(if (color == colorUnfocused) colorUnfocusedBorder else color)
 
@@ -410,6 +411,7 @@ class AddItemFragment : Fragment(R.layout.fragment_add_item),
 
             // Reset fields
             name.text.clear()
+            name_layout.isCounterEnabled = false
             name.requestFocus()
             quantityEd.setText("1")
             btnGrp.check(R.id.btn1)
