@@ -63,7 +63,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
     // return to the app from recent apps screen (or maybe by pressing its launcher icon)
 
     // FIXME: The bug that sometimes occur when expanding an item (the bottom item jumps up one moment),
-    //     is produced when another item was swiped partially
+    //        is produced when another item was swiped partially
 
     private lateinit var viewModel: MainViewModel
     private lateinit var prefs: SharedPreferences
@@ -194,6 +194,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
                 bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
                 fab.setImageResource(R.drawable.avd_find_done)
                 (fab.drawable as Animatable).start()
+                val animation = AlphaAnimation(0f, 1f).apply { duration = 300 }
+                scrim.alpha = 1f
+                scrim.startAnimation(animation)
             }
         }
 
@@ -230,16 +233,12 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
 
                 // Note that because AddItemFragment has setHasOptionsMenu(true) every time the
                 // fragment manager adds or replaces that fragment, the onCreateOptionsMenu() of
-                // this activity is called.
+                // this activity is called so we animate views in there.
                 supportFragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.slide_up, 0, 0, R.anim.slide_down)
                         .replace(R.id.fragContainer, AddItemFragment())
                         .addToBackStack("tag")
                         .commit()
-
-                val animation = AlphaAnimation(0f, 1f).apply { duration = 300 }
-                scrim.alpha = 1f
-                scrim.startAnimation(animation)
             }
 
             R.id.action_reorder -> {
