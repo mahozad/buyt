@@ -121,9 +121,15 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
         broadcastMgr.registerReceiver(locationReceiver, IntentFilter(ACTION_LOCATION_EVENT))
 
         fab.setOnClickListener { onFabClick() }
+        scrim.setOnClickListener { onScrimClick() }
         setupAddMenuItemAnimation()
         showIntroIfNeeded()
         restoreBottomDrawerIfNeeded()
+    }
+
+    private fun onScrimClick() {
+        closeAddItemPopup()
+        shiftToIdleState()
     }
 
     private fun setupAddMenuItemAnimation() {
@@ -254,9 +260,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
 
             android.R.id.home -> when {
                 viewModel.isAddingItem -> {
-                    supportFragmentManager.popBackStack()
-                    val animation = AlphaAnimation(1f, 0f).apply { duration = 300 }.also { it.fillAfter = true }
-                    scrim.startAnimation(animation)
+                    closeAddItemPopup()
                     shiftToIdleState()
                 }
                 viewModel.state == IDLE -> {
@@ -272,6 +276,12 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
         return true
     }
 
+    private fun closeAddItemPopup() {
+        supportFragmentManager.popBackStack()
+        val animation = AlphaAnimation(1f, 0f).apply { duration = 300 }.also { it.fillAfter = true }
+        scrim.startAnimation(animation)
+    }
+
     /**
      * If you override the onBackPressed() method, we still highly recommend that you invoke
      * super.onBackPressed() from your overridden method. Otherwise the Back button behavior
@@ -280,11 +290,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
     override fun onBackPressed() {
         when {
             viewModel.state == FINDING -> stopService(Intent(this, GpsService::class.java))
-            viewModel.isAddingItem -> {
-                supportFragmentManager.popBackStack()
-                val animation = AlphaAnimation(1f, 0f).apply { duration = 300 }.also { it.fillAfter = true }
-                scrim.startAnimation(animation)
-            }
+            viewModel.isAddingItem -> closeAddItemPopup()
             viewModel.state != SELECTING -> super.onBackPressed()
         }
         shiftToIdleState()
