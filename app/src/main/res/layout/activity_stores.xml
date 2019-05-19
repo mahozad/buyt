@@ -11,6 +11,7 @@
         class="com.pleon.buyt.ui.fragment.StoresFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="20dp"
         tools:layout="@layout/fragment_store_list" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
