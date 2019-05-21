@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.android.material.textfield.TextInputLayout
 import com.pleon.buyt.R
+import com.pleon.buyt.di.ViewModelFactory
 import com.pleon.buyt.model.Category
 import com.pleon.buyt.ui.ItemSpacingDecoration
 import com.pleon.buyt.ui.TouchHelperCallback
@@ -18,12 +19,16 @@ import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener
 import com.pleon.buyt.ui.adapter.ItemListAdapter
 import com.pleon.buyt.util.SnackbarUtil.showUndoSnackbar
 import com.pleon.buyt.viewmodel.MainViewModel
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_item_list.*
 import java.util.*
+import javax.inject.Inject
 import kotlin.Comparator
 
 class ItemsFragment : Fragment(R.layout.fragment_item_list), ItemTouchHelperListener {
 
+    @Inject
+    internal lateinit var viewModelFactory: ViewModelFactory<MainViewModel>
     private lateinit var viewModel: MainViewModel
     private lateinit var adapter: ItemListAdapter
     private lateinit var touchHelperCallback: TouchHelperCallback
@@ -32,7 +37,8 @@ class ItemsFragment : Fragment(R.layout.fragment_item_list), ItemTouchHelperList
     val isListEmpty get() = adapter.items.isEmpty()
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        AndroidSupportInjection.inject(this)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
         // In fragments use getViewLifecycleOwner() as owner argument
         viewModel.allItems.observe(viewLifecycleOwner, Observer { items ->
             adapter.items = items
@@ -52,7 +58,7 @@ class ItemsFragment : Fragment(R.layout.fragment_item_list), ItemTouchHelperList
 
     private fun updateEmptyHint(isListEmpty: Boolean) {
         if (isListEmpty && emptyHint.text == getString(R.string.placeholder_empty)) return
-        if (isListEmpty ) {
+        if (isListEmpty) {
             emptyHint.setBackgroundResource(R.drawable.avd_list_empty)
             (emptyHint.background as Animatable).start()
             emptyHint.setText(R.string.placeholder_empty)

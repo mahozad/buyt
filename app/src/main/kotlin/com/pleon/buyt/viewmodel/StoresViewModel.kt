@@ -11,8 +11,10 @@ import com.pleon.buyt.database.dto.StoreDetail
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.repository.StoreRepository
 import com.pleon.buyt.viewmodel.StoresViewModel.Sort.TOTAL_SPENDING
+import javax.inject.Inject
 
-class StoresViewModel(application: Application) : AndroidViewModel(application) {
+class StoresViewModel @Inject constructor(app: Application, private val repository: StoreRepository)
+    : AndroidViewModel(app) {
 
     enum class Sort(val nameRes: Int, val imgRes: Int) {
         TOTAL_SPENDING(R.string.menu_text_sort_totalSpending, R.drawable.ic_price),
@@ -21,7 +23,6 @@ class StoresViewModel(application: Application) : AndroidViewModel(application) 
         STORE_NAME(R.string.menu_text_sort_alphabet, R.drawable.ic_alphabet)
     }
 
-    private val repository = StoreRepository(application)
     private val sortLiveData = MutableLiveData<Sort>(TOTAL_SPENDING)
 
     val storeDetails: LiveData<List<StoreDetail>> = switchMap(sortLiveData, Function { sort ->

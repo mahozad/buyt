@@ -30,7 +30,7 @@ import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_END
 import com.google.android.material.snackbar.Snackbar.*
 import com.pleon.buyt.R
-import com.pleon.buyt.database.destroyDatabase
+import com.pleon.buyt.di.ViewModelFactory
 import com.pleon.buyt.model.Coordinates
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.service.ACTION_LOCATION_EVENT
@@ -48,6 +48,7 @@ import com.pleon.buyt.viewmodel.MainViewModel
 import com.pleon.buyt.viewmodel.MainViewModel.State.*
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
+import javax.inject.Inject
 
 private const val STATE_LOCATION = "com.pleon.buyt.state.LOCATION"
 private const val REQUEST_LOCATION_PERMISSION = 1
@@ -62,9 +63,14 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
     // adb shell am kill com.pleon.buyt
     // return to the app from recent apps screen (or maybe by pressing its launcher icon)
 
+    // For a good article about dagger see
+    // [https://medium.com/@iammert/new-android-injector-with-dagger-2-part-1-8baa60152abe]
+
     // FIXME: The bug that sometimes occur when expanding an item (the bottom item jumps up one moment),
     //        is produced when another item was swiped partially
 
+    @Inject
+    internal lateinit var viewModelFactory: ViewModelFactory<MainViewModel>
     private lateinit var viewModel: MainViewModel
     private lateinit var prefs: SharedPreferences
     private lateinit var itemsFragment: ItemsFragment
@@ -110,7 +116,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
         super.onCreate(savedState)
 
         prefs = getDefaultSharedPreferences(this)
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
         itemsFragment = supportFragmentManager.findFragmentById(R.id.itemsFragment) as ItemsFragment
         locationMgr = getSystemService(LOCATION_SERVICE) as LocationManager
         locationReceiver = object : BroadcastReceiver() {
@@ -121,7 +127,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
         broadcastMgr.registerReceiver(locationReceiver, IntentFilter(ACTION_LOCATION_EVENT))
 
         fab.setOnClickListener { onFabClick() }
-        scrim.setOnClickListener { onScrimClick() }
+        //        scrim.setOnClickListener { onScrimClick() }
         setupAddMenuItemAnimation()
         showIntroIfNeeded()
         restoreBottomDrawerIfNeeded()
@@ -383,10 +389,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
         LocalBroadcastManager.getInstance(this).unregisterReceiver(locationReceiver)
         // TODO: Move AppDatabase.destroyDatabase() to the onCleared() method of the viewModel
         // see [https://developer.android.com/guide/components/activities/activity-lifecycle#ondestroy]
-        if (isFinishing) { // if activity being destroyed because of back button (not because of config change)
-            stopService(Intent(this, GpsService::class.java))
-            destroyDatabase()
-        }
+
+        // if activity being destroyed because of back button (not because of config change)
+        if (isFinishing) stopService(Intent(this, GpsService::class.java))
     }
 
     private fun findLocation() {

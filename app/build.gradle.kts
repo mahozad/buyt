@@ -122,6 +122,11 @@ dependencies {
     implementation("androidx.room:room-runtime:2.1.0-beta01")
     kapt("androidx.room:room-compiler:2.1.0-beta01")
 
+    implementation("com.google.dagger:dagger:2.22.1")
+    implementation("com.google.dagger:dagger-android-support:2.22.1")
+    kapt("com.google.dagger:dagger-compiler:2.22.1")
+    kapt("com.google.dagger:dagger-android-processor:2.22.1")
+
     /* If you're targeting JDK 8, you can use extended versions of the Kotlin standard library
      * which contain additional extension functions for APIs added in new JDK versions.
      * So instead of "kotlin-stdlib", use "kotlin-stdlib-jdk8": */

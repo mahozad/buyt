@@ -1,12 +1,18 @@
 package com.pleon.buyt
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
+import com.facebook.stetho.Stetho
+import com.pleon.buyt.di.DaggerAppComponent
 import com.pleon.buyt.ui.fragment.PREF_LANG
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasActivityInjector
 import java.util.*
+import javax.inject.Inject
 
 fun setLocale(context: Context): Context {
     val lang = getDefaultSharedPreferences(context).getString(PREF_LANG, "auto")
@@ -22,7 +28,21 @@ fun setLocale(context: Context): Context {
     return cxt
 }
 
-class BuytApplication : Application() {
+class BuytApplication : Application(), HasActivityInjector {
+
+    @Inject lateinit var activityInjector: DispatchingAndroidInjector<Activity>
+
+    override fun onCreate() {
+        super.onCreate()
+        if (BuildConfig.DEBUG) Stetho.initializeWithDefaults(this)
+        DaggerAppComponent
+                .builder()
+                .application(this)
+                .build()
+                .inject(this)
+    }
+
+    override fun activityInjector() = activityInjector
 
     /**
      * This is for android N and higher.

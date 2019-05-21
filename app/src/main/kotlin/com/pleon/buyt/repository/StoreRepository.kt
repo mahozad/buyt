@@ -1,18 +1,19 @@
 package com.pleon.buyt.repository
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import com.pleon.buyt.database.SingleLiveEvent
+import com.pleon.buyt.database.dao.StoreDao
 import com.pleon.buyt.database.dto.StoreDetail
-import com.pleon.buyt.database.getDatabase
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.viewmodel.StoresViewModel.Sort
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class StoreRepository(application: Application) {
+@Singleton
+class StoreRepository @Inject constructor(private val storeDao: StoreDao) {
 
-    private val storeDao = getDatabase(application).storeDao()
     private val storeDetails = SingleLiveEvent<List<StoreDetail>>()
     private val createdStore = SingleLiveEvent<Store>()
 

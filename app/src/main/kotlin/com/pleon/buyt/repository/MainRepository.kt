@@ -1,9 +1,10 @@
 package com.pleon.buyt.repository
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import com.pleon.buyt.database.SingleLiveEvent
-import com.pleon.buyt.database.getDatabase
+import com.pleon.buyt.database.dao.ItemDao
+import com.pleon.buyt.database.dao.PurchaseDao
+import com.pleon.buyt.database.dao.StoreDao
 import com.pleon.buyt.model.Coordinates
 import com.pleon.buyt.model.Item
 import com.pleon.buyt.model.Purchase
@@ -11,19 +12,21 @@ import com.pleon.buyt.model.Store
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import java.util.*
+import javax.inject.Inject
+import javax.inject.Singleton
 
 // A Repository class handles data operations. It provides a clean API to the rest of the app for app data
 // A Repository manages query threads and allows you to use multiple back-ends.
 // In the most common example, the Repository implements the logic for deciding whether
 // to fetch data from a network or use results cached in a local database.
-class MainRepository(application: Application) { // TODO: make this class singleton
+@Singleton
+class MainRepository @Inject constructor(private val itemDao: ItemDao,
+                                          private val storeDao: StoreDao,
+                                          private val purchaseDao: PurchaseDao) {
 
-    private val itemDao = getDatabase(application).itemDao()
-    private val storeDao = getDatabase(application).storeDao()
-    private val purchaseDao = getDatabase(application).purchaseDao()
+    val allItems = itemDao.getAll()
     private val nearStores = SingleLiveEvent<List<Store>>()
     private val allStores = SingleLiveEvent<List<Store>>()
-    val allItems = itemDao.getAll()
 
     fun updateItems(items: Collection<Item>) = doAsync { itemDao.updateAll(items) }
 

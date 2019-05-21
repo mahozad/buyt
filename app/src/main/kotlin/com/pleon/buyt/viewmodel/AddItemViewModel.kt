@@ -11,10 +11,11 @@ import com.pleon.buyt.model.Store
 import com.pleon.buyt.repository.AddItemRepository
 import java.io.InputStreamReader
 import java.util.*
+import javax.inject.Inject
 
-class AddItemViewModel(app: Application) : AndroidViewModel(app) {
+class AddItemViewModel @Inject constructor(app: Application, val repository: AddItemRepository)
+    : AndroidViewModel(app) {
 
-    private val repository = AddItemRepository(app)
     private val nameCatsMediator = MediatorLiveData<Map<String, String>>()
     val itemNameCats: LiveData<Map<String, String>> = nameCatsMediator
     var category = GROCERY

@@ -1,18 +1,22 @@
 package com.pleon.buyt.ui.activity
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.pleon.buyt.R
 import com.pleon.buyt.setLocale
 import com.pleon.buyt.ui.fragment.PREF_THEME
 import com.pleon.buyt.ui.fragment.PREF_THEME_DEF
+import dagger.android.support.DaggerAppCompatActivity
 
 @Suppress("unused")
 val <T : LifecycleOwner> T.TAG: String get() = javaClass.simpleName
 
-abstract class BaseActivity : AppCompatActivity() {
+/**
+ * Extends from DaggerAppCompatActivity (which itself extends from AppCompatActivity) so that the
+ * activities do not have to call AndroidInjector.inject(this) for dagger dependency injection.
+ */
+abstract class BaseActivity : DaggerAppCompatActivity() {
 
     abstract fun layout(): Int
 
@@ -20,7 +24,6 @@ abstract class BaseActivity : AppCompatActivity() {
         setTheme() // Call before anything else
         super.onCreate(savedState)
         setLocale(this)
-
         setContentView(layout())
         setSupportActionBar(findViewById(R.id.bottom_bar))
     }

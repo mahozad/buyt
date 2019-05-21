@@ -28,6 +28,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import com.pleon.buyt.R
+import com.pleon.buyt.di.ViewModelFactory
 import com.pleon.buyt.model.Category
 import com.pleon.buyt.model.Item
 import com.pleon.buyt.model.Item.Quantity.Unit.*
@@ -37,10 +38,12 @@ import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
 import com.pleon.buyt.viewmodel.AddItemViewModel
 import com.pleon.buyt.viewmodel.MainViewModel
+import dagger.android.support.AndroidSupportInjection
 import ir.huri.jcal.JalaliCalendar
 import kotlinx.android.synthetic.main.fragment_add_item.*
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 /**
  * This fragment requires a Toolbar as it needs to inflate and use a menu item for selection of
@@ -57,6 +60,8 @@ class AddItemFragment : Fragment(R.layout.fragment_add_item),
     @ColorRes private var colorUnfocused: Int = 0
     @ColorRes private var colorUnfocusedBorder: Int = 0
 
+    @Inject
+    internal lateinit var viewModelFactory: ViewModelFactory<AddItemViewModel>
     private lateinit var unitBtns: Array<MaterialButton>
     private lateinit var viewModel: AddItemViewModel
     private var selectCategoryTxvi: TextView? = null
@@ -85,7 +90,8 @@ class AddItemFragment : Fragment(R.layout.fragment_add_item),
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
 
-        viewModel = ViewModelProviders.of(this).get(AddItemViewModel::class.java)
+        AndroidSupportInjection.inject(this)
+        viewModel = ViewModelProviders.of(this,viewModelFactory).get(AddItemViewModel::class.java)
 
         val typedValue = TypedValue()
         context!!.theme.resolveAttribute(R.attr.colorError, typedValue, true)

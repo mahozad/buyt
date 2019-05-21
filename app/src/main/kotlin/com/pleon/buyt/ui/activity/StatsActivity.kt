@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.tabs.TabLayout
 import com.pleon.buyt.R
+import com.pleon.buyt.di.ViewModelFactory
 import com.pleon.buyt.ui.TabLayoutMediator
 import com.pleon.buyt.ui.TabLayoutMediator.OnConfigureTabCallback
 import com.pleon.buyt.ui.adapter.StatsPagerAdapter
@@ -19,9 +20,11 @@ import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.viewmodel.StatsViewModel
 import kotlinx.android.synthetic.main.activity_stats.*
 import java.util.*
+import javax.inject.Inject
 
 class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
 
+    @Inject internal lateinit var viewModelFactory: ViewModelFactory<StatsViewModel>
     private lateinit var viewModel: StatsViewModel
     private lateinit var filterMenuItem: MenuItem
     private lateinit var periodMenuItemView: TextView
@@ -42,7 +45,7 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
 
-        viewModel = ViewModelProviders.of(this).get(StatsViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(StatsViewModel::class.java)
         registerReceiver(timeReceiver, IntentFilter(Intent.ACTION_TIME_TICK))
 
         viewPager.adapter = StatsPagerAdapter(this)

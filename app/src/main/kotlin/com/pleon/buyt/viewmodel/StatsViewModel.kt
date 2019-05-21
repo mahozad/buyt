@@ -12,8 +12,9 @@ import com.pleon.buyt.model.Category
 import com.pleon.buyt.repository.StatsRepository
 import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
 import com.pleon.buyt.viewmodel.StatsViewModel.Period.NARROW
+import javax.inject.Inject
 
-class StatsViewModel(val app: Application) : AndroidViewModel(app) {
+class StatsViewModel @Inject constructor(val app: Application, repository: StatsRepository) : AndroidViewModel(app) {
 
     enum class Period(var length: Int, val imageRes: Int) {
         NARROW(7, R.drawable.avd_period_wid_nar),
@@ -33,7 +34,6 @@ class StatsViewModel(val app: Application) : AndroidViewModel(app) {
         override val imgRes = R.drawable.ic_filter
     }
 
-    private val repository = StatsRepository(app)
     private val triggerUpdate = MutableLiveData<Boolean>(true)
     val stats: LiveData<Stats> = switchMap(triggerUpdate, Function {
         return@Function repository.getStats(period.length, filter)

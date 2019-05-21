@@ -16,6 +16,7 @@ import com.pleon.buyt.ui.fragment.PREF_SEARCH_DIST_DEF
 import com.pleon.buyt.viewmodel.MainViewModel.State.IDLE
 import java.text.NumberFormat
 import java.util.*
+import javax.inject.Inject
 import kotlin.math.cos
 
 private const val EARTH_RADIUS = 6_371_000.0 // In meters
@@ -29,7 +30,8 @@ private const val EARTH_RADIUS = 6_371_000.0 // In meters
  * force-kills. So to survive process stops, implement
  * [AppCompatActivity.onSaveInstanceState] method in your activity/fragment.
  */
-class MainViewModel(app: Application) : AndroidViewModel(app) {
+class MainViewModel @Inject constructor(app: Application, private val repository: MainRepository)
+    : AndroidViewModel(app) {
 
     enum class State {
         IDLE, FINDING, SELECTING
@@ -43,7 +45,6 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     var shouldAnimateNavIcon = false
     var isAddingItem = false
     private val prefs = getDefaultSharedPreferences(app)
-    private val repository = MainRepository(app)
 
     // TODO: Use paging architecture component library
     val allItems = repository.allItems
