@@ -4,7 +4,7 @@
  by Gradle itself–not for your application */
 buildscript {
     var kotlinVersion: String by extra
-    kotlinVersion = "1.3.30"
+    kotlinVersion = "1.3.31"
 
     repositories {
         google()
@@ -12,7 +12,7 @@ buildscript {
     }
     dependencies {
         // This dependency version should be the same as the Android Studio version
-        classpath("com.android.tools.build:gradle:3.4.0")
+        classpath("com.android.tools.build:gradle:3.4.1")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
 
         // For JUnit 5
