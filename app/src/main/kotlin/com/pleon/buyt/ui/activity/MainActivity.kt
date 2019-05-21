@@ -1,6 +1,8 @@
 package com.pleon.buyt.ui.activity
 
 import android.Manifest.permission.ACCESS_FINE_LOCATION
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.app.NotificationManager
 import android.content.*
 import android.content.pm.PackageManager.PERMISSION_GRANTED
@@ -14,7 +16,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.animation.AlphaAnimation
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
@@ -127,15 +128,10 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
         broadcastMgr.registerReceiver(locationReceiver, IntentFilter(ACTION_LOCATION_EVENT))
 
         fab.setOnClickListener { onFabClick() }
-        //        scrim.setOnClickListener { onScrimClick() }
+        scrim.setOnClickListener { onBackPressed() }
         setupAddMenuItemAnimation()
         showIntroIfNeeded()
         restoreBottomDrawerIfNeeded()
-    }
-
-    private fun onScrimClick() {
-        closeAddItemPopup()
-        shiftToIdleState()
     }
 
     private fun setupAddMenuItemAnimation() {
@@ -206,9 +202,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
                 bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
                 fab.setImageResource(R.drawable.avd_find_done)
                 (fab.drawable as Animatable).start()
-                val animation = AlphaAnimation(0f, 1f).apply { duration = 300 }
-                scrim.alpha = 1f
-                scrim.startAnimation(animation)
+                scrim.animate().alpha(1f).setDuration(300).setListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationStart(anim: Animator?) = scrim.setVisibility(VISIBLE)
+                })
             }
         }
 
@@ -284,8 +280,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
 
     private fun closeAddItemPopup() {
         supportFragmentManager.popBackStack()
-        val animation = AlphaAnimation(1f, 0f).apply { duration = 300 }.also { it.fillAfter = true }
-        scrim.startAnimation(animation)
+        scrim.animate().alpha(0f).setDuration(300).setListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(anim: Animator?) = scrim.setVisibility(GONE)
+        })
     }
 
     /**
