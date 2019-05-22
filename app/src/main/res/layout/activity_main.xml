@@ -24,6 +24,7 @@
         android:layout_height="0dp"
         android:alpha="0"
         android:background="#99000000"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -71,7 +72,7 @@
             app:fabAnimationMode="slide"
             app:fabCradleMargin="6dp"
             app:navigationIcon="@drawable/avd_nav_cancel"
-            tools:menu="@menu/menu_bottom_home"/>
+            tools:menu="@menu/menu_bottom_home" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

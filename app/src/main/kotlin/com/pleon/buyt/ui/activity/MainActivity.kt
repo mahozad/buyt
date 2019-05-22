@@ -128,7 +128,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
         broadcastMgr.registerReceiver(locationReceiver, IntentFilter(ACTION_LOCATION_EVENT))
 
         fab.setOnClickListener { onFabClick() }
-        scrim.setOnClickListener { if (scrim.alpha != 0f) onBackPressed() }
+        scrim.setOnClickListener { if (scrim.alpha == 1f) onBackPressed() }
         setupAddMenuItemAnimation()
         showIntroIfNeeded()
         restoreBottomDrawerIfNeeded()
