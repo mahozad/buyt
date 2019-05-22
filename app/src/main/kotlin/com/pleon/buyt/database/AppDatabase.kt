@@ -16,10 +16,10 @@ import com.pleon.buyt.model.Store
 const val DB_NAME = "buyt-database.db"
 const val DB_VERSION = 1
 
-// Usually, you only need one instance of the Room database for the whole app
 @Database(entities = [Item::class, Store::class, Purchase::class], version = DB_VERSION)
 @TypeConverters(DateConverter::class, QuantityUnitConverter::class, CategoryConverter::class)
 abstract class AppDatabase : RoomDatabase() {
+
     abstract fun itemDao(): ItemDao
 
     abstract fun storeDao(): StoreDao
