@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="TextInputEditTextWithSuffix">
+        <attr name="suffix" format="string|reference" />
+    </declare-styleable>
     <attr name="cardBgColor" format="reference|color" />
     <attr name="bottomBarColor" format="reference" />
     <attr name="emptyHintColor" format="reference" />
