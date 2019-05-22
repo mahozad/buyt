@@ -54,18 +54,7 @@ class CreateStoreDialogFragment : DaggerDialogFragment() {
      * @return
      */
     override fun onCreateDialog(savedState: Bundle?): Dialog {
-        // Mapbox.getInstance(context!!, getString(R.string.mapbox_access_token)) // should be called before inflation
         val customView = activity!!.layoutInflater.inflate(R.layout.create_store_dialog, null)
-        // val mapView: MapView = view.findViewById(R.id.mapView)
-        // mapView.onCreate(savedState)
-        // mapView.getMapAsync {
-        //     val latLng = LatLng(location)
-        //     val position: CameraPosition = CameraPosition.Builder()
-        //             .target(latLng).zoom(14.0).tilt(20.0).build()
-        //     it.animateCamera(CameraUpdateFactory.newCameraPosition(position))
-        //     it.addMarker(MarkerOptions().position(latLng))
-        //     it.setStyle(Style.Builder().fromUrl("mapbox://styles/crygas/cjthow4p00b831fs6w5n9hhrt"))
-        // }
 
         viewModel = of(this, viewModelFactory).get(CreateStoreViewModel::class.java)
         location = arguments!!.getParcelable("LOCATION")!!
@@ -94,13 +83,11 @@ class CreateStoreDialogFragment : DaggerDialogFragment() {
                 .setView(customView).setTitle(getString(R.string.dialog_title_create_store))
                 .setPositiveButton(android.R.string.ok, null)
                 .setNegativeButton(android.R.string.cancel, null)
-                // .setNeutralButton(R.string.button_text_view_on_map, null)
                 .create()
 
         // To prevent the dialog to dismiss on button click, set the button listeners here
         dialog.setOnShowListener {
             dialog.getButton(BUTTON_POSITIVE).setOnClickListener { onDialogOk() }
-            // dialog.getButton(BUTTON_NEUTRAL).setOnClickListener { onShowMap() }
         }
 
         return dialog
@@ -117,18 +104,6 @@ class CreateStoreDialogFragment : DaggerDialogFragment() {
             })
         }
     }
-
-    /* private fun onShowMap() {
-           // or use Uri.parse("geo:${location.latitude},${location.longitude}?z=15")
-           val uri: Uri = Uri.parse("http://maps.google.com/maps?q=loc:" +
-                   "${location.latitude}," +
-                   "${location.longitude} " +
-                   "(${getString(R.string.map_location_label)})")
-           val intent = Intent(Intent.ACTION_VIEW).apply { data = uri }
-           // intent.setPackage("com.google.android.apps.maps") // If desired, Make the Intent explicit
-           if (intent.resolveActivity(activity!!.packageManager) != null) startActivity(intent)
-       }
-    */
 
     private fun onNameChanged() {
         if (name.text.isNotEmpty()) name_layout.error = null // clear error if exists

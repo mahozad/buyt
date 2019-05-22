@@ -121,7 +121,6 @@ dependencies {
     implementation("androidx.viewpager2:viewpager2:1.0.0-alpha04")
     implementation("androidx.room:room-runtime:2.1.0-beta01")
     kapt("androidx.room:room-compiler:2.1.0-beta01")
-
     implementation("com.google.dagger:dagger:2.22.1")
     implementation("com.google.dagger:dagger-android-support:2.22.1")
     kapt("com.google.dagger:dagger-compiler:2.22.1")
@@ -132,8 +131,6 @@ dependencies {
      * So instead of "kotlin-stdlib", use "kotlin-stdlib-jdk8": */
     implementation(embeddedKotlin("stdlib-jdk8"))
 
-    // Alternative for Google map
-    // implementation("com.mapbox.mapboxsdk:mapbox-android-sdk:7.2.0")
     implementation("com.mohamadamin:persianmaterialdatetimepicker:1.2.1")
     implementation("com.diogobernardino:williamchart:2.5.0")
     implementation("ir.huri:JalaliCalendar:1.3.3")
