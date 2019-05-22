@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders.of
 import com.pleon.buyt.R
 import com.pleon.buyt.database.dto.PurchaseDetail
 import com.pleon.buyt.ui.DateHeaderDecoration
@@ -23,7 +23,7 @@ class StatDetailsFragment : Fragment(R.layout.fragment_stat_details) {
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(DateHeaderDecoration(recyclerView, adapter))
 
-        val viewModel = ViewModelProviders.of(activity!!).get(StatsViewModel::class.java)
+        val viewModel = of(activity!!).get(StatsViewModel::class.java)
         viewModel.stats.observe(this, Observer { stats -> showStats(stats.purchaseDetails) })
     }
 

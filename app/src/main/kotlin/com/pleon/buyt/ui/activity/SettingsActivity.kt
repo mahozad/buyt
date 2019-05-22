@@ -5,7 +5,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import androidx.preference.PreferenceManager
-import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.fragment.PREF_NEWBIE
 
@@ -38,7 +37,6 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun resetPreferences() {
-        val prefs = getDefaultSharedPreferences(this)
         prefs.edit().clear().apply()
         PreferenceManager.setDefaultValues(this, R.xml.preferences, true)
         prefs.edit().putBoolean(PREF_NEWBIE, false).apply() // We don't want tutorial again!

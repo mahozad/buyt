@@ -14,7 +14,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AddItemRepository @Inject constructor(private val itemDao: ItemDao, private val purchaseDao: PurchaseDao) {
+class AddItemRepository @Inject constructor(private val itemDao: ItemDao,
+                                            private val purchaseDao: PurchaseDao) {
 
     private val itemNameCats = SingleLiveEvent<Map<String, String>>()
 

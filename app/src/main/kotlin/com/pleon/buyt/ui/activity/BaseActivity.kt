@@ -1,13 +1,15 @@
 package com.pleon.buyt.ui.activity
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
-import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.pleon.buyt.R
-import com.pleon.buyt.setLocale
 import com.pleon.buyt.ui.fragment.PREF_THEME
 import com.pleon.buyt.ui.fragment.PREF_THEME_DEF
+import com.pleon.buyt.util.LocaleUtil.setLocale
 import dagger.android.support.DaggerAppCompatActivity
+import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
 @Suppress("unused")
 val <T : LifecycleOwner> T.TAG: String get() = javaClass.simpleName
@@ -18,18 +20,19 @@ val <T : LifecycleOwner> T.TAG: String get() = javaClass.simpleName
  */
 abstract class BaseActivity : DaggerAppCompatActivity() {
 
+    @Inject internal lateinit var prefs: SharedPreferences
+
     abstract fun layout(): Int
 
     override fun onCreate(savedState: Bundle?) {
-        setTheme() // Call before anything else
         super.onCreate(savedState)
+        setTheme()
         setLocale(this)
         setContentView(layout())
-        setSupportActionBar(findViewById(R.id.bottom_bar))
+        setSupportActionBar(bottom_bar)
     }
 
     private fun setTheme() {
-        val prefs = getDefaultSharedPreferences(this)
         val theme = prefs.getString(PREF_THEME, PREF_THEME_DEF)
         setTheme(if (theme == PREF_THEME_DEF) R.style.DarkTheme else R.style.LightTheme)
     }

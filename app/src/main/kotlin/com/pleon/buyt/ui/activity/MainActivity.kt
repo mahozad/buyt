@@ -4,7 +4,10 @@ import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.app.NotificationManager
-import android.content.*
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.graphics.drawable.Animatable
 import android.location.LocationManager
@@ -24,14 +27,12 @@ import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders.of
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_END
 import com.google.android.material.snackbar.Snackbar.*
 import com.pleon.buyt.R
-import com.pleon.buyt.di.ViewModelFactory
 import com.pleon.buyt.model.Coordinates
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.service.ACTION_LOCATION_EVENT
@@ -47,6 +48,7 @@ import com.pleon.buyt.util.SnackbarUtil.showSnackbar
 import com.pleon.buyt.util.VibrationUtil.vibrate
 import com.pleon.buyt.viewmodel.MainViewModel
 import com.pleon.buyt.viewmodel.MainViewModel.State.*
+import com.pleon.buyt.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import javax.inject.Inject
@@ -70,10 +72,8 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
     // FIXME: The bug that sometimes occur when expanding an item (the bottom item jumps up one moment),
     //        is produced when another item was swiped partially
 
-    @Inject
-    internal lateinit var viewModelFactory: ViewModelFactory<MainViewModel>
+    @Inject internal lateinit var viewModelFactory: ViewModelFactory<MainViewModel>
     private lateinit var viewModel: MainViewModel
-    private lateinit var prefs: SharedPreferences
     private lateinit var itemsFragment: ItemsFragment
     private lateinit var locationMgr: LocationManager
     private lateinit var locationReceiver: BroadcastReceiver
@@ -116,8 +116,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
 
-        prefs = getDefaultSharedPreferences(this)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
+        viewModel = of(this, viewModelFactory).get(MainViewModel::class.java)
         itemsFragment = supportFragmentManager.findFragmentById(R.id.itemsFragment) as ItemsFragment
         locationMgr = getSystemService(LOCATION_SERVICE) as LocationManager
         locationReceiver = object : BroadcastReceiver() {

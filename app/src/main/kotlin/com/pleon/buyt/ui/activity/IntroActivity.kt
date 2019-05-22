@@ -8,7 +8,6 @@ import android.util.TypedValue.applyDimension
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.ColorUtils
-import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.animation.ArgbEvaluatorCompat
@@ -59,7 +58,7 @@ class IntroActivity : BaseActivity() {
         backButton.setOnClickListener { viewPager.currentItem = viewPager.currentItem - 1 }
         nextButton.setOnClickListener {
             if (viewPager.currentItem == adapter.itemCount - 1) {
-                getDefaultSharedPreferences(this).edit().putBoolean(PREF_NEWBIE, false).apply()
+                prefs.edit().putBoolean(PREF_NEWBIE, false).apply()
                 finish()
             }
             viewPager.currentItem = min(viewPager.currentItem + 1, adapter.itemCount - 1)

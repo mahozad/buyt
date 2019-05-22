@@ -2,35 +2,21 @@ package com.pleon.buyt
 
 import android.app.Activity
 import android.app.Application
+import android.app.Service
 import android.content.Context
 import android.content.res.Configuration
-import android.content.res.Resources
-import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.facebook.stetho.Stetho
 import com.pleon.buyt.di.DaggerAppComponent
-import com.pleon.buyt.ui.fragment.PREF_LANG
+import com.pleon.buyt.util.LocaleUtil.setLocale
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
-import java.util.*
+import dagger.android.HasServiceInjector
 import javax.inject.Inject
 
-fun setLocale(context: Context): Context {
-    val lang = getDefaultSharedPreferences(context).getString(PREF_LANG, "auto")
-    val locale = if (lang == "auto") Resources.getSystem().configuration.locale else Locale(lang)
-    Locale.setDefault(locale)
+class BuytApplication : Application(), HasActivityInjector, HasServiceInjector {
 
-    val config = Configuration(context.resources.configuration)
-    config.setLocale(locale)
-
-    val cxt = context.createConfigurationContext(config)
-    context.resources.updateConfiguration(config, context.resources.displayMetrics)
-
-    return cxt
-}
-
-class BuytApplication : Application(), HasActivityInjector {
-
-    @Inject lateinit var activityInjector: DispatchingAndroidInjector<Activity>
+    @Inject internal lateinit var activityInjector: DispatchingAndroidInjector<Activity>
+    @Inject internal lateinit var serviceInjector: DispatchingAndroidInjector<Service>
 
     override fun onCreate() {
         super.onCreate()
@@ -43,6 +29,8 @@ class BuytApplication : Application(), HasActivityInjector {
     }
 
     override fun activityInjector() = activityInjector
+
+    override fun serviceInjector() = serviceInjector
 
     /**
      * This is for android N and higher.

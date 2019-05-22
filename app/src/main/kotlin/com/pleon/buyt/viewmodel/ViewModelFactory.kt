@@ -1,4 +1,4 @@
-package com.pleon.buyt.di
+package com.pleon.buyt.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

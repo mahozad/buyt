@@ -5,13 +5,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders.of
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.android.material.textfield.TextInputLayout
 import com.pleon.buyt.R
-import com.pleon.buyt.di.ViewModelFactory
 import com.pleon.buyt.model.Category
 import com.pleon.buyt.ui.ItemSpacingDecoration
 import com.pleon.buyt.ui.TouchHelperCallback
@@ -19,6 +18,7 @@ import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener
 import com.pleon.buyt.ui.adapter.ItemListAdapter
 import com.pleon.buyt.util.SnackbarUtil.showUndoSnackbar
 import com.pleon.buyt.viewmodel.MainViewModel
+import com.pleon.buyt.viewmodel.ViewModelFactory
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_item_list.*
 import java.util.*
@@ -38,7 +38,7 @@ class ItemsFragment : Fragment(R.layout.fragment_item_list), ItemTouchHelperList
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
         AndroidSupportInjection.inject(this)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
+        viewModel = of(this, viewModelFactory).get(MainViewModel::class.java)
         // In fragments use getViewLifecycleOwner() as owner argument
         viewModel.allItems.observe(viewLifecycleOwner, Observer { items ->
             adapter.items = items

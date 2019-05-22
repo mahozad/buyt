@@ -8,18 +8,18 @@ import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders.of
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.pleon.buyt.R
-import com.pleon.buyt.di.ViewModelFactory
 import com.pleon.buyt.ui.ItemSpacingDecoration
 import com.pleon.buyt.ui.TouchHelperCallback
 import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener
 import com.pleon.buyt.ui.adapter.StoresAdapter
 import com.pleon.buyt.util.SnackbarUtil.showUndoSnackbar
 import com.pleon.buyt.viewmodel.StoresViewModel
+import com.pleon.buyt.viewmodel.ViewModelFactory
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_store_list.*
 import javax.inject.Inject
@@ -39,7 +39,7 @@ class StoresFragment : Fragment(R.layout.fragment_store_list), ItemTouchHelperLi
         setHasOptionsMenu(true) // for onCreateOptionsMenu() to be called
 
         AndroidSupportInjection.inject(this)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(StoresViewModel::class.java)
+        viewModel = of(this, viewModelFactory).get(StoresViewModel::class.java)
         viewModel.storeDetails.observe(viewLifecycleOwner, Observer { adapter.storeDetails = it })
         adapter = StoresAdapter(context!!).also { recyclerView.adapter = it }
         val columns = resources.getInteger(R.integer.layout_columns)

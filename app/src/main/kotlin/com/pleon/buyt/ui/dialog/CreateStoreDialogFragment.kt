@@ -10,9 +10,8 @@ import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders.of
 import com.google.android.material.textfield.TextInputLayout
 import com.pleon.buyt.R
 import com.pleon.buyt.model.Category
@@ -20,9 +19,13 @@ import com.pleon.buyt.model.Coordinates
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.ui.adapter.CatsSpinnerAdapter
 import com.pleon.buyt.viewmodel.CreateStoreViewModel
+import com.pleon.buyt.viewmodel.ViewModelFactory
+import dagger.android.support.DaggerDialogFragment
+import javax.inject.Inject
 
-class CreateStoreDialogFragment : AppCompatDialogFragment() {
+class CreateStoreDialogFragment : DaggerDialogFragment() {
 
+    @Inject internal lateinit var viewModelFactory: ViewModelFactory<CreateStoreViewModel>
     private lateinit var viewModel: CreateStoreViewModel
     private lateinit var name: EditText
     private lateinit var name_layout: TextInputLayout
@@ -51,20 +54,20 @@ class CreateStoreDialogFragment : AppCompatDialogFragment() {
      * @return
      */
     override fun onCreateDialog(savedState: Bundle?): Dialog {
-//        Mapbox.getInstance(context!!, getString(R.string.mapbox_access_token)) // should be called before inflation
+        // Mapbox.getInstance(context!!, getString(R.string.mapbox_access_token)) // should be called before inflation
         val customView = activity!!.layoutInflater.inflate(R.layout.create_store_dialog, null)
-//        val mapView: MapView = view.findViewById(R.id.mapView)
-//        mapView.onCreate(savedState)
-//        mapView.getMapAsync {
-//            val latLng = LatLng(location)
-//            val position: CameraPosition = CameraPosition.Builder()
-//                    .target(latLng).zoom(14.0).tilt(20.0).build()
-//            it.animateCamera(CameraUpdateFactory.newCameraPosition(position))
-//            it.addMarker(MarkerOptions().position(latLng))
-//            it.setStyle(Style.Builder().fromUrl("mapbox://styles/crygas/cjthow4p00b831fs6w5n9hhrt"))
-//        }
+        // val mapView: MapView = view.findViewById(R.id.mapView)
+        // mapView.onCreate(savedState)
+        // mapView.getMapAsync {
+        //     val latLng = LatLng(location)
+        //     val position: CameraPosition = CameraPosition.Builder()
+        //             .target(latLng).zoom(14.0).tilt(20.0).build()
+        //     it.animateCamera(CameraUpdateFactory.newCameraPosition(position))
+        //     it.addMarker(MarkerOptions().position(latLng))
+        //     it.setStyle(Style.Builder().fromUrl("mapbox://styles/crygas/cjthow4p00b831fs6w5n9hhrt"))
+        // }
 
-        viewModel = ViewModelProviders.of(this).get(CreateStoreViewModel::class.java)
+        viewModel = of(this, viewModelFactory).get(CreateStoreViewModel::class.java)
         location = arguments!!.getParcelable("LOCATION")!!
 
         spinner = customView.findViewById(R.id.catSpinner)
@@ -115,17 +118,17 @@ class CreateStoreDialogFragment : AppCompatDialogFragment() {
         }
     }
 
-/*    private fun onShowMap() {
-        // or use Uri.parse("geo:${location.latitude},${location.longitude}?z=15")
-        val uri: Uri = Uri.parse("http://maps.google.com/maps?q=loc:" +
-                "${location.latitude}," +
-                "${location.longitude} " +
-                "(${getString(R.string.map_location_label)})")
-        val intent = Intent(Intent.ACTION_VIEW).apply { data = uri }
-        // intent.setPackage("com.google.android.apps.maps") // If desired, Make the Intent explicit
-        if (intent.resolveActivity(activity!!.packageManager) != null) startActivity(intent)
-    }
-*/
+    /* private fun onShowMap() {
+           // or use Uri.parse("geo:${location.latitude},${location.longitude}?z=15")
+           val uri: Uri = Uri.parse("http://maps.google.com/maps?q=loc:" +
+                   "${location.latitude}," +
+                   "${location.longitude} " +
+                   "(${getString(R.string.map_location_label)})")
+           val intent = Intent(Intent.ACTION_VIEW).apply { data = uri }
+           // intent.setPackage("com.google.android.apps.maps") // If desired, Make the Intent explicit
+           if (intent.resolveActivity(activity!!.packageManager) != null) startActivity(intent)
+       }
+    */
 
     private fun onNameChanged() {
         if (name.text.isNotEmpty()) name_layout.error = null // clear error if exists

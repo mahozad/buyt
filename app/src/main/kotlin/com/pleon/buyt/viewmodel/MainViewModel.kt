@@ -1,11 +1,11 @@
 package com.pleon.buyt.viewmodel
 
 import android.app.Application
+import android.content.SharedPreferences
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.pleon.buyt.R
 import com.pleon.buyt.model.Coordinates
 import com.pleon.buyt.model.Item
@@ -30,7 +30,9 @@ private const val EARTH_RADIUS = 6_371_000.0 // In meters
  * force-kills. So to survive process stops, implement
  * [AppCompatActivity.onSaveInstanceState] method in your activity/fragment.
  */
-class MainViewModel @Inject constructor(app: Application, private val repository: MainRepository)
+class MainViewModel @Inject constructor(app: Application,
+                                        private val repository: MainRepository,
+                                        private val prefs: SharedPreferences)
     : AndroidViewModel(app) {
 
     enum class State {
@@ -44,7 +46,6 @@ class MainViewModel @Inject constructor(app: Application, private val repository
     var shouldCompletePurchase = false
     var shouldAnimateNavIcon = false
     var isAddingItem = false
-    private val prefs = getDefaultSharedPreferences(app)
 
     // TODO: Use paging architecture component library
     val allItems = repository.allItems

@@ -22,13 +22,13 @@ import androidx.core.widget.CompoundButtonCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders.of
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import com.pleon.buyt.R
-import com.pleon.buyt.di.ViewModelFactory
 import com.pleon.buyt.model.Category
 import com.pleon.buyt.model.Item
 import com.pleon.buyt.model.Item.Quantity.Unit.*
@@ -38,6 +38,7 @@ import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
 import com.pleon.buyt.viewmodel.AddItemViewModel
 import com.pleon.buyt.viewmodel.MainViewModel
+import com.pleon.buyt.viewmodel.ViewModelFactory
 import dagger.android.support.AndroidSupportInjection
 import ir.huri.jcal.JalaliCalendar
 import kotlinx.android.synthetic.main.fragment_add_item.*
@@ -91,7 +92,7 @@ class AddItemFragment : Fragment(R.layout.fragment_add_item),
         super.onCreate(savedState)
 
         AndroidSupportInjection.inject(this)
-        viewModel = ViewModelProviders.of(this,viewModelFactory).get(AddItemViewModel::class.java)
+        viewModel = of(this, viewModelFactory).get(AddItemViewModel::class.java)
 
         val typedValue = TypedValue()
         context!!.theme.resolveAttribute(R.attr.colorError, typedValue, true)
@@ -209,7 +210,7 @@ class AddItemFragment : Fragment(R.layout.fragment_add_item),
             // FIXME: initialize this only once
             val selectionList = ArrayList<SelectDialogRow>() // dialog requires ArrayList
             if (isBoughtChecked) {
-                ViewModelProviders.of(this).get(MainViewModel::class.java).allStores.observe(viewLifecycleOwner, Observer { stores ->
+                ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java).allStores.observe(viewLifecycleOwner, Observer { stores ->
                     viewModel.storeList = stores
                     selectionList.clear()
                     for (store in stores) {
