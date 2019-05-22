@@ -6,7 +6,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders.of
 import androidx.recyclerview.widget.GridLayoutManager
@@ -20,7 +19,6 @@ import com.pleon.buyt.ui.adapter.StoresAdapter
 import com.pleon.buyt.util.SnackbarUtil.showUndoSnackbar
 import com.pleon.buyt.viewmodel.StoresViewModel
 import com.pleon.buyt.viewmodel.ViewModelFactory
-import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_store_list.*
 import javax.inject.Inject
 
@@ -28,17 +26,18 @@ import javax.inject.Inject
  * Mandatory empty constructor for the fragment manager to instantiate the
  * fragment (e.g. upon screen orientation changes).
  */
-class StoresFragment : Fragment(R.layout.fragment_store_list), ItemTouchHelperListener {
+class StoresFragment : BaseFragment(), ItemTouchHelperListener {
 
     @Inject internal lateinit var viewModelFactory: ViewModelFactory<StoresViewModel>
     private lateinit var viewModel: StoresViewModel
     private lateinit var adapter: StoresAdapter
     private lateinit var sortMenuItemView: TextView
 
+    override fun layout() = R.layout.fragment_store_list
+
     override fun onViewCreated(view: View, savedState: Bundle?) {
         setHasOptionsMenu(true) // for onCreateOptionsMenu() to be called
 
-        AndroidSupportInjection.inject(this)
         viewModel = of(this, viewModelFactory).get(StoresViewModel::class.java)
         viewModel.storeDetails.observe(viewLifecycleOwner, Observer { adapter.storeDetails = it })
         adapter = StoresAdapter(context!!).also { recyclerView.adapter = it }

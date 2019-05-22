@@ -3,9 +3,7 @@ package com.pleon.buyt.di
 import com.pleon.buyt.service.GpsService
 import com.pleon.buyt.ui.activity.*
 import com.pleon.buyt.ui.dialog.CreateStoreDialogFragment
-import com.pleon.buyt.ui.fragment.AddItemFragment
-import com.pleon.buyt.ui.fragment.ItemsFragment
-import com.pleon.buyt.ui.fragment.StoresFragment
+import com.pleon.buyt.ui.fragment.*
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -39,6 +37,12 @@ internal abstract class BaseModule {
 
     @ContributesAndroidInjector
     abstract fun bindStoresFrament(): StoresFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindStatsFrament(): StatsFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindStatDetailsFrament(): StatDetailsFragment
 
     @ContributesAndroidInjector
     abstract fun bindCreateStoreDialogFragment(): CreateStoreDialogFragment

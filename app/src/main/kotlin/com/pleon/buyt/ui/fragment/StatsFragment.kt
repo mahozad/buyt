@@ -7,7 +7,6 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders.of
 import com.db.chart.animation.Animation
@@ -20,21 +19,26 @@ import com.pleon.buyt.database.dto.Stats
 import com.pleon.buyt.model.Category
 import com.pleon.buyt.ui.PieChartView.Slice
 import com.pleon.buyt.viewmodel.StatsViewModel
+import com.pleon.buyt.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_stats.*
 import java.text.DecimalFormat
+import javax.inject.Inject
 
 private const val PIE_CHART_MAX_SLICES = 5
 
-class StatsFragment : Fragment(R.layout.fragment_stats) {
+class StatsFragment : BaseFragment() {
 
     @ColorRes private var pieBgColor: Int = 0 // This color varies based on the app theme
+    @Inject internal lateinit var viewModelFactory: ViewModelFactory<StatsViewModel>
     private lateinit var viewModel: StatsViewModel
     private val priceFormat = DecimalFormat("#,###")
     private lateinit var pieSliceColors: IntArray
 
+    override fun layout() = R.layout.fragment_stats
+
     override fun onViewCreated(view: View, savedState: Bundle?) {
-        viewModel = of(activity!!).get(StatsViewModel::class.java)
-        viewModel.stats.observe(this, Observer { stats -> showStats(stats) })
+        viewModel = of(activity!!, viewModelFactory).get(StatsViewModel::class.java)
+        viewModel.stats.observe(viewLifecycleOwner, Observer { stats -> showStats(stats) })
 
         pieSliceColors = resources.getIntArray(R.array.pieChartColors)
         val typedValue = TypedValue()

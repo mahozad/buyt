@@ -19,7 +19,6 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.core.widget.CompoundButtonCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.ViewModelProviders.of
@@ -39,7 +38,6 @@ import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
 import com.pleon.buyt.viewmodel.AddItemViewModel
 import com.pleon.buyt.viewmodel.MainViewModel
 import com.pleon.buyt.viewmodel.ViewModelFactory
-import dagger.android.support.AndroidSupportInjection
 import ir.huri.jcal.JalaliCalendar
 import kotlinx.android.synthetic.main.fragment_add_item.*
 import java.text.SimpleDateFormat
@@ -50,9 +48,8 @@ import javax.inject.Inject
  * This fragment requires a Toolbar as it needs to inflate and use a menu item for selection of
  * store category. So the activities using this fragment must have a Toolbar set.
  */
-class AddItemFragment : Fragment(R.layout.fragment_add_item),
-        DatePickerDialog.OnDateSetListener, SelectDialogFragment.Callback,
-        android.app.DatePickerDialog.OnDateSetListener {
+class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
+        SelectDialogFragment.Callback, android.app.DatePickerDialog.OnDateSetListener {
 
     // These colors vary based on the app theme
     @ColorRes private var colorSurface: Int = 0
@@ -67,7 +64,6 @@ class AddItemFragment : Fragment(R.layout.fragment_add_item),
     private lateinit var viewModel: AddItemViewModel
     private var selectCategoryTxvi: TextView? = null
     private lateinit var nameCats: Map<String, String>
-
     private val isBoughtChecked get() = bought.isChecked
 
     private val price: Long
@@ -88,10 +84,11 @@ class AddItemFragment : Fragment(R.layout.fragment_add_item),
             return Item.Quantity(quantity, unit)
         }
 
+    override fun layout() = R.layout.fragment_add_item
+
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
 
-        AndroidSupportInjection.inject(this)
         viewModel = of(this, viewModelFactory).get(AddItemViewModel::class.java)
 
         val typedValue = TypedValue()

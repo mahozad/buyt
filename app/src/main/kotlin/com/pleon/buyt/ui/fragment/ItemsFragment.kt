@@ -3,7 +3,6 @@ package com.pleon.buyt.ui.fragment
 import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders.of
 import androidx.recyclerview.widget.GridLayoutManager
@@ -19,13 +18,12 @@ import com.pleon.buyt.ui.adapter.ItemListAdapter
 import com.pleon.buyt.util.SnackbarUtil.showUndoSnackbar
 import com.pleon.buyt.viewmodel.MainViewModel
 import com.pleon.buyt.viewmodel.ViewModelFactory
-import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_item_list.*
 import java.util.*
 import javax.inject.Inject
 import kotlin.Comparator
 
-class ItemsFragment : Fragment(R.layout.fragment_item_list), ItemTouchHelperListener {
+class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
 
     @Inject
     internal lateinit var viewModelFactory: ViewModelFactory<MainViewModel>
@@ -36,8 +34,9 @@ class ItemsFragment : Fragment(R.layout.fragment_item_list), ItemTouchHelperList
     val selectedItems get() = adapter.selectedItems
     val isListEmpty get() = adapter.items.isEmpty()
 
+    override fun layout() = R.layout.fragment_item_list
+
     override fun onViewCreated(view: View, savedState: Bundle?) {
-        AndroidSupportInjection.inject(this)
         viewModel = of(this, viewModelFactory).get(MainViewModel::class.java)
         // In fragments use getViewLifecycleOwner() as owner argument
         viewModel.allItems.observe(viewLifecycleOwner, Observer { items ->
