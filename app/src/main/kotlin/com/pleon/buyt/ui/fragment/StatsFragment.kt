@@ -19,6 +19,7 @@ import com.pleon.buyt.database.dto.Stats
 import com.pleon.buyt.model.Category
 import com.pleon.buyt.ui.PieChartView.Slice
 import com.pleon.buyt.viewmodel.StatsViewModel
+import com.pleon.buyt.viewmodel.StatsViewModel.Period.NARROW
 import com.pleon.buyt.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_stats.*
 import java.text.DecimalFormat
@@ -28,8 +29,8 @@ private const val PIE_CHART_MAX_SLICES = 5
 
 class StatsFragment : BaseFragment() {
 
-    @ColorRes private var pieBgColor: Int = 0 // This color varies based on the app theme
     @Inject internal lateinit var viewModelFactory: ViewModelFactory<StatsViewModel>
+    @ColorRes private var pieBgColor: Int = 0 // This color varies based on the app theme
     private lateinit var viewModel: StatsViewModel
     private val priceFormat = DecimalFormat("#,###")
     private lateinit var pieSliceColors: IntArray
@@ -38,7 +39,11 @@ class StatsFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
         viewModel = of(activity!!, viewModelFactory).get(StatsViewModel::class.java)
-        viewModel.stats.observe(viewLifecycleOwner, Observer { stats -> showStats(stats) })
+        viewModel.stats.observe(viewLifecycleOwner, Observer { stats ->
+            // Due to LiveData called twice on startup, when period is > 7 and we leave the screen and again come...
+            if (viewModel.period == NARROW && stats.dailyCosts.size > NARROW.length) return@Observer
+            showStats(stats)
+        })
 
         pieSliceColors = resources.getIntArray(R.array.pieChartColors)
         val typedValue = TypedValue()
@@ -53,7 +58,7 @@ class StatsFragment : BaseFragment() {
     }
 
     private fun showStats(stats: Stats) {
-        showLineChart(stats.dailyCosts!!)
+        showLineChart(stats.dailyCosts)
         showPieChart(stats.mostPurchasedCategories)
 
         textView3.text = priceFormat.format(stats.totalPurchaseCost)
@@ -71,22 +76,22 @@ class StatsFragment : BaseFragment() {
     private fun showLineChart(dailyCosts: List<DailyCost>) {
         lineChart.reset()
 
-        var totalCosts = 0L
+        var totalExpenses = 0L
 
         val dataSet = LineSet()
         for (dailyCost in dailyCosts) {
             dataSet.addPoint(dailyCost.date, dailyCost.totalCost.toFloat())
-            totalCosts += dailyCost.totalCost
+            totalExpenses += dailyCost.totalCost
         }
 
-        if (dailyCosts.size <= 20) {
+        if (dailyCosts.size <= 30) {
             dataSet.setDotsColor(ContextCompat.getColor(context!!,
-                    if (totalCosts == 0L) R.color.chartEmptyColor else R.color.colorPrimary))
+                    if (totalExpenses == 0L) R.color.chartEmptyColor else R.color.colorPrimary))
             dataSet.setDotsRadius(3f)
         }
-        dataSet.isSmooth = false // TODO: Add an option in settings for the user to toggle this
+        dataSet.isSmooth = false
         dataSet.color = ContextCompat.getColor(context!!,
-                if (totalCosts == 0L) R.color.chartEmptyColor else R.color.colorPrimaryDark)
+                if (totalExpenses == 0L) R.color.chartEmptyColor else R.color.colorPrimaryDark)
         dataSet.thickness = 2.5f
 
         val moneyFormat = DecimalFormat(getString(R.string.currency_format))

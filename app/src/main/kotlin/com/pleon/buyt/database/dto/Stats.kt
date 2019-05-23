@@ -4,16 +4,16 @@ import com.pleon.buyt.model.Store
 
 class Stats {
 
-    var dailyCosts: List<DailyCost>? = null
+    lateinit var dailyCosts: List<DailyCost>
+    lateinit var mostPurchasedCategories: List<PieSlice>
+    lateinit var purchaseDetails: List<PurchaseDetail>
     var storeWithMaxPurchaseCount: Store? = null
+    var numberOfPurchases = 0
     var totalPurchaseCost = 0L
     var averagePurchaseCost = 0L
     var maxPurchaseCost = 0L
     var minPurchaseCost = 0L
-    var numberOfPurchases: Int = 0
-    var weekdayWithMaxPurchases: Int = 0
-    lateinit var mostPurchasedCategories: List<PieSlice>
-    lateinit var purchaseDetails: List<PurchaseDetail>
+    var weekdayWithMaxPurchases = 0
 
     val weekdayNameResWithMaxPurchases: Int
         get() =
