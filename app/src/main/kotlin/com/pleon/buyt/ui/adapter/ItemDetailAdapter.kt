@@ -37,7 +37,7 @@ class ItemDetailAdapter(private val cxt: Context) : Adapter<ItemDetailHolder>() 
             itemView.itemName.text = item.name
             itemView.itemQuantity.text = cxt.getString(R.string.item_quantity,
                     item.quantity.quantity, cxt.getString(item.quantity.unit.nameRes))
-            itemView.itemTotalPrice.text = cxt.getString(R.string.purchase_detail_price, formatPrice(item.totalPrice))
+            itemView.itemTotalPrice.text = cxt.resources.getQuantityString(R.plurals.price_with_suffix, item.totalPrice.toInt(), formatPrice(item.totalPrice))
         }
     }
 }

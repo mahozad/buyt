@@ -181,7 +181,6 @@
 
     <string name="tab_title_charts">Charts</string>
     <string name="tab_title_details">Details</string>
-    <string name="purchase_detail_price">"%1$s dollar"</string>
     <string name="purchase_detail_store_name">Store name:</string>
     <string name="purchase_detail_total_cost">Total cost:</string>
     <string name="map_location_label">New store</string>
@@ -204,9 +203,9 @@
         <item quantity="one">%1$d purchase</item>
         <item quantity="other">%1$d purchases</item>
     </plurals>
-    <plurals name="store_detail_total_spending">
+    <plurals name="price_with_suffix">
         <!-- For zero android will use plural form like 0 books -->
-        <item quantity="one">dollar</item>
-        <item quantity="other">dollars</item>
+        <item quantity="one">"%1$s dollar"</item>
+        <item quantity="other">"%1$s dollars"</item>
     </plurals>
 </resources>

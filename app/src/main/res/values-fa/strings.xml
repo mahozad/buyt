@@ -127,7 +127,6 @@
     <string name="placeholder_empty">لیست خرید خالی است</string>
     <string name="tab_title_charts">نمودار و آمار</string>
     <string name="tab_title_details">ریز خریدها</string>
-    <string name="purchase_detail_price">"%1$s تومان"</string>
     <string name="purchase_detail_store_name">نام مغازه:</string>
     <string name="purchase_detail_total_cost">هزینه کل:</string>
     <string name="map_location_label">مغازه جدید</string>
@@ -149,8 +148,8 @@
         <item quantity="one">%1$d خرید</item>
         <item quantity="other">%1$d خرید</item>
     </plurals>
-    <plurals name="store_detail_total_spending">
-        <item quantity="one">تومان</item>
-        <item quantity="other">تومان</item>
+    <plurals name="price_with_suffix">
+        <item quantity="one">"%1$s تومان"</item>
+        <item quantity="other">"%1$s تومان"</item>
     </plurals>
 </resources>

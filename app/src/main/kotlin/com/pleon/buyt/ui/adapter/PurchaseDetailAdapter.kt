@@ -94,7 +94,7 @@ class PurchaseDetailAdapter(private val cxt: Context) : Adapter<ViewHolder>(), S
             }
             var totalCost = 0L
             for (item in purchaseDetail.item) totalCost += item.totalPrice
-            itemView.totalCost.text = cxt.getString(R.string.purchase_detail_price, formatPrice(totalCost))
+            itemView.totalCost.text = cxt.resources.getQuantityString(R.plurals.price_with_suffix, totalCost.toInt(), formatPrice(totalCost))
         }
     }
 

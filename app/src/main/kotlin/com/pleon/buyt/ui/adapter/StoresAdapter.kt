@@ -9,7 +9,7 @@ import com.pleon.buyt.R
 import com.pleon.buyt.database.dto.StoreDetail
 import com.pleon.buyt.ui.BaseViewHolder
 import com.pleon.buyt.ui.adapter.StoresAdapter.StoreHolder
-import com.pleon.buyt.util.NumberFormatUtil.formatNumber
+import com.pleon.buyt.util.NumberFormatUtil.formatPrice
 import kotlinx.android.synthetic.main.store_list_row.view.*
 
 class StoresAdapter(val cxt: Context) : Adapter<StoreHolder>() {
@@ -45,8 +45,7 @@ class StoresAdapter(val cxt: Context) : Adapter<StoreHolder>() {
             itemView.storeIcon.setImageResource(storeDetail.store.category.storeImageRes)
             itemView.storeName.text = storeDetail.store.name
             itemView.purchaseCount.text = cxt.resources.getQuantityString(R.plurals.store_detail_purchase_count, storeDetail.purchaseCount, storeDetail.purchaseCount)
-            val currencySuffix = cxt.resources.getQuantityString(R.plurals.store_detail_total_spending, storeDetail.totalSpending)
-            itemView.totalSpending.text = "${formatNumber(storeDetail.totalSpending)} $currencySuffix"
+            itemView.totalSpending.text = cxt.resources.getQuantityString(R.plurals.price_with_suffix, storeDetail.totalSpending, formatPrice(storeDetail.totalSpending))
             itemView.circular_reveal.alpha = 0f // for the case of undo of deleted item
         }
     }
