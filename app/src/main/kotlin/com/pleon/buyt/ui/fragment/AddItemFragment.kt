@@ -144,8 +144,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         quantityEd.addTextChangedListener(NumberInputWatcher(quantity_layout, quantityEd, null))
 
         // To reverse position of the bought checkbox icon
-        if (activity!!.resources.configuration.locale.displayName.contains("فارسی"))
-            bought.layoutDirection = LAYOUT_DIRECTION_LTR
+        if (Locale.getDefault().language == "fa") bought.layoutDirection = LAYOUT_DIRECTION_LTR
 
         dateEd.setOnClickListener { onDateClicked() }
         dateEd.setOnFocusChangeListener { _, hasFocus -> onDateGainedFocus(hasFocus) }
@@ -243,7 +242,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
      * fragment and set it as the callback.
      */
     private fun onDateClicked() {
-        if (activity!!.resources.configuration.locale.displayName.contains("فارسی")) {
+        if (Locale.getDefault().language =="fa") {
             val persianCal = PersianCalendar()
             val datePicker = DatePickerDialog.newInstance(this, persianCal.persianYear,
                     persianCal.persianMonth, persianCal.persianDay)

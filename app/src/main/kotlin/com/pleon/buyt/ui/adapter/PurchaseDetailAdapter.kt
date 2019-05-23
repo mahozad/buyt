@@ -76,7 +76,8 @@ class PurchaseDetailAdapter(private val cxt: Context) : Adapter<ViewHolder>(), S
     override fun isHeader(itemPosition: Int) = items[itemPosition] is Date
 
     private fun formatDate(date: Date): String {
-        return if (cxt.configuration.locale.displayName.contains("فارسی")) {
+
+        return if (Locale.getDefault().language =="fa") {
             val jalaliCalendar = JalaliCalendar(date)
             String.format(cxt.configuration.locale, "%s %d %s %d",
                     jalaliCalendar.dayOfWeekString, jalaliCalendar.day,
