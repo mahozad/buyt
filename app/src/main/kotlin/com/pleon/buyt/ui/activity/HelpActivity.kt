@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
-import android.view.animation.AlphaAnimation
 import com.pleon.buyt.R
 import kotlinx.android.synthetic.main.activity_help.*
 
@@ -34,12 +33,7 @@ class HelpActivity : BaseActivity() {
 
     private fun animateBrand() {
         Handler().postDelayed({ (logo.drawable as Animatable).start() }, 300)
-        Handler().postDelayed({
-            nameVersion.startAnimation(AlphaAnimation(0F, 1F).apply {
-                duration = 300
-                nameVersion.alpha = 1F
-            })
-        }, 500)
+        Handler().postDelayed({ nameVersion.animate().alpha(1f).duration = 300 }, 500)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
