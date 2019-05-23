@@ -20,7 +20,7 @@ abstract class StoreDao {
             STORE_NAME -> "name"
         }
         val query = SimpleSQLiteQuery("SELECT Store.*, SUM(cost) AS totalSpending, COUNT(purchaseId) AS purchaseCount " +
-                "FROM Store JOIN (SELECT SUM(totalPrice) AS cost, purchaseId, purchase.storeId FROM Item NATURAL JOIN Purchase GROUP BY purchaseId) AS ip ON Store.storeId = ip.storeId " +
+                "FROM Store LEFT JOIN (SELECT SUM(totalPrice) AS cost, purchaseId, purchase.storeId FROM Item NATURAL JOIN Purchase GROUP BY purchaseId) AS ip ON Store.storeId = ip.storeId " +
                 "WHERE Store.isFlaggedForDeletion = 0 " +
                 "GROUP BY Store.storeId " +
                 "ORDER BY $sqlSortColumn DESC")
