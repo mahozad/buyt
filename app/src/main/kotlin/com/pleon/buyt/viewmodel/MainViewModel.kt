@@ -30,7 +30,7 @@ private const val EARTH_RADIUS = 6_371_000.0 // In meters
  * force-kills. So to survive process stops, implement
  * [AppCompatActivity.onSaveInstanceState] method in your activity/fragment.
  */
-class MainViewModel @Inject constructor(app: Application,
+class MainViewModel @Inject constructor(private val app: Application,
                                         private val repository: MainRepository,
                                         private val prefs: SharedPreferences)
     : AndroidViewModel(app) {
@@ -79,7 +79,7 @@ class MainViewModel @Inject constructor(app: Application,
     else foundStores[0].category.storeImageRes
 
     fun getStoreTitle(): String = when (foundStores.size) {
-        0 -> getApplication<Application>().getString(R.string.menu_text_new_store_found)
+        0 -> app.getString(R.string.menu_text_new_store_found)
         1 -> foundStores[0].name
         else -> formatNumber(foundStores.size)
     }

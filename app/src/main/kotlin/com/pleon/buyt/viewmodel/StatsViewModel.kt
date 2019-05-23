@@ -14,7 +14,7 @@ import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
 import com.pleon.buyt.viewmodel.StatsViewModel.Period.NARROW
 import javax.inject.Inject
 
-class StatsViewModel @Inject constructor(val app: Application, repository: StatsRepository)
+class StatsViewModel @Inject constructor(private val app: Application, repository: StatsRepository)
     : AndroidViewModel(app) {
 
     enum class Period(var length: Int, val imageRes: Int) {
