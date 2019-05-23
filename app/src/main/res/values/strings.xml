@@ -108,7 +108,7 @@
     <string name="dialog_title_select_cat">Select category</string>
     <string name="dialog_title_select_search_dist">Select search distance</string>
     <string name="dialog_title_create_store">Create new store</string>
-    <string name="currency_format">¤##,###</string>
+    <string name="currency_format">$##,###</string>
 
     <string name="menu_text_period">last %1$d days</string>
 

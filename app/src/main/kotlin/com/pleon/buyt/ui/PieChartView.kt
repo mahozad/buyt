@@ -9,7 +9,7 @@ import android.util.TypedValue.COMPLEX_UNIT_DIP
 import android.util.TypedValue.applyDimension
 import android.view.View
 import android.view.animation.LinearInterpolator
-import java.text.DecimalFormat
+import com.pleon.buyt.util.NumberFormatUtil.formatPercent
 import java.util.*
 
 /**
@@ -342,13 +342,6 @@ class PieChartView : View {
     class Slice(internal var type: String, internal var widget: Int, internal var color: Int) {
 
         internal var radius: Float = 0f
-
-        internal val percent: String
-            get() = formatter.format((radius / 360f).toDouble())
-
-        companion object {
-
-            private val formatter = DecimalFormat("0.0%")
-        }
+        internal val percent: String get() = formatPercent(radius / 360f)
     }
 }

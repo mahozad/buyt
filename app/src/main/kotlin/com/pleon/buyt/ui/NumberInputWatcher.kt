@@ -4,13 +4,12 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 import com.google.android.material.textfield.TextInputLayout
-import java.text.DecimalFormat
+import com.pleon.buyt.util.NumberFormatUtil.formatPrice
 
 class NumberInputWatcher(private val textInputLayout: TextInputLayout,
                          private val editText: EditText, inputSuffix: String?
 ) : TextWatcher {
 
-    private val priceFormat = DecimalFormat("#,###")
     private val inputSuffix: String = inputSuffix ?: ""
 
     override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -25,7 +24,7 @@ class NumberInputWatcher(private val textInputLayout: TextInputLayout,
             editText.setText(inputSuffix)
             editText.setSelection(0)
         } else {
-            editText.setText("${priceFormat.format(numberString.toLong())}$inputSuffix")
+            editText.setText("${formatPrice(numberString)}$inputSuffix")
             editText.setSelection(editText.text.length - inputSuffix.length)
         }
         editText.addTextChangedListener(this)

@@ -9,12 +9,10 @@ import com.pleon.buyt.R
 import com.pleon.buyt.model.Item
 import com.pleon.buyt.ui.BaseViewHolder
 import com.pleon.buyt.ui.adapter.ItemDetailAdapter.ItemDetailHolder
+import com.pleon.buyt.util.NumberFormatUtil.formatPrice
 import kotlinx.android.synthetic.main.item_detail.view.*
-import java.text.DecimalFormat
 
 class ItemDetailAdapter(private val cxt: Context) : Adapter<ItemDetailHolder>() {
-
-    private val priceFormat = DecimalFormat("#,###")
 
     var items = listOf<Item>()
         set(value) {
@@ -39,7 +37,7 @@ class ItemDetailAdapter(private val cxt: Context) : Adapter<ItemDetailHolder>() 
             itemView.itemName.text = item.name
             itemView.itemQuantity.text = cxt.getString(R.string.item_quantity,
                     item.quantity.quantity, cxt.getString(item.quantity.unit.nameRes))
-            itemView.itemTotalPrice.text = cxt.getString(R.string.purchase_detail_price, priceFormat.format(item.totalPrice))
+            itemView.itemTotalPrice.text = cxt.getString(R.string.purchase_detail_price, formatPrice(item.totalPrice))
         }
     }
 }

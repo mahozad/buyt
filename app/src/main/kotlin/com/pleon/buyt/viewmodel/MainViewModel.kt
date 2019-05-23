@@ -13,8 +13,8 @@ import com.pleon.buyt.model.Store
 import com.pleon.buyt.repository.MainRepository
 import com.pleon.buyt.ui.fragment.PREF_SEARCH_DIST
 import com.pleon.buyt.ui.fragment.PREF_SEARCH_DIST_DEF
+import com.pleon.buyt.util.NumberFormatUtil.formatNumber
 import com.pleon.buyt.viewmodel.MainViewModel.State.IDLE
-import java.text.NumberFormat
 import java.util.*
 import javax.inject.Inject
 import kotlin.math.cos
@@ -81,6 +81,6 @@ class MainViewModel @Inject constructor(app: Application,
     fun getStoreTitle(): String = when (foundStores.size) {
         0 -> getApplication<Application>().getString(R.string.menu_text_new_store_found)
         1 -> foundStores[0].name
-        else -> NumberFormat.getInstance().format(foundStores.size)
+        else -> formatNumber(foundStores.size)
     }
 }

@@ -12,17 +12,16 @@ import com.pleon.buyt.ui.BaseViewHolder
 import com.pleon.buyt.ui.DateHeaderDecoration.StickyHeaderInterface
 import com.pleon.buyt.ui.adapter.PurchaseDetailAdapter.ItemTypes.DATE
 import com.pleon.buyt.ui.adapter.PurchaseDetailAdapter.ItemTypes.ITEM
+import com.pleon.buyt.util.NumberFormatUtil.formatPrice
 import ir.huri.jcal.JalaliCalendar
 import kotlinx.android.synthetic.main.date_header.view.*
 import kotlinx.android.synthetic.main.purchase_detail.view.*
 import org.jetbrains.anko.configuration
-import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
 class PurchaseDetailAdapter(private val cxt: Context) : Adapter<ViewHolder>(), StickyHeaderInterface {
 
-    private val priceFormat = DecimalFormat("#,###")
     private val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
 
     enum class ItemTypes { ITEM, DATE }
@@ -95,7 +94,7 @@ class PurchaseDetailAdapter(private val cxt: Context) : Adapter<ViewHolder>(), S
             }
             var totalCost = 0L
             for (item in purchaseDetail.item) totalCost += item.totalPrice
-            itemView.totalCost.text = cxt.getString(R.string.purchase_detail_price, priceFormat.format(totalCost))
+            itemView.totalCost.text = cxt.getString(R.string.purchase_detail_price, formatPrice(totalCost))
         }
     }
 

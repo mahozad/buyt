@@ -18,6 +18,8 @@ import com.pleon.buyt.database.dto.PieSlice
 import com.pleon.buyt.database.dto.Stats
 import com.pleon.buyt.model.Category
 import com.pleon.buyt.ui.PieChartView.Slice
+import com.pleon.buyt.util.NumberFormatUtil.formatNumber
+import com.pleon.buyt.util.NumberFormatUtil.formatPrice
 import com.pleon.buyt.viewmodel.StatsViewModel
 import com.pleon.buyt.viewmodel.StatsViewModel.Period.NARROW
 import com.pleon.buyt.viewmodel.ViewModelFactory
@@ -32,7 +34,6 @@ class StatsFragment : BaseFragment() {
     @Inject internal lateinit var viewModelFactory: ViewModelFactory<StatsViewModel>
     @ColorRes private var pieBgColor: Int = 0 // This color varies based on the app theme
     private lateinit var viewModel: StatsViewModel
-    private val priceFormat = DecimalFormat("#,###")
     private lateinit var pieSliceColors: IntArray
 
     override fun layout() = R.layout.fragment_stats
@@ -61,11 +62,11 @@ class StatsFragment : BaseFragment() {
         showLineChart(stats.dailyCosts)
         showPieChart(stats.mostPurchasedCategories)
 
-        textView3.text = priceFormat.format(stats.totalPurchaseCost)
-        textView.text = priceFormat.format(stats.averagePurchaseCost)
-        textView18.text = priceFormat.format(stats.numberOfPurchases)
-        textView6.text = priceFormat.format(stats.maxPurchaseCost)
-        textView7.text = priceFormat.format(stats.minPurchaseCost)
+        textView18.text = formatNumber(stats.numberOfPurchases)
+        textView3.text = formatPrice(stats.totalPurchaseCost)
+        textView.text = formatPrice(stats.averagePurchaseCost)
+        textView6.text = formatPrice(stats.maxPurchaseCost)
+        textView7.text = formatPrice(stats.minPurchaseCost)
         textView17.text = stats.storeNameWithMaxPurchaseCount
 
         if (stats.weekdayNameResWithMaxPurchases != 0)
@@ -94,8 +95,7 @@ class StatsFragment : BaseFragment() {
                 if (totalExpenses == 0L) R.color.chartEmptyColor else R.color.colorPrimaryDark)
         dataSet.thickness = 2.5f
 
-        val moneyFormat = DecimalFormat(getString(R.string.currency_format))
-        lineChart.setLabelsFormat(moneyFormat)
+        lineChart.setLabelsFormat(DecimalFormat(getString(R.string.currency_format)))
 
         val colors = resources.getIntArray(R.array.lineChartGradient)
         val steps = floatArrayOf(0.0f, 0.2f, 0.5f, 1.0f)
