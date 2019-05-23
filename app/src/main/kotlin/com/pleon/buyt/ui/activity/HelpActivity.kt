@@ -44,11 +44,14 @@ class HelpActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.action_show_tutorial -> showTutorial()
             R.id.action_translate -> openTranslationPage()
             android.R.id.home -> finish()
         }
         return true
     }
+
+    private fun showTutorial() = startActivity(Intent(this, IntroActivity::class.java))
 
     private fun openTranslationPage() {
         val uri = Uri.parse(TRANSLATION_PAGE_URL)

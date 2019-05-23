@@ -141,7 +141,7 @@
     <string name="menu_text_reset_settings">بازنشانی تنظیمات</string>
     <string name="appNameVersion">بایت نسخه ۱.۰.۰ بتا</string>
     <string name="menu_hint_translate_app">مشارکت در ترجمه برنامه</string>
-    <string name="menu_hint_release_history">تغییرات برنامه</string>
+    <string name="menu_hint_show_tutorial">نمایش آموزش برنامه</string>
     <string name="intro_description_1">اقلام مورد نیاز خود را به لیست خرید اضافه نمایید. با درج چند حرف، بایت به شما آیتم‌های مربوط را پیشنهاد داده و دسته‌بندی نیز می‌تواند به صورت خودکار تعیین شود.</string>
     <string name="intro_description_2">داخل یا در نزدیکی مغازه (مثل داخل اتومبیل) دکمه‌ی جستجو را زده تا مغازه پیدا شود. اقلام خریداری شده را انتخاب و خرید خود را ثبت نمایید. نکته: اگر مغازه از قبل ذخیره شده است می‌توانید مرحله جستجو را رد کنید.</string>
     <string name="intro_description_3">نمودار، آمار و ریز خریدهای خود را در دوره‌های مختلف و با قابلیت اعمال فیلتر مشاهده نمایید</string>
