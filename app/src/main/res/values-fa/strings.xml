@@ -150,7 +150,7 @@
         <item quantity="other">%1$d خرید</item>
     </plurals>
     <plurals name="store_detail_total_spending">
-        <item quantity="one">%1$d تومان</item>
-        <item quantity="other">%1$d تومان</item>
+        <item quantity="one">تومان</item>
+        <item quantity="other">تومان</item>
     </plurals>
 </resources>

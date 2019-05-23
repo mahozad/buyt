@@ -206,7 +206,7 @@
     </plurals>
     <plurals name="store_detail_total_spending">
         <!-- For zero android will use plural form like 0 books -->
-        <item quantity="one">%1$d dollar</item>
-        <item quantity="other">%1$d dollars</item>
+        <item quantity="one">dollar</item>
+        <item quantity="other">dollars</item>
     </plurals>
 </resources>
