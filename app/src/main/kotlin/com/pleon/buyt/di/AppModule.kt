@@ -7,8 +7,6 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import dagger.Module
 import dagger.Provides
-import java.text.DecimalFormat
-import java.text.NumberFormat
 import javax.inject.Singleton
 
 @Module
@@ -28,11 +26,5 @@ class AppModule {
     @Singleton
     internal fun provideNotificationManager(app: Application): NotificationManager {
         return getSystemService(app, NotificationManager::class.java) as NotificationManager
-    }
-
-    @Provides
-    @Singleton
-    internal fun provideNumberFormat(app: Application) : NumberFormat {
-        return DecimalFormat("#,###")
     }
 }
