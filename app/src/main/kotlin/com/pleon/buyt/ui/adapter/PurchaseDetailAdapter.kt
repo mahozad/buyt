@@ -1,6 +1,6 @@
 package com.pleon.buyt.ui.adapter
 
-import android.content.Context
+import android.app.Application
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,17 +12,15 @@ import com.pleon.buyt.ui.BaseViewHolder
 import com.pleon.buyt.ui.DateHeaderDecoration.StickyHeaderInterface
 import com.pleon.buyt.ui.adapter.PurchaseDetailAdapter.ItemTypes.DATE
 import com.pleon.buyt.ui.adapter.PurchaseDetailAdapter.ItemTypes.ITEM
-import com.pleon.buyt.util.NumberFormatUtil.formatPrice
-import ir.huri.jcal.JalaliCalendar
+import com.pleon.buyt.util.FormatterUtil.formatDate
+import com.pleon.buyt.util.FormatterUtil.formatPrice
 import kotlinx.android.synthetic.main.date_header.view.*
 import kotlinx.android.synthetic.main.purchase_detail.view.*
-import org.jetbrains.anko.configuration
-import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
-class PurchaseDetailAdapter(private val cxt: Context) : Adapter<ViewHolder>(), StickyHeaderInterface {
-
-    private val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
+class PurchaseDetailAdapter @Inject constructor(private val cxt: Application)
+    : Adapter<ViewHolder>(), StickyHeaderInterface {
 
     enum class ItemTypes { ITEM, DATE }
 
@@ -74,16 +72,6 @@ class PurchaseDetailAdapter(private val cxt: Context) : Adapter<ViewHolder>(), S
     override fun getHeaderLayout(headerPosition: Int) = R.layout.date_header
 
     override fun isHeader(itemPosition: Int) = items[itemPosition] is Date
-
-    private fun formatDate(date: Date): String {
-
-        return if (Locale.getDefault().language =="fa") {
-            val jalaliCalendar = JalaliCalendar(date)
-            String.format(cxt.configuration.locale, "%s %d %s %d",
-                    jalaliCalendar.dayOfWeekString, jalaliCalendar.day,
-                    jalaliCalendar.monthString, jalaliCalendar.year)
-        } else dateFormat.format(date)
-    }
 
     inner class PurchaseHolder(view: View) : BaseViewHolder(view) {
         fun bindItem(purchaseDetail: PurchaseDetail) {

@@ -13,7 +13,7 @@ import com.pleon.buyt.model.Store
 import com.pleon.buyt.repository.MainRepository
 import com.pleon.buyt.ui.fragment.PREF_SEARCH_DIST
 import com.pleon.buyt.ui.fragment.PREF_SEARCH_DIST_DEF
-import com.pleon.buyt.util.NumberFormatUtil.formatNumber
+import com.pleon.buyt.util.FormatterUtil.formatNumber
 import com.pleon.buyt.viewmodel.MainViewModel.State.IDLE
 import java.util.*
 import javax.inject.Inject

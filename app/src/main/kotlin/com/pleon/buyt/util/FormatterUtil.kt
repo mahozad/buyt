@@ -1,8 +1,11 @@
 package com.pleon.buyt.util
 
+import ir.huri.jcal.JalaliCalendar
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
-object NumberFormatUtil {
+object FormatterUtil {
 
     // FIXME: For improving performance, instead of calling getInstance in every invocation of the
     //  following methods, convert the getInstance to a field in the class and then when the user
@@ -17,4 +20,11 @@ object NumberFormatUtil {
 
     fun formatPercent(fraction: Float): String = formatPercent(fraction.toDouble())
     fun formatPercent(fraction: Double): String = NumberFormat.getPercentInstance().format(fraction)
+
+    fun formatDate(date: Date): String = if (Locale.getDefault().language == "fa") {
+        val cal = JalaliCalendar(date)
+        String.format("%s %d %s %d", cal.dayOfWeekString, cal.day, cal.monthString, cal.year)
+    } else {
+        SimpleDateFormat("MM/dd/yyyy", Locale.US).format(date)
+    }
 }

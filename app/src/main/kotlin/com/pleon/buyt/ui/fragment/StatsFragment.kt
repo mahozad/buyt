@@ -18,8 +18,8 @@ import com.pleon.buyt.database.dto.PieSlice
 import com.pleon.buyt.database.dto.Stats
 import com.pleon.buyt.model.Category
 import com.pleon.buyt.ui.PieChartView.Slice
-import com.pleon.buyt.util.NumberFormatUtil.formatNumber
-import com.pleon.buyt.util.NumberFormatUtil.formatPrice
+import com.pleon.buyt.util.FormatterUtil.formatNumber
+import com.pleon.buyt.util.FormatterUtil.formatPrice
 import com.pleon.buyt.viewmodel.StatsViewModel
 import com.pleon.buyt.viewmodel.StatsViewModel.Period.NARROW
 import com.pleon.buyt.viewmodel.ViewModelFactory

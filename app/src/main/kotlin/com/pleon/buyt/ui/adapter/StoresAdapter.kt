@@ -9,7 +9,7 @@ import com.pleon.buyt.R
 import com.pleon.buyt.database.dto.StoreDetail
 import com.pleon.buyt.ui.BaseViewHolder
 import com.pleon.buyt.ui.adapter.StoresAdapter.StoreHolder
-import com.pleon.buyt.util.NumberFormatUtil.formatPrice
+import com.pleon.buyt.util.FormatterUtil.formatPrice
 import kotlinx.android.synthetic.main.store_list_row.view.*
 
 class StoresAdapter(val cxt: Context) : Adapter<StoreHolder>() {

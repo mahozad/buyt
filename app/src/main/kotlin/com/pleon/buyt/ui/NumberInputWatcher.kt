@@ -4,7 +4,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 import com.google.android.material.textfield.TextInputLayout
-import com.pleon.buyt.util.NumberFormatUtil.formatPrice
+import com.pleon.buyt.util.FormatterUtil.formatPrice
 
 class NumberInputWatcher(private val textInputLayout: TextInputLayout,
                          private val editText: EditText, inputSuffix: String?

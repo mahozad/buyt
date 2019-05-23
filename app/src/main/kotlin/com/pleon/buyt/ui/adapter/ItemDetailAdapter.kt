@@ -9,7 +9,7 @@ import com.pleon.buyt.R
 import com.pleon.buyt.model.Item
 import com.pleon.buyt.ui.BaseViewHolder
 import com.pleon.buyt.ui.adapter.ItemDetailAdapter.ItemDetailHolder
-import com.pleon.buyt.util.NumberFormatUtil.formatPrice
+import com.pleon.buyt.util.FormatterUtil.formatPrice
 import kotlinx.android.synthetic.main.item_detail.view.*
 
 class ItemDetailAdapter(private val cxt: Context) : Adapter<ItemDetailHolder>() {
