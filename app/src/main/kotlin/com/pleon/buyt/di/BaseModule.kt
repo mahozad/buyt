@@ -27,6 +27,9 @@ internal abstract class BaseModule {
     @ContributesAndroidInjector
     abstract fun bindHelpActivity(): HelpActivity
 
+    @ContributesAndroidInjector
+    abstract fun bindIntroActivity(): IntroActivity
+
     //================== Fragments ==================\\
 
     @ContributesAndroidInjector
