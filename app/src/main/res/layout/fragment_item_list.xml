@@ -24,12 +24,12 @@
 
     <TextView
         android:id="@+id/emptyHint"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
+        android:layout_width="144dp"
+        android:layout_height="144dp"
         android:layout_gravity="center"
         android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:textSize="12sp"
+        android:textSize="13sp"
         tools:background="@drawable/avd_list_filled"
         tools:ignore="ContentDescription" />
 
