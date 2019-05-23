@@ -1,10 +1,10 @@
 package com.pleon.buyt.repository
 
 import androidx.lifecycle.LiveData
-import com.pleon.buyt.database.SingleLiveEvent
 import com.pleon.buyt.database.dao.StoreDao
 import com.pleon.buyt.database.dto.StoreDetail
 import com.pleon.buyt.model.Store
+import com.pleon.buyt.util.SingleLiveEvent
 import com.pleon.buyt.viewmodel.StoresViewModel.Sort
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread

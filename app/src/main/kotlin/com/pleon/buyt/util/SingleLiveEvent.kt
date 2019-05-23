@@ -1,4 +1,4 @@
-package com.pleon.buyt.database
+package com.pleon.buyt.util
 
 import android.util.Log
 import androidx.annotation.MainThread

@@ -114,7 +114,7 @@ class ItemListAdapter(private val context: Context, private val itemTouchHelper:
             itemView.item_name.text = item.name
             itemView.description.text = item.description
             itemView.item_quantity.text = context.getString(R.string.item_quantity,
-                    item.quantity.quantity, context.getString(item.quantity.unit.nameRes))
+                    item.quantity.value, context.getString(item.quantity.unit.nameRes))
             itemView.urgentIcon.visibility = if (item.isUrgent) VISIBLE else INVISIBLE
             itemView.selectCheckBox.isChecked = selectedItems.contains(item)
             itemView.description.visibility = if (item.description.isNullOrEmpty()) GONE else VISIBLE
