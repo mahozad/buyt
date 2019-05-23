@@ -32,12 +32,12 @@ class StatDetailsFragment : BaseFragment() {
     }
 
     private fun showStats(purchaseDetails: List<PurchaseDetail>) {
+        emptyHint.visibility = if (purchaseDetails.isEmpty()) VISIBLE else GONE
+
         if (purchaseDetails.isEmpty()) {
             adapter.items = emptyList() // required to remove previous items on period toggle
-            emptyHint.visibility = VISIBLE
             return
         }
-        emptyHint.visibility = GONE
 
         // Add dates and details to a list together
         var date = purchaseDetails[0].purchase.date
