@@ -15,7 +15,7 @@ import com.pleon.buyt.R
 import com.pleon.buyt.ui.ItemSpacingDecoration
 import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener
 import com.pleon.buyt.ui.adapter.StoresAdapter
-import com.pleon.buyt.util.ReflectionUtil
+import com.pleon.buyt.util.ReflectionUtil.extractTouchHelperCallback
 import com.pleon.buyt.util.SnackbarUtil.showUndoSnackbar
 import com.pleon.buyt.viewmodel.StoresViewModel
 import com.pleon.buyt.viewmodel.ViewModelFactory
@@ -29,7 +29,6 @@ import javax.inject.Inject
 class StoresFragment : BaseFragment(), ItemTouchHelperListener {
 
     @Inject internal lateinit var viewModelFactory: ViewModelFactory<StoresViewModel>
-    @Inject internal lateinit var reflectionUtil: ReflectionUtil
     @Inject internal lateinit var touchHelper: ItemTouchHelper
     private lateinit var viewModel: StoresViewModel
     private lateinit var adapter: StoresAdapter
@@ -49,7 +48,7 @@ class StoresFragment : BaseFragment(), ItemTouchHelperListener {
         recyclerView.addItemDecoration(ItemSpacingDecoration(columns, isRtl))
 
         touchHelper.attachToRecyclerView(recyclerView)
-        reflectionUtil.extractCallback(touchHelper).listener = this
+        extractTouchHelperCallback(touchHelper).listener = this
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
