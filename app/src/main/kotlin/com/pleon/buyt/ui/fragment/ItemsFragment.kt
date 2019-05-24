@@ -15,7 +15,6 @@ import com.pleon.buyt.ui.ItemSpacingDecoration
 import com.pleon.buyt.ui.TouchHelperCallback
 import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener
 import com.pleon.buyt.ui.adapter.ItemListAdapter
-import com.pleon.buyt.util.ReflectionUtil.extractTouchHelperCallback
 import com.pleon.buyt.util.SnackbarUtil.showUndoSnackbar
 import com.pleon.buyt.viewmodel.MainViewModel
 import com.pleon.buyt.viewmodel.ViewModelFactory
@@ -27,9 +26,8 @@ import kotlin.Comparator
 class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
 
     @Inject internal lateinit var viewModelFactory: ViewModelFactory<MainViewModel>
-    @Inject internal lateinit var touchHelper: ItemTouchHelper
+    @Inject internal lateinit var touchHelperCallback: TouchHelperCallback
     @Inject internal lateinit var adapter: ItemListAdapter
-    private lateinit var touchHelperCallback: TouchHelperCallback
     private lateinit var viewModel: MainViewModel
     val isSelectedEmpty get() = adapter.selectedItems.isEmpty()
     val selectedItems get() = adapter.selectedItems
@@ -45,9 +43,9 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
             updateEmptyHint(items.isEmpty())
         })
 
+        val touchHelper = ItemTouchHelper(touchHelperCallback)
         touchHelper.attachToRecyclerView(recyclerView)
         adapter.touchHelper = touchHelper
-        touchHelperCallback = extractTouchHelperCallback(touchHelper)
         touchHelperCallback.listener = this
         val columns = resources.getInteger(R.integer.layout_columns)
         val isRtl = resources.getBoolean(R.bool.isRtl)
