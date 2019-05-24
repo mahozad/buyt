@@ -43,7 +43,7 @@
             </intent-filter>
         </activity> <!-- android:windowSoftInputMode attribute is to prevent the bottom app bar to jump when keyboard appears -->
         <service
-            android:name=".service.GpsService"
+            android:name=".component.GpsService"
             android:exported="false" />
     </application>
 

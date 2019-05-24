@@ -4,12 +4,12 @@ import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.app.NotificationManager
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.graphics.drawable.Animatable
+import android.location.Location
 import android.location.LocationManager
 import android.location.LocationManager.GPS_PROVIDER
 import android.os.Bundle
@@ -33,11 +33,11 @@ import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_END
 import com.google.android.material.snackbar.Snackbar.*
 import com.pleon.buyt.R
+import com.pleon.buyt.component.ACTION_LOCATION_EVENT
+import com.pleon.buyt.component.GpsService
+import com.pleon.buyt.component.LocationReceiver
 import com.pleon.buyt.model.Coordinates
 import com.pleon.buyt.model.Store
-import com.pleon.buyt.service.ACTION_LOCATION_EVENT
-import com.pleon.buyt.service.EXTRA_LOCATION
-import com.pleon.buyt.service.GpsService
 import com.pleon.buyt.ui.dialog.*
 import com.pleon.buyt.ui.dialog.Callback
 import com.pleon.buyt.ui.dialog.CreateStoreDialogFragment.CreateStoreListener
@@ -73,8 +73,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
     //        is produced when another item was swiped partially
 
     @Inject internal lateinit var viewModelFactory: ViewModelFactory<MainViewModel>
+    @Inject internal lateinit var broadcastMgr: LocalBroadcastManager
     @Inject internal lateinit var locationMgr: LocationManager
-    private lateinit var locationReceiver: BroadcastReceiver
+    @Inject internal lateinit var locationReceiver: LocationReceiver
     private lateinit var viewModel: MainViewModel
     private lateinit var itemsFragment: ItemsFragment
     private lateinit var addMenuItem: MenuItem
@@ -117,13 +118,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
         super.onCreate(savedState)
 
         viewModel = of(this, viewModelFactory).get(MainViewModel::class.java)
-        itemsFragment = supportFragmentManager.findFragmentById(R.id.itemsFragment) as ItemsFragment
-        locationReceiver = object : BroadcastReceiver() {
-            override fun onReceive(cxt: Context, intent: Intent) = onLocationFound(intent)
-        }
-
-        val broadcastMgr = LocalBroadcastManager.getInstance(this)
         broadcastMgr.registerReceiver(locationReceiver, IntentFilter(ACTION_LOCATION_EVENT))
+        locationReceiver.getLocation().observe(this, Observer { onLocationFound(it) })
+        itemsFragment = supportFragmentManager.findFragmentById(R.id.itemsFragment) as ItemsFragment
 
         fab.setOnClickListener { onFabClick() }
         scrim.setOnClickListener { if (scrim.alpha == 1f) onBackPressed() }
@@ -156,9 +153,10 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
         }
     }
 
-    private fun onLocationFound(intent: Intent) {
+    private fun onLocationFound(location: Location) {
+        if (viewModel.state != FINDING) return // because of a bug
+        viewModel.location = location
         if (prefs.getBoolean(PREF_VIBRATE, true)) vibrate(this, 200, 255)
-        viewModel.location = intent.getParcelableExtra(EXTRA_LOCATION)
         val here = Coordinates(viewModel.location!!)
         viewModel.findNearStores(here).observe(this, Observer { onStoresFound(it) })
     }
@@ -382,8 +380,6 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
     override fun onDestroy() {
         super.onDestroy()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(locationReceiver)
-        // TODO: Move AppDatabase.destroyDatabase() to the onCleared() method of the viewModel
-        // see [https://developer.android.com/guide/components/activities/activity-lifecycle#ondestroy]
 
         // if activity being destroyed because of back button (not because of config change)
         if (isFinishing) stopService(Intent(this, GpsService::class.java))

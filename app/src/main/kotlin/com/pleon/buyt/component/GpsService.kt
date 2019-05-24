@@ -1,4 +1,4 @@
-package com.pleon.buyt.service
+package com.pleon.buyt.component
 
 import android.annotation.SuppressLint
 import android.app.Notification

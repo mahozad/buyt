@@ -1,6 +1,6 @@
 package com.pleon.buyt.di
 
-import com.pleon.buyt.service.GpsService
+import com.pleon.buyt.component.GpsService
 import com.pleon.buyt.ui.activity.*
 import com.pleon.buyt.ui.dialog.CreateStoreDialogFragment
 import com.pleon.buyt.ui.fragment.*

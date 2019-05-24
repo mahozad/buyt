@@ -4,6 +4,7 @@ import android.app.Application
 import android.app.NotificationManager
 import android.location.LocationManager
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.google.android.material.animation.ArgbEvaluatorCompat
 import dagger.Module
@@ -27,6 +28,12 @@ class AppModule {
     @Singleton
     internal fun provideNotificationManager(app: Application): NotificationManager {
         return getSystemService(app, NotificationManager::class.java) as NotificationManager
+    }
+
+    @Provides
+    @Singleton
+    internal fun provideLocalBroadcastManager(app: Application): LocalBroadcastManager {
+        return LocalBroadcastManager.getInstance(app)
     }
 
     @Provides
