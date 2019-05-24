@@ -15,6 +15,7 @@ import com.pleon.buyt.ui.ItemSpacingDecoration
 import com.pleon.buyt.ui.TouchHelperCallback
 import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener
 import com.pleon.buyt.ui.adapter.ItemListAdapter
+import com.pleon.buyt.util.ReflectionUtil.extractTouchHelperCallback
 import com.pleon.buyt.util.SnackbarUtil.showUndoSnackbar
 import com.pleon.buyt.viewmodel.MainViewModel
 import com.pleon.buyt.viewmodel.ViewModelFactory
@@ -25,11 +26,11 @@ import kotlin.Comparator
 
 class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
 
-    @Inject
-    internal lateinit var viewModelFactory: ViewModelFactory<MainViewModel>
-    private lateinit var viewModel: MainViewModel
-    private lateinit var adapter: ItemListAdapter
+    @Inject internal lateinit var viewModelFactory: ViewModelFactory<MainViewModel>
+    @Inject internal lateinit var touchHelper: ItemTouchHelper
+    @Inject internal lateinit var adapter: ItemListAdapter
     private lateinit var touchHelperCallback: TouchHelperCallback
+    private lateinit var viewModel: MainViewModel
     val isSelectedEmpty get() = adapter.selectedItems.isEmpty()
     val selectedItems get() = adapter.selectedItems
     val isListEmpty get() = adapter.items.isEmpty()
@@ -44,15 +45,15 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
             updateEmptyHint(items.isEmpty())
         })
 
-        // for swipe-to-delete and drag-n-drop of item
-        touchHelperCallback = TouchHelperCallback(this)
-        val touchHelper = ItemTouchHelper(touchHelperCallback)
         touchHelper.attachToRecyclerView(recyclerView)
+        adapter.touchHelper = touchHelper
+        touchHelperCallback = extractTouchHelperCallback(touchHelper)
+        touchHelperCallback.listener = this
         val columns = resources.getInteger(R.integer.layout_columns)
         val isRtl = resources.getBoolean(R.bool.isRtl)
+        recyclerView.adapter = adapter
         recyclerView.layoutManager = GridLayoutManager(context, columns)
         recyclerView.addItemDecoration(ItemSpacingDecoration(columns, isRtl))
-        adapter = ItemListAdapter(context!!, touchHelper).also { recyclerView.adapter = it }
     }
 
     private fun updateEmptyHint(isListEmpty: Boolean) {

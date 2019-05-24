@@ -1,6 +1,6 @@
 package com.pleon.buyt.ui.adapter
 
-import android.content.Context
+import android.app.Application
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -21,8 +21,12 @@ import com.pleon.buyt.ui.NumberInputWatcher
 import com.pleon.buyt.ui.adapter.ItemListAdapter.ItemHolder
 import kotlinx.android.synthetic.main.item_list_row.view.*
 import java.lang.Long.parseLong
+import javax.inject.Inject
 
-class ItemListAdapter(private val context: Context, private val itemTouchHelper: ItemTouchHelper) : Adapter<ItemHolder>() {
+class ItemListAdapter @Inject constructor(private val cxt: Application)
+    : Adapter<ItemHolder>() {
+
+    lateinit var touchHelper: ItemTouchHelper
 
     var items = listOf<Item>()
         set(value) {
@@ -97,7 +101,7 @@ class ItemListAdapter(private val context: Context, private val itemTouchHelper:
     inner class ItemHolder(view: View) : BaseViewHolder(view) {
 
         init {
-            val suffix = context.getString(R.string.input_suffix_price)
+            val suffix = cxt.getString(R.string.input_suffix_price)
             itemView.price.addTextChangedListener(NumberInputWatcher(itemView.price_layout, itemView.price, suffix))
             itemView.price.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) = onPriceChanged()
@@ -113,8 +117,8 @@ class ItemListAdapter(private val context: Context, private val itemTouchHelper:
             itemView.categoryIcon.setImageResource(item.category.imageRes)
             itemView.item_name.text = item.name
             itemView.description.text = item.description
-            itemView.item_quantity.text = context.getString(R.string.item_quantity,
-                    item.quantity.value, context.getString(item.quantity.unit.nameRes))
+            itemView.item_quantity.text = cxt.getString(R.string.item_quantity,
+                    item.quantity.value, cxt.getString(item.quantity.unit.nameRes))
             itemView.urgentIcon.visibility = if (item.isUrgent) VISIBLE else INVISIBLE
             itemView.selectCheckBox.isChecked = selectedItems.contains(item)
             itemView.description.visibility = if (item.description.isNullOrEmpty()) GONE else VISIBLE
@@ -135,7 +139,7 @@ class ItemListAdapter(private val context: Context, private val itemTouchHelper:
             if (event.actionMasked == ACTION_DOWN) {
                 // disabled in clearView() method of the touch helper
                 if (dragModeEnabled) itemView.cardForeground.isDragged = true
-                itemTouchHelper.startDrag(this)
+                touchHelper.startDrag(this)
             }
             return false
         }

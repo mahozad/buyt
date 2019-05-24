@@ -73,10 +73,10 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
     //        is produced when another item was swiped partially
 
     @Inject internal lateinit var viewModelFactory: ViewModelFactory<MainViewModel>
+    @Inject internal lateinit var locationMgr: LocationManager
+    private lateinit var locationReceiver: BroadcastReceiver
     private lateinit var viewModel: MainViewModel
     private lateinit var itemsFragment: ItemsFragment
-    private lateinit var locationMgr: LocationManager
-    private lateinit var locationReceiver: BroadcastReceiver
     private lateinit var addMenuItem: MenuItem
     private lateinit var reorderMenuItem: MenuItem
     private lateinit var storeMenuItem: MenuItem
@@ -118,7 +118,6 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
 
         viewModel = of(this, viewModelFactory).get(MainViewModel::class.java)
         itemsFragment = supportFragmentManager.findFragmentById(R.id.itemsFragment) as ItemsFragment
-        locationMgr = getSystemService(LOCATION_SERVICE) as LocationManager
         locationReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) = onLocationFound(intent)
         }
