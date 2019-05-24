@@ -1,6 +1,6 @@
 package com.pleon.buyt.ui.adapter
 
-import android.content.Context
+import android.app.Application
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +11,9 @@ import com.pleon.buyt.ui.BaseViewHolder
 import com.pleon.buyt.ui.adapter.StoresAdapter.StoreHolder
 import com.pleon.buyt.util.FormatterUtil.formatPrice
 import kotlinx.android.synthetic.main.store_list_row.view.*
+import javax.inject.Inject
 
-class StoresAdapter(val cxt: Context) : Adapter<StoreHolder>() {
+class StoresAdapter @Inject constructor(private val cxt: Application) : Adapter<StoreHolder>() {
 
     var storeDetails = listOf<StoreDetail>()
         set(storeDetails) {

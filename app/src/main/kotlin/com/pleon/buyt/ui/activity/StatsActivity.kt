@@ -10,11 +10,11 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders.of
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayout
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.TabLayoutMediator
 import com.pleon.buyt.ui.TabLayoutMediator.OnConfigureTabCallback
-import com.pleon.buyt.ui.adapter.StatsPagerAdapter
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.viewmodel.StatsViewModel
 import com.pleon.buyt.viewmodel.ViewModelFactory
@@ -25,6 +25,7 @@ import javax.inject.Inject
 class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
 
     @Inject internal lateinit var viewModelFactory: ViewModelFactory<StatsViewModel>
+    @Inject internal lateinit var adapter: FragmentStateAdapter
     private lateinit var viewModel: StatsViewModel
     private lateinit var filterMenuItem: MenuItem
     private lateinit var periodMenuItemView: TextView
@@ -48,7 +49,7 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
         viewModel = of(this, viewModelFactory).get(StatsViewModel::class.java)
         registerReceiver(timeReceiver, IntentFilter(Intent.ACTION_TIME_TICK))
 
-        viewPager.adapter = StatsPagerAdapter(this)
+        viewPager.adapter = adapter
         // FIXME: Use ViewPager2 native tab layout if introduced in new releases
         TabLayoutMediator(tabLayout, viewPager, object : OnConfigureTabCallback {
             override fun onConfigureTab(tab: TabLayout.Tab, position: Int) {

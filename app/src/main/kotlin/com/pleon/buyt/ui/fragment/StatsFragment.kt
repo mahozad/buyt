@@ -5,6 +5,7 @@ import android.util.TypedValue
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -33,8 +34,8 @@ class StatsFragment : BaseFragment() {
 
     @Inject internal lateinit var viewModelFactory: ViewModelFactory<StatsViewModel>
     @ColorRes private var pieBgColor: Int = 0 // This color varies based on the app theme
+    @ColorInt private lateinit var pieSliceColors: IntArray
     private lateinit var viewModel: StatsViewModel
-    private lateinit var pieSliceColors: IntArray
 
     override fun layout() = R.layout.fragment_stats
 

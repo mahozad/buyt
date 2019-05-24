@@ -58,10 +58,9 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
     @ColorRes private var colorUnfocused: Int = 0
     @ColorRes private var colorUnfocusedBorder: Int = 0
 
-    @Inject
-    internal lateinit var viewModelFactory: ViewModelFactory<AddItemViewModel>
-    private lateinit var unitBtns: Array<MaterialButton>
+    @Inject internal lateinit var viewModelFactory: ViewModelFactory<AddItemViewModel>
     private lateinit var viewModel: AddItemViewModel
+    private lateinit var unitBtns: Array<MaterialButton>
     private var selectCategoryTxvi: TextView? = null
     private lateinit var nameCats: Map<String, String>
     private val isBoughtChecked get() = bought.isChecked
@@ -242,7 +241,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
      * fragment and set it as the callback.
      */
     private fun onDateClicked() {
-        if (Locale.getDefault().language =="fa") {
+        if (Locale.getDefault().language == "fa") {
             val persianCal = PersianCalendar()
             val datePicker = DatePickerDialog.newInstance(this, persianCal.persianYear,
                     persianCal.persianMonth, persianCal.persianDay)

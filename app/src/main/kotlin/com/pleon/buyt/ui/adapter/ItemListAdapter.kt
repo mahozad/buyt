@@ -23,8 +23,7 @@ import kotlinx.android.synthetic.main.item_list_row.view.*
 import java.lang.Long.parseLong
 import javax.inject.Inject
 
-class ItemListAdapter @Inject constructor(private val cxt: Application)
-    : Adapter<ItemHolder>() {
+class ItemListAdapter @Inject constructor(private val cxt: Application) : Adapter<ItemHolder>() {
 
     lateinit var touchHelper: ItemTouchHelper
 

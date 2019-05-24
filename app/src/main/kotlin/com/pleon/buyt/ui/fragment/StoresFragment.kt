@@ -30,8 +30,8 @@ class StoresFragment : BaseFragment(), ItemTouchHelperListener {
 
     @Inject internal lateinit var viewModelFactory: ViewModelFactory<StoresViewModel>
     @Inject internal lateinit var touchHelperCallback: TouchHelperCallback
+    @Inject internal lateinit var adapter: StoresAdapter
     private lateinit var viewModel: StoresViewModel
-    private lateinit var adapter: StoresAdapter
     private lateinit var sortMenuItemView: TextView
 
     override fun layout() = R.layout.fragment_store_list
@@ -41,14 +41,13 @@ class StoresFragment : BaseFragment(), ItemTouchHelperListener {
 
         viewModel = of(this, viewModelFactory).get(StoresViewModel::class.java)
         viewModel.storeDetails.observe(viewLifecycleOwner, Observer { adapter.storeDetails = it })
-        adapter = StoresAdapter(context!!).also { recyclerView.adapter = it }
+        recyclerView.adapter = adapter
         val columns = resources.getInteger(R.integer.layout_columns)
         val isRtl = resources.getBoolean(R.bool.isRtl)
         recyclerView.layoutManager = GridLayoutManager(context, columns)
         recyclerView.addItemDecoration(ItemSpacingDecoration(columns, isRtl))
 
         ItemTouchHelper(touchHelperCallback).attachToRecyclerView(recyclerView)
-        touchHelperCallback.listener = this
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

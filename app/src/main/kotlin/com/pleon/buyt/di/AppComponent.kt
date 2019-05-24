@@ -17,7 +17,7 @@ import javax.inject.Singleton
  */
 @Singleton
 @Component(modules = [AndroidInjectionModule::class, AppModule::class,
-    BaseModule::class, DatabaseModule::class]
+    BindingModule::class, DatabaseModule::class]
 )
 interface AppComponent {
 
@@ -27,6 +27,8 @@ interface AppComponent {
      * So inside the AppComponent the application instance is available.
      * So this application instance can be accessed by our modules
      * such as ViewModelModule when needed.
+     * For information about what @Bind do see
+     * [https://proandroiddev.com/dagger-2-annotations-binds-contributesandroidinjector-a09e6a57758f]
      */
     @Component.Builder
     interface Builder {

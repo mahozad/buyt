@@ -119,7 +119,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
         viewModel = of(this, viewModelFactory).get(MainViewModel::class.java)
         itemsFragment = supportFragmentManager.findFragmentById(R.id.itemsFragment) as ItemsFragment
         locationReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) = onLocationFound(intent)
+            override fun onReceive(cxt: Context, intent: Intent) = onLocationFound(intent)
         }
 
         val broadcastMgr = LocalBroadcastManager.getInstance(this)

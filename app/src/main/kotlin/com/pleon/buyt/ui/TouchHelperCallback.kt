@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.pleon.buyt.R
 import kotlinx.android.synthetic.main.item_list_row.view.*
 import java.lang.Math.*
-import javax.inject.Inject
 
 private const val MAX_SWIPE_DIST = 88f // in dp unit
 private const val SWIPE_THRESHOLD = 0.3f // to be considered done
@@ -29,18 +28,16 @@ private const val SWIPE_THRESHOLD = 0.3f // to be considered done
  * In order to use ItemTouchHelper, we’ll create an ItemTouchHelper.Callback to
  * listen for “move” and “swipe” events.
  */
-class TouchHelperCallback @Inject constructor() : ItemTouchHelper.Callback() {
-
-    lateinit var listener: ItemTouchHelperListener
+class TouchHelperCallback (private var listener: ItemTouchHelperListener) : ItemTouchHelper.Callback() {
 
     interface ItemTouchHelperListener {
         fun onMoved(oldPosition: Int, newPosition: Int)
         fun onSwiped(viewHolder: ViewHolder, direction: Int)
     }
 
+    private var dragModeEnabled = false
     private val displayMetrics = Resources.getSystem().displayMetrics
     private val maxSwipeDistInPx = applyDimension(COMPLEX_UNIT_DIP, MAX_SWIPE_DIST, displayMetrics)
-    private var dragModeEnabled = false
 
     // If you want to just disable long press drag-n-drop, override isLongPressDragEnabled()
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: ViewHolder): Int {

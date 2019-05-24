@@ -8,14 +8,14 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
 @Module
-internal abstract class BaseModule {
+internal abstract class BindingModule {
 
     //================== Activities ==================\\
 
     @ContributesAndroidInjector
     abstract fun bindMainActivity(): MainActivity
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [StatsActivityModule::class])
     abstract fun bindStatsActivity(): StatsActivity
 
     @ContributesAndroidInjector
@@ -27,18 +27,18 @@ internal abstract class BaseModule {
     @ContributesAndroidInjector
     abstract fun bindHelpActivity(): HelpActivity
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [IntroActivityModule::class])
     abstract fun bindIntroActivity(): IntroActivity
 
     //================== Fragments ==================\\
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [ItemsFragmentModule::class])
     abstract fun bindItemsFrament(): ItemsFragment
 
     @ContributesAndroidInjector
     abstract fun bindAddItemFrament(): AddItemFragment
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [StoresFragmentModule::class])
     abstract fun bindStoresFrament(): StoresFragment
 
     @ContributesAndroidInjector

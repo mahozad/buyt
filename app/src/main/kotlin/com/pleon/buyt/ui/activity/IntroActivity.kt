@@ -12,19 +12,19 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.animation.ArgbEvaluatorCompat
 import com.pleon.buyt.R
-import com.pleon.buyt.ui.adapter.IntroPageAdapter
 import com.pleon.buyt.ui.fragment.PREF_NEWBIE
 import kotlinx.android.synthetic.main.activity_intro.*
 import kotlinx.android.synthetic.main.fragment_intro_1.view.*
+import javax.inject.Inject
 import kotlin.math.max
 import kotlin.math.min
 
 class IntroActivity : BaseActivity() {
 
-    private lateinit var adapter: FragmentStateAdapter
+    @Inject internal lateinit var adapter: FragmentStateAdapter
+    @Inject internal lateinit var argbEvaluator: ArgbEvaluatorCompat
     private lateinit var colors: IntArray
     private lateinit var dots: Array<ImageView>
-    private val argbEvaluator = ArgbEvaluatorCompat()
     private var lastPage = 0
     private var lastOffset = 0f
 
@@ -33,7 +33,7 @@ class IntroActivity : BaseActivity() {
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
 
-        adapter = IntroPageAdapter(this).also { viewPager.adapter = it }
+        viewPager.adapter = adapter
         colors = resources.getIntArray(R.array.introPageColors)
         dots = arrayOf(dot1, dot2, dot3)
 

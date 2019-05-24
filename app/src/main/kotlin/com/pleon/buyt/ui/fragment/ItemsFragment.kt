@@ -28,10 +28,10 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
     @Inject internal lateinit var viewModelFactory: ViewModelFactory<MainViewModel>
     @Inject internal lateinit var touchHelperCallback: TouchHelperCallback
     @Inject internal lateinit var adapter: ItemListAdapter
-    private lateinit var viewModel: MainViewModel
     val isSelectedEmpty get() = adapter.selectedItems.isEmpty()
     val selectedItems get() = adapter.selectedItems
     val isListEmpty get() = adapter.items.isEmpty()
+    private lateinit var viewModel: MainViewModel
 
     override fun layout() = R.layout.fragment_item_list
 
@@ -46,7 +46,6 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
         val touchHelper = ItemTouchHelper(touchHelperCallback)
         touchHelper.attachToRecyclerView(recyclerView)
         adapter.touchHelper = touchHelper
-        touchHelperCallback.listener = this
         val columns = resources.getInteger(R.integer.layout_columns)
         val isRtl = resources.getBoolean(R.bool.isRtl)
         recyclerView.adapter = adapter
