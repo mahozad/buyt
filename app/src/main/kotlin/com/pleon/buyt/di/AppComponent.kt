@@ -5,6 +5,7 @@ import com.pleon.buyt.BuytApplication
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
+import dagger.android.AndroidInjector
 import javax.inject.Singleton
 
 /**
@@ -19,7 +20,7 @@ import javax.inject.Singleton
 @Component(modules = [AndroidInjectionModule::class, AppModule::class,
     BindingModule::class, DatabaseModule::class]
 )
-interface AppComponent {
+interface AppComponent : AndroidInjector<BuytApplication> {
 
     /**
      * We will call this builder interface from our custom Application class.
@@ -38,5 +39,5 @@ interface AppComponent {
         fun build(): AppComponent
     }
 
-    fun inject(app: BuytApplication)
+    override fun inject(app: BuytApplication)
 }
