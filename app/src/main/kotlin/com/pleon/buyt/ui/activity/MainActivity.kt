@@ -124,16 +124,17 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
 
         fab.setOnClickListener { onFabClick() }
         scrim.setOnClickListener { if (scrim.alpha == 1f) onBackPressed() }
-        setupAddMenuItemAnimation()
+        setupEmptyListListener()
         showIntroIfNeeded()
         restoreBottomDrawerIfNeeded()
     }
 
-    private fun setupAddMenuItemAnimation() {
+    private fun setupEmptyListListener() {
         Handler().postDelayed({
             if (!::addMenuItem.isInitialized) return@postDelayed
             viewModel.allItems.observe(this@MainActivity, Observer { items ->
                 if (items.isEmpty()) {
+                    if (viewModel.state == FINDING || viewModel.state == SELECTING) shiftToIdleState()
                     addMenuItem.setIcon(R.drawable.avd_add_glow)
                     AnimationUtil.animateIconInfinitely(addMenuItem.icon)
                 } else addMenuItem.setIcon(R.drawable.avd_add_hide)
