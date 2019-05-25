@@ -43,7 +43,6 @@ class PieChartView : View {
     private val defaultStartAngle = -90
     private val pieCell: Float = 0.toFloat()
     private var animator: ValueAnimator? = null
-    private var animDuration: Long = 1000
     private val startPoint = Point()
     private val centerPoint = Point()
     private val endPoint = Point()
@@ -65,9 +64,9 @@ class PieChartView : View {
     //        if (animator != null) animator.cancel();
     //    }
 
-    fun startAnim() {
+    fun startAnim(duration: Long) {
         animator = ValueAnimator.ofFloat(0f, 360f * 2)
-        animator!!.duration = animDuration
+        animator!!.duration = duration
         animator!!.interpolator = LinearInterpolator()
         animator!!.addUpdateListener { animation ->
             val value = animation.animatedValue as Float
@@ -333,10 +332,6 @@ class PieChartView : View {
      */
     fun setTextPadding(textPadding: Int) {
         this.textPadding = textPadding
-    }
-
-    fun setAnimDuration(animDuration: Long) {
-        this.animDuration = animDuration
     }
 
     class Slice(internal var type: String, internal var widget: Int, internal var color: Int) {

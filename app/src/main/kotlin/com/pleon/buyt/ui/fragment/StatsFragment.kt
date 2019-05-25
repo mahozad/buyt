@@ -22,7 +22,6 @@ import com.pleon.buyt.ui.PieChartView.Slice
 import com.pleon.buyt.util.FormatterUtil.formatNumber
 import com.pleon.buyt.util.FormatterUtil.formatPrice
 import com.pleon.buyt.viewmodel.StatsViewModel
-import com.pleon.buyt.viewmodel.StatsViewModel.Period.NARROW
 import com.pleon.buyt.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_stats.*
 import java.text.DecimalFormat
@@ -33,8 +32,9 @@ private const val PIE_CHART_MAX_SLICES = 5
 class StatsFragment : BaseFragment() {
 
     @Inject internal lateinit var viewModelFactory: ViewModelFactory<StatsViewModel>
-    @ColorRes private var pieBgColor: Int = 0 // This color varies based on the app theme
     @ColorInt private lateinit var pieSliceColors: IntArray
+    @ColorRes private var pieBgColor: Int = 0 // This color varies based on the app theme
+    @Volatile private var isStartup = true // Required due to LiveData called twice on startup
     private lateinit var viewModel: StatsViewModel
 
     override fun layout() = R.layout.fragment_stats
@@ -42,9 +42,8 @@ class StatsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedState: Bundle?) {
         viewModel = of(activity!!, viewModelFactory).get(StatsViewModel::class.java)
         viewModel.stats.observe(viewLifecycleOwner, Observer { stats ->
-            // Due to LiveData called twice on startup, when period is > 7 and we leave the screen and again come...
-            if (viewModel.period == NARROW && stats.dailyCosts.size > NARROW.length) return@Observer
             showStats(stats)
+            isStartup = false
         })
 
         pieSliceColors = resources.getIntArray(R.array.pieChartColors)
@@ -56,7 +55,6 @@ class StatsFragment : BaseFragment() {
         pieChart.setInnerRadius(0.6f)
         pieChart.setBackGroundColor(pieBgColor)
         pieChart.setItemTextSize(13.5f)
-        pieChart.setAnimDuration(480)
     }
 
     private fun showStats(stats: Stats) {
@@ -103,7 +101,7 @@ class StatsFragment : BaseFragment() {
         dataSet.setGradientFill(colors, steps)
         lineChart.addData(dataSet)
         lineChart.setXLabels(NONE)
-        lineChart.show(Animation(500))
+        if (isStartup) lineChart.show() else lineChart.show(Animation(500))
     }
 
     private fun showPieChart(pieSlices: List<PieSlice>) {
@@ -124,6 +122,6 @@ class StatsFragment : BaseFragment() {
             pieChart.addSector(Slice(getString(R.string.pie_chart_other), other, pieSliceColors[PIE_CHART_MAX_SLICES - 1]))
         }
 
-        pieChart.startAnim()
+        pieChart.startAnim(if (isStartup) 0 else 480)
     }
 }

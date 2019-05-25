@@ -155,7 +155,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
     }
 
     private fun onLocationFound(location: Location) {
-        if (viewModel.state != FINDING) return // because of a bug
+        if (viewModel.state != FINDING) return // because of a bug on app relaunch
         viewModel.location = location
         if (prefs.getBoolean(PREF_VIBRATE, true)) vibrate(this, 200, 255)
         val here = Coordinates(viewModel.location!!)
