@@ -113,7 +113,7 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
                 val itemIndex = adapter.items.indexOf(item) // FIXME: maybe heavy operation
                 val itemView = recyclerView.layoutManager!!.findViewByPosition(itemIndex)
                 val priceLayout = itemView!!.findViewById<TextInputLayout>(R.id.price_layout)
-                priceLayout.error = "price cannot be empty"
+                priceLayout.error = getString(R.string.input_error_price)
                 validated = false
             }
         }

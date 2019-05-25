@@ -265,10 +265,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
                 viewModel.state == IDLE -> {
                     BottomDrawerFragment().show(supportFragmentManager, "BOTTOM_SHEET")
                 }
-                viewModel.state == FINDING -> { // then it is cancel button
-                    stopService(Intent(this, GpsService::class.java))
-                    shiftToIdleState()
-                }
+                viewModel.state == FINDING -> shiftToIdleState()
                 else -> shiftToIdleState()
             }
         }
@@ -469,6 +466,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
             addMenuItem.setIcon(R.drawable.avd_add_show).apply { (icon as Animatable).start() }
                     .also { it.isVisible = true }
 
+            stopService(Intent(this, GpsService::class.java))
             (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).cancelAll()
         }
         viewModel.resetFoundStores()

@@ -22,7 +22,6 @@ import androidx.core.widget.CompoundButtonCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.ViewModelProviders.of
-import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
@@ -245,7 +244,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
             val persianCal = PersianCalendar()
             val datePicker = DatePickerDialog.newInstance(this, persianCal.persianYear,
                     persianCal.persianMonth, persianCal.persianDay)
-            val theme = getDefaultSharedPreferences(context).getString(PREF_THEME, PREF_THEME_DEF)
+            val theme = prefs.getString(PREF_THEME, PREF_THEME_DEF)
             datePicker.isThemeDark = (theme == PREF_THEME_DEF) // for changing colors see colors.xml
             datePicker.retainInstance = true
 
@@ -422,7 +421,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
                     R.drawable.ic_item_grocery, 0, 0, 0
             )
             selectCategoryTxvi!!.setTextColor(ContextCompat.getColor(context!!, colorOnSurface))
-            selectCategoryTxvi!!.text = resources.getString(Category.GROCERY.nameRes)
+            selectCategoryTxvi!!.text = getString(Category.GROCERY.nameRes)
             viewModel.category = Category.GROCERY
             viewModel.store = null
             description.text?.clear()
@@ -441,7 +440,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
             imageRes = viewModel.store!!.category.storeImageRes
         } else {
             val category = Category.values()[index]
-            name = resources.getString(category.nameRes)
+            name = getString(category.nameRes)
             imageRes = category.imageRes
             viewModel.category = category
         }
