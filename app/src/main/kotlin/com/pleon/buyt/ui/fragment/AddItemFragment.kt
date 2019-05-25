@@ -139,7 +139,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
 
         val priceSuffix = getString(R.string.input_suffix_price)
         priceEd.addTextChangedListener(NumberInputWatcher(price_layout, priceEd, priceSuffix))
-        quantityEd.addTextChangedListener(NumberInputWatcher(quantity_layout, quantityEd, null))
+        quantityEd.addTextChangedListener(NumberInputWatcher(quantity_layout, quantityEd))
 
         // To reverse position of the bought checkbox icon
         if (Locale.getDefault().language == "fa") bought.layoutDirection = LAYOUT_DIRECTION_LTR

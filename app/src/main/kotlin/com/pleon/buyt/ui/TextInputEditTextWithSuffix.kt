@@ -27,7 +27,7 @@ class TextInputEditTextWithSuffix : TextInputEditText {
     }
 
     /**
-     * Set the cursor position if it is on the suffix.
+     * Reposition the cursor if it is on the suffix.
      */
     override fun onSelectionChanged(selStart: Int, selEnd: Int) {
         if (suffix == null) return
