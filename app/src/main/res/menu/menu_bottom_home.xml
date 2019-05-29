@@ -18,7 +18,7 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/action_reorder"
+        android:id="@+id/action_reorder_skip"
         android:icon="@drawable/avd_reorder_skip"
         android:title="@string/menu_hint_reorder_items"
         app:showAsAction="always" />

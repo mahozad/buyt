@@ -43,7 +43,7 @@ import com.pleon.buyt.ui.dialog.Callback
 import com.pleon.buyt.ui.dialog.CreateStoreDialogFragment.CreateStoreListener
 import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
 import com.pleon.buyt.ui.fragment.*
-import com.pleon.buyt.util.AnimationUtil
+import com.pleon.buyt.util.AnimationUtil.animateIconInfinitely
 import com.pleon.buyt.util.SnackbarUtil.showSnackbar
 import com.pleon.buyt.util.VibrationUtil.vibrate
 import com.pleon.buyt.viewmodel.MainViewModel
@@ -73,9 +73,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
     //        is produced when another item was swiped partially
 
     @Inject internal lateinit var viewModelFactory: ViewModelFactory<MainViewModel>
+    @Inject internal lateinit var locationReceiver: LocationReceiver
     @Inject internal lateinit var broadcastMgr: LocalBroadcastManager
     @Inject internal lateinit var locationMgr: LocationManager
-    @Inject internal lateinit var locationReceiver: LocationReceiver
     private lateinit var viewModel: MainViewModel
     private lateinit var itemsFragment: ItemsFragment
     private lateinit var addMenuItem: MenuItem
@@ -134,9 +134,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
             if (!::addMenuItem.isInitialized) return@postDelayed
             viewModel.allItems.observe(this@MainActivity, Observer { items ->
                 if (items.isEmpty()) {
-                    if (viewModel.state == FINDING || viewModel.state == SELECTING) shiftToIdleState()
+                    shiftToIdleState()
                     addMenuItem.setIcon(R.drawable.avd_add_glow)
-                    AnimationUtil.animateIconInfinitely(addMenuItem.icon)
+                    animateIconInfinitely(addMenuItem.icon)
                 } else addMenuItem.setIcon(R.drawable.avd_add_hide)
             })
         }, 1000)
@@ -182,10 +182,10 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_bottom_home, menu)
+
         addMenuItem = menu.findItem(R.id.action_add)
-        if (itemsFragment.isListEmpty) AnimationUtil.animateIconInfinitely(addMenuItem.icon)
-        reorderMenuItem = menu.findItem(R.id.action_reorder)
         storeMenuItem = menu.findItem(R.id.found_stores)
+        reorderMenuItem = menu.findItem(R.id.action_reorder_skip)
         initializeAddStorePopup(storeMenuItem.actionView)
         storeMenuItem.actionView.setOnClickListener { showAddStorePopup() }
 
@@ -194,8 +194,8 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
             (bottom_bar.navigationIcon as Animatable).start()
             addMenuItem.isVisible = false
             if (viewModel.isAddingItem) {
+                // Because animating views was buggy in onOptionsItemSelected we do it here
                 reorderMenuItem.isVisible = false
-                // Because setting fab alignment was buggy in onOptionsItemSelected we set it here
                 bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
                 fab.setImageResource(R.drawable.avd_find_done)
                 (fab.drawable as Animatable).start()
@@ -238,7 +238,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
 
                 // Note that because AddItemFragment has setHasOptionsMenu(true) every time the
                 // fragment manager adds or replaces that fragment, the onCreateOptionsMenu() of
-                // this activity is called so we animate views in there.
+                // this activity is called so we had to animate views in there.
                 supportFragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.slide_up, 0, 0, R.anim.slide_down)
                         .replace(R.id.fragContainer, AddItemFragment())
@@ -246,7 +246,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
                         .commit()
             }
 
-            R.id.action_reorder -> {
+            R.id.action_reorder_skip -> {
                 if (viewModel.state == FINDING) skipFinding()
                 else if (!itemsFragment.isListEmpty) itemsFragment.toggleDragMode()
             }

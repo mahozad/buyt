@@ -15,10 +15,11 @@ object AnimationUtil {
     fun animateIconInfinitely(icon: Drawable) {
         registerAnimationCallback(icon, object : AnimationCallback() {
             private val handler = Handler(Looper.getMainLooper())
-            override fun onAnimationEnd(drawable: Drawable) {
-                handler.post { (drawable as Animatable).start() }
+            override fun onAnimationEnd(icon: Drawable) {
+                handler.post { (icon as Animatable).start() }
             }
         })
+
         (icon as Animatable).start()
     }
 }
