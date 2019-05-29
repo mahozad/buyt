@@ -2,12 +2,18 @@ package com.pleon.buyt
 
 import android.content.Context
 import android.content.res.Configuration
+import com.facebook.stetho.Stetho
 import com.pleon.buyt.di.DaggerAppComponent
 import com.pleon.buyt.util.LocaleUtil.setLocale
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 
-class BuytApplication : DaggerApplication() {
+class DebugApplication : DaggerApplication() {
+
+    override fun onCreate() {
+        super.onCreate()
+        Stetho.initializeWithDefaults(this)
+    }
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
         return DaggerAppComponent.builder().application(this).build()
