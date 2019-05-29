@@ -267,7 +267,6 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
                 viewModel.state == IDLE -> {
                     BottomDrawerFragment().show(supportFragmentManager, "BOTTOM_SHEET")
                 }
-                viewModel.state == FINDING -> shiftToIdleState()
                 else -> shiftToIdleState()
             }
         }
