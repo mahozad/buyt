@@ -184,8 +184,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
         menuInflater.inflate(R.menu.menu_bottom_home, menu)
 
         addMenuItem = menu.findItem(R.id.action_add)
-        storeMenuItem = menu.findItem(R.id.found_stores)
+        if (itemsFragment.isListEmpty) animateIconInfinitely(addMenuItem.icon) // This is needed
         reorderMenuItem = menu.findItem(R.id.action_reorder_skip)
+        storeMenuItem = menu.findItem(R.id.found_stores)
         initializeAddStorePopup(storeMenuItem.actionView)
         storeMenuItem.actionView.setOnClickListener { showAddStorePopup() }
 
@@ -193,16 +194,17 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
             bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
             (bottom_bar.navigationIcon as Animatable).start()
             addMenuItem.isVisible = false
-            if (viewModel.isAddingItem) {
-                // Because animating views was buggy in onOptionsItemSelected we do it here
-                reorderMenuItem.isVisible = false
-                bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
-                fab.setImageResource(R.drawable.avd_find_done)
-                (fab.drawable as Animatable).start()
-                scrim.animate().alpha(1f).setDuration(300).setListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationStart(anim: Animator?) = scrim.setVisibility(VISIBLE)
-                })
-            }
+        }
+
+        // Because animating views was buggy in onOptionsItemSelected we do it here
+        if (viewModel.isAddingItem) {
+            reorderMenuItem.isVisible = false
+            bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
+            fab.setImageResource(R.drawable.avd_find_done)
+            (fab.drawable as Animatable).start()
+            scrim.animate().alpha(1f).setDuration(300).setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationStart(anim: Animator?) = scrim.setVisibility(VISIBLE)
+            })
         }
 
         if (viewModel.state == FINDING) {
