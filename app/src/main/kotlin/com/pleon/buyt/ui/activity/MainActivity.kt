@@ -134,7 +134,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
             if (!::addMenuItem.isInitialized) return@postDelayed
             viewModel.allItems.observe(this@MainActivity, Observer { items ->
                 if (items.isEmpty()) {
-                    shiftToIdleState()
+                    if (viewModel.state != IDLE) shiftToIdleState() // The if is required
                     addMenuItem.setIcon(R.drawable.avd_add_glow)
                     animateIconInfinitely(addMenuItem.icon)
                 } else addMenuItem.setIcon(R.drawable.avd_add_hide)
