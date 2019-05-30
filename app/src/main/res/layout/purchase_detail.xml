@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:textColor="#C19835"
+            android:textColor="#C17C35"
             app:layout_constraintBaseline_toBaselineOf="@id/storeNameTv"
             app:layout_constraintStart_toEndOf="@id/storeNameTv"
             tools:text="@sample/storeNames" />
