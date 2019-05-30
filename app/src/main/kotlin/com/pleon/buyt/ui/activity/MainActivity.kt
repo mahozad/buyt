@@ -536,7 +536,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
     }
 
     /**
-     * On store selected from selection dialog
+     * On store selected from store selection dialog
      *
      * @param index
      */

@@ -18,6 +18,7 @@ class AddItemViewModel @Inject constructor(app: Application, val repository: Add
 
     private val nameCatsMediator = MediatorLiveData<Map<String, String>>()
     val itemNameCats: LiveData<Map<String, String>> = nameCatsMediator
+    val allStores get() = repository.getAllStores()
     var category = GROCERY
     var storeList: List<Store>? = null
     var store: Store? = null

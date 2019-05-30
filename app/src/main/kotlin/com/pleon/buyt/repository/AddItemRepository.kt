@@ -3,6 +3,7 @@ package com.pleon.buyt.repository
 import androidx.lifecycle.LiveData
 import com.pleon.buyt.database.dao.ItemDao
 import com.pleon.buyt.database.dao.PurchaseDao
+import com.pleon.buyt.database.dao.StoreDao
 import com.pleon.buyt.model.Item
 import com.pleon.buyt.model.Purchase
 import com.pleon.buyt.model.Store
@@ -15,15 +16,17 @@ import javax.inject.Singleton
 
 @Singleton
 class AddItemRepository @Inject constructor(private val itemDao: ItemDao,
+                                            private val storeDao: StoreDao,
                                             private val purchaseDao: PurchaseDao) {
 
     private val itemNameCats = SingleLiveEvent<Map<String, String>>()
+    private val allStores = SingleLiveEvent<List<Store>>()
 
     fun addItem(item: Item) = doAsync { itemDao.insert(item) }
 
     fun addPurchasedItem(item: Item, store: Store, purchaseDate: Date) {
         doAsync {
-            val purchase = Purchase(store.storeId, purchaseDate)
+            val purchase = Purchase(purchaseDate).apply { storeId = store.storeId }
             purchaseDao.insert(purchase).also { item.purchaseId = it }
             itemDao.insert(item)
         }
@@ -35,5 +38,13 @@ class AddItemRepository @Inject constructor(private val itemDao: ItemDao,
             uiThread { itemNameCats.value = nameCats }
         }
         return itemNameCats
+    }
+
+    fun getAllStores(): LiveData<List<Store>> {
+        doAsync {
+            val stores = storeDao.getAllSync()
+            uiThread { allStores.value = stores }
+        }
+        return allStores
     }
 }

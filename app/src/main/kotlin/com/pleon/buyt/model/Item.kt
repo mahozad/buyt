@@ -25,8 +25,8 @@ class Item(val name: String, @Embedded val quantity: Quantity, var category: Cat
     var itemId: Long = 0
     @ForeignKey(entity = Purchase::class, parentColumns = ["purchaseId"], childColumns = ["purchaseId"])
     var purchaseId: Long = 0
-    var description: String? = null
     var totalPrice: Long = 0
+    var description: String? = null
 
     // For display purposes
     var position: Int = 0

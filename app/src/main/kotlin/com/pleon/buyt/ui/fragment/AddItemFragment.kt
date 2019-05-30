@@ -20,7 +20,6 @@ import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.widget.CompoundButtonCompat
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.ViewModelProviders.of
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
@@ -35,7 +34,6 @@ import com.pleon.buyt.ui.dialog.DatePickerDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
 import com.pleon.buyt.viewmodel.AddItemViewModel
-import com.pleon.buyt.viewmodel.MainViewModel
 import com.pleon.buyt.viewmodel.ViewModelFactory
 import ir.huri.jcal.JalaliCalendar
 import kotlinx.android.synthetic.main.fragment_add_item.*
@@ -204,7 +202,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
             // FIXME: initialize this only once
             val selectionList = ArrayList<SelectDialogRow>() // dialog requires ArrayList
             if (isBoughtChecked) {
-                ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java).allStores.observe(viewLifecycleOwner, Observer { stores ->
+                viewModel.allStores.observe(viewLifecycleOwner, Observer { stores ->
                     viewModel.storeList = stores
                     selectionList.clear()
                     for (store in stores) {
@@ -402,7 +400,6 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
 
         if (validated) {
             val itemName = name.text.toString()
-            val quantity = quantity
             val item = Item(itemName, quantity, viewModel.category, urgent.isChecked, bought.isChecked)
 
             if (!isEmpty(description)) item.description = description.text.toString()

@@ -21,8 +21,8 @@ import javax.inject.Singleton
 // to fetch data from a network or use results cached in a local database.
 @Singleton
 class MainRepository @Inject constructor(private val itemDao: ItemDao,
-                                          private val storeDao: StoreDao,
-                                          private val purchaseDao: PurchaseDao) {
+                                         private val storeDao: StoreDao,
+                                         private val purchaseDao: PurchaseDao) {
 
     val allItems = itemDao.getAll()
     private val nearStores = SingleLiveEvent<List<Store>>()
@@ -34,7 +34,7 @@ class MainRepository @Inject constructor(private val itemDao: ItemDao,
 
     fun buy(items: Collection<Item>, store: Store, purchaseDate: Date) {
         doAsync {
-            val purchase = Purchase(store.storeId, purchaseDate)
+            val purchase = Purchase(purchaseDate).apply { storeId = store.storeId }
             val purchaseId = purchaseDao.insert(purchase)
             for (item in items) item.purchaseId = purchaseId.also { item.isBought = true }
             itemDao.updateAll(items)

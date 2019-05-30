@@ -91,6 +91,7 @@
                 android:layout_height="@dimen/unit_btn_height"
                 android:layout_alignParentBottom="true"
                 android:text="@string/qty_unit"
+                android:textAllCaps="false"
                 android:textColor="?colorOnSurface" />
 
             <com.google.android.material.button.MaterialButton
@@ -100,6 +101,7 @@
                 android:layout_height="@dimen/unit_btn_height"
                 android:layout_alignParentBottom="true"
                 android:text="@string/qty_kilogram"
+                android:textAllCaps="false"
                 android:textColor="?colorOnSurface" />
 
             <com.google.android.material.button.MaterialButton
@@ -109,6 +111,7 @@
                 android:layout_height="@dimen/unit_btn_height"
                 android:layout_alignParentBottom="true"
                 android:text="@string/qty_gram"
+                android:textAllCaps="false"
                 android:textColor="?colorOnSurface" />
 
         </com.google.android.material.button.MaterialButtonToggleGroup>
