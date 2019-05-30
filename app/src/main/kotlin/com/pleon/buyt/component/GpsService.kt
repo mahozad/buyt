@@ -15,6 +15,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.PRIORITY_DEFAULT
+import androidx.core.content.ContextCompat.getColor
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.activity.MainActivity
@@ -52,7 +53,7 @@ class GpsService : DaggerService(), LocationListener {
         val notificationIntent = Intent(this, MainActivity::class.java)
         pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
 
-        // note that apps targeting android P (API level 28) or later must declare the permission
+        // Note that apps targeting android P (API level 28) or later must declare the permission
         // Manifest.permission.FOREGROUND_SERVICE in order to use startForeground()
         startForeground(NOTIFICATION_ID, createFindingNotification())
     }
@@ -73,7 +74,7 @@ class GpsService : DaggerService(), LocationListener {
         return NotificationCompat.Builder(this, "Main")
                 .setSmallIcon(R.drawable.ald_buyt_notification)
                 .setOngoing(true)
-                .setLights(resources.getColor(R.color.colorPrimary), 500, 600)
+                .setLights(getColor(this, R.color.colorPrimary), 500, 600)
                 .setProgress(0, 0, true)
                 .setPriority(PRIORITY_DEFAULT) // set to MIN to hide the icon in notification bar
                 .setCategory(NotificationCompat.CATEGORY_PROGRESS)
@@ -93,9 +94,9 @@ class GpsService : DaggerService(), LocationListener {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
 
-        // FIXME: Because the first gps fix does not have a good accuracy, it seems better to call
-        // requestLocationUpdates() and then in onLocationFound() check the accuracy and if it's
-        // good enough call removeUpdates() there
+        /* FIXME: Because the first gps fix does not have a good accuracy, it seems better to call
+         *  requestLocationUpdates() and then in onLocationFound() check the accuracy and if it's
+         *  good enough call removeUpdates() there */
         locationManager.requestSingleUpdate(PROVIDER, this, null)
 
         // If we get killed, after returning from here, don't restart
@@ -103,8 +104,8 @@ class GpsService : DaggerService(), LocationListener {
     }
 
     override fun onLocationChanged(location: Location) {
-        // TODO: Make the intent explicit by defining the receiver class instead of action
-        // For broadcast receivers, the intent simply defines the announcement being broadcast
+        /* TODO: Make the intent explicit by defining the receiver class instead of action
+         *  For broadcast receivers, the intent simply defines the announcement being broadcast */
         val result = Intent(ACTION_LOCATION_EVENT)
         result.putExtra(EXTRA_LOCATION, location)
         LocalBroadcastManager.getInstance(this).sendBroadcast(result)
@@ -133,7 +134,7 @@ class GpsService : DaggerService(), LocationListener {
         locationManager.removeUpdates(this)
 
         // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        // stopForeground(false) // here notification can be removed as well
+        //     stopForeground(false) // here notification can be removed as well
         // }
     }
 }

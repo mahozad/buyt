@@ -17,7 +17,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
-import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getColor
 import androidx.core.widget.CompoundButtonCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -228,9 +228,9 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         return true
     }
 
-    // FIXME: If date picker dialog is shown (at least once) and a configuration change happens
-    // (e.g. screen rotation), then the date picker is shown. This problem seems to have nothing
-    // to do with the following two methods calling each other.
+    /* FIXME: If date picker dialog is shown (at least once) and a configuration change happens
+     *  (e.g. screen rotation), then the date picker is shown. This problem seems to have nothing
+     *  to do with the following two methods calling each other. */
 
     /**
      * DatePickerDialog.show() for persian calendar is passed getActivity().getFragmentManager()
@@ -329,7 +329,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         (CompoundButtonCompat.getButtonDrawable(bought) as Animatable).start()
         if (selectCategoryTxvi != null) { // to fix bug on config change
             selectCategoryTxvi!!.text = if (checked) getString(R.string.menu_title_select_store) else getString(viewModel.category.nameRes)
-            selectCategoryTxvi!!.setTextColor(ContextCompat.getColor(context!!, colorOnSurface))
+            selectCategoryTxvi!!.setTextColor(getColor(context!!, colorOnSurface))
             @DrawableRes val icon = if (checked) R.drawable.avd_store_error else R.drawable.ic_item_grocery
             selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(
                     icon, 0, 0, 0
@@ -359,7 +359,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
                     intArrayOf(android.R.attr.state_checked), // checked
                     intArrayOf(android.R.attr.state_checked * -1) // unchecked
             )
-            val colors = intArrayOf(resources.getColor(color), colorSurface)
+            val colors = intArrayOf(getColor(context!!, color), colorSurface)
             btn.backgroundTintList = ColorStateList(states, colors)
         }
     }
@@ -420,7 +420,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
             selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(
                     R.drawable.ic_item_grocery, 0, 0, 0
             )
-            selectCategoryTxvi!!.setTextColor(ContextCompat.getColor(context!!, colorOnSurface))
+            selectCategoryTxvi!!.setTextColor(getColor(context!!, colorOnSurface))
             selectCategoryTxvi!!.text = getString(Category.GROCERY.nameRes)
             viewModel.category = Category.GROCERY
             viewModel.store = null
@@ -447,7 +447,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(
                 imageRes, 0, 0, 0
         )
-        selectCategoryTxvi!!.setTextColor(ContextCompat.getColor(context!!, colorOnSurface))
+        selectCategoryTxvi!!.setTextColor(getColor(context!!, colorOnSurface))
         selectCategoryTxvi!!.text = name
     }
 
@@ -468,7 +468,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
             validated = false
         }
         if (isBoughtChecked && viewModel.store == null) {
-            selectCategoryTxvi!!.setTextColor(ContextCompat.getColor(context!!, colorError))
+            selectCategoryTxvi!!.setTextColor(getColor(context!!, colorError))
             selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(
                     R.drawable.avd_store_error, 0, 0, 0
             )

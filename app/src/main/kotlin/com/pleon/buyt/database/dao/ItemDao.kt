@@ -39,8 +39,8 @@ abstract class ItemDao {
     @Query("UPDATE Item SET position = (SELECT MAX(position) + 1 FROM Item) WHERE itemId = :itemId")
     protected abstract fun updatePosition(itemId: Long)
 
-    // FIXME: very heavy operation. @Update method, updates all fields of an entity
-    // so this method updates all fields of all of the given items!
+    /* FIXME: very heavy operation. @Update method, updates all fields of an entity
+     *  so this method updates all fields of all of the given items! */
     @Update
     abstract fun updateAll(items: Collection<Item>)
 

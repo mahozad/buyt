@@ -91,8 +91,8 @@ class SelectDialogFragment : AppCompatDialogFragment(), SelectionListAdapter.Cal
 
         fun newInstance(callback: Callback, @StringRes title: Int,
                         list: ArrayList<SelectDialogRow>): SelectDialogFragment {
-            // FIXME: callback should be set in the onAttach() method, but because the context passed to it
-            // is the containing activity and not the containing fragment, we passed it here
+            /* FIXME: callback should be set in the onAttach() method, but because the context passed
+             *  to it is the containing activity and not the containing fragment, we passed it here */
             Companion.callback = callback
 
             val fragment = SelectDialogFragment()

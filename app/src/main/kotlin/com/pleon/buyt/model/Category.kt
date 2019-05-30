@@ -3,8 +3,8 @@ package com.pleon.buyt.model
 import com.pleon.buyt.R
 import com.pleon.buyt.viewmodel.StatsViewModel.Filter
 
-// TODO: store the enum as a separate table in the database.
-// see [https://softwareengineering.stackexchange.com/a/305153/311271]
+/* TODO: store the enum as a separate table in the database.
+ *  See [https://softwareengineering.stackexchange.com/a/305153/311271] */
 enum class Category(val nameRes: Int, val imageRes: Int,
                     val storeNameRes: Int, val storeImageRes: Int) : Filter {
 

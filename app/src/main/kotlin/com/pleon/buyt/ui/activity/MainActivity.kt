@@ -69,8 +69,8 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
     // For a good article about dagger see
     // [https://medium.com/@iammert/new-android-injector-with-dagger-2-part-1-8baa60152abe]
 
-    // FIXME: The bug that sometimes occur when expanding an item (the bottom item jumps up one moment),
-    //        is produced when another item was swiped partially
+    /* FIXME: The bug that sometimes occur when expanding an item
+     *  (the bottom item jumps up one moment), is produced when another item was swiped partially */
 
     @Inject internal lateinit var viewModelFactory: ViewModelFactory<MainViewModel>
     @Inject internal lateinit var locationReceiver: LocationReceiver
@@ -313,8 +313,8 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-        // TODO: Use Saved State module for ViewModel instead.
-        // See [https://developer.android.com/topic/libraries/architecture/viewmodel-savedstate]
+        /* TODO: Use Saved State module for ViewModel instead.
+         *  See [https://developer.android.com/topic/libraries/architecture/viewmodel-savedstate] */
 
         // There is nothing special in IDLE state to save here; In FINDING state, app runs a
         // FOREGROUND service and is unkillable so this state also doesn't need to save its data

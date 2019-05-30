@@ -7,7 +7,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
-import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getColor
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders.of
 import com.db.chart.animation.Animation
@@ -85,12 +85,12 @@ class StatsFragment : BaseFragment() {
         }
 
         if (dailyCosts.size <= 30) {
-            dataSet.setDotsColor(ContextCompat.getColor(context!!,
+            dataSet.setDotsColor(getColor(context!!,
                     if (totalExpenses == 0L) R.color.chartEmptyColor else R.color.colorPrimary))
             dataSet.setDotsRadius(3f)
         }
         dataSet.isSmooth = false
-        dataSet.color = ContextCompat.getColor(context!!,
+        dataSet.color = getColor(context!!,
                 if (totalExpenses == 0L) R.color.chartEmptyColor else R.color.colorPrimaryDark)
         dataSet.thickness = 2.5f
 
