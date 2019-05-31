@@ -119,12 +119,12 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.1.0-alpha05")
     implementation("androidx.preference:preference:1.1.0-alpha05")
     implementation("androidx.viewpager2:viewpager2:1.0.0-alpha04")
-    implementation("androidx.room:room-runtime:2.1.0-beta01")
-    kapt("androidx.room:room-compiler:2.1.0-beta01")
-    implementation("com.google.dagger:dagger:2.22.1")
-    implementation("com.google.dagger:dagger-android-support:2.22.1")
-    kapt("com.google.dagger:dagger-compiler:2.22.1")
-    kapt("com.google.dagger:dagger-android-processor:2.22.1")
+    implementation("androidx.room:room-runtime:2.1.0-rc01")
+    kapt("androidx.room:room-compiler:2.1.0-rc01")
+    implementation("com.google.dagger:dagger:2.23")
+    implementation("com.google.dagger:dagger-android-support:2.23")
+    kapt("com.google.dagger:dagger-compiler:2.23")
+    kapt("com.google.dagger:dagger-android-processor:2.23")
 
     /* If you're targeting JDK 8, you can use extended versions of the Kotlin standard library
      * which contain additional extension functions for APIs added in new JDK versions.
