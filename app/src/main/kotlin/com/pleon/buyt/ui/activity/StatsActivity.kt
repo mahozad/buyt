@@ -11,10 +11,8 @@ import android.view.MenuItem
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders.of
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.pleon.buyt.R
-import com.pleon.buyt.ui.TabLayoutMediator
-import com.pleon.buyt.ui.TabLayoutMediator.OnConfigureTabCallback
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.viewmodel.StatsViewModel
 import com.pleon.buyt.viewmodel.ViewModelFactory
@@ -50,13 +48,9 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
         registerReceiver(timeReceiver, IntentFilter(Intent.ACTION_TIME_TICK))
 
         viewPager.adapter = adapter
-        // FIXME: Use ViewPager2 native tab layout if introduced in new releases
-        TabLayoutMediator(tabLayout, viewPager, object : OnConfigureTabCallback {
-            override fun onConfigureTab(tab: TabLayout.Tab, position: Int) {
-                viewPager.setCurrentItem(tab.position, true)
-                tab.text = if (position == 0) getString(R.string.tab_title_charts) else getString(R.string.tab_title_details)
-            }
-        }).attach()
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = if (position == 0) getString(R.string.tab_title_charts) else getString(R.string.tab_title_details)
+        }.attach()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
