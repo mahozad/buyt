@@ -38,9 +38,11 @@ import com.pleon.buyt.component.GpsService
 import com.pleon.buyt.component.LocationReceiver
 import com.pleon.buyt.model.Coordinates
 import com.pleon.buyt.model.Store
-import com.pleon.buyt.ui.dialog.*
-import com.pleon.buyt.ui.dialog.Callback
+import com.pleon.buyt.ui.dialog.CreateStoreDialogFragment
 import com.pleon.buyt.ui.dialog.CreateStoreDialogFragment.CreateStoreListener
+import com.pleon.buyt.ui.dialog.LocationOffDialogFragment
+import com.pleon.buyt.ui.dialog.RationaleDialogFragment
+import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
 import com.pleon.buyt.ui.fragment.*
 import com.pleon.buyt.util.AnimationUtil.animateIconInfinitely
@@ -60,7 +62,7 @@ private const val REQUEST_LOCATION_PERMISSION = 1
  * UI controllers such as activities and fragments are primarily intended to display UI data,
  * react to user actions, or handle operating system communication, such as permission requests.
  */
-class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, CreateStoreListener {
+class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreListener {
 
     // To force kill the app, go to the desired activity, press home button and then run this command:
     // adb shell am kill com.pleon.buyt
@@ -168,12 +170,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
             addItemFragment.onDonePressed()
         } else if (viewModel.state == IDLE) { // act as find
             if (itemsFragment.isListEmpty) itemsFragment.emphasisEmpty()
-            else {
-                addMenuItem.setIcon(R.drawable.avd_add_hide).apply { (icon as Animatable).start() }
-                // disable effect of tapping on the menu item and its ripple
-                Handler().postDelayed({ addMenuItem.isVisible = false }, 300)
-                findLocation()
-            }
+            else findLocation()
         } else if (viewModel.state == SELECTING) { // act as done
             if (itemsFragment.isSelectedEmpty) showSnackbar(snbContainer, R.string.snackbar_message_no_item_selected, LENGTH_SHORT)
             else buySelectedItems()
@@ -352,17 +349,8 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
         if (reqCode == REQUEST_LOCATION_PERMISSION) {
             // If request is cancelled, the result arrays are empty.
             if (grants.isNotEmpty() && grants[0] == PERMISSION_GRANTED) findLocation()
-            else { // if permission denied
-                viewModel.shouldAnimateNavIcon = true
-                skipFinding()
-            }
         }
         super.onRequestPermissionsResult(reqCode, perms, grants)
-    }
-
-    override fun onEnableLocationDenied() {
-        viewModel.shouldAnimateNavIcon = true
-        skipFinding()
     }
 
     private fun skipFinding() {
@@ -392,6 +380,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
             val rationaleDialog = LocationOffDialogFragment.newInstance()
             rationaleDialog.show(supportFragmentManager, "LOCATION_OFF_DIALOG")
         } else {
+            addMenuItem.setIcon(R.drawable.avd_add_hide).apply { (icon as Animatable).start() }
+            // disable effect of tapping on the menu item and its ripple
+            Handler().postDelayed({ addMenuItem.isVisible = false }, 300)
             shiftToFindingState()
             val intent = Intent(this, GpsService::class.java)
             ContextCompat.startForegroundService(this, intent) // no need to check api lvl
@@ -435,10 +426,6 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
     private fun shiftToSelectingState() {
         itemsFragment.toggleItemsCheckbox(true)
 
-        if (viewModel.shouldAnimateNavIcon) {
-            bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
-            (bottom_bar.navigationIcon as Animatable).start()
-        }
         reorderMenuItem.isVisible = false
         bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
 
@@ -472,7 +459,6 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, Callback, Cr
         }
         viewModel.resetFoundStores()
         viewModel.shouldCompletePurchase = false
-        viewModel.shouldAnimateNavIcon = false
         viewModel.isFindingSkipped = false
         viewModel.isAddingItem = false
         viewModel.state = IDLE // this should be the last statement (because of the if above)
