@@ -118,17 +118,17 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
      */
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
+        showIntroIfNeeded()
+        restoreBottomDrawerIfNeeded()
 
         viewModel = of(this, viewModelFactory).get(MainViewModel::class.java)
         broadcastMgr.registerReceiver(locationReceiver, IntentFilter(ACTION_LOCATION_EVENT))
         locationReceiver.getLocation().observe(this, Observer { onLocationFound(it) })
         itemsFragment = supportFragmentManager.findFragmentById(R.id.itemsFragment) as ItemsFragment
 
-        fab.setOnClickListener { onFabClick() }
         scrim.setOnClickListener { if (scrim.alpha == 1f) onBackPressed() }
+        fab.setOnClickListener { onFabClick() }
         setupEmptyListListener()
-        showIntroIfNeeded()
-        restoreBottomDrawerIfNeeded()
     }
 
     private fun setupEmptyListListener() {
@@ -136,12 +136,12 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
             if (!::addMenuItem.isInitialized) return@postDelayed
             viewModel.allItems.observe(this@MainActivity, Observer { items ->
                 if (items.isEmpty()) {
-                    if (viewModel.state != IDLE) shiftToIdleState() // The if is required
+                    if (viewModel.state != IDLE) shiftToIdleState() // "if" is required
                     addMenuItem.setIcon(R.drawable.avd_add_glow)
                     animateIconInfinitely(addMenuItem.icon)
                 } else addMenuItem.setIcon(R.drawable.avd_add_hide)
             })
-        }, 1000)
+        }, 3500)
     }
 
     private fun showIntroIfNeeded() {
@@ -202,7 +202,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
             scrim.animate().alpha(1f).setDuration(300).setListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationStart(anim: Animator?) = scrim.setVisibility(VISIBLE)
             })
-        }
+        } else if (!itemsFragment.isListEmpty) addMenuItem.setIcon(R.drawable.avd_add_hide)
 
         if (viewModel.state == FINDING) {
             reorderMenuItem.setIcon(R.drawable.avd_skip_reorder).setTitle(R.string.menu_hint_skip_finding)
@@ -381,7 +381,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
             rationaleDialog.show(supportFragmentManager, "LOCATION_OFF_DIALOG")
         } else {
             addMenuItem.setIcon(R.drawable.avd_add_hide).apply { (icon as Animatable).start() }
-            // disable effect of tapping on the menu item and its ripple
+            // disable effect of tapping on the menu item and also hide its ripple
             Handler().postDelayed({ addMenuItem.isVisible = false }, 300)
             shiftToFindingState()
             val intent = Intent(this, GpsService::class.java)
