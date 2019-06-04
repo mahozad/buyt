@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- foreground services require this for API level 28 or higher -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> <!-- The app can function without location features so we specify it as not required -->
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="com.farsitel.bazaar.permission.PAY_THROUGH_BAZAAR" /> <!-- For in-app billing-->
 
     <uses-feature
         android:name="android.hardware.location"

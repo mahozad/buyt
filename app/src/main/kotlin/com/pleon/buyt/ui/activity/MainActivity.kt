@@ -14,6 +14,7 @@ import android.location.LocationManager
 import android.location.LocationManager.GPS_PROVIDER
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -33,6 +34,7 @@ import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_END
 import com.google.android.material.snackbar.Snackbar.*
 import com.pleon.buyt.R
+import com.pleon.buyt.billing.IabHelper
 import com.pleon.buyt.component.ACTION_LOCATION_EVENT
 import com.pleon.buyt.component.GpsService
 import com.pleon.buyt.component.LocationReceiver
@@ -73,6 +75,15 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
 
     /* FIXME: The bug that sometimes occur when expanding an item
      *  (the bottom item jumps up one moment), is produced when another item was swiped partially */
+
+    // SKU for our product: the premium upgrade (non-consumable)
+    val SKU_PREMIUM = "full_features"
+    // Does the user have the premium upgrade?
+    var mIsPremium = false
+    // (arbitrary) request code for the purchase flow
+    val RC_REQUEST: Int = 62026
+    // The helper object
+    lateinit var iabHelper: IabHelper
 
     @Inject internal lateinit var viewModelFactory: ViewModelFactory<MainViewModel>
     @Inject internal lateinit var locationReceiver: LocationReceiver
@@ -121,13 +132,78 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
         showIntroIfNeeded()
         restoreBottomDrawerIfNeeded()
 
+
+
+        // TODO: Encrypt premium attribute in preferences to prevent the user from hacking it.
+        //  See [https://developer.android.com/jetpack/androidx/releases/security]
+        //  and [https://developer.android.com/topic/security/data]
+
+
+        // It is recommended to add more security than just pasting it in your source code;
+        val base64EncodedPublicKey = "MIHNMA0GCSqGSIb3DQEBAQUAA4G7ADCBtwKBrwDW/+Cgaba85mg16U2qNlPChs" +
+                "7LrqiEnfwZX1odxiY1mO9SPNM2uE8B8kAND9OuXENeYQVLtXISJ9sjdJ2a3WW6ZWGLMUzDKuVSRBSnGM632" +
+                "hvWLh9xye/WsFP2Q9zZH2xi5/dbQ/mix1VcdxycWCgHtCJ7lFGfq9yVvJ+ZHoIivIMEWy5NbksQziTgwHK0" +
+                "fDh1kIN6qDB8zJIH2ak0kENK6Mk0r75hI6MkPHz8f/sCAwEAAQ=="
+        iabHelper = IabHelper(this, base64EncodedPublicKey)
+        // Start billing setup. This is asynchronous and the specified listener
+        // will be called once setup completes.
+        iabHelper.startSetup { setupResult ->
+            if (!setupResult.isSuccess) {
+                /* Oh noes, there was a problem.*/
+                Log.e(TAG, "Problem setting up in-app billing: $setupResult")
+            }
+            // Hooray, IAB is fully set up!
+
+            iabHelper.queryInventoryAsync(IabHelper.QueryInventoryFinishedListener { result, inventory ->
+                // Is called when we finish querying the items and subscriptions we own
+
+                if (result.isFailure) {
+                    Log.d(TAG, "Failed to query inventory: $result")
+                    return@QueryInventoryFinishedListener
+                } else {
+                    Log.d(TAG, "Query inventory was successful.")
+                    mIsPremium = inventory.hasPurchase(SKU_PREMIUM)
+                    Log.d(TAG, "does the user have the premium upgrade? $mIsPremium")
+
+                    // update UI accordingly
+
+                }
+
+            })
+        }
+
+
+
+
+
+
+
         viewModel = of(this, viewModelFactory).get(MainViewModel::class.java)
         broadcastMgr.registerReceiver(locationReceiver, IntentFilter(ACTION_LOCATION_EVENT))
         locationReceiver.getLocation().observe(this, Observer { onLocationFound(it) })
         itemsFragment = supportFragmentManager.findFragmentById(R.id.itemsFragment) as ItemsFragment
 
         scrim.setOnClickListener { if (scrim.alpha == 1f) onBackPressed() }
-        fab.setOnClickListener { onFabClick() }
+        fab.setOnClickListener {
+            // onFabClick()
+
+
+            // Send the user to buy the premium version of the app.
+            // We will be notified of completion via the listener parameter.
+            /* TODO: for security, generate your payload here for verification.
+             *  Since this is a SAMPLE, we just use a random string, but on a production app
+             *  you should carefully generate this. */
+            iabHelper.flagEndAsync() // To prevent error when previous purchases abandoned
+            iabHelper.launchPurchaseFlow(
+                    this, SKU_PREMIUM, RC_REQUEST,
+                    IabHelper.OnIabPurchaseFinishedListener { result, info ->
+                        Log.d(TAG, "Purchase finished. Result: $result")
+                    },
+                    "payload-string"
+            )
+
+
+        }
         setupEmptyListListener()
     }
 
@@ -169,8 +245,11 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
             val addItemFragment = supportFragmentManager.findFragmentById(R.id.fragContainer) as AddItemFragment
             addItemFragment.onDonePressed()
         } else if (viewModel.state == IDLE) { // act as find
-            if (itemsFragment.isListEmpty) itemsFragment.emphasisEmpty()
-            else findLocation()
+            viewModel.isBuyLimitReached.observe(this, Observer { purchaseCount ->
+                if (itemsFragment.isListEmpty) itemsFragment.emphasisEmpty()
+                else if (purchaseCount >= /*buyLimit*/ 5) /*showUpgradeProDialog()*/
+                else findLocation()
+            })
         } else if (viewModel.state == SELECTING) { // act as done
             if (itemsFragment.isSelectedEmpty) showSnackbar(snbContainer, R.string.snackbar_message_no_item_selected, LENGTH_SHORT)
             else buySelectedItems()
@@ -368,6 +447,8 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
         super.onDestroy()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(locationReceiver)
 
+        iabHelper.dispose()
+
         // if activity being destroyed because of back button (not because of config change)
         if (isFinishing) stopService(Intent(this, GpsService::class.java))
     }
@@ -499,6 +580,15 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
                 selectDialog.show(supportFragmentManager, "SELECT_STORE_DIALOG")
                 // next this::completeBuy() is called
             }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        // Pass on the activity result to the helper for handling
+        if (!iabHelper.handleActivityResult(requestCode, resultCode, data)) {
+            // Not handled, so handle it ourselves (here's where you'd perform any handling of
+            // activity results not related to in-app billing...
+            super.onActivityResult(requestCode, resultCode, data)
         }
     }
 
