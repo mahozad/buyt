@@ -81,7 +81,8 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
         viewModel.flagItemForDeletion(item)
         showUndoSnackbar(snbContainer, getString(R.string.snackbar_message_item_deleted, item.name),
                 onUndo = { viewModel.restoreDeletedItem(item) },
-                onDismiss = { viewModel.deleteItem(item) })
+                onDismiss = { viewModel.deleteItem(item) }
+        )
     }
 
     // **

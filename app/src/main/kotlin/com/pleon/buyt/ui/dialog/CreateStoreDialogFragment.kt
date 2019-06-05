@@ -80,7 +80,7 @@ class CreateStoreDialogFragment : DaggerDialogFragment() {
         spinner.adapter = adapter
 
         dialog = AlertDialog.Builder(activity!!)
-                .setView(customView).setTitle(getString(R.string.dialog_title_create_store))
+                .setView(customView).setTitle(R.string.dialog_title_create_store)
                 .setPositiveButton(android.R.string.ok, null)
                 .setNegativeButton(android.R.string.cancel, null)
                 .create()

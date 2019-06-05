@@ -29,13 +29,13 @@ class RationaleDialogFragment : AppCompatDialogFragment() {
     override fun onCreateDialog(savedState: Bundle?): Dialog {
         val dialog = MaterialAlertDialogBuilder(context!!)
                 .setIcon(R.drawable.ic_location_off)
-                .setPositiveButton(getString(R.string.dialog_action_go_to_settings)) { _, _ ->
+                .setPositiveButton(R.string.dialog_action_go_to_settings) { _, _ ->
                     val intent = Intent(ACTION_APPLICATION_DETAILS_SETTINGS)
                     val uri = Uri.fromParts("package", activity!!.packageName, null)
                     intent.data = uri
                     startActivity(intent)
                 }
-                .setNegativeButton(getString(R.string.dialog_action_skip)) { _, _ -> /* To dismiss on click */ }
+                .setNegativeButton(R.string.dialog_action_skip) { _, _ -> /* To dismiss on click */ }
                 .create()
 
         dialog.setTitle(R.string.dialog_title_location_permission)

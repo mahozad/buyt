@@ -36,7 +36,6 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * Provides convenience methods for in-app billing. You can create one instance of this
  * class for your application and use it to process in-app billing operations.
@@ -70,6 +69,7 @@ import java.util.List;
  *
  */
 public class IabHelper {
+
     // Is debug logging enabled?
     boolean mDebugLog = false;
     String mDebugTag = "IabHelper";
@@ -625,11 +625,7 @@ public class IabHelper {
                 final IabResult result_f = result;
                 final Inventory inv_f = inv;
                 if (!mDisposed && listener != null) {
-                    handler.post(new Runnable() {
-                        public void run() {
-                            listener.onQueryInventoryFinished(result_f, inv_f);
-                        }
-                    });
+                    handler.post(() -> listener.onQueryInventoryFinished(result_f, inv_f));
                 }
             }
         })).start();
@@ -959,18 +955,10 @@ public class IabHelper {
 
                 flagEndAsync();
                 if (!mDisposed && singleListener != null) {
-                    handler.post(new Runnable() {
-                        public void run() {
-                            singleListener.onConsumeFinished(purchases.get(0), results.get(0));
-                        }
-                    });
+                    handler.post(() -> singleListener.onConsumeFinished(purchases.get(0), results.get(0)));
                 }
                 if (!mDisposed && multiListener != null) {
-                    handler.post(new Runnable() {
-                        public void run() {
-                            multiListener.onConsumeMultiFinished(purchases, results);
-                        }
-                    });
+                    handler.post(() -> multiListener.onConsumeMultiFinished(purchases, results));
                 }
             }
         })).start();

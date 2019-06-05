@@ -29,8 +29,8 @@ class LocationOffDialogFragment : AppCompatDialogFragment() {
 
         val dialog = MaterialAlertDialogBuilder(context!!)
                 .setIcon(R.drawable.ic_location_off)
-                .setPositiveButton(getString(R.string.dialog_action_go_to_settings)) { _, _ -> startActivity(Intent(ACTION_LOCATION_SOURCE_SETTINGS)) }
-                .setNegativeButton(getString(R.string.dialog_action_skip)) { _, _ -> /* To dismiss on click */ }
+                .setPositiveButton(R.string.dialog_action_go_to_settings) { _, _ -> startActivity(Intent(ACTION_LOCATION_SOURCE_SETTINGS)) }
+                .setNegativeButton(R.string.dialog_action_skip) { _, _ -> /* To dismiss on click */ }
                 .create()
 
         // getText is to preserve html formats
