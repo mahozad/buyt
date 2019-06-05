@@ -27,7 +27,7 @@ class UpgradePromptDialogFragment : AppCompatDialogFragment() {
      */
     override fun onCreateDialog(savedState: Bundle?): Dialog {
         val dialog = MaterialAlertDialogBuilder(context!!)
-                .setIcon(R.drawable.ic_warning)
+                .setIcon(R.drawable.ic_star)
                 .setPositiveButton(R.string.dialog_action_upgrade_to_premium) { _, _ ->
                     val intent = Intent(context, HelpActivity::class.java)
                     intent.putExtra(EXTRA_SHOULD_START_UPGRADE, true)

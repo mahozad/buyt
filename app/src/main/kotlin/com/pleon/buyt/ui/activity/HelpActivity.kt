@@ -54,7 +54,7 @@ class HelpActivity : BaseActivity() {
 
         // performClick() does not work if the click listener has not been set
         if (intent.getBooleanExtra(EXTRA_SHOULD_START_UPGRADE, false))
-        Handler().postDelayed({ upgradeToPremiumBtn.performClick() }, 500)
+            Handler().postDelayed({ upgradeToPremiumBtn.performClick() }, 500)
     }
 
     private fun startPurchase() {
@@ -92,7 +92,7 @@ class HelpActivity : BaseActivity() {
     private fun animateViews() {
         Handler().postDelayed({ (logo.drawable as Animatable).start() }, 300)
         Handler().postDelayed({ nameVersion.animate().alpha(1f).duration = 300 }, 500)
-        Handler().postDelayed({ upgradeToPremiumBtn.animate().alpha(1f).duration = 200 }, 1000)
+        Handler().postDelayed({ upgradeToPremiumBtn.animate().alpha(1f).duration = 300 }, 1000)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

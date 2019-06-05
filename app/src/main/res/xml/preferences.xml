@@ -27,7 +27,6 @@
         android:entryValues="@array/pref_theme_vals"
         android:icon="@drawable/ic_theme"
         android:key="THEME"
-        android:title="@string/pref_title_theme"
         app:useSimpleSummaryProvider="true" />
 
     <ListPreference
@@ -37,7 +36,6 @@
         android:entryValues="@array/pref_lang_vals"
         android:icon="@drawable/ic_language"
         android:key="LANG"
-        android:title="@string/pref_title_lang"
         app:useSimpleSummaryProvider="true" />
 
     <!--<Preference-->

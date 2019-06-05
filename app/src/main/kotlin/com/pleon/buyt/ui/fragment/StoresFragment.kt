@@ -12,10 +12,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.pleon.buyt.R
+import com.pleon.buyt.isPremium
 import com.pleon.buyt.ui.ItemSpacingDecoration
 import com.pleon.buyt.ui.TouchHelperCallback
 import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener
 import com.pleon.buyt.ui.adapter.StoresAdapter
+import com.pleon.buyt.ui.dialog.UpgradePromptDialogFragment
 import com.pleon.buyt.util.SnackbarUtil.showUndoSnackbar
 import com.pleon.buyt.viewmodel.StoresViewModel
 import com.pleon.buyt.viewmodel.ViewModelFactory
@@ -62,8 +64,12 @@ class StoresFragment : BaseFragment(), ItemTouchHelperListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_sort) {
-            viewModel.toggleSort()
-            updateSortMenuItemView()
+            if (isPremium) {
+                viewModel.toggleSort()
+                updateSortMenuItemView()
+            } else {
+                UpgradePromptDialogFragment().show(activity!!.supportFragmentManager, "UPGRADE_DIALOG")
+            }
         }
         return true
     }

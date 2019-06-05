@@ -7,9 +7,11 @@ import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Bundle
 import androidx.core.app.TaskStackBuilder
+import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.pleon.buyt.R
+import com.pleon.buyt.isPremium
 import com.pleon.buyt.ui.activity.MainActivity
 
 const val PREF_LANG = "LANG"
@@ -32,6 +34,15 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
     override fun onCreatePreferences(savedState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
         getDefaultSharedPreferences(context).registerOnSharedPreferenceChangeListener(this)
+
+        preferenceScreen.findPreference<ListPreference>(PREF_THEME)!!.apply {
+            isEnabled = isPremium
+            setTitle(if (isPremium) R.string.pref_title_theme else R.string.pref_title_theme_disabled)
+        }
+        preferenceScreen.findPreference<ListPreference>(PREF_LANG)!!.apply {
+            isEnabled = isPremium
+            setTitle(if (isPremium) R.string.pref_title_lang else R.string.pref_title_lang_disabled)
+        }
     }
 
     override fun onSharedPreferenceChanged(prefs: SharedPreferences, key: String) {
