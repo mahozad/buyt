@@ -4,5 +4,6 @@
     <dimen name="chart_bar_spacing">16dp</dimen>
     <dimen name="quantity_margin">5dp</dimen>
     <dimen name="unit_btn_height">62.5dp</dimen>
+    <dimen name="wave_header_height">120dp</dimen>
     <integer name="layout_columns">1</integer>
 </resources>
