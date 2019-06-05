@@ -170,7 +170,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
             viewModel.purchaseCountInPeriod.observe(this, Observer { purchaseCount ->
                 if (itemsFragment.isListEmpty) itemsFragment.emphasisEmpty()
                 else if (purchaseCount >= FREE_BUY_LIMIT)
-                    UpgradePromptDialogFragment(getText(R.string.dialog_message_free_limit_reached))
+                    UpgradePromptDialogFragment.newInstance(getText(R.string.dialog_message_free_limit_reached))
                             .show(supportFragmentManager, "UPGRADE_DIALOG")
                 else findLocation()
             })

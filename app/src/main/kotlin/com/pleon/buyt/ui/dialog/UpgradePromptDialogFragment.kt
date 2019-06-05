@@ -9,7 +9,17 @@ import com.pleon.buyt.R
 import com.pleon.buyt.ui.activity.EXTRA_SHOULD_START_UPGRADE
 import com.pleon.buyt.ui.activity.HelpActivity
 
-class UpgradePromptDialogFragment(private val message: CharSequence) : AppCompatDialogFragment() {
+class UpgradePromptDialogFragment : AppCompatDialogFragment() {
+
+    companion object {
+        fun newInstance(message: CharSequence): UpgradePromptDialogFragment {
+            val fragment = UpgradePromptDialogFragment()
+            val args = Bundle()
+            fragment.arguments = args
+            args.putCharSequence("MESSAGE", message)
+            return fragment
+        }
+    }
 
     /**
      * When you override `onCreateDialog`, Android COMPLETELY IGNORES several
@@ -37,7 +47,7 @@ class UpgradePromptDialogFragment(private val message: CharSequence) : AppCompat
                 .create()
 
         dialog.setTitle(R.string.dialog_title_upgrade_to_premium)
-        dialog.setMessage(message)
+        dialog.setMessage(arguments!!.getCharSequence("MESSAGE"))
         dialog.setCancelable(false) // Prevent dialog from getting dismissed on back key pressed
         dialog.setCanceledOnTouchOutside(false)
         return dialog

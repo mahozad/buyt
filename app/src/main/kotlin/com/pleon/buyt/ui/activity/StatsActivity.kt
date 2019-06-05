@@ -81,11 +81,11 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_filter -> if (isPremium) onFilterMenuItemClick()
-            else UpgradePromptDialogFragment(getText(R.string.dialog_message_upgrade_to_premium))
+            else UpgradePromptDialogFragment.newInstance(getText(R.string.dialog_message_upgrade_to_premium))
                     .show(supportFragmentManager, "UPGRADE_DIALOG")
 
             R.id.action_toggle_period -> if (isPremium) onTogglePeriodClick()
-            else UpgradePromptDialogFragment(getText(R.string.dialog_message_upgrade_to_premium))
+            else UpgradePromptDialogFragment.newInstance(getText(R.string.dialog_message_upgrade_to_premium))
                     .show(supportFragmentManager, "UPGRADE_DIALOG")
 
             android.R.id.home -> finish()
