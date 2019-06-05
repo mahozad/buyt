@@ -28,7 +28,7 @@ class UpgradePromptDialogFragment : AppCompatDialogFragment() {
     override fun onCreateDialog(savedState: Bundle?): Dialog {
         val dialog = MaterialAlertDialogBuilder(context!!)
                 .setIcon(R.drawable.ic_warning)
-                .setPositiveButton("ارتقا") { _, _ ->
+                .setPositiveButton(R.string.dialog_action_upgrade_to_premium) { _, _ ->
                     val intent = Intent(context, HelpActivity::class.java)
                     intent.putExtra(EXTRA_SHOULD_START_UPGRADE, true)
                     startActivity(intent)
@@ -36,8 +36,8 @@ class UpgradePromptDialogFragment : AppCompatDialogFragment() {
                 .setNegativeButton(android.R.string.cancel) { _, _ -> /* To dismiss on click */ }
                 .create()
 
-        dialog.setTitle("ارتقا به نسخه کامل"/*R.string.dialog_title_billing_error*/)
-        dialog.setMessage("این ویژگی در نسخه رایگان برنامه قابل دسترس نیست. در صورت تمایل می‌توانید برنامه را به نسخه کامل ارتقا دهید."/*getText(R.string.dialog_message_billing_error)*/)
+        dialog.setTitle(R.string.dialog_title_upgrade_to_premium)
+        dialog.setMessage(getText(R.string.dialog_message_upgrade_to_premium))
         dialog.setCancelable(false) // Prevent dialog from getting dismissed on back key pressed
         dialog.setCanceledOnTouchOutside(false)
         return dialog

@@ -203,9 +203,12 @@
     <string name="intro_description_1">Add your items to the shopping list. Typing a couple chars, Buyt will suggest related items and corresponding category</string>
     <string name="intro_description_2">Inside or near the store (for example in your car) press the search button to find the store. Select purchased items from the list and complete your buy. Note that you can skip the finding step if the store is saved already.</string>
     <string name="intro_description_3">Stats, charts and purchase details are provided with the ability to change the period and set filter on results.</string>
-    <string name="purchase_empty_hint">No purchase in this period!</string>
+    <string name="purchase_empty_hint">No purchase!</string>
     <string name="dialog_title_billing_error">Cannot initiate purchase</string>
     <string name="btn_text_upgrade_to_premium">Upgrade to premium</string>
+    <string name="dialog_action_upgrade_to_premium">Upgrade</string>
+    <string name="dialog_title_upgrade_to_premium">Upgrade to premium</string>
+    <string name="dialog_message_upgrade_to_premium">This feature is not available in free version of the app. You can upgrade to premium version if you like.</string>
     <plurals name="store_detail_purchase_count">
         <!-- For zero android will use plural form like 0 books -->
         <item quantity="one">%1$d purchase</item>

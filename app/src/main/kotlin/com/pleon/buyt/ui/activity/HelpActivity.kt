@@ -38,7 +38,6 @@ class HelpActivity : BaseActivity() {
             (logo.drawable as Animatable).start()
         }
 
-
         // TODO: Encrypt premium attribute in preferences to prevent the user from hacking it.
         //  See [https://developer.android.com/jetpack/androidx/releases/security]
         //  and [https://developer.android.com/topic/security/data]
@@ -53,8 +52,8 @@ class HelpActivity : BaseActivity() {
             }
         }
 
+        // performClick() does not work if the click listener has not been set
         if (intent.getBooleanExtra(EXTRA_SHOULD_START_UPGRADE, false))
-        // performClick() only works if the click listener is set before
         Handler().postDelayed({ upgradeToPremiumBtn.performClick() }, 500)
     }
 
