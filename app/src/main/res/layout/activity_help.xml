@@ -25,6 +25,49 @@
         app:mwhWaveHeight="50dp"
         app:mwhWaves="MultiWave" />
 
+    <TextView
+        android:id="@+id/nameVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:alpha="0"
+        android:text="@string/appNameVersion"
+        app:layout_constraintBottom_toTopOf="@id/upgradeToPremiumBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logo"
+        tools:alpha="1" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toTopOf="@id/nameVersion"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/waveHeader"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:srcCompat="@drawable/avd_logo"
+        tools:ignore="ContentDescription"
+        tools:srcCompat="@drawable/vd_buyt" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/upgradeToPremiumBtn"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:alpha="0"
+        android:text="@string/btn_text_upgrade_to_premium"
+        app:layout_constraintBottom_toTopOf="@+id/bar_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameVersion"
+        tools:alpha="0" />
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/bar_container"
         android:layout_width="match_parent"
@@ -40,30 +83,5 @@
             tools:menu="@menu/menu_bottom_help" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-    <TextView
-        android:id="@+id/nameVersion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:alpha="0"
-        android:text="@string/appNameVersion"
-        app:layout_constraintBottom_toTopOf="@id/bar_container"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/logo" />
-
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        app:layout_constraintBottom_toTopOf="@id/nameVersion"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/waveHeader"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:srcCompat="@drawable/avd_logo"
-        tools:ignore="ContentDescription" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

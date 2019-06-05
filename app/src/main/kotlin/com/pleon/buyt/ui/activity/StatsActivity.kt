@@ -13,7 +13,9 @@ import androidx.lifecycle.ViewModelProviders.of
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.pleon.buyt.R
+import com.pleon.buyt.isPremium
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
+import com.pleon.buyt.ui.dialog.UpgradePromptDialogFragment
 import com.pleon.buyt.viewmodel.StatsViewModel
 import com.pleon.buyt.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_stats.*
@@ -78,8 +80,12 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_filter -> onFilterMenuItemClick()
-            R.id.action_toggle_period -> onTogglePeriodClick()
+            R.id.action_filter -> if (isPremium) onFilterMenuItemClick()
+            else UpgradePromptDialogFragment().show(supportFragmentManager, "UPGRADE_DIALOG")
+
+            R.id.action_toggle_period -> if (isPremium) onTogglePeriodClick()
+            else UpgradePromptDialogFragment().show(supportFragmentManager, "UPGRADE_DIALOG")
+
             android.R.id.home -> finish()
         }
         return true
