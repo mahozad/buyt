@@ -5,7 +5,7 @@
             android:name="vector"
             android:width="1000dp"
             android:height="1000dp"
-            android:tint="?attr/colorOnSurface"
+            android:tint="?colorOnSurface"
             android:viewportWidth="1000"
             android:viewportHeight="1000">
             <path

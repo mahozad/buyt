@@ -38,7 +38,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
                 android:alpha="0"
-                android:background="?attr/colorError" />
+                android:background="?colorError" />
 
             <ImageView
                 android:id="@+id/delete_icon"
@@ -93,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="8dp"
-                android:textColor="?attr/colorOnSurface"
+                android:textColor="?colorOnSurface"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toStartOf="@id/urgentIcon"
                 app:layout_constraintStart_toEndOf="@id/categoryIcon"
@@ -130,7 +130,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/urgentIcon">
 
-                <!-- android:background="?attr/selectableItemBackgroundBorderless" is to add ripple effect -->
+                <!-- android:background="?selectableItemBackgroundBorderless" is to add ripple effect -->
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/dragButton"
                     android:layout_width="wrap_content"

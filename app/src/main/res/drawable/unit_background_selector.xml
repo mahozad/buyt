@@ -7,12 +7,12 @@
         <color android:color="#909090" />
     </item>
     <item android:state_checked="false">
-        <color android:color="?attr/colorSurface" />
+        <color android:color="?colorSurface" />
     </item>
 
     <!-- THIS ITEM MUST BE THE 4TH ELEMENT. IF REORDERED OR ADDED/REMOVED OTHER ITEMS,
          THEN UPDATE setColorOfAllUnits() METHOD IN AddItemFragment -->
     <item android:state_checked="true">
-        <color android:color="?attr/unitUnfocusedColor" />
+        <color android:color="?unitUnfocusedColor" />
     </item>
 </selector>

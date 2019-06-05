@@ -35,7 +35,7 @@
                 app:chart_axis="false"
                 app:chart_axisLabelsSpacing="12dp"
                 app:chart_fontSize="12sp"
-                app:chart_labelColor="?attr/colorOnSurface"
+                app:chart_labelColor="?colorOnSurface"
                 app:chart_labels="inside"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

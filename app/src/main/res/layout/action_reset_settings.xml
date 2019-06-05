@@ -4,7 +4,7 @@
     android:id="@+id/view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/selectableItemBackgroundBorderless"
+    android:background="?selectableItemBackgroundBorderless"
     android:clickable="true"
     android:drawablePadding="8dp"
     android:focusable="true"
@@ -12,5 +12,5 @@
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
     android:text="@string/menu_text_reset_settings"
-    android:textColor="?attr/colorOnSurface"
+    android:textColor="?colorOnSurface"
     app:drawableEndCompat="@drawable/avd_reset" />

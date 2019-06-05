@@ -38,7 +38,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
                 android:alpha="0"
-                android:background="?attr/colorError" />
+                android:background="?colorError" />
 
             <ImageView
                 android:id="@+id/delete_icon"
