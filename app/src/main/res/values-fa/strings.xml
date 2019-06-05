@@ -105,9 +105,9 @@
     <string name="pref_theme_light">روشن</string>
     <string name="pref_lang_auto">خودکار (زبان دستگاه)</string>
     <string name="pref_title_theme">قالب</string>
-    <string name="pref_title_theme_disabled">قالب (نیازمند نسخه کامل)</string>
+    <string name="pref_title_theme_disabled">قالب (فقط در نسخه کامل)</string>
     <string name="pref_title_lang">زبان</string>
-    <string name="pref_title_lang_disabled">زبان (نیازمند نسخه کامل)</string>
+    <string name="pref_title_lang_disabled">زبان (فقط در نسخه کامل)</string>
     <string name="pref_title_vibrate">لرزش دستگاه هنگام پیدا شدن مغازه</string>
     <string name="pref_title_search_radius">شعاع جستجوی مغازه</string>
     <string name="pref_search_dist_1">۵۰ متر</string>
