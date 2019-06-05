@@ -19,6 +19,7 @@ import java.util.*
 import javax.inject.Inject
 import kotlin.math.cos
 
+const val FREE_BUY_LIMIT = 5
 private const val EARTH_RADIUS = 6_371_000.0 // In meters
 
 /**
@@ -49,6 +50,7 @@ class MainViewModel @Inject constructor(private val app: Application,
     // TODO: Use paging architecture component library
     val allItems = repository.allItems
     val allStores get() = repository.getAllStores()
+    val purchaseCountInPeriod get() = repository.getPurchaseCountInPeriod(7)
 
     fun findNearStores(origin: Coordinates): LiveData<List<Store>> {
         val searchDistInMeters = prefs.getString(PREF_SEARCH_DIST, PREF_SEARCH_DIST_DEF)!!.toInt()

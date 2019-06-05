@@ -27,6 +27,7 @@ class MainRepository @Inject constructor(private val itemDao: ItemDao,
     val allItems = itemDao.getAll()
     private val nearStores = SingleLiveEvent<List<Store>>()
     private val allStores = SingleLiveEvent<List<Store>>()
+    private val purchaseCount = SingleLiveEvent<Int>()
 
     fun updateItems(items: Collection<Item>) = doAsync { itemDao.updateAll(items) }
 
@@ -55,5 +56,13 @@ class MainRepository @Inject constructor(private val itemDao: ItemDao,
             uiThread { allStores.value = stores }
         }
         return allStores
+    }
+
+    fun getPurchaseCountInPeriod(period: Int): LiveData<Int> {
+        doAsync {
+            val count = purchaseDao.getPurchaseCountInPeriod(period)
+            uiThread { purchaseCount.value = count }
+        }
+        return purchaseCount
     }
 }

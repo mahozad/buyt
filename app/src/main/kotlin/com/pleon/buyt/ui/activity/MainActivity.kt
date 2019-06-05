@@ -38,16 +38,14 @@ import com.pleon.buyt.component.GpsService
 import com.pleon.buyt.component.LocationReceiver
 import com.pleon.buyt.model.Coordinates
 import com.pleon.buyt.model.Store
-import com.pleon.buyt.ui.dialog.CreateStoreDialogFragment
+import com.pleon.buyt.ui.dialog.*
 import com.pleon.buyt.ui.dialog.CreateStoreDialogFragment.CreateStoreListener
-import com.pleon.buyt.ui.dialog.LocationOffDialogFragment
-import com.pleon.buyt.ui.dialog.RationaleDialogFragment
-import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
 import com.pleon.buyt.ui.fragment.*
 import com.pleon.buyt.util.AnimationUtil.animateIconInfinitely
 import com.pleon.buyt.util.SnackbarUtil.showSnackbar
 import com.pleon.buyt.util.VibrationUtil.vibrate
+import com.pleon.buyt.viewmodel.FREE_BUY_LIMIT
 import com.pleon.buyt.viewmodel.MainViewModel
 import com.pleon.buyt.viewmodel.MainViewModel.State.*
 import com.pleon.buyt.viewmodel.ViewModelFactory
@@ -169,11 +167,13 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
             val addItemFragment = supportFragmentManager.findFragmentById(R.id.fragContainer) as AddItemFragment
             addItemFragment.onDonePressed()
         } else if (viewModel.state == IDLE) { // act as find
-            //            viewModel.isBuyLimitReached.observe(this, Observer { purchaseCount ->
-            //                if (itemsFragment.isListEmpty) itemsFragment.emphasisEmpty()
-            //                else if (purchaseCount >= /*buyLimit*/ 5) /*showUpgradeProDialog()*/
-            //                else findLocation()
-            //            })
+            viewModel.purchaseCountInPeriod.observe(this, Observer { purchaseCount ->
+                if (itemsFragment.isListEmpty) itemsFragment.emphasisEmpty()
+                else if (purchaseCount >= FREE_BUY_LIMIT)
+                    UpgradePromptDialogFragment(getText(R.string.dialog_message_free_limit_reached))
+                            .show(supportFragmentManager, "UPGRADE_DIALOG")
+                else findLocation()
+            })
         } else if (viewModel.state == SELECTING) { // act as done
             if (itemsFragment.isSelectedEmpty) showSnackbar(snbContainer, R.string.snackbar_message_no_item_selected, LENGTH_SHORT)
             else buySelectedItems()

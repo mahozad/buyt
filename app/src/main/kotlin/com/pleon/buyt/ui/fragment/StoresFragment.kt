@@ -68,7 +68,8 @@ class StoresFragment : BaseFragment(), ItemTouchHelperListener {
                 viewModel.toggleSort()
                 updateSortMenuItemView()
             } else {
-                UpgradePromptDialogFragment().show(activity!!.supportFragmentManager, "UPGRADE_DIALOG")
+                UpgradePromptDialogFragment(getText(R.string.dialog_message_upgrade_to_premium))
+                        .show(activity!!.supportFragmentManager, "UPGRADE_DIALOG")
             }
         }
         return true

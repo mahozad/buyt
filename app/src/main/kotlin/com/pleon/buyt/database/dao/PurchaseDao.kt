@@ -144,4 +144,13 @@ abstract class PurchaseDao {
 
     @Query("SELEct * FROM purchase natural join item where $PERIOD_AND_FILTER_CLAUSE group by purchaseId order by date desc")
     protected abstract fun getPurchaseDetails(period: Int, filter: String): List<PurchaseDetail>
+
+    @Transaction
+    open fun getPurchaseCountInPeriod(period: Int): Int {
+        val period = period - 1 // The queries return one extra day so do period-1
+        return getCountInPeriod(period)
+    }
+
+    @Query("SELECT Count(*) FROM Purchase WHERE $PERIOD_CLAUSE")
+    protected abstract fun getCountInPeriod(period: Int): Int
 }

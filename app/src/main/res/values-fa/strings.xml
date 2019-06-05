@@ -158,6 +158,7 @@
     <string name="dialog_action_upgrade_to_premium">ارتقا</string>
     <string name="dialog_title_upgrade_to_premium">ارتقا به نسخه کامل</string>
     <string name="dialog_message_upgrade_to_premium">این ویژگی در نسخه رایگان برنامه قابل دسترس نیست. در صورت تمایل می‌توانید برنامه را به نسخه کامل ارتقا دهید.</string>
+    <string name="dialog_message_free_limit_reached">نسخه رایگان برنامه هر هفته حداکثر <big>۵</big> خرید را پشتیبانی می‌کند. در صورت تمایل می‌توانید برنامه را به نسخه کامل ارتقا دهید.</string>
     <plurals name="store_detail_purchase_count">
         <item quantity="one">%1$d خرید</item>
         <item quantity="other">%1$d خرید</item>

@@ -211,6 +211,7 @@
     <string name="dialog_action_upgrade_to_premium">Upgrade</string>
     <string name="dialog_title_upgrade_to_premium">Upgrade to premium</string>
     <string name="dialog_message_upgrade_to_premium">This feature is not available in free version of the app. You can upgrade to premium version if you like.</string>
+    <string name="dialog_message_free_limit_reached">Free version of the app supports only <big>5</big> purchases per week. You can upgrade to premium version if you like.</string>
     <plurals name="store_detail_purchase_count">
         <!-- For zero android will use plural form like 0 books -->
         <item quantity="one">%1$d purchase</item>
