@@ -23,9 +23,13 @@ class DatabaseModule {
 
     @Provides
     @Singleton
+    fun provideStoreDao(database: AppDatabase) = database.storeDao()
+
+    @Provides
+    @Singleton
     fun providePurchaseDao(database: AppDatabase) = database.purchaseDao()
 
     @Provides
     @Singleton
-    fun provideStoreDao(database: AppDatabase) = database.storeDao()
+    fun provideSubscriptionDao(database: AppDatabase) = database.subscriptionDao()
 }

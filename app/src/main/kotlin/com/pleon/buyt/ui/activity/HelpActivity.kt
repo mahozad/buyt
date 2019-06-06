@@ -13,6 +13,7 @@ import com.pleon.buyt.R
 import com.pleon.buyt.SKU_PREMIUM
 import com.pleon.buyt.billing.IabHelper
 import com.pleon.buyt.isPremium
+import com.pleon.buyt.repository.SubscriptionRepository
 import com.pleon.buyt.ui.dialog.BillingErrorDialogFragment
 import kotlinx.android.synthetic.main.activity_help.*
 import javax.inject.Inject
@@ -26,6 +27,7 @@ private const val RC_REQUEST: Int = 62026
 class HelpActivity : BaseActivity() {
 
     @Inject internal lateinit var iabHelper: IabHelper
+    @Inject internal lateinit var subscriptionRepository: SubscriptionRepository
 
     override fun layout() = R.layout.activity_help
 
@@ -42,8 +44,8 @@ class HelpActivity : BaseActivity() {
         //  See [https://developer.android.com/jetpack/androidx/releases/security]
         //  and [https://developer.android.com/topic/security/data]
 
-        upgradeToPremiumBtn.visibility = if (isPremium) GONE else VISIBLE
-        upgradeToPremiumBtn.setOnClickListener {
+        upgradePremiumBtn.visibility = if (isPremium) GONE else VISIBLE
+        upgradePremiumBtn.setOnClickListener {
             iabHelper.flagEndAsync() // To prevent error when previous purchases abandoned
             try {
                 startPurchase()
@@ -54,7 +56,7 @@ class HelpActivity : BaseActivity() {
 
         // performClick() does not work if the click listener has not been set
         if (intent.getBooleanExtra(EXTRA_SHOULD_START_UPGRADE, false))
-            Handler().postDelayed({ upgradeToPremiumBtn.performClick() }, 500)
+            Handler().postDelayed({ upgradePremiumBtn.performClick() }, 500)
     }
 
     private fun startPurchase() {
@@ -67,8 +69,9 @@ class HelpActivity : BaseActivity() {
                 RC_REQUEST,
                 { result, _ ->
                     if (result.isSuccess) {
+                        subscriptionRepository.insertSubscription()
                         isPremium = true // Upgrade the app to premium
-                        upgradeToPremiumBtn.visibility = GONE
+                        upgradePremiumBtn.visibility = GONE
                     }
                 },
                 "payload-string"
@@ -92,7 +95,7 @@ class HelpActivity : BaseActivity() {
     private fun animateViews() {
         Handler().postDelayed({ (logo.drawable as Animatable).start() }, 300)
         Handler().postDelayed({ nameVersion.animate().alpha(1f).duration = 300 }, 500)
-        Handler().postDelayed({ upgradeToPremiumBtn.animate().alpha(1f).duration = 300 }, 1000)
+        Handler().postDelayed({ upgradePremiumBtn.animate().alpha(1f).duration = 300 }, 1000)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

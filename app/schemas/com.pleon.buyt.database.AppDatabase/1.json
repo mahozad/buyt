@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "e09040c68b1dcbb2b42a6185e1b4e1c6",
+    "identityHash": "c5540f0a46ec1a1283bc6809fd63175e",
     "entities": [
       {
         "tableName": "Item",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`itemId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `purchaseId` INTEGER NOT NULL, `description` TEXT, `totalPrice` INTEGER NOT NULL, `position` INTEGER NOT NULL, `isFlaggedForDeletion` INTEGER NOT NULL, `name` TEXT NOT NULL, `category` TEXT NOT NULL, `isUrgent` INTEGER NOT NULL, `isBought` INTEGER NOT NULL, `value` INTEGER NOT NULL, `unit` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`itemId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `purchaseId` INTEGER NOT NULL, `totalPrice` INTEGER NOT NULL, `description` TEXT, `position` INTEGER NOT NULL, `isFlaggedForDeletion` INTEGER NOT NULL, `name` TEXT NOT NULL, `category` TEXT NOT NULL, `isUrgent` INTEGER NOT NULL, `isBought` INTEGER NOT NULL, `value` INTEGER NOT NULL, `unit` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "itemId",
@@ -21,16 +21,16 @@
             "notNull": true
           },
           {
-            "fieldPath": "description",
-            "columnName": "description",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
             "fieldPath": "totalPrice",
             "columnName": "totalPrice",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "position",
@@ -205,12 +205,32 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "Subscription",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`isPremium` INTEGER NOT NULL, PRIMARY KEY(`isPremium`))",
+        "fields": [
+          {
+            "fieldPath": "isPremium",
+            "columnName": "isPremium",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "isPremium"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e09040c68b1dcbb2b42a6185e1b4e1c6\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c5540f0a46ec1a1283bc6809fd63175e')"
     ]
   }
 }
