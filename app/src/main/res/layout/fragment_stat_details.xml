@@ -20,12 +20,11 @@
     <com.google.android.material.chip.Chip
         android:id="@+id/emptyHint"
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/purchase_empty_hint"
-        app:chipCornerRadius="100dp"
-        app:chipEndPadding="12dp"
-        app:chipStartPadding="12dp"
+        app:chipEndPadding="8dp"
+        app:chipStartPadding="8dp"
         tools:visibility="invisible" />
 
 </FrameLayout>

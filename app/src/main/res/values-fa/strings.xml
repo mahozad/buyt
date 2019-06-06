@@ -153,7 +153,7 @@
     <string name="intro_description_1">اقلام مورد نیاز خود را به لیست خرید اضافه نمایید. با درج چند حرف، بایت به شما آیتم‌های مربوط را پیشنهاد داده و دسته‌بندی نیز می‌تواند به صورت خودکار تعیین شود.</string>
     <string name="intro_description_2">داخل یا در نزدیکی مغازه (مثل داخل اتومبیل) دکمه‌ی جستجو را زده تا مغازه پیدا شود. اقلام خریداری شده را انتخاب و خرید خود را ثبت نمایید. نکته: اگر مغازه از قبل ذخیره شده است می‌توانید مرحله جستجو را رد کنید.</string>
     <string name="intro_description_3">نمودار، آمار و ریز خریدهای خود را در دوره‌های مختلف و با قابلیت اعمال فیلتر مشاهده نمایید</string>
-    <string name="purchase_empty_hint">بدون خرید!</string>
+    <string name="purchase_empty_hint">خریدی انجام نشده است!</string>
     <string name="dialog_title_billing_error">اشکال در خرید</string>
     <string name="btn_text_upgrade_to_premium">ارتقا به نسخه کامل</string>
     <string name="dialog_action_upgrade_to_premium">ارتقا</string>
@@ -162,6 +162,7 @@
     <string name="dialog_message_congratulate_premium">بایت با موفقیت به نسخه کامل ارتقا پیدا کرد. اکنون می‌توانید از تمام امکانات برنامه بهره ببرید.</string>
     <string name="dialog_message_upgrade_to_premium">این ویژگی در نسخه رایگان برنامه قابل دسترس نیست. در صورت تمایل می‌توانید برنامه را به نسخه کامل ارتقا دهید.</string>
     <string name="dialog_message_free_limit_reached">نسخه رایگان برنامه هر هفته حداکثر <big>۵</big> خرید را پشتیبانی می‌کند. در صورت تمایل می‌توانید برنامه را به نسخه کامل ارتقا دهید.</string>
+    <string name="stores_empty_hint">مغازه‌ای اضافه نشده است!</string>
     <plurals name="store_detail_purchase_count">
         <item quantity="one">%1$d خرید</item>
         <item quantity="other">%1$d خرید</item>

@@ -5,6 +5,8 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders.of
@@ -42,7 +44,10 @@ class StoresFragment : BaseFragment(), ItemTouchHelperListener {
         setHasOptionsMenu(true) // for onCreateOptionsMenu() to be called
 
         viewModel = of(this, viewModelFactory).get(StoresViewModel::class.java)
-        viewModel.storeDetails.observe(viewLifecycleOwner, Observer { adapter.storeDetails = it })
+        viewModel.storeDetails.observe(viewLifecycleOwner, Observer {
+            emptyHint.visibility = if (it.isEmpty()) VISIBLE else GONE
+            adapter.storeDetails = it
+        })
         recyclerView.adapter = adapter
         val columns = resources.getInteger(R.integer.layout_columns)
         val isRtl = resources.getBoolean(R.bool.isRtl)
