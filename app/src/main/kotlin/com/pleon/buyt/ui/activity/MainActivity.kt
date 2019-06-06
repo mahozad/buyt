@@ -36,6 +36,7 @@ import com.pleon.buyt.R
 import com.pleon.buyt.component.ACTION_LOCATION_EVENT
 import com.pleon.buyt.component.GpsService
 import com.pleon.buyt.component.LocationReceiver
+import com.pleon.buyt.isPremium
 import com.pleon.buyt.model.Coordinates
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.ui.dialog.*
@@ -169,7 +170,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
         } else if (viewModel.state == IDLE) { // act as find
             viewModel.purchaseCountInPeriod.observe(this, Observer { purchaseCount ->
                 if (itemsFragment.isListEmpty) itemsFragment.emphasisEmpty()
-                else if (purchaseCount >= FREE_BUY_LIMIT)
+                else if (!isPremium && purchaseCount >= FREE_BUY_LIMIT)
                     UpgradePromptDialogFragment.newInstance(getText(R.string.dialog_message_free_limit_reached))
                             .show(supportFragmentManager, "UPGRADE_DIALOG")
                 else findLocation()
