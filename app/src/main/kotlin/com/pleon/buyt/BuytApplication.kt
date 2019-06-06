@@ -28,6 +28,7 @@ class BuytApplication : DaggerApplication() {
         // dependency in gradle a regular one (instead of debug one) or move this to DebugApplication
         // if (BuildConfig.DEBUG) Stetho.initializeWithDefaults(this)
 
+        // For more info about saving purchase status locally see [https://stackoverflow.com/q/14231859]
         subscriptionRepository.getSubscription().observeForever { hasSubscription ->
             isPremium = hasSubscription
             if (!isPremium) setupIabHelper()
