@@ -18,6 +18,7 @@ import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat.getColor
+import androidx.core.content.ContextCompat.getColorStateList
 import androidx.core.widget.CompoundButtonCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders.of
@@ -26,6 +27,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import com.pleon.buyt.R
+import com.pleon.buyt.isPremium
 import com.pleon.buyt.model.Category
 import com.pleon.buyt.model.Item
 import com.pleon.buyt.model.Item.Quantity.Unit.*
@@ -139,8 +141,16 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         priceEd.addTextChangedListener(NumberInputWatcher(price_layout, priceEd, priceSuffix))
         quantityEd.addTextChangedListener(NumberInputWatcher(quantity_layout, quantityEd))
 
-        // To reverse position of the bought checkbox icon
-        if (Locale.getDefault().language == "fa") bought.layoutDirection = LAYOUT_DIRECTION_LTR
+        bought.apply {
+            // To reverse position of its checkbox icon
+            if (Locale.getDefault().language == "fa") layoutDirection = LAYOUT_DIRECTION_LTR
+            isEnabled = isPremium
+            setText(if (isPremium) R.string.checkbox_purchased else R.string.checkbox_purchased_disabled)
+            if (!isPremium) {
+                buttonTintList = getColorStateList(context, R.color.unit_btn_unfocused_color)
+                setTextColor(getColor(context, R.color.unit_btn_unfocused_color))
+            }
+        }
 
         dateEd.setOnClickListener { onDateClicked() }
         dateEd.setOnFocusChangeListener { _, hasFocus -> onDateGainedFocus(hasFocus) }

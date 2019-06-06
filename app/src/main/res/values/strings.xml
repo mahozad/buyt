@@ -98,6 +98,7 @@
 
     <string name="chart_caption">Expenses per day</string>
     <string name="checkbox_purchased">Already Bought</string>
+    <string name="checkbox_purchased_disabled">Already Bought (premium version only)</string>
     <string name="input_def_purchase_date">Today</string>
     <string name="input_hint_store_name">Store name</string>
     <string name="input_error_name">Name cannot be empty</string>

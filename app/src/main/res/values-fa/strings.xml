@@ -83,6 +83,7 @@
     <string name="chart_caption">هزینه بر حسب روز</string>
     <string name="menu_text_period">%1$d روز گذشته</string>
     <string name="checkbox_purchased">خریداری‌شده</string>
+    <string name="checkbox_purchased_disabled">خریداری‌شده (فقط در نسخه کامل)</string>
     <string name="input_hint_purchase_date">تاریخ خرید</string>
     <string name="input_hint_store_name">نام مغازه یا فروشگاه</string>
     <string name="input_error_name">نام نمی‌تواند خالی باشد</string>
