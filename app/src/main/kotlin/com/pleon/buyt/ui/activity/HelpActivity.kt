@@ -15,6 +15,7 @@ import com.pleon.buyt.billing.IabHelper
 import com.pleon.buyt.isPremium
 import com.pleon.buyt.repository.SubscriptionRepository
 import com.pleon.buyt.ui.dialog.BillingErrorDialogFragment
+import com.pleon.buyt.ui.dialog.UpgradeSuccessDialogFragment
 import kotlinx.android.synthetic.main.activity_help.*
 import javax.inject.Inject
 
@@ -69,9 +70,10 @@ class HelpActivity : BaseActivity() {
                 RC_REQUEST,
                 { result, _ ->
                     if (result.isSuccess) {
+                        isPremium = true
                         subscriptionRepository.insertSubscription()
-                        isPremium = true // Upgrade the app to premium
-                        upgradePremiumBtn.visibility = GONE
+                        UpgradeSuccessDialogFragment().show(supportFragmentManager, "UPG_DIALOG")
+                        Handler().postDelayed({ upgradePremiumBtn.visibility = GONE }, 300)
                     }
                 },
                 "payload-string"
