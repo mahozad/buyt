@@ -1,0 +1,29 @@
+﻿┌───────────────────────────┐
+├ versionName = 1.0.0-rc    │
+├ versionCode = 2           │
+│ ──────────────────────────┘
+├ Update and localize some string resources
+├ Improve and fix bugs of add-item animation
+├ Fix the bug with item units
+├ Fix bug with item description not showing
+├ Make item description shown permanently
+├ Add some new item names
+├ Update line chart colors
+├ Update empty hint icon
+├ Fix the bug with empty hint blinking on snackbar dismiss
+├ Update unit buttons aesthetics
+├ Close add item popup when clicking outside
+├ Improve layout of stores screen
+├ Update scrim aesthetics
+├ Make the suffix in price input fields non-selectable and non-clickable
+├ Replace release history action with showing tutorial
+├ Fix the bug with stats appearing when relaunching the activity
+├ Fix the bug with stores list not showing stores with 0 purchases
+├ Add empty hint for purchase details
+├ Transition to IDLE state when all items are deleted
+├ Fix location service bug
+├ Fix the bug with stats showing old data
+├ Fix a bug with adding purchased item
+├ Change location dialogs cancel button behaviour
+├ Fix wave header height to show appropriately on landscape orientation
+├ Update app to free and premium mode

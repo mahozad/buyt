@@ -25,9 +25,7 @@ android {
     }
 
     // for sliding tutorial
-    dataBinding {
-        isEnabled = true
-    }
+    dataBinding { isEnabled = true }
 
     buildToolsVersion = "28.0.3"
     compileOptions {
@@ -40,8 +38,8 @@ android {
         applicationId = "com.pleon.buyt"
         minSdkVersion(21)
         targetSdkVersion(28)
-        versionCode = 1
-        versionName = "1.0.0-beta" // alpha -> beta -> rc -> final
+        versionCode = 2
+        versionName = "1.0.0-rc" // alpha -> beta -> rc -> final
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             // Tell Room to export database schema info to keep a history of it
@@ -69,9 +67,7 @@ android {
     }
 
     // JUnit 5 will bundle in files with identical paths; exclude them
-    packagingOptions {
-        exclude("META-INF/LICENSE*")
-    }
+    packagingOptions { exclude("META-INF/LICENSE*") }
 
     lintOptions {
         // Disable lint checking for errors
