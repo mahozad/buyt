@@ -9,7 +9,7 @@ class StatsPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activ
 
     override fun getItemCount(): Int = 2
 
-    override fun getItem(index: Int) = when (index) {
+    override fun createFragment(position: Int) = when (position) {
         0 -> StatsFragment()
         else -> StatDetailsFragment()
     }
