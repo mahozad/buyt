@@ -52,8 +52,8 @@
     <string name="qty_unit">عدد</string>
     <string name="qty_kilogram">کیلو</string>
     <string name="qty_gram">گرم</string>
-    <string name="dialog_title_location_permission">مکان غیرفعال</string>
-    <string name="dialog_title_location_off">مکان خاموش</string>
+    <string name="dialog_title_location_permission">عدم دسترسی به مکان</string>
+    <string name="dialog_title_location_off">عدم دسترسی به مکان</string>
     <string name="dialog_action_skip">اکنون نه</string>
     <string name="dialog_action_exit">خروج</string>
     <string name="dialog_title_exit">خروج از برنامه؟</string>
