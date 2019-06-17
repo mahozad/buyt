@@ -4,14 +4,24 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
+import androidx.room.Transaction
 import com.pleon.buyt.model.Subscription
 
 @Dao
-interface SubscriptionDao {
+abstract class SubscriptionDao {
+
+    @Transaction
+    open fun insertSubscription(subscription: Subscription) {
+        deleteAll()
+        insert(subscription)
+    }
 
     @Insert(onConflict = REPLACE)
-    fun insertSubscription(subscription: Subscription)
+    protected abstract fun insert(subscription: Subscription)
 
-    @Query("SELECT isPremium FROM Subscription")
-    fun hasSubscription(): Boolean
+    @Query("DELETE FROM Subscription")
+    protected abstract fun deleteAll()
+
+    @Query("SELECT token FROM Subscription")
+    abstract fun getToken(): String
 }

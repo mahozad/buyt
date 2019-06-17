@@ -12,15 +12,17 @@ import javax.inject.Singleton
 @Singleton
 class SubscriptionRepository @Inject constructor(private val subscriptionDao: SubscriptionDao) {
 
-    private val subscription = SingleLiveEvent<Boolean>()
+    private val subscriptionToken = SingleLiveEvent<String>()
 
-    fun insertSubscription() = doAsync { subscriptionDao.insertSubscription(Subscription()) }
+    fun insertSubscription(subscription: Subscription) = doAsync {
+        subscriptionDao.insertSubscription(subscription)
+    }
 
-    fun getSubscription(): LiveData<Boolean> {
+    fun getSubscriptionToken(): LiveData<String> {
         doAsync {
-            val hasSubscription = subscriptionDao.hasSubscription()
-            uiThread { subscription.value = hasSubscription }
+            val token = subscriptionDao.getToken()
+            uiThread { subscriptionToken.value = token }
         }
-        return subscription
+        return subscriptionToken
     }
 }

@@ -9,6 +9,7 @@ import com.pleon.buyt.repository.SubscriptionRepository
 import com.pleon.buyt.util.LocaleUtil.setLocale
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
+import org.mindrot.jbcrypt.BCrypt
 import javax.inject.Inject
 
 // SKU of our product (defined in Bazaar): the premium upgrade
@@ -29,8 +30,8 @@ class BuytApplication : DaggerApplication() {
         // if (BuildConfig.DEBUG) Stetho.initializeWithDefaults(this)
 
         // For more info about saving purchase status locally see [https://stackoverflow.com/q/14231859]
-        subscriptionRepository.getSubscription().observeForever { hasSubscription ->
-            isPremium = hasSubscription
+        subscriptionRepository.getSubscriptionToken().observeForever { token ->
+            isPremium = token != null && BCrypt.checkpw("PREMIUM", token)
             if (!isPremium) setupIabHelper()
         }
     }
@@ -60,7 +61,7 @@ class BuytApplication : DaggerApplication() {
         }
     }
 
-    // This is a very important call that stops background services and so on
+    // TODO: This is a very important call that stops background services and so on
     fun disposeIabHelper() = iabHelper.dispose()
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {

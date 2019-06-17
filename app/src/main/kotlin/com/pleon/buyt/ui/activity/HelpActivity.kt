@@ -13,10 +13,12 @@ import com.pleon.buyt.R
 import com.pleon.buyt.SKU_PREMIUM
 import com.pleon.buyt.billing.IabHelper
 import com.pleon.buyt.isPremium
+import com.pleon.buyt.model.Subscription
 import com.pleon.buyt.repository.SubscriptionRepository
 import com.pleon.buyt.ui.dialog.BillingErrorDialogFragment
 import com.pleon.buyt.ui.dialog.UpgradeSuccessDialogFragment
 import kotlinx.android.synthetic.main.activity_help.*
+import org.mindrot.jbcrypt.BCrypt
 import javax.inject.Inject
 
 const val EXTRA_SHOULD_START_UPGRADE = "com.pleon.buyt.extra.SHOULD_START_UPGRADE"
@@ -71,7 +73,8 @@ class HelpActivity : BaseActivity() {
                 { result, _ ->
                     if (result.isSuccess) {
                         isPremium = true
-                        subscriptionRepository.insertSubscription()
+                        val subscription = Subscription(BCrypt.hashpw("PREMIUM", BCrypt.gensalt()))
+                        subscriptionRepository.insertSubscription(subscription)
                         UpgradeSuccessDialogFragment().show(supportFragmentManager, "UPG_DIALOG")
                         Handler().postDelayed({ upgradePremiumBtn.visibility = GONE }, 300)
                     }

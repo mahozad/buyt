@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "c5540f0a46ec1a1283bc6809fd63175e",
+    "identityHash": "a5c5469579c38cc8381449d509626822",
     "entities": [
       {
         "tableName": "Item",
@@ -208,18 +208,18 @@
       },
       {
         "tableName": "Subscription",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`isPremium` INTEGER NOT NULL, PRIMARY KEY(`isPremium`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`token` TEXT NOT NULL, PRIMARY KEY(`token`))",
         "fields": [
           {
-            "fieldPath": "isPremium",
-            "columnName": "isPremium",
-            "affinity": "INTEGER",
+            "fieldPath": "token",
+            "columnName": "token",
+            "affinity": "TEXT",
             "notNull": true
           }
         ],
         "primaryKey": {
           "columnNames": [
-            "isPremium"
+            "token"
           ],
           "autoGenerate": false
         },
@@ -230,7 +230,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c5540f0a46ec1a1283bc6809fd63175e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a5c5469579c38cc8381449d509626822')"
     ]
   }
 }
