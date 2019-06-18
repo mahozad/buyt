@@ -42,9 +42,10 @@ class MainViewModel @Inject constructor(private val app: Application,
 
     @Volatile var state = IDLE
     var location: Location? = null
-    var isFindingSkipped = false
     var foundStores = mutableListOf<Store>()
     var shouldCompletePurchase = false
+    var shouldAnimateNavIcon = false
+    var isFindingSkipped = false
     var isAddingItem = false
 
     // TODO: Use paging architecture component library

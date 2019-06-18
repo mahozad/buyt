@@ -14,7 +14,7 @@
     <string name="dialog_title_exit">Exit the app?</string>
     <string name="dialog_message_exit">The buying process will be aborted if you exit the app.</string>
     <string name="dialog_action_go_to_settings">Go to Settings</string>
-    <string name="dialog_action_skip">Not now</string>
+    <string name="dialog_action_skip">Skip finding</string>
     <string name="dialog_action_exit">Exit</string>
     <string name="snackbar_message_item_deleted">Item \"%1$s\" deleted</string>
     <string name="snackbar_message_store_deleted">Store \"%1$s\" deleted</string>

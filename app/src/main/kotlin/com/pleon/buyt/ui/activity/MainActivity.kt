@@ -41,6 +41,7 @@ import com.pleon.buyt.model.Coordinates
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.ui.dialog.*
 import com.pleon.buyt.ui.dialog.CreateStoreDialogFragment.CreateStoreListener
+import com.pleon.buyt.ui.dialog.LocationOffDialogFragment.LocationEnableListener
 import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
 import com.pleon.buyt.ui.fragment.*
 import com.pleon.buyt.util.AnimationUtil.animateIconInfinitely
@@ -61,7 +62,7 @@ private const val REQUEST_LOCATION_PERMISSION = 1
  * UI controllers such as activities and fragments are primarily intended to display UI data,
  * react to user actions, or handle operating system communication, such as permission requests.
  */
-class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreListener {
+class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreListener, LocationEnableListener {
 
     // To force kill the app, go to the desired activity, press home button and then run this command:
     // adb shell am kill com.pleon.buyt
@@ -385,7 +386,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
         if (ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
             requestLocationPermission()
         } else if (!locationMgr.isProviderEnabled(GPS_PROVIDER)) {
-            val rationaleDialog = LocationOffDialogFragment.newInstance()
+            val rationaleDialog = LocationOffDialogFragment()
             rationaleDialog.show(supportFragmentManager, "LOCATION_OFF_DIALOG")
         } else {
             addMenuItem.setIcon(R.drawable.avd_add_hide).apply { (icon as Animatable).start() }
@@ -395,6 +396,11 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
             val intent = Intent(this, GpsService::class.java)
             ContextCompat.startForegroundService(this, intent) // no need to check api lvl
         }
+    }
+
+    override fun onEnableLocationDenied() {
+        viewModel.shouldAnimateNavIcon = true
+        skipFinding()
     }
 
     private fun onStoresFound(foundStores: List<Store>) {
@@ -408,6 +414,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
                 shiftToSelectingState()
             }
         } else {
+            if (addMenuItem.isVisible) addMenuItem.isVisible = false
             stopService(Intent(this, GpsService::class.java)) // for the case if finding skipped
             shiftToSelectingState()
             itemsFragment.sortItemsByCategory(viewModel.foundStores[0].category)
@@ -433,6 +440,11 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
 
     private fun shiftToSelectingState() {
         itemsFragment.toggleItemsCheckbox(true)
+
+        if (viewModel.shouldAnimateNavIcon) {
+            bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
+            (bottom_bar.navigationIcon as Animatable).start()
+        }
 
         reorderMenuItem.isVisible = false
         bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
@@ -467,6 +479,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
         }
         viewModel.resetFoundStores()
         viewModel.shouldCompletePurchase = false
+        viewModel.shouldAnimateNavIcon = false
         viewModel.isFindingSkipped = false
         viewModel.isAddingItem = false
         viewModel.state = IDLE // this should be the last statement (because of the if above)

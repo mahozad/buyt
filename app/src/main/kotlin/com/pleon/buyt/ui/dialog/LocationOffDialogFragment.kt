@@ -1,6 +1,7 @@
 package com.pleon.buyt.ui.dialog
 
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS
@@ -10,6 +11,12 @@ import com.pleon.buyt.R
 
 // DialogFragment is just another Fragment
 class LocationOffDialogFragment : AppCompatDialogFragment() {
+
+    interface LocationEnableListener {
+        fun onEnableLocationDenied()
+    }
+
+    private var callback: LocationEnableListener? = null
 
     /**
      * When you override `onCreateDialog`, Android COMPLETELY IGNORES several
@@ -29,8 +36,8 @@ class LocationOffDialogFragment : AppCompatDialogFragment() {
 
         val dialog = MaterialAlertDialogBuilder(context!!)
                 .setIcon(R.drawable.ic_location_off)
-                .setPositiveButton(R.string.dialog_action_go_to_settings) { _, _ -> startActivity(Intent(ACTION_LOCATION_SOURCE_SETTINGS)) }
-                .setNegativeButton(R.string.dialog_action_skip) { _, _ -> /* To dismiss on click */ }
+                .setPositiveButton(getString(R.string.dialog_action_go_to_settings)) { _, _ -> startActivity(Intent(ACTION_LOCATION_SOURCE_SETTINGS)) }
+                .setNegativeButton(getString(R.string.dialog_action_skip)) { _, _ -> callback!!.onEnableLocationDenied() }
                 .create()
 
         // getText is to preserve html formats
@@ -41,9 +48,14 @@ class LocationOffDialogFragment : AppCompatDialogFragment() {
         return dialog
     }
 
-    companion object {
-        fun newInstance(): LocationOffDialogFragment {
-            return LocationOffDialogFragment()
-        }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is LocationEnableListener) callback = context
+        else throw RuntimeException("$context must implement $callback")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callback = null
     }
 }
