@@ -1,6 +1,7 @@
 package com.pleon.buyt.ui.fragment
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -45,7 +46,7 @@ class StoresFragment : BaseFragment(), ItemTouchHelperListener {
 
         viewModel = of(this, viewModelFactory).get(StoresViewModel::class.java)
         viewModel.storeDetails.observe(viewLifecycleOwner, Observer {
-            emptyHint.visibility = if (it.isEmpty()) VISIBLE else GONE
+            showOrHideEmptyHint(it.isEmpty())
             adapter.storeDetails = it
         })
         recyclerView.adapter = adapter
@@ -55,6 +56,16 @@ class StoresFragment : BaseFragment(), ItemTouchHelperListener {
         recyclerView.addItemDecoration(ItemSpacingDecoration(columns, isRtl))
 
         ItemTouchHelper(touchHelperCallback).attachToRecyclerView(recyclerView)
+    }
+
+    private fun showOrHideEmptyHint(isListEmpty: Boolean) {
+        if (isListEmpty) {
+            emptyHint.visibility = VISIBLE
+            emptyHint.animate().alpha(1f).duration = 200
+        } else {
+            Handler().postDelayed({ emptyHint.visibility = GONE }, 100)
+            emptyHint.animate().alpha(0f).duration = 100
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
