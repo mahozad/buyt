@@ -39,10 +39,14 @@ import com.pleon.buyt.component.LocationReceiver
 import com.pleon.buyt.isPremium
 import com.pleon.buyt.model.Coordinates
 import com.pleon.buyt.model.Store
-import com.pleon.buyt.ui.dialog.*
+import com.pleon.buyt.ui.dialog.CreateStoreDialogFragment
 import com.pleon.buyt.ui.dialog.CreateStoreDialogFragment.CreateStoreListener
+import com.pleon.buyt.ui.dialog.LocationOffDialogFragment
 import com.pleon.buyt.ui.dialog.LocationOffDialogFragment.LocationEnableListener
+import com.pleon.buyt.ui.dialog.LocationOffDialogFragment.RationalType
+import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
+import com.pleon.buyt.ui.dialog.UpgradePromptDialogFragment
 import com.pleon.buyt.ui.fragment.*
 import com.pleon.buyt.util.AnimationUtil.animateIconInfinitely
 import com.pleon.buyt.util.SnackbarUtil.showSnackbar
@@ -386,7 +390,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
         if (ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
             requestLocationPermission()
         } else if (!locationMgr.isProviderEnabled(GPS_PROVIDER)) {
-            val rationaleDialog = LocationOffDialogFragment()
+            val rationaleDialog = LocationOffDialogFragment.newInstance(RationalType.LOCATION_OFF)
             rationaleDialog.show(supportFragmentManager, "LOCATION_OFF_DIALOG")
         } else {
             addMenuItem.setIcon(R.drawable.avd_add_hide).apply { (icon as Animatable).start() }
@@ -493,7 +497,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
     private fun requestLocationPermission() {
         // When the user responds to the app's permission request, the system invokes onRequestPermissionsResult() method
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, ACCESS_FINE_LOCATION)) {
-            val rationaleDialog = RationaleDialogFragment.newInstance()
+            val rationaleDialog = LocationOffDialogFragment.newInstance(RationalType.LOCATION_PERMISSION_DENIED)
             rationaleDialog.show(supportFragmentManager, "LOCATION_RATIONALE_DIALOG")
         } else {
             // Location permission has not been granted yet. Request it directly.

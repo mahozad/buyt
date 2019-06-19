@@ -3,20 +3,36 @@ package com.pleon.buyt.ui.dialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS
+import android.provider.Settings
+import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
 import androidx.appcompat.app.AppCompatDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.pleon.buyt.R
+import com.pleon.buyt.ui.dialog.LocationOffDialogFragment.RationalType.LOCATION_PERMISSION_DENIED
 
 // DialogFragment is just another Fragment
 class LocationOffDialogFragment : AppCompatDialogFragment() {
+
+    companion object {
+        fun newInstance(rationalType: RationalType): LocationOffDialogFragment {
+            val dialog = LocationOffDialogFragment()
+            dialog.rationalType = rationalType
+            return dialog
+        }
+    }
 
     interface LocationEnableListener {
         fun onEnableLocationDenied()
     }
 
+    enum class RationalType {
+        LOCATION_OFF, LOCATION_PERMISSION_DENIED
+    }
+
     private var callback: LocationEnableListener? = null
+    private lateinit var rationalType: RationalType
 
     /**
      * When you override `onCreateDialog`, Android COMPLETELY IGNORES several
@@ -33,19 +49,31 @@ class LocationOffDialogFragment : AppCompatDialogFragment() {
      * @return
      */
     override fun onCreateDialog(savedState: Bundle?): Dialog {
-
         val dialog = MaterialAlertDialogBuilder(context!!)
                 .setIcon(R.drawable.ic_location_off)
-                .setPositiveButton(getString(R.string.dialog_action_go_to_settings)) { _, _ -> startActivity(Intent(ACTION_LOCATION_SOURCE_SETTINGS)) }
-                .setNegativeButton(getString(R.string.dialog_action_skip)) { _, _ -> callback!!.onEnableLocationDenied() }
+                .setPositiveButton(R.string.dialog_action_go_to_settings) { _, _ -> onPositiveButtonClick() }
+                .setNegativeButton(R.string.dialog_action_skip) { _, _ -> callback!!.onEnableLocationDenied() }
                 .create()
 
-        // getText is to preserve html formats
-        dialog.setTitle(R.string.dialog_title_location_off)
-        dialog.setMessage(getText(R.string.dialog_message_location_off))
+        dialog.setTitle(if (rationalType == LOCATION_PERMISSION_DENIED) R.string.dialog_title_location_permission else R.string.dialog_title_location_off)
+        dialog.setMessage(getText(
+                if (rationalType == LOCATION_PERMISSION_DENIED) R.string.dialog_message_location_permission
+                else R.string.dialog_message_location_off)
+        )
         dialog.setCancelable(false) // Prevent dialog from getting dismissed on back key pressed
         dialog.setCanceledOnTouchOutside(false)
         return dialog
+    }
+
+    private fun onPositiveButtonClick() {
+        if (rationalType == LOCATION_PERMISSION_DENIED) {
+            val intent = Intent(ACTION_APPLICATION_DETAILS_SETTINGS)
+            val uri = Uri.fromParts("package", activity!!.packageName, null)
+            intent.data = uri
+            startActivity(intent)
+        } else {
+            startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+        }
     }
 
     override fun onAttach(context: Context) {
