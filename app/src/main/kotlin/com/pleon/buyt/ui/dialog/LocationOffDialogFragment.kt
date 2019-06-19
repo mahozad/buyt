@@ -17,9 +17,7 @@ class LocationOffDialogFragment : AppCompatDialogFragment() {
 
     companion object {
         fun newInstance(rationalType: RationalType): LocationOffDialogFragment {
-            val dialog = LocationOffDialogFragment()
-            dialog.rationalType = rationalType
-            return dialog
+            return LocationOffDialogFragment().also { it.rationalType = rationalType }
         }
     }
 
