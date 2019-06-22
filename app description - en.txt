@@ -1,0 +1,16 @@
+﻿First shopping list and expense manager app based on geolocation.
+
+Add your list of items. After the first purchase from a store, its location is saved in the application and next time when you search your location near that store, Buyt will place items related to that store category at the top of your list.
+
+If your device location sensor takes too long or you don't like turning on the device location every time, you can skip the finding state if you already purchased items from the store.
+
+Buyt show you the most purchased categories, purchase details, info for every store and some other detailes (such as max and mins).
+Buyt uses the minimmum number of permissions in your device!
+Buyt saves its data only on your device and will not use it in any other way!
+
+Premium version includes these features:
+
+No more restrictions on maximum number of purchases in a week
+Ability to add pre-bought items
+More periods for showing buying details and stats (15 days, 30 days, 90 days)
+Some more minor features such as ability to change the app theme and language and more options to sort stores
