@@ -38,8 +38,8 @@ android {
         applicationId = "com.pleon.buyt"
         minSdkVersion(21)
         targetSdkVersion(28)
-        versionCode = 2
-        versionName = "1.0.0-rc" // alpha -> beta -> rc -> final
+        versionCode = 3
+        versionName = "1.0.0" // alpha -> beta -> rc -> final
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             // Tell Room to export database schema info to keep a history of it

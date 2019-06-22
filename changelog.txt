@@ -1,4 +1,12 @@
 ﻿┌───────────────────────────┐
+├ versionName = 1.0.0       │
+├ versionCode = 3           │
+│ ──────────────────────────┘
+├ Suggest item names regardless of the device or app language
+├ Add ability for the user to skip finding state if location is off
+├ Add minor improvements
+├ Update app icon background color
+├───────────────────────────┐
 ├ versionName = 1.0.0-rc    │
 ├ versionCode = 2           │
 │ ──────────────────────────┘
