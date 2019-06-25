@@ -13,7 +13,7 @@ class DailyCost(val date: String, val totalCost: Long) {
      * Although this is the international standard, several countries, including
      * the United States, Canada, and Australia consider Sunday as the start of the week.
      */
-    enum class Days(@StringRes val nameStringRes: Int) {
+    enum class WeekDay(@StringRes val nameStringRes: Int) {
         /**
          * Do NOT reorder the days. This is the order that is returned by sqlite (PurchaseDao).
          */

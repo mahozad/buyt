@@ -10,8 +10,8 @@ import com.pleon.buyt.R
 import com.pleon.buyt.database.dto.PurchaseDetail
 import com.pleon.buyt.ui.BaseViewHolder
 import com.pleon.buyt.ui.DateHeaderDecoration.StickyHeaderInterface
-import com.pleon.buyt.ui.adapter.PurchaseDetailAdapter.ItemTypes.DATE
-import com.pleon.buyt.ui.adapter.PurchaseDetailAdapter.ItemTypes.ITEM
+import com.pleon.buyt.ui.adapter.PurchaseDetailAdapter.ItemType.DATE
+import com.pleon.buyt.ui.adapter.PurchaseDetailAdapter.ItemType.ITEM
 import com.pleon.buyt.util.FormatterUtil.formatDate
 import com.pleon.buyt.util.FormatterUtil.formatPrice
 import kotlinx.android.synthetic.main.date_header.view.*
@@ -22,7 +22,7 @@ import javax.inject.Inject
 class PurchaseDetailAdapter @Inject constructor(private val cxt: Application)
     : Adapter<ViewHolder>(), StickyHeaderInterface {
 
-    enum class ItemTypes { ITEM, DATE }
+    enum class ItemType { ITEM, DATE }
 
     var items = listOf<Any>()
         set(value) {

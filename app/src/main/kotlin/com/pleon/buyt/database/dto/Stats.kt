@@ -1,5 +1,6 @@
 package com.pleon.buyt.database.dto
 
+import com.pleon.buyt.database.dto.DailyCost.WeekDay
 import com.pleon.buyt.model.Store
 
 class Stats {
@@ -16,9 +17,8 @@ class Stats {
     var weekdayWithMaxPurchases = 0
 
     val weekdayNameResWithMaxPurchases: Int
-        get() =
-            if (totalPurchaseCost != 0L) DailyCost.Days.values()[weekdayWithMaxPurchases].nameStringRes
-            else 0
+        get() = if (totalPurchaseCost != 0L) WeekDay.values()[weekdayWithMaxPurchases].nameStringRes
+        else 0
 
     val storeNameWithMaxPurchaseCount: String
         get() = if (storeWithMaxPurchaseCount == null) "-" else storeWithMaxPurchaseCount!!.name
