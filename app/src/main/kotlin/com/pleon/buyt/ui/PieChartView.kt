@@ -9,6 +9,8 @@ import android.util.TypedValue.COMPLEX_UNIT_DIP
 import android.util.TypedValue.applyDimension
 import android.view.View
 import android.view.animation.LinearInterpolator
+import androidx.core.content.res.ResourcesCompat
+import com.pleon.buyt.R
 import com.pleon.buyt.util.FormatterUtil.formatPercent
 import kotlin.math.*
 
@@ -48,9 +50,13 @@ class PieChartView : View {
     private val endPoint = Point()
     private val tempPoint = Point()
 
-    constructor(context: Context) : super(context)
+    constructor(context: Context) : super(context) {
+        mPaint.typeface = ResourcesCompat.getFont(context, R.font.vazir_scaled_down)
+    }
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs){
+        mPaint.typeface = ResourcesCompat.getFont(context, R.font.vazir_scaled_down)
+    }
 
     fun startAnim(duration: Long) {
         animator = ValueAnimator.ofFloat(0f, 360f * 2)

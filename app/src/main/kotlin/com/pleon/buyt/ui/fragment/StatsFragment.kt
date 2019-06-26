@@ -8,6 +8,7 @@ import android.view.View.VISIBLE
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat.getColor
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders.of
 import com.db.chart.animation.Animation
@@ -51,6 +52,7 @@ class StatsFragment : BaseFragment() {
         context!!.theme.resolveAttribute(R.attr.pieChartBackgroundColor, typedValue, true)
         pieBgColor = typedValue.data
 
+        lineChart.setTypeface(ResourcesCompat.getFont(context!!, R.font.vazir_scaled_down)!!)
         pieChart.setCell(4) // gap between slices
         pieChart.setInnerRadius(0.6f)
         pieChart.setBackGroundColor(pieBgColor)
