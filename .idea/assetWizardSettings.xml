@@ -51,7 +51,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="scalingPercent" value="50" />
+                                                <entry key="scalingPercent" value="60" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -62,12 +62,10 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
-                                      <entry key="backgroundColor" value="002a22" />
+                                      <entry key="backgroundColor" value="ffffff" />
                                       <entry key="backgroundImage" value="C:\Users\Mahdi\Desktop\gradient.xml" />
                                       <entry key="backgroundLayerName" value="ic_launcher_background_new_2" />
-                                      <entry key="foregroundImage" value="D:\Project\Buyt\app\src\main\web_2_hi_res_512.png" />
-                                      <entry key="foregroundLayerName" value="ic_launcher_foreground_new_2" />
-                                      <entry key="outputName" value="ic_launcher_new_2" />
+                                      <entry key="foregroundImage" value="D:\Project\Buyt\app\src\main\base_hi_res_512.png" />
                                     </map>
                                   </option>
                                 </PersistentState>

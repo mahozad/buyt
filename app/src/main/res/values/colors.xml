@@ -12,7 +12,7 @@
     <!-- <color name="mdtp_button_color">#fff</color>--><!-- button text color -->
     <!-- Other mdtp_... colors -->
 
-    <color name="ic_launcher_background">#002A22</color>
+    <color name="ic_launcher_background">#fff</color>
 
     <color name="pieChartDarkBgColor">#FF323A33</color>
     <color name="pieChartLightBgColor">#FFE9FFEA</color>
