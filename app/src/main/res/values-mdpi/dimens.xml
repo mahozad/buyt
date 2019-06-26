@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="unit_btn_height">60dp</dimen>
+    <dimen name="unit_btn_height">62dp</dimen>
 </resources>

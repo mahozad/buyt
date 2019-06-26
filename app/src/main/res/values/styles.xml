@@ -7,6 +7,10 @@
         <item name="colorSecondary">@color/colorPrimary</item>
         <item name="colorSurface">#283028</item>
 
+        <item name="android:fontFamily">@font/vazir_scaled_down</item>
+        <item name="fontFamily">@font/vazir_scaled_down</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
+        <!--<item name="android:textViewStyle">@style/textViewStyle</item>-->
+
         <item name="cardBgColor">#4A5E4A</item>
         <item name="bottomBarColor">@color/bottomBarDarkBgColor</item>
         <item name="emptyHintColor">@color/emptyHintDarkColor</item>
@@ -29,8 +33,8 @@
         <item name="colorSecondary">@color/colorPrimary</item>
         <item name="colorSurface">#eaFFea</item>
 
-        <!--<item name="android:fontFamily">@font/vazir</item>-->
-        <!--<item name="fontFamily">@font/vazir</item> &lt;!&ndash; target android sdk versions < 26 and > 14 if theme other than AppCompat &ndash;&gt;-->
+        <item name="android:fontFamily">@font/vazir_scaled_down</item>
+        <item name="fontFamily">@font/vazir_scaled_down</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
         <!--<item name="android:textViewStyle">@style/textViewStyle</item>-->
 
         <item name="cardBgColor">#A9B8A9</item>

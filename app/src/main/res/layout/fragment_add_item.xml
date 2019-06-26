@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center|end"
             android:layout_marginEnd="0.5dp"
-            android:layout_marginBottom="10.6dp"
+            android:layout_marginBottom="13.6dp"
             app:checkedButton="@id/btn1"
             app:layout_constraintBottom_toBottomOf="@id/quantity_layout"
             app:layout_constraintEnd_toEndOf="@id/quantity_layout"
