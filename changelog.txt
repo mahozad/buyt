@@ -1,4 +1,14 @@
 ﻿┌───────────────────────────┐
+├ versionName = 1.1.0       │
+├ versionCode = 4           │
+│ ──────────────────────────┘
+├ Update app font for Farsi language
+├ Add splash screen
+├ Regress the app icon background to white
+├ Fix the bug with back button while keyboard showing
+├ Fix location rational dialog crashing on config change
+├ Add minor improvement to aesthetics
+├───────────────────────────┐
 ├ versionName = 1.0.0       │
 ├ versionCode = 3           │
 │ ──────────────────────────┘
