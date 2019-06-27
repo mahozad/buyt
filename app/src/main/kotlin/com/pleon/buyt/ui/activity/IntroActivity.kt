@@ -1,5 +1,6 @@
 package com.pleon.buyt.ui.activity
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Animatable
 import android.os.Bundle
@@ -18,6 +19,8 @@ import kotlinx.android.synthetic.main.fragment_intro_1.view.*
 import javax.inject.Inject
 import kotlin.math.max
 import kotlin.math.min
+
+const val EXTRA_LAUNCH_MAIN_ACTIVITY = "com.pleon.buyt.extra.LAUNCH_MAIN_ACTIVITY"
 
 class IntroActivity : BaseActivity() {
 
@@ -59,13 +62,13 @@ class IntroActivity : BaseActivity() {
         nextButton.setOnClickListener {
             if (viewPager.currentItem == adapter.itemCount - 1) {
                 prefs.edit().putBoolean(PREF_NEWBIE, false).apply()
+                if (intent.extras == null || intent.extras!!.getBoolean(EXTRA_LAUNCH_MAIN_ACTIVITY))
+                    startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }
             viewPager.currentItem = min(viewPager.currentItem + 1, adapter.itemCount - 1)
         }
     }
-
-    override fun onBackPressed() {}
 
     private fun setupParallaxEffect() {
         viewPager.setPageTransformer { page, pos ->

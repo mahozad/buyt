@@ -122,7 +122,6 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
      */
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
-        showIntroIfNeeded()
         restoreBottomDrawerIfNeeded()
 
         viewModel = of(this, viewModelFactory).get(MainViewModel::class.java)
@@ -146,11 +145,6 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
                 } else addMenuItem.setIcon(R.drawable.avd_add_hide)
             })
         }, 3500)
-    }
-
-    private fun showIntroIfNeeded() {
-        if (prefs.getBoolean(PREF_NEWBIE, true))
-            startActivity(Intent(this, IntroActivity::class.java))
     }
 
     private fun restoreBottomDrawerIfNeeded() {

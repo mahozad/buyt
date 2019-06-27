@@ -112,7 +112,11 @@ class HelpActivity : BaseActivity() {
         return true
     }
 
-    private fun showTutorial() = startActivity(Intent(this, IntroActivity::class.java))
+    private fun showTutorial() {
+        val intent = Intent(this, IntroActivity::class.java)
+        intent.putExtra(EXTRA_LAUNCH_MAIN_ACTIVITY, false)
+        startActivity(intent)
+    }
 
     private fun openTranslationPage() {
         val uri = Uri.parse(TRANSLATION_PAGE_URL)

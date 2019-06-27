@@ -13,6 +13,9 @@ internal abstract class BindingModule {
     //================== Activities ==================\\
 
     @ContributesAndroidInjector
+    abstract fun bindSplashActivity(): SplashActivity
+
+    @ContributesAndroidInjector
     abstract fun bindMainActivity(): MainActivity
 
     @ContributesAndroidInjector(modules = [StatsActivityModule::class])
