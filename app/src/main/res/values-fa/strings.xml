@@ -147,7 +147,7 @@
     <string name="menu_title_sort_stores">مرتب‌سازی مغازه‌ها</string>
     <string name="hint_store_not_available">در دسترس نیست</string>
     <string name="menu_text_reset_settings">بازنشانی تنظیمات</string>
-    <string name="appNameVersion">بایت نسخه ۱.۰.۰</string>
+    <string name="appNameVersion">بایت نسخه %1$s</string>
     <string name="menu_hint_translate_app">مشارکت در ترجمه برنامه</string>
     <string name="menu_hint_show_tutorial">نمایش آموزش برنامه</string>
     <string name="intro_description_1">اقلام مورد نیاز خود را به لیست خرید اضافه نمایید. با درج چند حرف، بایت به شما کالاهای مربوط را پیشنهاد داده و دسته‌بندی نیز می‌تواند به صورت خودکار تعیین شود.</string>

@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import com.pleon.buyt.BuildConfig
 import com.pleon.buyt.R
 import com.pleon.buyt.SKU_PREMIUM
 import com.pleon.buyt.billing.IabHelper
@@ -19,6 +20,7 @@ import com.pleon.buyt.ui.dialog.BillingErrorDialogFragment
 import com.pleon.buyt.ui.dialog.UpgradeSuccessDialogFragment
 import kotlinx.android.synthetic.main.activity_help.*
 import org.mindrot.jbcrypt.BCrypt
+import java.util.*
 import javax.inject.Inject
 
 const val EXTRA_SHOULD_START_UPGRADE = "com.pleon.buyt.extra.SHOULD_START_UPGRADE"
@@ -37,6 +39,7 @@ class HelpActivity : BaseActivity() {
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
         waveHeader.start()
+        nameVersion.text = getString(R.string.appNameVersion, getLocalizedAppVersion())
         animateViews()
         logo.setOnClickListener {
             logo.setImageResource(R.drawable.avd_logo)
@@ -60,6 +63,18 @@ class HelpActivity : BaseActivity() {
         // performClick() does not work if the click listener has not been set
         if (intent.getBooleanExtra(EXTRA_SHOULD_START_UPGRADE, false))
             Handler().postDelayed({ upgradePremiumBtn.performClick() }, 500)
+    }
+
+    private fun getLocalizedAppVersion() = if (Locale.getDefault().language == "fa") {
+        BuildConfig.VERSION_NAME
+                .replace("alpha", "آلفا").replace("beta", "بتا")
+                .replace('0', '۰').replace('1', '۱')
+                .replace('2', '۲').replace('3', '۳')
+                .replace('4', '۴').replace('5', '۵')
+                .replace('6', '۶').replace('7', '۷')
+                .replace('8', '۸').replace('9', '۹')
+    } else {
+        BuildConfig.VERSION_NAME
     }
 
     private fun startPurchase() {
