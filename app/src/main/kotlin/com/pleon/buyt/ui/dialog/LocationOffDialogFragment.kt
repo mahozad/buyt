@@ -17,7 +17,11 @@ class LocationOffDialogFragment : AppCompatDialogFragment() {
 
     companion object {
         fun newInstance(rationalType: RationalType): LocationOffDialogFragment {
-            return LocationOffDialogFragment().also { it.rationalType = rationalType }
+            val fragment = LocationOffDialogFragment()
+            val args = Bundle()
+            args.putSerializable("RATIONAL", rationalType)
+            fragment.arguments = args
+            return fragment
         }
     }
 
@@ -30,7 +34,6 @@ class LocationOffDialogFragment : AppCompatDialogFragment() {
     }
 
     private var callback: LocationEnableListener? = null
-    private lateinit var rationalType: RationalType
 
     /**
      * When you override `onCreateDialog`, Android COMPLETELY IGNORES several
@@ -53,9 +56,9 @@ class LocationOffDialogFragment : AppCompatDialogFragment() {
                 .setNegativeButton(R.string.dialog_action_skip) { _, _ -> callback!!.onEnableLocationDenied() }
                 .create()
 
-        dialog.setTitle(if (rationalType == LOCATION_PERMISSION_DENIED) R.string.dialog_title_location_permission else R.string.dialog_title_location_off)
+        dialog.setTitle(if (getRationalType() == LOCATION_PERMISSION_DENIED) R.string.dialog_title_location_permission else R.string.dialog_title_location_off)
         dialog.setMessage(getText(
-                if (rationalType == LOCATION_PERMISSION_DENIED) R.string.dialog_message_location_permission
+                if (getRationalType() == LOCATION_PERMISSION_DENIED) R.string.dialog_message_location_permission
                 else R.string.dialog_message_location_off)
         )
         dialog.setCancelable(false) // Prevent dialog from getting dismissed on back key pressed
@@ -64,7 +67,7 @@ class LocationOffDialogFragment : AppCompatDialogFragment() {
     }
 
     private fun onPositiveButtonClick() {
-        if (rationalType == LOCATION_PERMISSION_DENIED) {
+        if (getRationalType() == LOCATION_PERMISSION_DENIED) {
             val intent = Intent(ACTION_APPLICATION_DETAILS_SETTINGS)
             val uri = Uri.fromParts("package", activity!!.packageName, null)
             intent.data = uri
@@ -73,6 +76,8 @@ class LocationOffDialogFragment : AppCompatDialogFragment() {
             startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
         }
     }
+
+    private fun getRationalType() = arguments!!.getSerializable("RATIONAL") as RationalType
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
