@@ -26,4 +26,6 @@ class SplashActivity : BaseActivity() {
             finish()
         }, 900)
     }
+
+    override fun onBackPressed() {}
 }
