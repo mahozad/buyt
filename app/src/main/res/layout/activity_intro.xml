@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="84dp"
+        android:tint="#fff"
         app:backgroundTint="#808080"
         app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -37,6 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
+        android:tint="#fff"
         app:backgroundTint="#808080"
         app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -59,7 +61,8 @@
             android:layout_height="8dp"
             android:layout_margin="8dp"
             android:alpha="0.2"
-            app:srcCompat="@drawable/shape_circle_cylinder" />
+            app:srcCompat="@drawable/shape_circle_cylinder"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/dot2"
@@ -67,7 +70,8 @@
             android:layout_height="8dp"
             android:layout_margin="8dp"
             android:alpha="0.2"
-            app:srcCompat="@drawable/shape_circle_cylinder" />
+            app:srcCompat="@drawable/shape_circle_cylinder"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/dot3"
@@ -75,7 +79,8 @@
             android:layout_height="8dp"
             android:layout_margin="8dp"
             android:alpha="0.2"
-            app:srcCompat="@drawable/shape_circle_cylinder" />
+            app:srcCompat="@drawable/shape_circle_cylinder"
+            tools:ignore="ContentDescription" />
 
     </LinearLayout>
 
