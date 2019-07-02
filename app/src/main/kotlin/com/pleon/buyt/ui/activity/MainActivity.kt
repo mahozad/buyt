@@ -48,9 +48,9 @@ import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
 import com.pleon.buyt.ui.dialog.UpgradePromptDialogFragment
 import com.pleon.buyt.ui.fragment.*
-import com.pleon.buyt.util.AnimationUtil.animateIconInfinitely
-import com.pleon.buyt.util.SnackbarUtil.showSnackbar
-import com.pleon.buyt.util.VibrationUtil.vibrate
+import com.pleon.buyt.util.AnimationUtil
+import com.pleon.buyt.util.SnackbarUtil
+import com.pleon.buyt.util.VibrationUtil
 import com.pleon.buyt.viewmodel.FREE_BUY_LIMIT
 import com.pleon.buyt.viewmodel.MainViewModel
 import com.pleon.buyt.viewmodel.MainViewModel.State.*
@@ -82,6 +82,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
     @Inject internal lateinit var locationReceiver: LocationReceiver
     @Inject internal lateinit var broadcastMgr: LocalBroadcastManager
     @Inject internal lateinit var locationMgr: LocationManager
+    @Inject internal lateinit var animationUtil: AnimationUtil
+    @Inject internal lateinit var snackbarUtil: SnackbarUtil
+    @Inject internal lateinit var vibrationUtil: VibrationUtil
     private lateinit var viewModel: MainViewModel
     private lateinit var itemsFragment: ItemsFragment
     private lateinit var addMenuItem: MenuItem
@@ -141,7 +144,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
                 if (items.isEmpty()) {
                     if (viewModel.state != IDLE) shiftToIdleState() // "if" is required
                     addMenuItem.setIcon(R.drawable.avd_add_glow)
-                    animateIconInfinitely(addMenuItem.icon)
+                    animationUtil.animateIconInfinitely(addMenuItem.icon)
                 } else addMenuItem.setIcon(R.drawable.avd_add_hide)
             })
         }, 3500)
@@ -157,7 +160,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
     private fun onLocationFound(location: Location) {
         if (viewModel.state != FINDING) return // because of a bug on app relaunch
         viewModel.location = location
-        if (prefs.getBoolean(PREF_VIBRATE, true)) vibrate(this, 200, 255)
+        if (prefs.getBoolean(PREF_VIBRATE, true)) vibrationUtil.vibrate(200, 255)
         val here = Coordinates(viewModel.location!!)
         viewModel.findNearStores(here).observe(this, Observer { onStoresFound(it) })
     }
@@ -175,7 +178,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
                 else findLocation()
             })
         } else if (viewModel.state == SELECTING) { // act as done
-            if (itemsFragment.isSelectedEmpty) showSnackbar(snbContainer, R.string.snackbar_message_no_item_selected, LENGTH_SHORT)
+            if (itemsFragment.isSelectedEmpty) snackbarUtil.showSnackbar(snbContainer, R.string.snackbar_message_no_item_selected, LENGTH_SHORT)
             else buySelectedItems()
         }
     }
@@ -184,7 +187,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
         menuInflater.inflate(R.menu.menu_bottom_home, menu)
 
         addMenuItem = menu.findItem(R.id.action_add)
-        if (itemsFragment.isListEmpty) animateIconInfinitely(addMenuItem.icon) // This is needed
+        if (itemsFragment.isListEmpty) animationUtil.animateIconInfinitely(addMenuItem.icon) // This is needed
         reorderMenuItem = menu.findItem(R.id.action_reorder_skip)
         storeMenuItem = menu.findItem(R.id.found_stores)
         initializeAddStorePopup(storeMenuItem.actionView)
@@ -344,7 +347,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
                 // was not true, so this is restore from a PROCESS KILL
                 // val location = savedState.getParcelable<Location>(STATE_LOCATION)
                 // bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
-                showSnackbar(snbContainer, R.string.snackbar_message_start_over, LENGTH_INDEFINITE, android.R.string.ok)
+                snackbarUtil.showSnackbar(snbContainer, R.string.snackbar_message_start_over, LENGTH_INDEFINITE, android.R.string.ok)
         }
     }
 
@@ -405,7 +408,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
         viewModel.foundStores = foundStores.toMutableList()
         if (foundStores.isEmpty()) {
             if (viewModel.isFindingSkipped) {
-                showSnackbar(snbContainer, R.string.snackbar_message_no_store_found, LENGTH_LONG)
+                snackbarUtil.showSnackbar(snbContainer, R.string.snackbar_message_no_store_found, LENGTH_LONG)
                 viewModel.isFindingSkipped = false // Reset the flag
             } else {
                 setStoreMenuItemIcon()

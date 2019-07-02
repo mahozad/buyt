@@ -6,8 +6,9 @@ import android.os.Handler
 import android.os.Looper
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat.registerAnimationCallback
+import javax.inject.Inject
 
-object AnimationUtil {
+class AnimationUtil @Inject constructor() {
 
     /**
      * See this answer [https://stackoverflow.com/a/49431260/8583692] for why we are doing this!
