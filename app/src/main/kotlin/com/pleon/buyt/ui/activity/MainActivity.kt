@@ -78,6 +78,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
     /* FIXME: The bug that sometimes occur when expanding an item
      *  (the bottom item jumps up one moment), is produced when another item was swiped partially */
 
+    /* FIXME: While store creation dialog is shown, if a config change occurs and then the store
+     *  is created, the behaviour is buggy */
+
     @Inject internal lateinit var viewModelFactory: ViewModelFactory<MainViewModel>
     @Inject internal lateinit var locationReceiver: LocationReceiver
     @Inject internal lateinit var broadcastMgr: LocalBroadcastManager
@@ -182,6 +185,10 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
             else buySelectedItems()
         }
     }
+
+    // TODO: The if-else-ifs for app states are code smell. What if we want to add a new state to the app?
+    //  Instead of making states enums, make them objects (extending a common super class) and implement
+    //  the functionality in their methods (tell them, do not ask them!)
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_bottom_home, menu)
