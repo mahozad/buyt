@@ -132,6 +132,7 @@ class StoresAdapter @Inject constructor(private val cxt: StoresFragment) : Adapt
             itemView.purchaseCount.text = cxt.resources.getQuantityString(R.plurals.store_detail_purchase_count, storeDetail.purchaseCount, storeDetail.purchaseCount)
             itemView.totalSpending.text = cxt.resources.getQuantityString(R.plurals.price_with_suffix, storeDetail.totalSpending, formatPrice(storeDetail.totalSpending))
             itemView.circular_reveal.alpha = 0f // for the case of undo of deleted item
+            itemView.showChartButton.visibility = if (frag.shouldShowChartButton()) VISIBLE else GONE
             if (storeDetail.store.storeId != extendedStoreId && itemView.chart_group.visibility == VISIBLE) {
                 itemView.showChartButton.setImageResource(R.drawable.avd_line_chart_off)
                 (itemView.showChartButton.drawable as Animatable).start()

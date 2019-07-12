@@ -110,4 +110,6 @@ class StoresFragment : BaseFragment(), ItemTouchHelperListener {
                 onDismiss = { viewModel.deleteStore(store) }
         )
     }
+
+    fun shouldShowChartButton() = resources.getInteger(R.integer.layout_columns) == 1
 }
