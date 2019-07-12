@@ -129,6 +129,9 @@ class StoresAdapter @Inject constructor(private val frag: StoresFragment) : Adap
             if (storeDetail.store.storeId != extendedStoreId && itemView.chart_group.visibility == VISIBLE) {
                 itemView.showChartButton.setImageResource(R.drawable.avd_line_chart_off)
                 (itemView.showChartButton.drawable as Animatable).start()
+            } else if (storeDetail.store.storeId == extendedStoreId) {
+                itemView.showChartButton.setImageResource(R.drawable.avd_line_chart_on)
+                (itemView.showChartButton.drawable as Animatable).start()
             }
             itemView.chart_group.visibility = if (storeDetail.store.storeId == extendedStoreId) VISIBLE else GONE
         }
