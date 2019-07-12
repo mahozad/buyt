@@ -1,5 +1,6 @@
 package com.pleon.buyt.ui.fragment
 
+import android.graphics.Paint
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
@@ -101,6 +102,8 @@ class StatsFragment : BaseFragment() {
         val colors = resources.getIntArray(R.array.lineChartGradient)
         val steps = floatArrayOf(0.0f, 0.2f, 0.5f, 1.0f)
         dataSet.setGradientFill(colors, steps)
+        val paint = Paint().apply { color = getColor(context!!, R.color.chartGridColor) }
+        lineChart.setGrid(3, 0, paint)
         lineChart.addData(dataSet)
         lineChart.setXLabels(NONE)
         if (isStartup) lineChart.show() else lineChart.show(Animation(500))
