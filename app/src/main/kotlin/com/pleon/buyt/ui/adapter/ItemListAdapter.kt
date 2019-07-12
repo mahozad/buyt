@@ -37,11 +37,11 @@ class ItemListAdapter @Inject constructor(private val cxt: Application) : Adapte
     private var dragModeEnabled = false
     private var selectionModeEnabled = false
 
-    init {
-        // setHasStableIds is an optimization hint that you give to the RecyclerView
-        // and tell it "when I provide a ViewHolder, its id is unique and will not change."
-        setHasStableIds(true)
-    }
+    /**
+     * setHasStableIds is an optimization hint that you give to the RecyclerView
+     * and tell it "when I provide a ViewHolder, its id is unique and will not change."
+     */
+    override fun setHasStableIds(hasStableIds: Boolean) = super.setHasStableIds(true)
 
     /**
      * Gets a reference of the enclosing RecyclerView.

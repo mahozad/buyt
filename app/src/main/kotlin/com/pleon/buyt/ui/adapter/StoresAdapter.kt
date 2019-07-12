@@ -37,15 +37,6 @@ class StoresAdapter @Inject constructor(private val frag: StoresFragment) : Adap
             notifyDataSetChanged()
         }
 
-    /**
-     * Gets a reference of the enclosing RecyclerView.
-     *
-     * Note that if the adapter is assigned to multiple RecyclerViews, then only one
-     * of them is assigned to the filed because every time the adapter is attached to a new
-     * RecyclerView, this method is called and therefore the field is overwritten.
-     *
-     * @param recyclerView the enclosing RecyclerView
-     */
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         this.recyclerView = recyclerView
@@ -59,9 +50,7 @@ class StoresAdapter @Inject constructor(private val frag: StoresFragment) : Adap
         return StoreHolder(itemView)
     }
 
-    override fun setHasStableIds(hasStableIds: Boolean) {
-        super.setHasStableIds(true)
-    }
+    override fun setHasStableIds(hasStableIds: Boolean) = super.setHasStableIds(true)
 
     override fun onBindViewHolder(holder: StoreHolder, position: Int) {
         holder.bindStore(storeDetails[position])
@@ -86,11 +75,11 @@ class StoresAdapter @Inject constructor(private val frag: StoresFragment) : Adap
                 (itemView.showChartButton.drawable as Animatable).start()
 
                 if (isChartShown) {
-                    // REQUIRED; MUST be called before the observeForever
+                    // removeObservers() is REQUIRED; MUST be called before the observeForever
                     viewModel.getStoreStats(getStore(adapterPosition)).removeObservers(frag)
                     viewModel.getStoreStats(getStore(adapterPosition)).observeForever { dailyCosts ->
                         if (frag.context == null) return@observeForever // To prevent bug on relaunch
-                        // Do NOT use animation in the show(); causes bug
+                        // Do NOT use animation in the show(); Causes bug
                         LineChartBuilder(frag.context!!, itemView.lineChart, dailyCosts).build().show()
                     }
                     notifyDataSetChanged() // To collapse other extended cards
