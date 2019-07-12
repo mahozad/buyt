@@ -103,7 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/storeIcon"
                 app:layout_constraintStart_toStartOf="@+id/storeName"
                 app:layout_constraintTop_toBottomOf="@+id/storeName"
                 tools:text="۵ خرید" />
@@ -113,9 +113,43 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="16dp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/purchaseCount"
                 app:layout_constraintStart_toEndOf="@+id/purchaseCount"
-                app:layout_constraintTop_toTopOf="@+id/purchaseCount"
                 tools:text="۹۲۰۰۰ تومان" />
+
+            <ImageView
+                android:id="@+id/showChartButton"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="4dp"
+                app:layout_constraintBottom_toBottomOf="@id/storeIcon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/storeIcon"
+                app:srcCompat="@drawable/ic_line_chart"
+                tools:ignore="ContentDescription" />
+
+            <!-- To change visibility of multiple views together -->
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/chart_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="lineChart"
+                tools:visibility="visible" />
+
+            <com.db.chart.view.LineChartView
+                android:id="@+id/lineChart"
+                android:layout_width="0dp"
+                android:layout_height="144dp"
+                android:layout_marginTop="12dp"
+                app:chart_axis="false"
+                app:chart_labelColor="?android:textColorSecondary"
+                app:chart_axisLabelsSpacing="12dp"
+                app:chart_fontSize="12sp"
+                app:chart_labels="inside"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/storeIcon" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

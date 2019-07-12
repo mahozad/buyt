@@ -2,6 +2,7 @@ package com.pleon.buyt.repository
 
 import androidx.lifecycle.LiveData
 import com.pleon.buyt.database.dao.StoreDao
+import com.pleon.buyt.database.dto.DailyCost
 import com.pleon.buyt.database.dto.StoreDetail
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.util.SingleLiveEvent
@@ -15,6 +16,7 @@ import javax.inject.Singleton
 class StoreRepository @Inject constructor(private val storeDao: StoreDao) {
 
     private val storeDetails = SingleLiveEvent<List<StoreDetail>>()
+    private val storeStats = SingleLiveEvent<List<DailyCost>>()
     private val createdStore = SingleLiveEvent<Store>()
 
     fun getStoreDetails(sort: Sort): LiveData<List<StoreDetail>> {
@@ -23,6 +25,14 @@ class StoreRepository @Inject constructor(private val storeDao: StoreDao) {
             uiThread { storeDetails.value = details }
         }
         return storeDetails
+    }
+
+    fun getStoreStats(store: Store, period: Int): LiveData<List<DailyCost>> {
+        doAsync {
+            val stats = storeDao.getStats(store.storeId, period)
+            uiThread { storeStats.value = stats }
+        }
+        return storeStats
     }
 
     fun insert(store: Store): LiveData<Store> {

@@ -17,6 +17,7 @@
     <color name="pieChartDarkBgColor">#FF323A33</color>
     <color name="pieChartLightBgColor">#FFE9FFEA</color>
     <color name="chartEmptyColor">#5A888888</color>
+    <color name="chartGridColor">#33888888</color>
 
     <color name="bottomBarDarkBgColor">#222822</color>
     <color name="bottomBarLightBgColor">#CaE7Ca</color>

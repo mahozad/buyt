@@ -3,6 +3,7 @@ package com.pleon.buyt.database.dao
 import androidx.room.*
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
+import com.pleon.buyt.database.dto.DailyCost
 import com.pleon.buyt.database.dto.StoreDetail
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.viewmodel.StoresViewModel.Sort
@@ -32,6 +33,23 @@ abstract class StoreDao {
      */
     @RawQuery
     protected abstract fun getStoreDetails(query: SupportSQLiteQuery): List<StoreDetail>
+
+    @Query(" WITH RECURSIVE AllDates(date)" +
+            "AS (SELECT DATE('now', 'localtime', -:period || ' days')" +
+            "    UNION ALL" +
+            "    SELECT DATE(date, '+1 days') FROM AllDates" +
+            "    WHERE date < DATE('now', 'localtime')) " +
+            "SELECT AllDates.date, SUM(totalPrice) AS totalCost " +
+            "FROM AllDates LEFT JOIN " +
+            "   (SELECT DATE(date, 'unixepoch', 'localtime') AS date, totalPrice" +
+            "    FROM Purchase LEFT JOIN Store ON Store.storeId = Purchase.storeId" +
+            "    LEFT JOIN Item ON Purchase.purchaseId = Item.purchaseId" +
+            "    WHERE Store.storeId = :storeId" +
+            "    AND date >= STRFTIME('%s', 'now', 'localtime', 'start of day', -:period || ' days') " +
+            "   ) AS DailyCosts " +
+            "ON AllDates.date = DailyCosts.date " +
+            "GROUP BY AllDates.date")
+    abstract fun getStats(storeId: Long, period: Int): List<DailyCost>
 
     @Query("SELECT * FROM Store")
     abstract fun getAllSync(): List<Store>

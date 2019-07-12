@@ -13,6 +13,8 @@ import com.pleon.buyt.repository.StoreRepository
 import com.pleon.buyt.viewmodel.StoresViewModel.Sort.TOTAL_SPENDING
 import javax.inject.Inject
 
+private const val STORE_STATS_PERIOD = 30
+
 class StoresViewModel @Inject constructor(app: Application, private val repository: StoreRepository)
     : AndroidViewModel(app) {
 
@@ -23,11 +25,13 @@ class StoresViewModel @Inject constructor(app: Application, private val reposito
         STORE_NAME(R.string.menu_text_sort_alphabet, R.drawable.ic_alphabet)
     }
 
-    private val sortLiveData = MutableLiveData<Sort>(TOTAL_SPENDING)
+    private val sortLiveData = MutableLiveData(TOTAL_SPENDING)
 
     val storeDetails: LiveData<List<StoreDetail>> = switchMap(sortLiveData, Function { sort ->
         return@Function repository.getStoreDetails(sort)
     })
+
+    fun getStoreStats(store: Store) = repository.getStoreStats(store, STORE_STATS_PERIOD)
 
     fun toggleSort() {
         sortLiveData.value = Sort.values()[(sortLiveData.value!!.ordinal + 1) % Sort.values().size]
