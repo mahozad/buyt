@@ -1,6 +1,5 @@
 package com.pleon.buyt.ui.fragment
 
-import android.graphics.Paint
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
@@ -8,13 +7,10 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
-import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders.of
 import com.db.chart.animation.Animation
-import com.db.chart.model.LineSet
-import com.db.chart.renderer.AxisRenderer.LabelPosition.NONE
 import com.pleon.buyt.R
 import com.pleon.buyt.database.dto.DailyCost
 import com.pleon.buyt.database.dto.PieSlice
@@ -23,10 +19,10 @@ import com.pleon.buyt.model.Category
 import com.pleon.buyt.ui.PieChartView.Slice
 import com.pleon.buyt.util.FormatterUtil.formatNumber
 import com.pleon.buyt.util.FormatterUtil.formatPrice
+import com.pleon.buyt.util.LineChartBuilder
 import com.pleon.buyt.viewmodel.StatsViewModel
 import com.pleon.buyt.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_stats.*
-import java.text.DecimalFormat
 import javax.inject.Inject
 
 private const val PIE_CHART_MAX_SLICES = 5
@@ -77,34 +73,8 @@ class StatsFragment : BaseFragment() {
     }
 
     private fun showLineChart(dailyCosts: List<DailyCost>) {
-        lineChart.reset()
-
-        var totalExpenses = 0L
-
-        val dataSet = LineSet()
-        for (dailyCost in dailyCosts) {
-            dataSet.addPoint(dailyCost.date, dailyCost.totalCost.toFloat())
-            totalExpenses += dailyCost.totalCost
-        }
-
-        if (dailyCosts.size <= 30)
-            dataSet.setDotsRadius(3f).setDotsColor(getColor(context!!,
-                    if (totalExpenses == 0L) R.color.chartEmptyColor else R.color.colorPrimary))
-
-        val gradientColors = resources.getIntArray(R.array.lineChartGradient)
-        val gridPaint = Paint().apply { color = getColor(context!!, R.color.chartGridColor) }
-
-        dataSet.setThickness(3f)
-                .setSmooth(false)
-                .setColor(getColor(context!!, if (totalExpenses == 0L) R.color.chartEmptyColor else R.color.colorPrimaryDark))
-                .setGradientFill(gradientColors, floatArrayOf(0.0f, 0.2f, 0.5f, 1.0f))
-        //      .setDashed(floatArrayOf(0f, 2.5f, 4.9f, 10f, 15f))
-
-        lineChart.setLabelsFormat(DecimalFormat(getString(R.string.currency_format)))
-                .setGrid(3, 0, gridPaint)
-                .setXLabels(NONE)
-                .addData(dataSet)
-
+        val shouldShowDots = dailyCosts.size <= 30
+        val lineChart = LineChartBuilder(context!!, lineChart, dailyCosts, shouldShowDots).build()
         if (isStartup) lineChart.show() else lineChart.show(Animation(500))
     }
 

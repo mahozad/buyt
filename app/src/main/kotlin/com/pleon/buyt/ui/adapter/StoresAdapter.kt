@@ -1,31 +1,27 @@
 package com.pleon.buyt.ui.adapter
 
-import android.graphics.Paint
 import android.graphics.drawable.Animatable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
-import com.db.chart.model.LineSet
-import com.db.chart.renderer.AxisRenderer.LabelPosition.NONE
 import com.pleon.buyt.R
 import com.pleon.buyt.database.dto.StoreDetail
 import com.pleon.buyt.ui.BaseViewHolder
 import com.pleon.buyt.ui.adapter.StoresAdapter.StoreHolder
 import com.pleon.buyt.ui.fragment.StoresFragment
 import com.pleon.buyt.util.FormatterUtil.formatPrice
+import com.pleon.buyt.util.LineChartBuilder
 import com.pleon.buyt.viewmodel.StoresViewModel
 import com.pleon.buyt.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.store_list_row.view.*
-import java.text.DecimalFormat
 import javax.inject.Inject
 
 class StoresAdapter @Inject constructor(private val frag: StoresFragment) : Adapter<StoreHolder>() {
@@ -92,30 +88,10 @@ class StoresAdapter @Inject constructor(private val frag: StoresFragment) : Adap
                 if (isChartShown) {
                     // REQUIRED; MUST be called before the observeForever
                     viewModel.getStoreStats(getStore(adapterPosition)).removeObservers(frag)
-
                     viewModel.getStoreStats(getStore(adapterPosition)).observeForever { dailyCosts ->
                         if (frag.context == null) return@observeForever // To prevent bug on relaunch
-
-                        itemView.lineChart.reset()
-
-                        val dataSet = LineSet()
-                        for (dc in dailyCosts) dataSet.addPoint(dc.date, dc.totalCost.toFloat())
-
-                        val gradientColors = frag.resources.getIntArray(R.array.lineChartGradient)
-                        val gridPaint = Paint().apply { color = getColor(frag.context!!, R.color.chartGridColor) }
-
-                        dataSet.setColor(getColor(frag.context!!, R.color.colorPrimaryDark))
-                                .setDotsColor(getColor(frag.context!!, R.color.colorPrimary))
-                                .setThickness(3f)
-                                .setDotsRadius(2.5f)
-                                .setGradientFill(gradientColors, floatArrayOf(0.0f, 0.2f, 0.5f, 1.0f))
-
-                        itemView.lineChart.setLabelsFormat(DecimalFormat(frag.getString(R.string.currency_format)))
-                                .setGrid(3, 0, gridPaint)
-                                .setXLabels(NONE)
-                                .addData(dataSet)
-
-                        itemView.lineChart.show() // Do NOT use animation; causes bug
+                        // Do NOT use animation in the show(); causes bug
+                        LineChartBuilder(frag.context!!, itemView.lineChart, dailyCosts).build().show()
                     }
                     notifyDataSetChanged() // To collapse other extended cards
                 }

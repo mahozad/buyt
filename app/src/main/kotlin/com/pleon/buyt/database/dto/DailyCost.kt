@@ -2,8 +2,13 @@ package com.pleon.buyt.database.dto
 
 import androidx.annotation.StringRes
 import com.pleon.buyt.R
+import com.pleon.buyt.util.LineChartBuilder.DataSet
 
-class DailyCost(val date: String, val totalCost: Long) {
+class DailyCost(val date: String, val totalCost: Long) : DataSet {
+
+    override fun getLabel() = date
+
+    override fun getValue() = totalCost.toFloat()
 
     /**
      * According to international standard ISO 8601, Monday is the first day of the week.
