@@ -31,9 +31,9 @@
     <color name="unitBorderUnfocusedLight">#a0a0a0</color>
 
     <array name="lineChartGradient">
-        <item>#66259600</item>
         <item>#4D259600</item>
         <item>#33259600</item>
+        <item>#1A259600</item>
         <item>#01259600</item>
     </array>
 
