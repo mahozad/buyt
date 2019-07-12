@@ -102,9 +102,9 @@ class StoresAdapter @Inject constructor(private val frag: StoresFragment) : Adap
                         val dataSet = LineSet()
                         for (dc in dailyCosts) dataSet.addPoint(dc.date, dc.totalCost.toFloat())
                         dataSet.setDotsColor(getColor(frag.context!!, R.color.colorPrimary))
-                        dataSet.setDotsRadius(2.6f)
+                        dataSet.setDotsRadius(2.5f)
                         dataSet.color = getColor(frag.context!!, R.color.colorPrimaryDark)
-                        dataSet.thickness = 2.5f
+                        dataSet.thickness = 3f
                         val colors = frag.resources.getIntArray(R.array.lineChartGradient)
                         dataSet.setGradientFill(colors, floatArrayOf(0.0f, 0.2f, 0.5f, 1.0f))
                         itemView.lineChart.addData(dataSet)

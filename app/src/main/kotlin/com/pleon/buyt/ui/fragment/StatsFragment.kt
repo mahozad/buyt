@@ -95,7 +95,7 @@ class StatsFragment : BaseFragment() {
         dataSet.isSmooth = false
         dataSet.color = getColor(context!!,
                 if (totalExpenses == 0L) R.color.chartEmptyColor else R.color.colorPrimaryDark)
-        dataSet.thickness = 2.5f
+        dataSet.thickness = 3f
 
         lineChart.setLabelsFormat(DecimalFormat(getString(R.string.currency_format)))
 
