@@ -7,7 +7,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
@@ -28,7 +28,7 @@ import kotlinx.android.synthetic.main.store_list_row.view.*
 import java.text.DecimalFormat
 import javax.inject.Inject
 
-class StoresAdapter @Inject constructor(private val cxt: StoresFragment) : Adapter<StoreHolder>() {
+class StoresAdapter @Inject constructor(private val frag: StoresFragment) : Adapter<StoreHolder>() {
 
     @Inject internal lateinit var viewModelFactory: ViewModelFactory<StoresViewModel>
     private lateinit var recyclerView: RecyclerView
@@ -53,13 +53,14 @@ class StoresAdapter @Inject constructor(private val cxt: StoresFragment) : Adapt
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         this.recyclerView = recyclerView
-        viewModel = ViewModelProviders.of(cxt, viewModelFactory).get(StoresViewModel::class.java)
+        viewModel = ViewModelProviders.of(frag, viewModelFactory).get(StoresViewModel::class.java)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoreHolder {
         val itemView = LayoutInflater.from(parent.context)
                 .inflate(R.layout.store_list_row, parent, false)
-        itemView.lineChart.setTypeface(ResourcesCompat.getFont(cxt.context!!, R.font.vazir_scaled_down)!!)
+        itemView.lineChart.setTypeface(ResourcesCompat.getFont(frag.context!!, R.font.vazir_scaled_down)!!)
+        itemView.lineChart.setLabelsFormat(DecimalFormat(frag.getString(R.string.currency_format)))
         return StoreHolder(itemView)
     }
 
@@ -82,41 +83,33 @@ class StoresAdapter @Inject constructor(private val cxt: StoresFragment) : Adapt
         init {
             itemView.showChartButton.setOnClickListener {
                 TransitionManager.beginDelayedTransition(recyclerView, ChangeBounds().setDuration(200))
-                if (itemView.chart_group.visibility == GONE) {
-                    extendedStoreId = getStore(adapterPosition).storeId
-                    itemView.chart_group.visibility = VISIBLE
-                    itemView.showChartButton.setImageResource(R.drawable.avd_line_chart_on)
-                } else {
-                    extendedStoreId = 0
-                    itemView.chart_group.visibility = GONE
-                    itemView.showChartButton.setImageResource(R.drawable.avd_line_chart_off)
-                }
+
+                val isChartShown = itemView.chart_group.visibility == VISIBLE
+                extendedStoreId = if (isChartShown) 0 else getStore(adapterPosition).storeId
+                itemView.chart_group.visibility = if (isChartShown) GONE else VISIBLE
+                itemView.showChartButton.setImageResource(if (isChartShown) R.drawable.avd_line_chart_off else R.drawable.avd_line_chart_on)
                 (itemView.showChartButton.drawable as Animatable).start()
 
                 if (itemView.chart_group.visibility == VISIBLE) {
-                    viewModel.getStoreStats(getStore(adapterPosition)).removeObservers(cxt) // This MUST be before the observeForever
-                    viewModel.getStoreStats(getStore(adapterPosition)).observeForever { t ->
+                    // REQUIRED; MUST be called before the observeForever
+                    viewModel.getStoreStats(getStore(adapterPosition)).removeObservers(frag)
 
-                        if (cxt.context == null) return@observeForever // To prevent bug on relaunch
+                    viewModel.getStoreStats(getStore(adapterPosition)).observeForever { dailyCosts ->
+                        if (frag.context == null) return@observeForever // To prevent bug on relaunch
 
                         itemView.lineChart.reset()
 
                         val dataSet = LineSet()
-                        for (dailyCost in t) dataSet.addPoint(dailyCost.date, dailyCost.totalCost.toFloat())
-
-                        dataSet.setDotsColor(ContextCompat.getColor(cxt.context!!, R.color.colorPrimary))
-                        dataSet.setDotsRadius(2.5f)
-                        dataSet.color = ContextCompat.getColor(cxt.context!!, R.color.colorPrimaryDark)
+                        for (dc in dailyCosts) dataSet.addPoint(dc.date, dc.totalCost.toFloat())
+                        dataSet.setDotsColor(getColor(frag.context!!, R.color.colorPrimary))
+                        dataSet.setDotsRadius(2.6f)
+                        dataSet.color = getColor(frag.context!!, R.color.colorPrimaryDark)
                         dataSet.thickness = 2.5f
-
-                        itemView.lineChart.setLabelsFormat(DecimalFormat(cxt.getString(R.string.currency_format)))
-
-                        val colors = cxt.resources.getIntArray(R.array.lineChartGradient)
-                        val steps = floatArrayOf(0.0f, 0.2f, 0.5f, 1.0f)
-                        dataSet.setGradientFill(colors, steps)
+                        val colors = frag.resources.getIntArray(R.array.lineChartGradient)
+                        dataSet.setGradientFill(colors, floatArrayOf(0.0f, 0.2f, 0.5f, 1.0f))
                         itemView.lineChart.addData(dataSet)
-                        val paint = Paint()
-                        paint.color = ContextCompat.getColor(cxt.context!!, R.color.chartGridColor)
+
+                        val paint = Paint().apply { color = getColor(frag.context!!, R.color.chartGridColor) }
                         itemView.lineChart.setGrid(3, 0, paint)
                         itemView.lineChart.setXLabels(AxisRenderer.LabelPosition.NONE)
                         itemView.lineChart.show() // Do NOT use animation; causes bug
@@ -129,8 +122,8 @@ class StoresAdapter @Inject constructor(private val cxt: StoresFragment) : Adapt
         fun bindStore(storeDetail: StoreDetail) {
             itemView.storeIcon.setImageResource(storeDetail.store.category.storeImageRes)
             itemView.storeName.text = storeDetail.store.name
-            itemView.purchaseCount.text = cxt.resources.getQuantityString(R.plurals.store_detail_purchase_count, storeDetail.purchaseCount, storeDetail.purchaseCount)
-            itemView.totalSpending.text = cxt.resources.getQuantityString(R.plurals.price_with_suffix, storeDetail.totalSpending, formatPrice(storeDetail.totalSpending))
+            itemView.purchaseCount.text = frag.resources.getQuantityString(R.plurals.store_detail_purchase_count, storeDetail.purchaseCount, storeDetail.purchaseCount)
+            itemView.totalSpending.text = frag.resources.getQuantityString(R.plurals.price_with_suffix, storeDetail.totalSpending, formatPrice(storeDetail.totalSpending))
             itemView.circular_reveal.alpha = 0f // for the case of undo of deleted item
             itemView.showChartButton.visibility = if (frag.shouldShowChartButton()) VISIBLE else GONE
             if (storeDetail.store.storeId != extendedStoreId && itemView.chart_group.visibility == VISIBLE) {
