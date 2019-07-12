@@ -87,25 +87,24 @@ class StatsFragment : BaseFragment() {
             totalExpenses += dailyCost.totalCost
         }
 
-        if (dailyCosts.size <= 30) {
-            dataSet.setDotsColor(getColor(context!!,
+        if (dailyCosts.size <= 30)
+            dataSet.setDotsRadius(3f).setDotsColor(getColor(context!!,
                     if (totalExpenses == 0L) R.color.chartEmptyColor else R.color.colorPrimary))
-            dataSet.setDotsRadius(3f)
-        }
-        dataSet.isSmooth = false
-        dataSet.color = getColor(context!!,
-                if (totalExpenses == 0L) R.color.chartEmptyColor else R.color.colorPrimaryDark)
-        dataSet.thickness = 3f
+
+        val gradientColors = resources.getIntArray(R.array.lineChartGradient)
+        val gridPaint = Paint().apply { color = getColor(context!!, R.color.chartGridColor) }
+
+        dataSet.setThickness(3f)
+                .setSmooth(false)
+                .setColor(getColor(context!!, if (totalExpenses == 0L) R.color.chartEmptyColor else R.color.colorPrimaryDark))
+                .setGradientFill(gradientColors, floatArrayOf(0.0f, 0.2f, 0.5f, 1.0f))
+        //      .setDashed(floatArrayOf(0f, 2.5f, 4.9f, 10f, 15f))
 
         lineChart.setLabelsFormat(DecimalFormat(getString(R.string.currency_format)))
+                .setGrid(3, 0, gridPaint)
+                .setXLabels(NONE)
+                .addData(dataSet)
 
-        val colors = resources.getIntArray(R.array.lineChartGradient)
-        val steps = floatArrayOf(0.0f, 0.2f, 0.5f, 1.0f)
-        dataSet.setGradientFill(colors, steps)
-        val paint = Paint().apply { color = getColor(context!!, R.color.chartGridColor) }
-        lineChart.setGrid(3, 0, paint)
-        lineChart.addData(dataSet)
-        lineChart.setXLabels(NONE)
         if (isStartup) lineChart.show() else lineChart.show(Animation(500))
     }
 

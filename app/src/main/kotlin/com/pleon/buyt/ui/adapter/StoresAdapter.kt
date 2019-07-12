@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
 import com.db.chart.model.LineSet
-import com.db.chart.renderer.AxisRenderer
+import com.db.chart.renderer.AxisRenderer.LabelPosition.NONE
 import com.pleon.buyt.R
 import com.pleon.buyt.database.dto.StoreDetail
 import com.pleon.buyt.ui.BaseViewHolder
@@ -60,7 +60,6 @@ class StoresAdapter @Inject constructor(private val frag: StoresFragment) : Adap
         val itemView = LayoutInflater.from(parent.context)
                 .inflate(R.layout.store_list_row, parent, false)
         itemView.lineChart.setTypeface(ResourcesCompat.getFont(frag.context!!, R.font.vazir_scaled_down)!!)
-        itemView.lineChart.setLabelsFormat(DecimalFormat(frag.getString(R.string.currency_format)))
         return StoreHolder(itemView)
     }
 
@@ -84,13 +83,13 @@ class StoresAdapter @Inject constructor(private val frag: StoresFragment) : Adap
             itemView.showChartButton.setOnClickListener {
                 TransitionManager.beginDelayedTransition(recyclerView, ChangeBounds().setDuration(200))
 
-                val isChartShown = itemView.chart_group.visibility == VISIBLE
-                extendedStoreId = if (isChartShown) 0 else getStore(adapterPosition).storeId
-                itemView.chart_group.visibility = if (isChartShown) GONE else VISIBLE
-                itemView.showChartButton.setImageResource(if (isChartShown) R.drawable.avd_line_chart_off else R.drawable.avd_line_chart_on)
+                itemView.lineChart.visibility = if (itemView.lineChart.visibility == VISIBLE) GONE else VISIBLE
+                val isChartShown = (itemView.lineChart.visibility == VISIBLE)
+                extendedStoreId = if (isChartShown) getStore(adapterPosition).storeId else 0
+                itemView.showChartButton.setImageResource(if (isChartShown) R.drawable.avd_line_chart_on else R.drawable.avd_line_chart_off)
                 (itemView.showChartButton.drawable as Animatable).start()
 
-                if (itemView.chart_group.visibility == VISIBLE) {
+                if (isChartShown) {
                     // REQUIRED; MUST be called before the observeForever
                     viewModel.getStoreStats(getStore(adapterPosition)).removeObservers(frag)
 
@@ -101,17 +100,21 @@ class StoresAdapter @Inject constructor(private val frag: StoresFragment) : Adap
 
                         val dataSet = LineSet()
                         for (dc in dailyCosts) dataSet.addPoint(dc.date, dc.totalCost.toFloat())
-                        dataSet.setDotsColor(getColor(frag.context!!, R.color.colorPrimary))
-                        dataSet.setDotsRadius(2.5f)
-                        dataSet.color = getColor(frag.context!!, R.color.colorPrimaryDark)
-                        dataSet.thickness = 3f
-                        val colors = frag.resources.getIntArray(R.array.lineChartGradient)
-                        dataSet.setGradientFill(colors, floatArrayOf(0.0f, 0.2f, 0.5f, 1.0f))
-                        itemView.lineChart.addData(dataSet)
 
-                        val paint = Paint().apply { color = getColor(frag.context!!, R.color.chartGridColor) }
-                        itemView.lineChart.setGrid(3, 0, paint)
-                        itemView.lineChart.setXLabels(AxisRenderer.LabelPosition.NONE)
+                        val gradientColors = frag.resources.getIntArray(R.array.lineChartGradient)
+                        val gridPaint = Paint().apply { color = getColor(frag.context!!, R.color.chartGridColor) }
+
+                        dataSet.setColor(getColor(frag.context!!, R.color.colorPrimaryDark))
+                                .setDotsColor(getColor(frag.context!!, R.color.colorPrimary))
+                                .setThickness(3f)
+                                .setDotsRadius(2.5f)
+                                .setGradientFill(gradientColors, floatArrayOf(0.0f, 0.2f, 0.5f, 1.0f))
+
+                        itemView.lineChart.setLabelsFormat(DecimalFormat(frag.getString(R.string.currency_format)))
+                                .setGrid(3, 0, gridPaint)
+                                .setXLabels(NONE)
+                                .addData(dataSet)
+
                         itemView.lineChart.show() // Do NOT use animation; causes bug
                     }
                     notifyDataSetChanged() // To collapse other extended cards
@@ -126,14 +129,14 @@ class StoresAdapter @Inject constructor(private val frag: StoresFragment) : Adap
             itemView.totalSpending.text = frag.resources.getQuantityString(R.plurals.price_with_suffix, storeDetail.totalSpending, formatPrice(storeDetail.totalSpending))
             itemView.circular_reveal.alpha = 0f // for the case of undo of deleted item
             itemView.showChartButton.visibility = if (frag.shouldShowChartButton()) VISIBLE else GONE
-            if (storeDetail.store.storeId != extendedStoreId && itemView.chart_group.visibility == VISIBLE) {
+            if (storeDetail.store.storeId != extendedStoreId && itemView.lineChart.visibility == VISIBLE) {
                 itemView.showChartButton.setImageResource(R.drawable.avd_line_chart_off)
                 (itemView.showChartButton.drawable as Animatable).start()
             } else if (storeDetail.store.storeId == extendedStoreId) {
                 itemView.showChartButton.setImageResource(R.drawable.avd_line_chart_on)
                 (itemView.showChartButton.drawable as Animatable).start()
             }
-            itemView.chart_group.visibility = if (storeDetail.store.storeId == extendedStoreId) VISIBLE else GONE
+            itemView.lineChart.visibility = if (storeDetail.store.storeId == extendedStoreId) VISIBLE else GONE
         }
     }
 }
