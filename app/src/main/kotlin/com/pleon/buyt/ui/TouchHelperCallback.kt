@@ -16,7 +16,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.pleon.buyt.R
 import kotlinx.android.synthetic.main.item_list_row.view.*
-import java.lang.Math.*
+import kotlin.math.abs
+import kotlin.math.pow
+import kotlin.math.sign
+import kotlin.math.sqrt
 
 private const val MAX_SWIPE_DIST = 88f // in dp unit
 private const val SWIPE_THRESHOLD = 0.3f // to be considered done
@@ -28,7 +31,7 @@ private const val SWIPE_THRESHOLD = 0.3f // to be considered done
  * In order to use ItemTouchHelper, we’ll create an ItemTouchHelper.Callback to
  * listen for “move” and “swipe” events.
  */
-class TouchHelperCallback (private var listener: ItemTouchHelperListener) : ItemTouchHelper.Callback() {
+class TouchHelperCallback(private var listener: ItemTouchHelperListener) : ItemTouchHelper.Callback() {
 
     interface ItemTouchHelperListener {
         fun onMoved(oldPosition: Int, newPosition: Int)
@@ -77,8 +80,8 @@ class TouchHelperCallback (private var listener: ItemTouchHelperListener) : Item
         // If it's drag-n-drop move the whole card; if it's swipe just move the foreground
         val view = if (actionState == ACTION_STATE_DRAG) viewHolder.itemView.cardContainer else viewHolder.itemView.cardForeground
 
-        // Limit the swipe distance. abs() and signum() are to support both LTR and RTL configs.
-        dX = if (abs(dX) < maxSwipeDistInPx) dX else signum(dX) * maxSwipeDistInPx
+        // Limit the swipe distance. abs() and sign() are to support both LTR and RTL configs.
+        dX = if (abs(dX) < maxSwipeDistInPx) dX else dX.sign * maxSwipeDistInPx
 
         // Animate delete circular reveal
         if (abs(dX) == maxSwipeDistInPx && !viewHolder.delAnimating) {
@@ -97,15 +100,20 @@ class TouchHelperCallback (private var listener: ItemTouchHelperListener) : Item
     private fun showCircularReveal(viewHolder: BaseViewHolder, revealView: View) {
         viewHolder.delAnimating = true
 
-        val finalRadius = max(revealView.width, revealView.height) / 1.6f
+        val finalRadius = calculateFinalRadius(revealView)
         val centerX = revealView.width / 2
         val centerY = revealView.height / 2
 
         val anim = createCircularReveal(revealView, centerX, centerY, 0f, finalRadius)
         revealView.alpha = 1.0f
         revealView.visibility = VISIBLE
-        anim.duration = 170
+        anim.duration = 200
         anim.start()
+    }
+
+    private fun calculateFinalRadius(view: View): Float {
+        val roundCorner = applyDimension(COMPLEX_UNIT_DIP, 2f, displayMetrics)
+        return sqrt((view.width / 2f).pow(2) + (view.height / 2f).pow(2)) - roundCorner
     }
 
     private fun hideCircularReveal(viewHolder: BaseViewHolder, revealView: View) {
