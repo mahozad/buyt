@@ -6,7 +6,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.fragment.PREF_THEME
 import com.pleon.buyt.ui.fragment.PREF_THEME_DEF
-import com.pleon.buyt.util.LocaleUtil
+import com.pleon.buyt.util.LocaleUtil.setLocale
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -21,14 +21,13 @@ val <T : LifecycleOwner> T.TAG: String get() = javaClass.simpleName
 abstract class BaseActivity : DaggerAppCompatActivity() {
 
     @Inject internal lateinit var prefs: SharedPreferences
-    @Inject internal lateinit var localeUtil: LocaleUtil
 
     abstract fun layout(): Int
 
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
         setTheme()
-        localeUtil.setLocale(this)
+        setLocale(this)
         setContentView(layout())
         setSupportActionBar(bottom_bar)
     }

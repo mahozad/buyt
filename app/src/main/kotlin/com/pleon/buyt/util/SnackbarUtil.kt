@@ -5,9 +5,8 @@ import com.google.android.material.snackbar.BaseTransientBottomBar.BaseCallback
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_LONG
 import com.pleon.buyt.R
-import javax.inject.Inject
 
-class SnackbarUtil @Inject constructor() {
+object SnackbarUtil {
 
     fun showSnackbar(container: View, message: Int, length: Int, action: Int = 0) {
         val snackbar = Snackbar.make(container, message, length)

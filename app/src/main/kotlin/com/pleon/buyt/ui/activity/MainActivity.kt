@@ -1,66 +1,44 @@
 package com.pleon.buyt.ui.activity
 
-import android.Manifest.permission.ACCESS_FINE_LOCATION
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.app.NotificationManager
-import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager.PERMISSION_GRANTED
-import android.graphics.drawable.Animatable
-import android.location.Location
-import android.location.LocationManager
-import android.location.LocationManager.GPS_PROVIDER
 import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders.of
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
-import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_END
-import com.google.android.material.snackbar.Snackbar.*
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
 import com.pleon.buyt.R
 import com.pleon.buyt.component.ACTION_LOCATION_EVENT
 import com.pleon.buyt.component.GpsService
 import com.pleon.buyt.component.LocationReceiver
-import com.pleon.buyt.isPremium
-import com.pleon.buyt.model.Coordinates
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.ui.dialog.CreateStoreDialogFragment
 import com.pleon.buyt.ui.dialog.CreateStoreDialogFragment.CreateStoreListener
-import com.pleon.buyt.ui.dialog.LocationOffDialogFragment
 import com.pleon.buyt.ui.dialog.LocationOffDialogFragment.LocationEnableListener
-import com.pleon.buyt.ui.dialog.LocationOffDialogFragment.RationalType
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
-import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
-import com.pleon.buyt.ui.dialog.UpgradePromptDialogFragment
-import com.pleon.buyt.ui.fragment.*
-import com.pleon.buyt.util.AnimationUtil
-import com.pleon.buyt.util.SnackbarUtil
-import com.pleon.buyt.util.VibrationUtil
-import com.pleon.buyt.viewmodel.FREE_BUY_LIMIT
+import com.pleon.buyt.ui.fragment.AddItemFragment
+import com.pleon.buyt.ui.fragment.BottomDrawerFragment
+import com.pleon.buyt.ui.fragment.ItemsFragment
+import com.pleon.buyt.ui.fragment.PREF_TASK_RECREATED
+import com.pleon.buyt.ui.state.AddItemState
+import com.pleon.buyt.ui.state.Event.*
+import com.pleon.buyt.ui.state.activity
+import com.pleon.buyt.util.AnimationUtil.animateIconInfinitely
+import com.pleon.buyt.util.SnackbarUtil.showSnackbar
 import com.pleon.buyt.viewmodel.MainViewModel
-import com.pleon.buyt.viewmodel.MainViewModel.State.*
 import com.pleon.buyt.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
 import javax.inject.Inject
 
-private const val STATE_LOCATION = "com.pleon.buyt.state.LOCATION"
-private const val REQUEST_LOCATION_PERMISSION = 1
+const val STATE_LOCATION = "com.pleon.buyt.state.LOCATION"
+const val REQUEST_LOCATION_PERMISSION = 1
 
 /**
  * UI controllers such as activities and fragments are primarily intended to display UI data,
@@ -84,16 +62,12 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
     @Inject internal lateinit var viewModelFactory: ViewModelFactory<MainViewModel>
     @Inject internal lateinit var locationReceiver: LocationReceiver
     @Inject internal lateinit var broadcastMgr: LocalBroadcastManager
-    @Inject internal lateinit var locationMgr: LocationManager
-    @Inject internal lateinit var animationUtil: AnimationUtil
-    @Inject internal lateinit var snackbarUtil: SnackbarUtil
-    @Inject internal lateinit var vibrationUtil: VibrationUtil
-    private lateinit var viewModel: MainViewModel
-    private lateinit var itemsFragment: ItemsFragment
-    private lateinit var addMenuItem: MenuItem
-    private lateinit var reorderMenuItem: MenuItem
-    private lateinit var storeMenuItem: MenuItem
-    private lateinit var addStorePopup: PopupMenu
+    lateinit var viewModel: MainViewModel
+    lateinit var itemsFragment: ItemsFragment
+    lateinit var addMenuItem: MenuItem
+    lateinit var reorderMenuItem: MenuItem
+    lateinit var storeMenuItem: MenuItem
+    lateinit var addStorePopup: PopupMenu
 
     override fun layout() = R.layout.activity_main
 
@@ -130,13 +104,14 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
         super.onCreate(savedState)
         restoreBottomDrawerIfNeeded()
 
+        activity = this
         viewModel = of(this, viewModelFactory).get(MainViewModel::class.java)
         broadcastMgr.registerReceiver(locationReceiver, IntentFilter(ACTION_LOCATION_EVENT))
-        locationReceiver.getLocation().observe(this, Observer { onLocationFound(it) })
+        locationReceiver.getLocation().observe(this, Observer { viewModel.event(LocationFound(it)) })
         itemsFragment = supportFragmentManager.findFragmentById(R.id.itemsFragment) as ItemsFragment
 
         scrim.setOnClickListener { if (scrim.alpha == 1f) onBackPressed() }
-        fab.setOnClickListener { onFabClick() }
+        fab.setOnClickListener { viewModel.event(FabClicked) }
         setupEmptyListListener()
     }
 
@@ -144,11 +119,8 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
         Handler().postDelayed({
             if (!::addMenuItem.isInitialized) return@postDelayed
             viewModel.allItems.observe(this@MainActivity, Observer { items ->
-                if (items.isEmpty()) {
-                    if (viewModel.state != IDLE) shiftToIdleState() // "if" is required
-                    addMenuItem.setIcon(R.drawable.avd_add_glow)
-                    animationUtil.animateIconInfinitely(addMenuItem.icon)
-                } else addMenuItem.setIcon(R.drawable.avd_add_hide)
+                if (items.isEmpty()) viewModel.event(ItemListEmptied)
+                else addMenuItem.setIcon(R.drawable.avd_add_hide)
             })
         }, 3500)
     }
@@ -160,70 +132,19 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
         }
     }
 
-    private fun onLocationFound(location: Location) {
-        if (viewModel.state != FINDING) return // because of a bug on app relaunch
-        viewModel.location = location
-        if (prefs.getBoolean(PREF_VIBRATE, true)) vibrationUtil.vibrate(200, 255)
-        val here = Coordinates(viewModel.location!!)
-        viewModel.findNearStores(here).observe(this, Observer { onStoresFound(it) })
-    }
-
-    private fun onFabClick() {
-        if (viewModel.isAddingItem) {
-            val addItemFragment = supportFragmentManager.findFragmentById(R.id.fragContainer) as AddItemFragment
-            addItemFragment.onDonePressed()
-        } else if (viewModel.state == IDLE) { // act as find
-            viewModel.purchaseCountInPeriod.observe(this, Observer { purchaseCount ->
-                if (itemsFragment.isListEmpty) itemsFragment.emphasisEmpty()
-                else if (!isPremium && purchaseCount >= FREE_BUY_LIMIT)
-                    UpgradePromptDialogFragment.newInstance(getText(R.string.dialog_message_free_limit_reached))
-                            .show(supportFragmentManager, "UPGRADE_DIALOG")
-                else findLocation()
-            })
-        } else if (viewModel.state == SELECTING) { // act as done
-            if (itemsFragment.isSelectedEmpty) snackbarUtil.showSnackbar(snbContainer, R.string.snackbar_message_no_item_selected, LENGTH_SHORT)
-            else buySelectedItems()
-        }
-    }
-
-    // TODO: The if-else-ifs for app states are code smell. What if we want to add a new state to the app?
-    //  Instead of making states enums, make them objects (extending a common super class) and implement
-    //  the functionality in their methods (tell them, do not ask them!)
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_bottom_home, menu)
 
         addMenuItem = menu.findItem(R.id.action_add)
-        if (itemsFragment.isListEmpty) animationUtil.animateIconInfinitely(addMenuItem.icon) // This is needed
+        if (itemsFragment.isListEmpty) animateIconInfinitely(addMenuItem.icon) // This is needed
         reorderMenuItem = menu.findItem(R.id.action_reorder_skip)
         storeMenuItem = menu.findItem(R.id.found_stores)
         initializeAddStorePopup(storeMenuItem.actionView)
-        storeMenuItem.actionView.setOnClickListener { showAddStorePopup() }
-
-        if (viewModel.state != IDLE || viewModel.isAddingItem) {
-            bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
-            (bottom_bar.navigationIcon as Animatable).start()
-            addMenuItem.isVisible = false
+        storeMenuItem.actionView.setOnClickListener {
+            if (!viewModel.isFindingSkipped && viewModel.foundStores.isNotEmpty()) addStorePopup.show()
         }
 
-        // Because animating views was buggy in onOptionsItemSelected we do it here
-        if (viewModel.isAddingItem) {
-            reorderMenuItem.isVisible = false
-            bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
-            fab.setImageResource(R.drawable.avd_find_done)
-            (fab.drawable as Animatable).start()
-            scrim.animate().alpha(1f).setDuration(300).setListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationStart(anim: Animator?) = scrim.setVisibility(VISIBLE)
-            })
-        } else if (!itemsFragment.isListEmpty) addMenuItem.setIcon(R.drawable.avd_add_hide)
-
-        if (viewModel.state == FINDING) {
-            reorderMenuItem.setIcon(R.drawable.avd_skip_reorder).setTitle(R.string.menu_hint_skip_finding)
-        } else if (viewModel.state == SELECTING) {
-            setStoreMenuItemIcon()
-            reorderMenuItem.isVisible = false
-            bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
-        }
+        viewModel.event(OptionsMenuCreated)
         return true
     }
 
@@ -235,10 +156,6 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
         })
     }
 
-    private fun showAddStorePopup() {
-        if (!viewModel.isFindingSkipped && viewModel.foundStores.isNotEmpty()) addStorePopup.show()
-    }
-
     /**
      * If setSupportActionBar() is used to set up the BottomAppBar, navigation menu item
      * can be identified by checking if the id of menu item equals android.R.id.home.
@@ -246,8 +163,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_add -> {
-                viewModel.isAddingItem = true
-
+                viewModel.state = AddItemState
                 // Note that because AddItemFragment has setHasOptionsMenu(true) every time the
                 // fragment manager adds or replaces that fragment, the onCreateOptionsMenu() of
                 // this activity is called so we had to animate views in there.
@@ -258,36 +174,17 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
                         .commit()
             }
 
-            R.id.action_reorder_skip -> {
-                if (viewModel.state == FINDING) skipFinding()
-                else if (!itemsFragment.isListEmpty) itemsFragment.toggleDragMode()
-            }
-
             R.id.action_add_store -> {
                 viewModel.shouldCompletePurchase = false
                 val createStoreDialog = CreateStoreDialogFragment.newInstance(viewModel.location!!)
                 createStoreDialog.show(supportFragmentManager, "CREATE_STORE_DIALOG")
             }
 
-            android.R.id.home -> when {
-                viewModel.isAddingItem -> {
-                    closeAddItemPopup()
-                    shiftToIdleState()
-                }
-                viewModel.state == IDLE -> {
-                    BottomDrawerFragment().show(supportFragmentManager, "BOTTOM_SHEET")
-                }
-                else -> shiftToIdleState()
-            }
+            R.id.action_reorder_skip -> viewModel.event(FindingSkipped)
+
+            android.R.id.home -> viewModel.event(HomeClicked)
         }
         return true
-    }
-
-    private fun closeAddItemPopup() {
-        supportFragmentManager.popBackStack()
-        scrim.animate().alpha(0f).setDuration(300).setListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(anim: Animator?) = scrim.setVisibility(GONE)
-        })
     }
 
     /**
@@ -295,14 +192,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
      * super.onBackPressed() from your overridden method. Otherwise the Back button behavior
      * may be jarring to the user.
      */
-    override fun onBackPressed() {
-        when {
-            viewModel.state == FINDING -> stopService(Intent(this, GpsService::class.java))
-            viewModel.isAddingItem -> closeAddItemPopup()
-            viewModel.state != SELECTING -> super.onBackPressed()
-        }
-        shiftToIdleState()
-    }
+    override fun onBackPressed() = viewModel.event(BackClicked)
+
+    fun callSuperOnBackPressed() = super.onBackPressed()
 
     /**
      * [ViewModels][androidx.lifecycle.ViewModel] only survive configuration changes but
@@ -322,53 +214,33 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
      */
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-
+        viewModel.event(SaveInstanceCalled(outState))
         /* TODO: Use Saved State module for ViewModel instead.
          *  See [https://developer.android.com/topic/libraries/architecture/viewmodel-savedstate] */
-
-        // There is nothing special in IDLE state to save here; In FINDING state, app runs a
-        // FOREGROUND service and is unkillable so this state also doesn't need to save its data
-
-        if (viewModel.state == SELECTING)
-            outState.putParcelable(STATE_LOCATION, viewModel.location)
     }
 
+    // NOTE: menu items are restored in onCreateOptionsMenu()
     override fun onRestoreInstanceState(savedState: Bundle) {
         super.onRestoreInstanceState(savedState)
 
-        // NOTE: menu items are restored in onCreateOptionsMenu()
+        viewModel.event(RestoreInstanceCalled(savedState))
 
-        when {
-            viewModel.isAddingItem -> fab.setImageResource(R.drawable.ic_done)
-            viewModel.state == FINDING -> {
-                fab.setImageResource(R.drawable.avd_finding)
-                (fab.drawable as Animatable).start()
-            }
-            viewModel.state == SELECTING -> {
-                fab.setImageResource(R.drawable.ic_done)
-                itemsFragment.toggleItemsCheckbox(true)
-            }
-            savedState.containsKey(STATE_LOCATION) ->
-                // TODO: Restore the selecting state
-                // Bundle contains location but previous condition (viewModel.getState() == SELECTING)
-                // was not true, so this is restore from a PROCESS KILL
-                // val location = savedState.getParcelable<Location>(STATE_LOCATION)
-                // bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
-                snackbarUtil.showSnackbar(snbContainer, R.string.snackbar_message_start_over, LENGTH_INDEFINITE, android.R.string.ok)
+        if (savedState.containsKey(STATE_LOCATION)) {
+            // TODO: Restore the selecting state
+            // Bundle contains location but previous condition (viewModel.getState() == SELECTING)
+            // was not true, so this is restore from a PROCESS KILL
+            // val location = savedState.getParcelable<Location>(STATE_LOCATION)
+            // bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
+            showSnackbar(snbContainer, R.string.snackbar_message_start_over, LENGTH_INDEFINITE, android.R.string.ok)
         }
     }
 
     override fun onRequestPermissionsResult(reqCode: Int, perms: Array<String>, grants: IntArray) {
         if (reqCode == REQUEST_LOCATION_PERMISSION) {
             // If request is cancelled, the result arrays are empty.
-            if (grants.isNotEmpty() && grants[0] == PERMISSION_GRANTED) findLocation()
+            if (grants.isNotEmpty() && grants[0] == PERMISSION_GRANTED) viewModel.event(LocationPermissionGranted)
         }
         super.onRequestPermissionsResult(reqCode, perms, grants)
-    }
-
-    private fun skipFinding() {
-        viewModel.isFindingSkipped = true
-        viewModel.allStores.observe(this, Observer<List<Store>> { onStoresFound(it) })
     }
 
     /**
@@ -389,177 +261,10 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
         if (isFinishing) stopService(Intent(this, GpsService::class.java))
     }
 
-    private fun findLocation() {
-        // Dangerous permissions should be checked EVERY time
-        if (ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
-            requestLocationPermission()
-        } else if (!locationMgr.isProviderEnabled(GPS_PROVIDER)) {
-            val rationaleDialog = LocationOffDialogFragment.newInstance(RationalType.LOCATION_OFF)
-            rationaleDialog.show(supportFragmentManager, "LOCATION_OFF_DIALOG")
-        } else {
-            addMenuItem.setIcon(R.drawable.avd_add_hide).apply { (icon as Animatable).start() }
-            // disable effect of tapping on the menu item and also hide its ripple
-            Handler().postDelayed({ addMenuItem.isVisible = false }, 300)
-            shiftToFindingState()
-            val intent = Intent(this, GpsService::class.java)
-            ContextCompat.startForegroundService(this, intent) // no need to check api lvl
-        }
-    }
+    override fun onEnableLocationDenied() = viewModel.event(FindingSkipped)
 
-    override fun onEnableLocationDenied() {
-        viewModel.shouldAnimateNavIcon = true
-        skipFinding()
-    }
+    override fun onStoreCreated(store: Store) = viewModel.event(StoreCreated(store))
 
-    private fun onStoresFound(foundStores: List<Store>) {
-        viewModel.foundStores = foundStores.toMutableList()
-        if (foundStores.isEmpty()) {
-            if (viewModel.isFindingSkipped) {
-                snackbarUtil.showSnackbar(snbContainer, R.string.snackbar_message_no_store_found, LENGTH_LONG)
-                viewModel.isFindingSkipped = false // Reset the flag
-            } else {
-                setStoreMenuItemIcon()
-                shiftToSelectingState()
-            }
-        } else {
-            if (addMenuItem.isVisible) addMenuItem.isVisible = false
-            stopService(Intent(this, GpsService::class.java)) // for the case if finding skipped
-            shiftToSelectingState()
-            itemsFragment.sortItemsByCategory(viewModel.foundStores[0].category)
-            setStoreMenuItemIcon()
-        }
-    }
-
-    private fun shiftToFindingState() {
-        viewModel.state = FINDING
-
-        fab.setImageResource(R.drawable.avd_buyt)
-        (fab.drawable as Animatable).start()
-
-        bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
-        (bottom_bar.navigationIcon as Animatable).start()
-
-        reorderMenuItem.setIcon(R.drawable.avd_reorder_skip).setTitle(R.string.menu_hint_skip_finding)
-        (reorderMenuItem.icon as Animatable).start()
-
-        // Make sure the bottomAppBar is not hidden and make it not hide on scroll
-        // new BottomAppBar.Behavior().slideUp(mBottomAppBar);
-    }
-
-    private fun shiftToSelectingState() {
-        itemsFragment.toggleItemsCheckbox(true)
-
-        if (viewModel.shouldAnimateNavIcon) {
-            bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
-            (bottom_bar.navigationIcon as Animatable).start()
-        }
-
-        reorderMenuItem.isVisible = false
-        bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
-
-        fab.setImageResource(R.drawable.avd_find_done)
-        (fab.drawable as Animatable).start()
-
-        viewModel.state = SELECTING
-    }
-
-    private fun shiftToIdleState() {
-        itemsFragment.sortItemsByOrder()
-        itemsFragment.clearSelectedItems()
-        if (viewModel.state == FINDING || viewModel.state == SELECTING || viewModel.isAddingItem) {
-            itemsFragment.toggleItemsCheckbox(false)
-
-            fab.setImageResource(if (viewModel.state == FINDING) R.drawable.avd_buyt_reverse
-            else R.drawable.avd_done_buyt)
-            (fab.drawable as Animatable).start()
-
-            bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_CENTER
-            bottom_bar.setNavigationIcon(R.drawable.avd_cancel_nav)
-            (bottom_bar.navigationIcon as Animatable).start()
-            storeMenuItem.isVisible = false
-            reorderMenuItem.setIcon(R.drawable.avd_skip_reorder).setTitle(R.string.menu_hint_reorder_items).isVisible = true
-            (reorderMenuItem.icon as Animatable).start()
-            addMenuItem.setIcon(R.drawable.avd_add_show).apply { (icon as Animatable).start() }
-                    .also { it.isVisible = true }
-
-            stopService(Intent(this, GpsService::class.java))
-            (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).cancelAll()
-        }
-        viewModel.resetFoundStores()
-        viewModel.shouldCompletePurchase = false
-        viewModel.shouldAnimateNavIcon = false
-        viewModel.isFindingSkipped = false
-        viewModel.isAddingItem = false
-        viewModel.state = IDLE // this should be the last statement (because of the if above)
-    }
-
-    /**
-     * Requests the Location permission.
-     * If the permission has been denied previously, a the user will be prompted
-     * to grant the permission, otherwise it is requested directly.
-     */
-    private fun requestLocationPermission() {
-        // When the user responds to the app's permission request, the system invokes onRequestPermissionsResult() method
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, ACCESS_FINE_LOCATION)) {
-            val rationaleDialog = LocationOffDialogFragment.newInstance(RationalType.LOCATION_PERMISSION_DENIED)
-            rationaleDialog.show(supportFragmentManager, "LOCATION_RATIONALE_DIALOG")
-        } else {
-            // Location permission has not been granted yet. Request it directly.
-            ActivityCompat.requestPermissions(this, arrayOf(ACCESS_FINE_LOCATION), REQUEST_LOCATION_PERMISSION)
-        }
-    }
-
-    private fun buySelectedItems() {
-        if (itemsFragment.validateSelectedItemsPrice()) {
-            if (viewModel.foundStores.size == 0) {
-                viewModel.shouldCompletePurchase = true
-                val createStoreDialog = CreateStoreDialogFragment.newInstance(viewModel.location!!)
-                createStoreDialog.show(supportFragmentManager, "CREATE_STORE_DIALOG")
-            } else if (viewModel.foundStores.size == 1) {
-                completeBuy(viewModel.foundStores[0])
-            } else { // show store selection dialog
-                val selectionList = ArrayList<SelectDialogRow>() // dialog requires ArrayList
-                for (store in viewModel.foundStores) {
-                    val selection = SelectDialogRow(store.name, store.category.storeImageRes)
-                    selectionList.add(selection)
-                }
-                val selectDialog = SelectDialogFragment
-                        .newInstance(this, R.string.dialog_title_select_store, selectionList)
-                selectDialog.show(supportFragmentManager, "SELECT_STORE_DIALOG")
-                // next this::completeBuy() is called
-            }
-        }
-    }
-
-    private fun setStoreMenuItemIcon() {
-        with(storeMenuItem.actionView) {
-            val visibility = if (viewModel.foundStores.size == 1) GONE else VISIBLE
-            this.findViewById<FrameLayout>(R.id.textContainer).visibility = visibility
-            this.findViewById<ImageView>(R.id.icon).setImageResource(viewModel.getStoreIcon())
-            this.findViewById<TextView>(R.id.text).text = viewModel.getStoreTitle()
-        }
-        storeMenuItem.isVisible = true
-    }
-
-    override fun onStoreCreated(store: Store) {
-        if (viewModel.shouldCompletePurchase) {
-            completeBuy(store)
-        } else {
-            viewModel.foundStores.add(store)
-            setStoreMenuItemIcon()
-        }
-    }
-
-    /**
-     * On store selected from store selection dialog
-     *
-     * @param index
-     */
-    override fun onSelected(index: Int) = completeBuy(viewModel.foundStores[index])
-
-    private fun completeBuy(store: Store) {
-        // With toList(), a new list is passed to buy() so clearing selected items wont effect it
-        viewModel.buy(itemsFragment.selectedItems.toList(), store, Date())
-        shiftToIdleState()
-    }
+    // On store selected from store selection dialog
+    override fun onSelected(index: Int) = viewModel.event(StoreSelected(index))
 }

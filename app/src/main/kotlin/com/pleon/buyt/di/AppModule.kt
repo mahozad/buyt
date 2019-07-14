@@ -8,12 +8,17 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.google.android.material.animation.ArgbEvaluatorCompat
 import com.pleon.buyt.billing.IabHelper
+import com.pleon.buyt.ui.state.IdleState
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
 @Module
 class AppModule {
+
+    @Provides
+    @Singleton
+    internal fun provideUIInitialState(mgr: LocationManager) = IdleState.apply { locationMgr = mgr }
 
     @Provides
     @Singleton

@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProviders.of
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.google.android.material.textfield.TextInputLayout
 import com.pleon.buyt.R
 import com.pleon.buyt.model.Category
@@ -15,7 +16,8 @@ import com.pleon.buyt.ui.ItemSpacingDecoration
 import com.pleon.buyt.ui.TouchHelperCallback
 import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener
 import com.pleon.buyt.ui.adapter.ItemListAdapter
-import com.pleon.buyt.util.SnackbarUtil
+import com.pleon.buyt.util.SnackbarUtil.showSnackbar
+import com.pleon.buyt.util.SnackbarUtil.showUndoSnackbar
 import com.pleon.buyt.viewmodel.MainViewModel
 import com.pleon.buyt.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_item_list.*
@@ -28,7 +30,6 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
     @Inject internal lateinit var viewModelFactory: ViewModelFactory<MainViewModel>
     @Inject internal lateinit var touchHelperCallback: TouchHelperCallback
     @Inject internal lateinit var adapter: ItemListAdapter
-    @Inject internal lateinit var snackbarUtil: SnackbarUtil
     val isSelectedEmpty get() = adapter.selectedItems.isEmpty()
     val selectedItems get() = adapter.selectedItems
     val isListEmpty get() = adapter.items.isEmpty()
@@ -80,7 +81,7 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
     override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
         val item = adapter.getItem(viewHolder.adapterPosition)
         viewModel.flagItemForDeletion(item)
-        snackbarUtil.showUndoSnackbar(snbContainer, getString(R.string.snackbar_message_item_deleted, item.name),
+        showUndoSnackbar(snbContainer, getString(R.string.snackbar_message_item_deleted, item.name),
                 onUndo = { viewModel.restoreDeletedItem(item) },
                 onDismiss = { viewModel.deleteItem(item) }
         )
@@ -141,7 +142,6 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
     }
 
     fun emphasisEmpty() {
-        emptyHint.setBackgroundResource(R.drawable.avd_empty_emphasis)
-        (emptyHint.background as Animatable).start()
+        showSnackbar(snbContainer, R.string.snackbar_message_list_empty, LENGTH_LONG)
     }
 }

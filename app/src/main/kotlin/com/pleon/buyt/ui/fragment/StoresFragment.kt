@@ -21,7 +21,7 @@ import com.pleon.buyt.ui.TouchHelperCallback
 import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener
 import com.pleon.buyt.ui.adapter.StoresAdapter
 import com.pleon.buyt.ui.dialog.UpgradePromptDialogFragment
-import com.pleon.buyt.util.SnackbarUtil
+import com.pleon.buyt.util.SnackbarUtil.showUndoSnackbar
 import com.pleon.buyt.viewmodel.StoresViewModel
 import com.pleon.buyt.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_store_list.*
@@ -36,7 +36,6 @@ class StoresFragment : BaseFragment(), ItemTouchHelperListener {
     @Inject internal lateinit var viewModelFactory: ViewModelFactory<StoresViewModel>
     @Inject internal lateinit var touchHelperCallback: TouchHelperCallback
     @Inject internal lateinit var adapter: StoresAdapter
-    @Inject internal lateinit var snackbarUtil: SnackbarUtil
     private lateinit var viewModel: StoresViewModel
     private lateinit var sortMenuItemView: TextView
 
@@ -105,7 +104,7 @@ class StoresFragment : BaseFragment(), ItemTouchHelperListener {
         val store = adapter.getStore(viewHolder.adapterPosition)
         viewModel.flagStoreForDeletion(store)
 
-        snackbarUtil.showUndoSnackbar(snbContainer, getString(R.string.snackbar_message_store_deleted, store.name),
+        showUndoSnackbar(snbContainer, getString(R.string.snackbar_message_store_deleted, store.name),
                 onUndo = { viewModel.restoreDeletedStore(store) },
                 onDismiss = { viewModel.deleteStore(store) }
         )

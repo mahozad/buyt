@@ -13,8 +13,10 @@ import com.pleon.buyt.model.Store
 import com.pleon.buyt.repository.MainRepository
 import com.pleon.buyt.ui.fragment.PREF_SEARCH_DIST
 import com.pleon.buyt.ui.fragment.PREF_SEARCH_DIST_DEF
+import com.pleon.buyt.ui.state.Event
+import com.pleon.buyt.ui.state.IdleState
+import com.pleon.buyt.ui.state.UIState
 import com.pleon.buyt.util.FormatterUtil.formatNumber
-import com.pleon.buyt.viewmodel.MainViewModel.State.IDLE
 import java.util.*
 import javax.inject.Inject
 import kotlin.math.cos
@@ -33,20 +35,16 @@ private const val EARTH_RADIUS = 6_371_000.0 // In meters
  */
 class MainViewModel @Inject constructor(private val app: Application,
                                         private val repository: MainRepository,
-                                        private val prefs: SharedPreferences)
+                                        private val prefs: SharedPreferences,
+                                        initialState: IdleState)
     : AndroidViewModel(app) {
 
-    enum class State {
-        IDLE, FINDING, SELECTING
-    }
-
-    @Volatile var state = IDLE
+    var state: UIState = initialState
     var location: Location? = null
     var foundStores = mutableListOf<Store>()
     var shouldCompletePurchase = false
     var shouldAnimateNavIcon = false
     var isFindingSkipped = false
-    var isAddingItem = false
 
     // TODO: Use paging architecture component library
     val allItems = repository.allItems
@@ -58,6 +56,8 @@ class MainViewModel @Inject constructor(private val app: Application,
         val searchDist = cos(searchDistInMeters / EARTH_RADIUS)
         return repository.findNearStores(origin, searchDist)
     }
+
+    fun event(event: Event) = state.event(event)
 
     fun buy(items: Collection<Item>, store: Store, date: Date) = repository.buy(items, store, date)
 

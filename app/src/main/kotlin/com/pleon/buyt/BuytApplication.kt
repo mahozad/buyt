@@ -6,7 +6,7 @@ import android.util.Log
 import com.pleon.buyt.billing.IabHelper
 import com.pleon.buyt.di.DaggerAppComponent
 import com.pleon.buyt.repository.SubscriptionRepository
-import com.pleon.buyt.util.LocaleUtil
+import com.pleon.buyt.util.LocaleUtil.setLocale
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import org.mindrot.jbcrypt.BCrypt
@@ -20,7 +20,6 @@ const val SKU_PREMIUM = "full_features"
 class BuytApplication : DaggerApplication() {
 
     @Inject internal lateinit var subscriptionRepository: SubscriptionRepository
-    @Inject internal lateinit var localeUtil: LocaleUtil
     @Inject internal lateinit var iabHelper: IabHelper
 
     override fun onCreate() {
@@ -72,19 +71,16 @@ class BuytApplication : DaggerApplication() {
     /**
      * This is for android N and higher.
      *
-     * Because dagger is initialized in onCreate (after this method), we had to create a new
-     * localeUtil object here.
-     *
      * To let android resource framework to fetch and display appropriate string resources based on
      * user’s language preference, we need to override the base Context of the application
      * to have default locale configuration.
      */
     override fun attachBaseContext(cxt: Context) {
-        super.attachBaseContext(LocaleUtil().setLocale(cxt))
+        super.attachBaseContext(setLocale(cxt))
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        localeUtil.setLocale(this)
+        setLocale(this)
     }
 }

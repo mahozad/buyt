@@ -6,9 +6,8 @@ import android.content.res.Resources
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.pleon.buyt.ui.fragment.PREF_LANG
 import java.util.*
-import javax.inject.Inject
 
-class LocaleUtil @Inject constructor() {
+object LocaleUtil {
 
     fun setLocale(context: Context): Context {
         val lang = getDefaultSharedPreferences(context).getString(PREF_LANG, "auto")
