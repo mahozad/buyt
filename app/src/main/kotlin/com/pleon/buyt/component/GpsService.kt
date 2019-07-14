@@ -11,7 +11,8 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.location.LocationManager.GPS_PROVIDER
-import android.os.Build
+import android.os.Build.VERSION.SDK_INT
+import android.os.Build.VERSION_CODES.O
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.PRIORITY_DEFAULT
@@ -62,7 +63,7 @@ class GpsService : DaggerService(), LocationListener {
      * If you want to remove the notification when service stopped, see onDestroy() below
      */
     private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (SDK_INT >= O) {
             val channel = NotificationChannel("Main", getString(R.string.app_name), IMPORTANCE_DEFAULT)
             channel.description = getString(R.string.notif_channel_desc)
             // channel.setShowBadge(false) // Disable the dot on app icon when notification is shown
@@ -133,8 +134,6 @@ class GpsService : DaggerService(), LocationListener {
 
         locationManager.removeUpdates(this)
 
-        // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        //     stopForeground(false) // here notification can be removed as well
-        // }
+        // if (SDK_INT >= O) { stopForeground(false) // here notification can be removed as well }
     }
 }
