@@ -40,6 +40,11 @@ android {
         targetSdkVersion(28)
         versionCode = 5 // don't forget this
         versionName = "1.2.0" // alpha -> beta -> rc -> final
+
+        /* This flag prevents the Android Gradle Plugin from generating PNG versions of
+         * vector assets if minSdkVersion is < 21 */
+        // vectorDrawables.useSupportLibrary = true
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             // Tell Room to export database schema info to keep a history of it
