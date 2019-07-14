@@ -56,15 +56,13 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
     }
 
     private fun updateEmptyHint(isListEmpty: Boolean) {
-        if (isListEmpty && emptyHint.text == getString(R.string.placeholder_empty)) return
+        if (isListEmpty && emptyHint.alpha > 0) return
         if (isListEmpty) {
-            emptyHint.setBackgroundResource(R.drawable.avd_list_empty)
-            (emptyHint.background as Animatable).start()
-            emptyHint.setText(R.string.placeholder_empty)
-        } else if (emptyHint.text.isNotEmpty()) {
-            emptyHint.setBackgroundResource(R.drawable.avd_list_filled)
-            (emptyHint.background as Animatable).start()
-            emptyHint.text = ""
+            (emptyHint.drawable as Animatable).start()
+            emptyHint.animate().alpha(1f).setDuration(200).start()
+        } else if (emptyHint.alpha > 0) {
+            (emptyHint.drawable as Animatable).start()
+            emptyHint.animate().alpha(0f).setDuration(200).start()
         }
     }
 

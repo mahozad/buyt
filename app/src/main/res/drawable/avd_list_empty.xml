@@ -3,39 +3,33 @@
     <aapt:attr name="android:drawable">
         <vector
             android:name="vector"
-            android:width="24dp"
-            android:height="24dp"
-            android:viewportWidth="24"
-            android:viewportHeight="24">
-            <path
-                android:name="path"
-                android:pathData="M 12 23 L 17 23 L 17 20 L 20 20 L 20 16 L 23 16 L 23 8 L 20 8 L 20 4 L 17 4 L 17 1 L 7 1 L 7 4 L 4 4 L 4 8 L 1 8 L 1 16 L 4 16 L 4 20 L 7 20 L 7 23 Z"
-                android:strokeWidth="1"
-                android:strokeColor="?emptyHintColor"
-                android:strokeLineCap="round"
-                android:strokeLineJoin="round"
-                android:trimPathEnd="0.5"
-                android:trimPathOffset="0.5" />
+            android:width="36dp"
+            android:height="36dp"
+            android:viewportWidth="36"
+            android:viewportHeight="36">
+            <group
+                android:name="group"
+                android:pivotX="18"
+                android:pivotY="9">
+                <path
+                    android:name="path"
+                    android:fillColor="?emptyHintColor"
+                    android:pathData="M 28 15.506 L 23.21 15.506 L 18.82 8.936 C 18.42 8.346 17.55 8.346 17.16 8.936 L 12.77 15.506 L 8 15.506 C 7.45 15.506 7 15.956 7 16.506 C 7 16.596 7.01 16.686 7.04 16.776 L 9.58 26.046 C 9.81 26.886 10.58 27.506 11.5 27.506 L 24.5 27.506 C 25.42 27.506 26.19 26.886 26.43 26.046 L 28.97 16.776 L 29 16.506 C 29 15.956 28.55 15.506 28 15.506 Z M 17.99 11.296 L 20.8 15.506 L 15.18 15.506 Z M 18 23.506 C 16.9 23.506 16 22.606 16 21.506 C 16 20.406 16.9 19.506 18 19.506 C 19.1 19.506 20 20.406 20 21.506 C 20 22.606 19.1 23.506 18 23.506 Z"
+                    android:strokeWidth="1" />
+            </group>
         </vector>
     </aapt:attr>
-    <target android:name="path">
+    <target android:name="group">
         <aapt:attr name="android:animation">
-            <set>
-                <objectAnimator
-                    android:duration="300"
-                    android:interpolator="@android:interpolator/fast_out_slow_in"
-                    android:propertyName="trimPathStart"
-                    android:valueFrom="0.5"
-                    android:valueTo="0"
-                    android:valueType="floatType" />
-                <objectAnimator
-                    android:duration="300"
-                    android:interpolator="@android:interpolator/fast_out_slow_in"
-                    android:propertyName="trimPathEnd"
-                    android:valueFrom="0.5"
-                    android:valueTo="1"
-                    android:valueType="floatType" />
-            </set>
+            <objectAnimator
+                android:duration="2000"
+                android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+                android:propertyName="rotation"
+                android:repeatCount="infinite"
+                android:repeatMode="reverse"
+                android:valueFrom="15"
+                android:valueTo="-15"
+                android:valueType="floatType" />
         </aapt:attr>
     </target>
 </animated-vector>
