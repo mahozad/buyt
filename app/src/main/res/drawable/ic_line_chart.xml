@@ -7,7 +7,6 @@
     <path
         android:pathData="M3.5,17 L9.5,11 13.5,15 20.6,7"
         android:strokeWidth="2.1"
-        android:strokeAlpha="1"
         android:strokeColor="#000"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />

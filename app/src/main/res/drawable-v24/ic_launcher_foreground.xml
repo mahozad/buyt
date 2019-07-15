@@ -37,12 +37,12 @@
         android:fillColor="@color/colorPrimary"
         android:pathData="M555.80693 803.0577c-59.03204 13.79456 -98.39157 5.01505 -140.7311 -16.99452l124.81136 72.35241c6.60814 3.81521 6.60814 3.52839 16.1135 3.52839z"
         android:strokeWidth="1"
-        android:strokeColor="@color/colorPrimary"/>
+        android:strokeColor="@color/colorPrimary" />
     <path
         android:fillColor="@color/colorPrimary"
         android:pathData="M555.80856 503.05773c-59.03204 13.79456 -98.39157 5.01505 -140.7311 -16.99452l124.81136 72.35241c6.60651 3.81427 6.60651 3.52839 16.1135 3.52839z"
         android:strokeWidth="1"
-        android:strokeColor="@color/colorPrimary"/>
+        android:strokeColor="@color/colorPrimary" />
     <path
         android:fillColor="@color/colorPrimary"
         android:pathData="M555.80693 261.94401c-59.03204 -13.79456 -98.39157 -5.01505 -140.7311 16.99452l124.81136 -72.35241c6.60814 -3.81521 6.60814 -3.52839 16.1135 -3.52839z"
