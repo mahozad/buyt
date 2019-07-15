@@ -28,14 +28,12 @@ class DateHeaderDecoration(recyclerView: RecyclerView, private val listener: Sti
         })
     }
 
-
-
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         val topChild = parent.getChildAt(0) ?: return
         val topChildPosition = parent.getChildAdapterPosition(topChild)
         if (topChildPosition == RecyclerView.NO_POSITION) return
-
         val currentHeader = getHeaderViewForItem(topChildPosition, parent)
+
         fixLayoutSize(parent, currentHeader)
         val contactPoint = currentHeader.bottom
         val childInContact = getChildInContact(parent, contactPoint) ?: return
