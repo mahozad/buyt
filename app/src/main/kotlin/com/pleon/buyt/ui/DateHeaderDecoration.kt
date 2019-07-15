@@ -36,14 +36,13 @@ class DateHeaderDecoration(recyclerView: RecyclerView, private val listener: Sti
 
         fixLayoutSize(parent, currentHeader)
         val contactPoint = currentHeader.bottom
-        val childInContact = getChildInContact(parent, contactPoint) ?: return
+        val childInContact = getChildInContact(parent, contactPoint)
 
-        if (listener.isHeader(parent.getChildAdapterPosition(childInContact))) {
+        if (childInContact != null && listener.isHeader(parent.getChildAdapterPosition(childInContact))) {
             moveHeader(c, currentHeader, childInContact)
-            return
+        } else {
+            drawHeader(c, currentHeader)
         }
-
-        drawHeader(c, currentHeader)
     }
 
     private fun getHeaderViewForItem(itemPosition: Int, parent: RecyclerView): View {
