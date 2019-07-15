@@ -6,9 +6,12 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders.of
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.pleon.buyt.R
 import com.pleon.buyt.database.dto.PurchaseDetail
 import com.pleon.buyt.ui.DateHeaderDecoration
+import com.pleon.buyt.ui.DateHeaderDecoration.StickyHeaderInterface
 import com.pleon.buyt.ui.adapter.PurchaseDetailAdapter
 import com.pleon.buyt.util.FormatterUtil.formatDate
 import com.pleon.buyt.viewmodel.StatsViewModel
@@ -26,6 +29,24 @@ class StatDetailsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedState: Bundle?) {
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(DateHeaderDecoration(recyclerView, adapter))
+
+        // For date headers to be shown correctly and smoothly, this listener is required
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                // because of the viewHolder reuse, upcoming items alpha might be 0 so we set it 1
+                // Note that getChildAt() is based on the visible items not real item positions
+                var i = 0
+                while (layoutManager.getChildAt(i) != null) {
+                    layoutManager.getChildAt(i)!!.alpha = 1f
+                    i++
+                }
+                val firstItem = layoutManager.findFirstVisibleItemPosition()
+                if ((recyclerView.adapter as StickyHeaderInterface).isHeader(firstItem)) {
+                    layoutManager.getChildAt(0)!!.alpha = 0f
+                }
+            }
+        })
 
         val viewModel = of(activity!!, viewModelFactory).get(StatsViewModel::class.java)
         viewModel.stats.observe(viewLifecycleOwner, Observer { stats -> showStats(stats.purchaseDetails) })

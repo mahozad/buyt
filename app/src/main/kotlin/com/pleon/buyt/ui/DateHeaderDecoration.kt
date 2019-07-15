@@ -38,6 +38,9 @@ class DateHeaderDecoration(recyclerView: RecyclerView, private val listener: Sti
         val contactPoint = currentHeader.bottom
         val childInContact = getChildInContact(parent, contactPoint)
 
+        // For headers to be shown correctly and smoothly, an onScrollListener is set on the
+        // RecyclerView in StatDetailsFragment that hides headers (alpha = 0) at the appropriate time
+
         if (childInContact != null && listener.isHeader(parent.getChildAdapterPosition(childInContact))) {
             moveHeader(c, currentHeader, childInContact)
         } else {
