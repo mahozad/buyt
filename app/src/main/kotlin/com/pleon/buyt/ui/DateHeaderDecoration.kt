@@ -6,16 +6,18 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 
-class DateHeaderDecoration(recyclerView: RecyclerView, private val mListener: StickyHeaderInterface) : RecyclerView.ItemDecoration() {
+class DateHeaderDecoration(recyclerView: RecyclerView, private val listener: StickyHeaderInterface)
+    : ItemDecoration() {
 
-    private var mStickyHeaderHeight: Int = 0
+    private var stickyHeaderHeight: Int = 0
 
     init {
         // On Sticky Header Click
         recyclerView.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
             override fun onInterceptTouchEvent(recyclerView: RecyclerView, motionEvent: MotionEvent): Boolean {
-                return if (motionEvent.y <= mStickyHeaderHeight) {
+                return if (motionEvent.y <= stickyHeaderHeight) {
                     // Handle the clicks on the header here ...
                     true
                 } else false
@@ -26,11 +28,10 @@ class DateHeaderDecoration(recyclerView: RecyclerView, private val mListener: St
         })
     }
 
+
+
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
-        super.onDrawOver(c, parent, state)
-
         val topChild = parent.getChildAt(0) ?: return
-
         val topChildPosition = parent.getChildAdapterPosition(topChild)
         if (topChildPosition == RecyclerView.NO_POSITION) return
 
@@ -39,7 +40,7 @@ class DateHeaderDecoration(recyclerView: RecyclerView, private val mListener: St
         val contactPoint = currentHeader.bottom
         val childInContact = getChildInContact(parent, contactPoint) ?: return
 
-        if (mListener.isHeader(parent.getChildAdapterPosition(childInContact))) {
+        if (listener.isHeader(parent.getChildAdapterPosition(childInContact))) {
             moveHeader(c, currentHeader, childInContact)
             return
         }
@@ -48,10 +49,10 @@ class DateHeaderDecoration(recyclerView: RecyclerView, private val mListener: St
     }
 
     private fun getHeaderViewForItem(itemPosition: Int, parent: RecyclerView): View {
-        val headerPosition = mListener.getHeaderPositionForItem(itemPosition)
-        val layoutResId = mListener.getHeaderLayout(headerPosition)
+        val headerPosition = listener.getHeaderPositionForItem(itemPosition)
+        val layoutResId = listener.getHeaderLayout(headerPosition)
         val header = LayoutInflater.from(parent.context).inflate(layoutResId, parent, false)
-        mListener.bindHeaderData(header, headerPosition)
+        listener.bindHeaderData(header, headerPosition)
         return header
     }
 
@@ -100,8 +101,8 @@ class DateHeaderDecoration(recyclerView: RecyclerView, private val mListener: St
 
         view.measure(childWidthSpec, childHeightSpec)
 
-        mStickyHeaderHeight = view.measuredHeight
-        view.layout(0, 0, view.measuredWidth, mStickyHeaderHeight)
+        stickyHeaderHeight = view.measuredHeight
+        view.layout(0, 0, view.measuredWidth, stickyHeaderHeight)
     }
 
     interface StickyHeaderInterface {
