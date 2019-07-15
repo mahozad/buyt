@@ -15,7 +15,7 @@
                     android:name="path"
                     android:pathData="M 19.617 6.978 L 9.004 17.591 L 4.832 13.419 L 3.403 12 L 18.595 12"
                     android:strokeWidth="2"
-                    android:strokeColor="#000000"
+                    android:strokeColor="#000"
                     android:strokeLineCap="round"
                     android:strokeLineJoin="round"
                     android:trimPathEnd="0.548" />
@@ -29,7 +29,7 @@
                     android:name="path_1"
                     android:pathData="M 18.595 12 L 12 18.604"
                     android:strokeWidth="2"
-                    android:strokeColor="#000000"
+                    android:strokeColor="#000"
                     android:strokeLineCap="round"
                     android:strokeLineJoin="round"
                     android:trimPathEnd="0" />
@@ -37,7 +37,7 @@
                     android:name="path_2"
                     android:pathData="M 18.595 12 L 12 5.396"
                     android:strokeWidth="2"
-                    android:strokeColor="#000000"
+                    android:strokeColor="#000"
                     android:strokeLineCap="round"
                     android:strokeLineJoin="round"
                     android:trimPathEnd="0" />
