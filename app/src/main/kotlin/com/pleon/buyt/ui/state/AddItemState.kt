@@ -18,6 +18,7 @@ object AddItemState : UIState {
             is HomeClicked, BackClicked -> shiftToIdleState()
             is OptionsMenuCreated -> onOptionsMenuCreated()
             is RestoreInstanceCalled -> onRestoreInstanceCalled()
+            is SaveInstanceCalled, ItemListEmptied -> {}
             else -> throw IllegalStateException("Event $event is not valid in $this")
         }
     }
