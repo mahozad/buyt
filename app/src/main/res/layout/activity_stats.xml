@@ -26,10 +26,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Make coordinator layout height a little larger to accommodate menu items ripple -->
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/bar_container"
         android:layout_width="match_parent"
-        android:layout_height="86dp"
+        android:layout_height="128dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <com.google.android.material.bottomappbar.BottomAppBar
