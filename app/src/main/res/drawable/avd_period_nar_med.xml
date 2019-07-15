@@ -3,33 +3,34 @@
     <aapt:attr name="android:drawable">
         <vector
             android:name="vector"
-            android:width="32dp"
-            android:height="32dp"
+            android:width="24dp"
+            android:height="24dp"
             android:tint="?colorOnSurface"
-            android:viewportWidth="32"
-            android:viewportHeight="32">
+            android:viewportWidth="24"
+            android:viewportHeight="24">
             <path
                 android:name="path_1"
-                android:fillColor="#000"
-                android:pathData="M 15.99 6 C 10.47 6 6 10.48 6 16 C 6 21.52 10.47 26 15.99 26 C 21.52 26 26 21.52 26 16 C 26 10.48 21.52 6 15.99 6 Z M 16 8 C 20.42 8 24 11.58 24 16 C 24 20.42 20.42 24 16 24 C 11.58 24 8 20.42 8 16 C 8 11.58 11.58 8 16 8 Z" />
-            <path
-                android:name="path_2"
-                android:fillColor="#000"
-                android:pathData="M 16 10 C 17.321 10 18.605 10.436 19.653 11.24 C 20.7 12.044 21.454 13.172 21.796 14.447 L 16 16 Z"
+                android:pathData="M 12 3 C 9.614 3 7.323 3.949 5.636 5.636 C 3.949 7.323 3 9.614 3 12 C 3 14.386 3.949 16.677 5.636 18.364 C 7.323 20.051 9.614 21 12 21 C 14.386 21 16.677 20.051 18.364 18.364 C 20.051 16.677 21 14.386 21 12 C 21 9.614 20.051 7.323 18.364 5.636 C 16.677 3.949 14.386 3 12 3 Z"
+                android:strokeWidth="2"
                 android:strokeColor="#000" />
+            <path
+                android:name="sector_1"
+                android:fillColor="#000"
+                android:pathData="M 12 6.5 C 13.211 6.5 14.388 6.9 15.348 7.637 C 16.309 8.373 16.999 9.407 17.313 10.576 L 12 12 Z"
+                android:strokeWidth="1" />
             <group
-                android:name="group_1"
-                android:pivotX="16"
-                android:pivotY="16">
+                android:name="group"
+                android:pivotX="12"
+                android:pivotY="12">
                 <path
-                    android:name="path_3"
+                    android:name="sector_2"
                     android:fillColor="#000"
-                    android:pathData="M 16 10 C 17.321 10 18.605 10.436 19.653 11.24 C 20.7 12.044 21.454 13.172 21.796 14.447 L 16 16 Z"
-                    android:strokeColor="#000" />
+                    android:pathData="M 12 6.5 C 13.211 6.5 14.388 6.9 15.348 7.637 C 16.309 8.373 16.999 9.407 17.313 10.576 L 12 12 Z"
+                    android:strokeWidth="1" />
             </group>
         </vector>
     </aapt:attr>
-    <target android:name="group_1">
+    <target android:name="group">
         <aapt:attr name="android:animation">
             <objectAnimator
                 android:duration="300"
