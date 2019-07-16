@@ -1,4 +1,4 @@
-![Buyt logo](/app/src/main/web_2_hi_res_512.png?token=AHCNTO3VBALFVEC4DVISBZ24ZLQZ4)
+![Buyt logo](/app/src/main/base_hi_res_512.png?token=AHCNTO5UTDTPHEFMRS6MLU25FWK22)
 
 TODO list:
 
