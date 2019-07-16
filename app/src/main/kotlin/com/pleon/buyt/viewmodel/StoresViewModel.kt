@@ -27,8 +27,8 @@ class StoresViewModel @Inject constructor(app: Application, private val reposito
 
     private val sortLiveData = MutableLiveData(TOTAL_SPENDING)
 
-    val storeDetails: LiveData<List<StoreDetail>> = switchMap(sortLiveData, Function { sort ->
-        return@Function repository.getStoreDetails(sort)
+    val stores: LiveData<List<StoreDetail>> = switchMap(sortLiveData, Function { sort ->
+        return@Function repository.getStores(sort)
     })
 
     fun getStoreStats(store: Store) = repository.getStoreStats(store, STORE_STATS_PERIOD)
@@ -39,20 +39,14 @@ class StoresViewModel @Inject constructor(app: Application, private val reposito
 
     fun getSort() = sortLiveData.value!!
 
-    fun updateStores(stores: Collection<Store>) {
-        repository.updateStores(stores)
-        sortLiveData.value = sortLiveData.value // trigger switchMap
-    }
+    fun updateStores(stores: Collection<Store>) = repository.updateStores(stores)
 
     fun flagStoreForDeletion(store: Store) {
         store.isFlaggedForDeletion = true
         updateStores(listOf(store))
     }
 
-    fun deleteStore(store: Store) {
-        repository.deleteStore(store)
-        sortLiveData.value = sortLiveData.value // trigger switchMap
-    }
+    fun deleteStore(store: Store) = repository.deleteStore(store)
 
     fun restoreDeletedStore(store: Store) {
         store.isFlaggedForDeletion = false

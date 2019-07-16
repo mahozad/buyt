@@ -43,7 +43,7 @@ class StoresFragment : BaseFragment(), ItemTouchHelperListener {
         setHasOptionsMenu(true) // for onCreateOptionsMenu() to be called
 
         viewModel = of(this, viewModelFactory).get(StoresViewModel::class.java)
-        viewModel.storeDetails.observe(viewLifecycleOwner, Observer { stores ->
+        viewModel.stores.observe(viewLifecycleOwner, Observer { stores ->
             adapter.storeDetails = stores
             animateAlpha(emptyHint, if (stores.isEmpty()) 1f else 0f)
         })
@@ -92,7 +92,6 @@ class StoresFragment : BaseFragment(), ItemTouchHelperListener {
     override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
         val store = adapter.getStore(viewHolder.adapterPosition)
         viewModel.flagStoreForDeletion(store)
-
         showUndoSnackbar(snbContainer, getString(R.string.snackbar_message_store_deleted, store.name),
                 onUndo = { viewModel.restoreDeletedStore(store) },
                 onDismiss = { viewModel.deleteStore(store) }
