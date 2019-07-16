@@ -33,7 +33,7 @@
                     android:valueTo="0"
                     android:valueType="floatType" />
                 <objectAnimator
-                    android:duration="500"
+                    android:duration="350"
                     android:interpolator="@android:interpolator/fast_out_slow_in"
                     android:propertyName="translateY"
                     android:repeatCount="1"
