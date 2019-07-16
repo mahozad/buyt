@@ -4,7 +4,8 @@ import com.pleon.buyt.ui.activity.MainActivity
 
 lateinit var activity: MainActivity
 
-interface UIState {
+// State Design Pattern
+interface MainScreenState {
 
     fun event(event: Event)
 

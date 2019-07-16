@@ -22,7 +22,7 @@ import com.pleon.buyt.util.SnackbarUtil.showSnackbar
 import com.pleon.buyt.util.VibrationUtil.vibrate
 import kotlinx.android.synthetic.main.activity_main.*
 
-object FindingState : UIState {
+object FindingState : MainScreenState {
 
     override fun event(event: Event) {
         when (event) {

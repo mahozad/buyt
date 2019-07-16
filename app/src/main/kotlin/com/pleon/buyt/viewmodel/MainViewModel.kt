@@ -15,7 +15,7 @@ import com.pleon.buyt.ui.fragment.PREF_SEARCH_DIST
 import com.pleon.buyt.ui.fragment.PREF_SEARCH_DIST_DEF
 import com.pleon.buyt.ui.state.Event
 import com.pleon.buyt.ui.state.IdleState
-import com.pleon.buyt.ui.state.UIState
+import com.pleon.buyt.ui.state.MainScreenState
 import com.pleon.buyt.util.FormatterUtil.formatNumber
 import java.util.*
 import javax.inject.Inject
@@ -39,7 +39,7 @@ class MainViewModel @Inject constructor(private val app: Application,
                                         initialState: IdleState)
     : AndroidViewModel(app) {
 
-    var state: UIState = initialState
+    var state: MainScreenState = initialState
     var location: Location? = null
     var foundStores = mutableListOf<Store>()
     var shouldCompletePurchase = false

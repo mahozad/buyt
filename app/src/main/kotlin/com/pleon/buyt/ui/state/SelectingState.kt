@@ -20,7 +20,7 @@ import com.pleon.buyt.util.SnackbarUtil.showSnackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
-object SelectingState : UIState {
+object SelectingState : MainScreenState {
 
     override fun event(event: Event) {
         when (event) {

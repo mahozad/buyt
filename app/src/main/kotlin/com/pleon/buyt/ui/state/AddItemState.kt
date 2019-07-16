@@ -10,7 +10,7 @@ import com.pleon.buyt.ui.fragment.AddItemFragment
 import com.pleon.buyt.ui.state.Event.*
 import kotlinx.android.synthetic.main.activity_main.*
 
-object AddItemState : UIState {
+object AddItemState : MainScreenState {
 
     override fun event(event: Event) {
         when (event) {

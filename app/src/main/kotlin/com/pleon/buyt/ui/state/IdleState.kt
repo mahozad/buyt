@@ -20,7 +20,7 @@ import com.pleon.buyt.ui.state.Event.*
 import com.pleon.buyt.viewmodel.FREE_BUY_LIMIT
 import kotlinx.android.synthetic.main.activity_main.*
 
-object IdleState : UIState {
+object IdleState : MainScreenState {
 
     lateinit var locationMgr: LocationManager
 
