@@ -65,6 +65,7 @@ class StoresAdapter @Inject constructor(private val frag: StoresFragment) : Adap
     inner class StoreHolder(v: View) : BaseViewHolder(v) {
 
         init {
+            itemView.cardForeground.setOnClickListener { itemView.showChartButton.performClick() }
             itemView.showChartButton.setOnClickListener {
                 TransitionManager.beginDelayedTransition(recyclerView, ChangeBounds().setDuration(200))
 
