@@ -4,6 +4,8 @@ import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
 import android.os.Handler
 import android.os.Looper
+import android.view.View
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat.registerAnimationCallback
 
@@ -21,5 +23,13 @@ object AnimationUtil{
         })
 
         (icon as Animatable).start()
+    }
+
+    fun animateAlpha(hintView: View, alphaValue: Float) {
+        hintView.animate()
+                .alpha(alphaValue)
+                .setInterpolator(FastOutSlowInInterpolator())
+                .setDuration(200)
+                .start()
     }
 }

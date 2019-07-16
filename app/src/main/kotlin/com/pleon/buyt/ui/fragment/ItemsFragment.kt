@@ -16,6 +16,7 @@ import com.pleon.buyt.ui.ItemSpacingDecoration
 import com.pleon.buyt.ui.TouchHelperCallback
 import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener
 import com.pleon.buyt.ui.adapter.ItemListAdapter
+import com.pleon.buyt.util.AnimationUtil.animateAlpha
 import com.pleon.buyt.util.SnackbarUtil.showSnackbar
 import com.pleon.buyt.util.SnackbarUtil.showUndoSnackbar
 import com.pleon.buyt.viewmodel.MainViewModel
@@ -42,8 +43,10 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
         // In fragments use getViewLifecycleOwner() as owner argument
         viewModel.allItems.observe(viewLifecycleOwner, Observer { items ->
             adapter.items = items
-            updateEmptyHint(items.isEmpty())
+            animateAlpha(emptyHint, if (items.isEmpty()) 1f else 0f)
         })
+
+        (emptyHint.drawable as Animatable).start()
 
         val touchHelper = ItemTouchHelper(touchHelperCallback)
         touchHelper.attachToRecyclerView(recyclerView)
@@ -53,17 +56,6 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = GridLayoutManager(context, columns)
         recyclerView.addItemDecoration(ItemSpacingDecoration(columns, isRtl))
-    }
-
-    private fun updateEmptyHint(isListEmpty: Boolean) {
-        if (isListEmpty && emptyHint.alpha > 0) return
-        if (isListEmpty) {
-            (emptyHint.drawable as Animatable).start()
-            emptyHint.animate().alpha(1f).setDuration(200).start()
-        } else if (emptyHint.alpha > 0) {
-            (emptyHint.drawable as Animatable).start()
-            emptyHint.animate().alpha(0f).setDuration(200).start()
-        }
     }
 
     override fun onMoved(oldPosition: Int, newPosition: Int) {

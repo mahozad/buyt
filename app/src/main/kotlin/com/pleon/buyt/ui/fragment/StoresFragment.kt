@@ -1,13 +1,10 @@
 package com.pleon.buyt.ui.fragment
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders.of
@@ -21,6 +18,7 @@ import com.pleon.buyt.ui.TouchHelperCallback
 import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener
 import com.pleon.buyt.ui.adapter.StoresAdapter
 import com.pleon.buyt.ui.dialog.UpgradePromptDialogFragment
+import com.pleon.buyt.util.AnimationUtil.animateAlpha
 import com.pleon.buyt.util.SnackbarUtil.showUndoSnackbar
 import com.pleon.buyt.viewmodel.StoresViewModel
 import com.pleon.buyt.viewmodel.ViewModelFactory
@@ -45,10 +43,11 @@ class StoresFragment : BaseFragment(), ItemTouchHelperListener {
         setHasOptionsMenu(true) // for onCreateOptionsMenu() to be called
 
         viewModel = of(this, viewModelFactory).get(StoresViewModel::class.java)
-        viewModel.storeDetails.observe(viewLifecycleOwner, Observer {
-            showOrHideEmptyHint(it.isEmpty())
-            adapter.storeDetails = it
+        viewModel.storeDetails.observe(viewLifecycleOwner, Observer { stores ->
+            adapter.storeDetails = stores
+            animateAlpha(emptyHint, if (stores.isEmpty()) 1f else 0f)
         })
+
         recyclerView.adapter = adapter
         val columns = resources.getInteger(R.integer.layout_columns)
         val isRtl = resources.getBoolean(R.bool.isRtl)
@@ -56,16 +55,6 @@ class StoresFragment : BaseFragment(), ItemTouchHelperListener {
         recyclerView.addItemDecoration(ItemSpacingDecoration(columns, isRtl))
 
         ItemTouchHelper(touchHelperCallback).attachToRecyclerView(recyclerView)
-    }
-
-    private fun showOrHideEmptyHint(isListEmpty: Boolean) {
-        if (isListEmpty) {
-            emptyHint.visibility = VISIBLE
-            emptyHint.animate().alpha(1f).duration = 200
-        } else {
-            Handler().postDelayed({ emptyHint.visibility = GONE }, 100)
-            emptyHint.animate().alpha(0f).duration = 100
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
