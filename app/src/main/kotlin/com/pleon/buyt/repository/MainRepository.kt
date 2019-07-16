@@ -24,7 +24,7 @@ class MainRepository @Inject constructor(private val itemDao: ItemDao,
                                          private val storeDao: StoreDao,
                                          private val purchaseDao: PurchaseDao) {
 
-    val allItems = itemDao.getAll()
+    val items = itemDao.getAll()
     private val nearStores = SingleLiveEvent<List<Store>>()
     private val allStores = SingleLiveEvent<List<Store>>()
     private val purchaseCount = SingleLiveEvent<Int>()

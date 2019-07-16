@@ -41,7 +41,7 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
     override fun onViewCreated(view: View, savedState: Bundle?) {
         viewModel = of(this, viewModelFactory).get(MainViewModel::class.java)
         // In fragments use getViewLifecycleOwner() as owner argument
-        viewModel.allItems.observe(viewLifecycleOwner, Observer { items ->
+        viewModel.items.observe(viewLifecycleOwner, Observer { items ->
             adapter.items = items
             animateAlpha(emptyHint, if (items.isEmpty()) 1f else 0f)
         })

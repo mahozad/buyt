@@ -47,7 +47,7 @@ class MainViewModel @Inject constructor(private val app: Application,
     var isFindingSkipped = false
 
     // TODO: Use paging architecture component library
-    val allItems = repository.allItems
+    val items = repository.items
     val allStores get() = repository.getAllStores()
     val purchaseCountInPeriod get() = repository.getPurchaseCountInPeriod(7)
 

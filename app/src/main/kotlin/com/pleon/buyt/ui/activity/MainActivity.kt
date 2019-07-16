@@ -124,7 +124,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
     private fun setupEmptyListListener() {
         Handler().postDelayed({
             if (!::addMenuItem.isInitialized) return@postDelayed
-            viewModel.allItems.observe(this@MainActivity, Observer { items ->
+            viewModel.items.observe(this@MainActivity, Observer { items ->
                 if (items.isEmpty()) viewModel.event(ItemListEmptied)
                 else addMenuItem.setIcon(R.drawable.avd_add_hide)
             })
