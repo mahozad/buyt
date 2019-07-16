@@ -1,0 +1,41 @@
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+    <aapt:attr name="android:drawable">
+        <vector
+            android:name="vector"
+            android:width="24dp"
+            android:height="24dp"
+            android:tint="@color/expand_icon_color"
+            android:viewportWidth="24"
+            android:viewportHeight="24">
+            <path
+                android:name="path"
+                android:fillColor="#000"
+                android:pathData="M 3.5 13 L 20.5 13 C 21.052 13 21.5 12.534 21.5 12 C 21.5 11.448 21.052 11 20.5 11 L 3.5 11 C 2.948 11 2.5 11.504 2.5 12 C 2.5 12.507 2.948 13 3.5 13 Z"
+                android:strokeWidth="1" />
+        </vector>
+    </aapt:attr>
+    <target android:name="path">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:duration="2000"
+                    android:propertyName="trimPathStart"
+                    android:startOffset="500"
+                    android:valueFrom="0"
+                    android:valueTo="0"
+                    android:valueType="floatType" />
+                <objectAnimator
+                    android:duration="500"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"
+                    android:propertyName="pathData"
+                    android:repeatCount="1"
+                    android:repeatMode="reverse"
+                    android:startOffset="2500"
+                    android:valueFrom="M 3.5 13 L 12 13 L 20.5 13 C 21.052 13 21.5 12.534 21.5 12 C 21.5 11.448 21.052 11 20.5 11 L 12.987 11 C 12.329 11 11.671 11 11.013 11 L 3.5 11 C 2.948 11 2.5 11.504 2.5 12 C 2.5 12.507 2.948 13 3.5 13 Z"
+                    android:valueTo="M 8.12 14.71 L 12 10.83 L 15.88 14.71 C 16.27 15.1 16.9 15.1 17.29 14.71 C 17.68 14.32 17.68 13.69 17.29 13.3 L 12.7 8.71 C 12.31 8.32 11.68 8.32 11.29 8.71 L 6.7 13.3 C 6.31 13.69 6.31 14.32 6.7 14.71 C 7.09 15.09 7.73 15.1 8.12 14.71 Z"
+                    android:valueType="pathType" />
+            </set>
+        </aapt:attr>
+    </target>
+</animated-vector>

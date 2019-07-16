@@ -32,9 +32,11 @@ import com.pleon.buyt.model.Category
 import com.pleon.buyt.model.Item
 import com.pleon.buyt.model.Item.Quantity.Unit.*
 import com.pleon.buyt.ui.NumberInputWatcher
+import com.pleon.buyt.ui.activity.MainActivity
 import com.pleon.buyt.ui.dialog.DatePickerDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
+import com.pleon.buyt.util.AnimationUtil.animateIconInfinitely
 import com.pleon.buyt.viewmodel.AddItemViewModel
 import com.pleon.buyt.viewmodel.ViewModelFactory
 import ir.huri.jcal.JalaliCalendar
@@ -50,12 +52,18 @@ import javax.inject.Inject
 class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         SelectDialogFragment.Callback, android.app.DatePickerDialog.OnDateSetListener {
 
+    interface FullScreen {
+        fun expandToFullScreen(fragmentRootView: View)
+    }
+
+    var isScrollLocked = true
+
     // These colors vary based on the app theme
-    @ColorRes private var colorSurface: Int = 0
-    @ColorRes private var colorOnSurface: Int = 0
-    @ColorRes private var colorError: Int = 0
-    @ColorRes private var colorUnfocused: Int = 0
-    @ColorRes private var colorUnfocusedBorder: Int = 0
+    @ColorRes private var colorError = 0
+    @ColorRes private var colorSurface = 0
+    @ColorRes private var colorOnSurface = 0
+    @ColorRes private var colorUnfocused = 0
+    @ColorRes private var colorUnfocusedBorder = 0
 
     @Inject internal lateinit var viewModelFactory: ViewModelFactory<AddItemViewModel>
     private lateinit var viewModel: AddItemViewModel
@@ -132,7 +140,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         // Setup auto complete for item name
         viewModel.itemNameCats.observe(viewLifecycleOwner, Observer { nameCats ->
             this.nameCats = nameCats
-            val adapter = ArrayAdapter<String>(context!!,
+            val adapter = ArrayAdapter(context!!,
                     android.R.layout.simple_dropdown_item_1line, nameCats.keys.toList())
             name.setAdapter(adapter)
         })
@@ -140,6 +148,24 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         val priceSuffix = getString(R.string.input_suffix_price)
         priceEd.addTextChangedListener(NumberInputWatcher(price_layout, priceEd, priceSuffix))
         quantityEd.addTextChangedListener(NumberInputWatcher(quantity_layout, quantityEd))
+
+        scrollView.isVerticalScrollBarEnabled = false
+        scrollView.setOnTouchListener { _, _ ->
+            scrollView.isVerticalScrollBarEnabled = !isScrollLocked
+            return@setOnTouchListener isScrollLocked
+        }
+
+        animateIconInfinitely(expandHandle.drawable)
+        expandHandle.setOnClickListener {
+            if (activity is FullScreen) {
+                expandHandle.animate().alpha(0f)
+                description_layout.animate().alpha(1f).startDelay = 200
+                urgent.animate().alpha(1f).startDelay = 300
+                bought.animate().alpha(1f).startDelay = 400
+                divider.animate().alpha(1f).startDelay = 400
+                (activity as MainActivity).expandToFullScreen(parentView)
+            }
+        }
 
         bought.apply {
             // To reverse position of its checkbox icon

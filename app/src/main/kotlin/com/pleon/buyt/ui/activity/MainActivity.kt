@@ -1,10 +1,13 @@
 package com.pleon.buyt.ui.activity
 
+import android.animation.ValueAnimator
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
 import android.os.Handler
+import android.util.TypedValue.COMPLEX_UNIT_DIP
+import android.util.TypedValue.applyDimension
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -24,6 +27,7 @@ import com.pleon.buyt.ui.dialog.CreateStoreDialogFragment.CreateStoreListener
 import com.pleon.buyt.ui.dialog.LocationOffDialogFragment.LocationEnableListener
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.ui.fragment.AddItemFragment
+import com.pleon.buyt.ui.fragment.AddItemFragment.FullScreen
 import com.pleon.buyt.ui.fragment.BottomDrawerFragment
 import com.pleon.buyt.ui.fragment.ItemsFragment
 import com.pleon.buyt.ui.fragment.PREF_TASK_RECREATED
@@ -35,6 +39,7 @@ import com.pleon.buyt.util.SnackbarUtil.showSnackbar
 import com.pleon.buyt.viewmodel.MainViewModel
 import com.pleon.buyt.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.displayMetrics
 import javax.inject.Inject
 
 const val STATE_LOCATION = "com.pleon.buyt.state.LOCATION"
@@ -44,7 +49,8 @@ const val REQUEST_LOCATION_PERMISSION = 1
  * UI controllers such as activities and fragments are primarily intended to display UI data,
  * react to user actions, or handle operating system communication, such as permission requests.
  */
-class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreListener, LocationEnableListener {
+class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
+        CreateStoreListener, LocationEnableListener {
 
     // To force kill the app, go to the desired activity, press home button and then run this command:
     // adb shell am kill com.pleon.buyt
@@ -164,6 +170,11 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
         when (item.itemId) {
             R.id.action_add -> {
                 viewModel.state = AddItemState
+
+                val layoutParams = fragContainer.layoutParams
+                layoutParams.height = applyDimension(COMPLEX_UNIT_DIP, 263f, displayMetrics).toInt()
+                fragContainer.layoutParams = layoutParams
+
                 // Note that because AddItemFragment has setHasOptionsMenu(true) every time the
                 // fragment manager adds or replaces that fragment, the onCreateOptionsMenu() of
                 // this activity is called so we had to animate views in there.
@@ -267,4 +278,19 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, CreateStoreL
 
     // On store selected from store selection dialog
     override fun onSelected(index: Int) = viewModel.event(StoreSelected(index))
+
+    override fun expandToFullScreen(fragmentRootView: View) {
+        if (parentView.measuredHeight < applyDimension(COMPLEX_UNIT_DIP, 600f, displayMetrics)) {
+            (supportFragmentManager.findFragmentById(R.id.fragContainer) as AddItemFragment).isScrollLocked = false
+            val bottomPadding = applyDimension(COMPLEX_UNIT_DIP, 88f, displayMetrics).toInt()
+            fragmentRootView.setPadding(0, 0, 0, bottomPadding)
+        }
+
+        val anim = ValueAnimator.ofInt(fragContainer.measuredHeight, parentView.measuredHeight)
+        anim.setDuration(300).addUpdateListener { valueAnimator ->
+            fragContainer.layoutParams.height = valueAnimator.animatedValue as Int
+            fragContainer.layoutParams = fragContainer.layoutParams
+        }
+        anim.start()
+    }
 }
