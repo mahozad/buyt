@@ -19,7 +19,7 @@ import com.pleon.buyt.model.Category
 import com.pleon.buyt.ui.PieChartView.Sector
 import com.pleon.buyt.util.FormatterUtil.formatNumber
 import com.pleon.buyt.util.FormatterUtil.formatPrice
-import com.pleon.buyt.util.LineChartBuilder
+import com.pleon.buyt.util.LineChartBuilder.buildLineChart
 import com.pleon.buyt.viewmodel.StatsViewModel
 import com.pleon.buyt.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_stats.*
@@ -74,7 +74,7 @@ class StatsFragment : BaseFragment() {
 
     private fun showLineChart(dailyCosts: List<DailyCost>) {
         val shouldShowDots = dailyCosts.size <= 30
-        val lineChart = LineChartBuilder(context!!, lineChart, dailyCosts, shouldShowDots).build()
+        val lineChart = buildLineChart(context!!, lineChart, dailyCosts, shouldShowDots)
         if (isStartup) lineChart.show() else lineChart.show(Animation(500))
     }
 

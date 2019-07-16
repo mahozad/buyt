@@ -18,7 +18,7 @@ import com.pleon.buyt.ui.BaseViewHolder
 import com.pleon.buyt.ui.adapter.StoresAdapter.StoreHolder
 import com.pleon.buyt.ui.fragment.StoresFragment
 import com.pleon.buyt.util.FormatterUtil.formatPrice
-import com.pleon.buyt.util.LineChartBuilder
+import com.pleon.buyt.util.LineChartBuilder.buildLineChart
 import com.pleon.buyt.viewmodel.StoresViewModel
 import com.pleon.buyt.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.store_list_row.view.*
@@ -80,7 +80,7 @@ class StoresAdapter @Inject constructor(private val frag: StoresFragment) : Adap
                     viewModel.getStoreStats(getStore(adapterPosition)).observeForever { dailyCosts ->
                         if (frag.context == null) return@observeForever // To prevent bug on relaunch
                         // Do NOT use animation in the show(); Causes bug
-                        LineChartBuilder(frag.context!!, itemView.lineChart, dailyCosts).build().show()
+                        buildLineChart(frag.context!!, itemView.lineChart, dailyCosts).show()
                     }
                     notifyDataSetChanged() // To collapse other extended cards
                 }

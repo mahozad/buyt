@@ -9,15 +9,12 @@ import com.db.chart.view.LineChartView
 import com.pleon.buyt.R
 import java.text.DecimalFormat
 
-class LineChartBuilder {
+object LineChartBuilder {
 
-    private val chartView: LineChartView
-
-    @Suppress("ConvertSecondaryConstructorToPrimary")
-    constructor(cxt: Context, chartView: LineChartView, data: List<DataSet>,
-                hasDots: Boolean = true, dotsRadius: Float = 2.5f,
-                thickness: Float = 3f, isSmooth: Boolean = false, isDashed: Boolean = false,
-                gridRows: Int = 3, gridCols: Int = 0) {
+    fun buildLineChart(cxt: Context, chartView: LineChartView, data: List<DataSet>,
+                       hasDots: Boolean = true, dotsRadius: Float = 2.5f,
+                       thickness: Float = 3f, isSmooth: Boolean = false, isDashed: Boolean = false,
+                       gridRows: Int = 3, gridCols: Int = 0): LineChartView {
 
         chartView.reset()
 
@@ -48,10 +45,8 @@ class LineChartBuilder {
                 .setXLabels(NONE)
                 .addData(dataSet)
 
-        this.chartView = chartView
+        return chartView
     }
-
-    fun build() = chartView
 
     interface DataSet {
         fun getLabel(): String
