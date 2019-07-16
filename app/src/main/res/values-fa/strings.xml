@@ -19,7 +19,7 @@
     <string name="input_hint_description">توضیحات (اختیاری)</string>
     <string name="input_hint_store_category">دسته‌بندی</string>
     <string name="button_text_view_on_map">نمایش روی نقشه</string>
-    <string name="checkbox_urgent">ضروری</string>
+    <string name="checkbox_urgent">مهم</string>
     <string name="weekday_friday">جمعه</string>
     <string name="weekday_saturday">شنبه</string>
     <string name="weekday_thursday">پنجشنبه</string>
