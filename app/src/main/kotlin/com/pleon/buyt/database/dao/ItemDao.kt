@@ -3,6 +3,7 @@ package com.pleon.buyt.database.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
+import com.pleon.buyt.database.dto.NameCat
 import com.pleon.buyt.model.Item
 
 // In DAOs, we specify SQL queries and associate them with method calls
