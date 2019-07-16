@@ -30,7 +30,7 @@ object IdleState : UIState {
             is FindingSkipped -> onSkipClicked()
             is HomeClicked -> onHomeClicked()
             is BackClicked -> onBackClicked()
-            is ItemListEmptied -> {}
+            is LocationFound, ItemListEmptied -> {}
             is LocationPermissionGranted -> onLocationPermissionGranted()
             is OptionsMenuCreated -> onOptionsMenuCreated()
             is SaveInstanceCalled -> onSaveInstanceCalled()
