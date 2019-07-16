@@ -17,7 +17,7 @@ class StoreRepository @Inject constructor(private val storeDao: StoreDao) {
     private val storeStats = SingleLiveEvent<List<DailyCost>>()
     private val createdStore = SingleLiveEvent<Store>()
 
-    fun getStores(sort: Sort) = storeDao.getStores(sort)
+    fun getStores(sort: Sort) = storeDao.getAll(sort)
 
     fun getStoreStats(store: Store, period: Int): LiveData<List<DailyCost>> {
         doAsync {

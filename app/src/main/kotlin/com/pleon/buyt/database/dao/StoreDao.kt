@@ -14,7 +14,7 @@ import com.pleon.buyt.viewmodel.StoresViewModel.Sort.*
 @Dao
 abstract class StoreDao {
 
-    fun getStores(sort: Sort): LiveData<List<StoreDetail>> {
+    fun getAll(sort: Sort): LiveData<List<StoreDetail>> {
         val sqlSortColumn = when (sort) {
             TOTAL_SPENDING -> "totalSpending"
             PURCHASE_COUNT -> "purchaseCount"
