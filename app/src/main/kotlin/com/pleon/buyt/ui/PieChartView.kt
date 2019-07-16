@@ -4,6 +4,8 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.*
+import android.graphics.Paint.ANTI_ALIAS_FLAG
+import android.graphics.Paint.DITHER_FLAG
 import android.util.AttributeSet
 import android.util.TypedValue.COMPLEX_UNIT_DIP
 import android.util.TypedValue.applyDimension
@@ -19,7 +21,7 @@ import kotlin.math.*
  */
 class PieChartView : View {
 
-    private val mPaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG)
+    private val mPaint = Paint(ANTI_ALIAS_FLAG or DITHER_FLAG)
     private val mPath = Path()
     private val drawLinePath = Path()
     private val mPathMeasure = PathMeasure()
@@ -27,35 +29,34 @@ class PieChartView : View {
     private var mWidth: Int = 0
     private var mHeight: Int = 0
     private val pieRectF = RectF()
-    private val tempRectF = RectF()
     private var radius: Int = 0
-    private val sliceList = ArrayList<Slice>()
-    private val leftTypeList = ArrayList<Slice>()
-    private val rightTypeList = ArrayList<Slice>()
+    private val sectors = ArrayList<Sector>()
+    private val leftTypeList = ArrayList<Sector>()
+    private val rightTypeList = ArrayList<Sector>()
     private val itemPoints = ArrayList<Point>()
-    private var cell = 0
+    private var gap = 0f
     private var innerRadius = 0f
     private var offRadius = 0f
-    private var offLine: Float = 0f
+    private var offLine = 0f
     private var textAlpha: Int = 0
     private var firstPoint: Point? = null
-    private var backGroundColor = -0x1
+    private var backGroundColor = Color.TRANSPARENT
     private var itemTextSize = 30
     private var textPadding = 8
     private val defaultStartAngle = -90
-    private val pieCell: Float = 0f
+    private val pieCell = 0f
     private var animator: ValueAnimator? = null
     private val startPoint = Point()
     private val centerPoint = Point()
     private val endPoint = Point()
     private val tempPoint = Point()
 
-    constructor(context: Context) : super(context) {
-        mPaint.typeface = ResourcesCompat.getFont(context, R.font.vazir_scaled_down)
+    constructor(cxt: Context) : super(cxt) {
+        mPaint.typeface = ResourcesCompat.getFont(cxt, R.font.vazir_scaled_down)
     }
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs){
-        mPaint.typeface = ResourcesCompat.getFont(context, R.font.vazir_scaled_down)
+    constructor(cxt: Context, attrs: AttributeSet?) : super(cxt, attrs) {
+        mPaint.typeface = ResourcesCompat.getFont(cxt, R.font.vazir_scaled_down)
     }
 
     fun startAnim(duration: Long) {
@@ -84,22 +85,63 @@ class PieChartView : View {
 
     override fun onSizeChanged(w: Int, h: Int, oldWid: Int, oldHei: Int) {
         super.onSizeChanged(w, h, oldWid, oldHei)
-        this.mWidth = w
-        this.mHeight = h
+        mWidth = w
+        mHeight = h
         radius = (min(mWidth, mHeight) / 3.2).toInt()
         pieRectF.set((mWidth / 2 - radius).toFloat(), (mHeight / 2 - radius).toFloat(), (mWidth / 2 + radius).toFloat(), (mHeight / 2 + radius).toFloat())
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        try {
-            mCanvas = canvas
-            drawPie()
-            if (offRadius == 360f) {
-                drawTitle()
+        mCanvas = canvas
+        drawPie()
+        if (offRadius == 360f) drawTitle()
+    }
+
+    private fun drawPie() {
+        mCanvas?.drawColor(backGroundColor)
+        mPaint.style = Paint.Style.FILL
+
+        var sum = 0
+        for (slice in sectors) sum += slice.widget
+        val a = 360f / sum
+
+        var startRadius = defaultStartAngle.toFloat()
+        var sumRadius = 0f
+        leftTypeList.clear()
+        rightTypeList.clear()
+        itemPoints.clear()
+        for ((index, slice) in sectors.withIndex()) {
+            slice.radius = slice.widget * a
+            val al = 2.0 * PI * ((startRadius + 90) / 360.0)
+            tempPoint.set((mWidth / 2 + radius * sin(al)).toInt(), (mHeight / 2 - radius * cos(al)).toInt())
+
+            if (gap > 0 && startRadius == defaultStartAngle.toFloat()) firstPoint = tempPoint
+
+            val angle = 2.0 * PI * ((startRadius + slice.radius / 2) / 360.0)
+            val cos = -cos(angle)
+            if (cos > 0) leftTypeList.add(slice) else rightTypeList.add(slice)
+
+            sumRadius += abs(slice.radius)
+            mPaint.style = Paint.Style.FILL
+            mPaint.color = slice.color
+            if (sumRadius <= offRadius) {
+                mCanvas!!.drawArc(pieRectF, startRadius, slice.radius, true, mPaint)
+            } else {
+                mCanvas!!.drawArc(pieRectF, startRadius, slice.radius - abs(offRadius - sumRadius), true, mPaint)
+                break
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
+            startRadius += slice.radius
+            if (gap > 0 && pieCell == 0f) {
+                mPaint.color = backGroundColor
+                mPaint.strokeWidth = if (index == 0) gap + 4 else gap
+                mCanvas!!.drawLine(width / 2f, height / 2f, tempPoint.x.toFloat(), tempPoint.y.toFloat(), mPaint)
+            }
+        }
+        mPaint.style = Paint.Style.FILL
+        mPaint.color = backGroundColor
+        if (innerRadius > 0 && pieCell == 0f) {
+            mCanvas!!.drawCircle(mWidth / 2f, mHeight / 2f, radius * innerRadius, mPaint)
         }
     }
 
@@ -186,79 +228,10 @@ class PieChartView : View {
         }
 
         if (textAlpha.toFloat() == 1f) {
-            sliceList.clear()
+            sectors.clear()
             leftTypeList.clear()
             rightTypeList.clear()
             itemPoints.clear()
-        }
-    }
-
-    private fun drawPie() {
-        if (mCanvas == null) return
-
-        mCanvas!!.drawColor(backGroundColor)
-        mPaint.style = Paint.Style.FILL
-
-        var sum = 0
-        for (slice in sliceList) sum += slice.widget
-        val a = 360f / sum
-
-        var startRadius = defaultStartAngle.toFloat()
-        var sumRadius = 0f
-        leftTypeList.clear()
-        rightTypeList.clear()
-        itemPoints.clear()
-        for (slice in sliceList) {
-            slice.radius = slice.widget * a
-            val al = 2.0 * PI * ((startRadius + 90) / 360.0)
-            tempPoint.set((mWidth / 2 + radius * sin(al)).toInt(),
-                    (mHeight / 2 - radius * cos(al)).toInt())
-            if (cell > 0) {
-                if (startRadius == defaultStartAngle.toFloat()) firstPoint = tempPoint
-            }
-
-            val angle = 2.0 * PI * ((startRadius + slice.radius / 2) / 360.0)
-            val sin = -sin(angle)
-            val cos = -cos(angle)
-            if (cos > 0) leftTypeList.add(slice) else rightTypeList.add(slice)
-
-            sumRadius += abs(slice.radius)
-            mPaint.style = Paint.Style.FILL
-            mPaint.color = slice.color
-            if (pieCell > 0) {
-                if (sumRadius <= offRadius) {
-                    tempRectF.set(pieRectF.left - (pieCell * cos).toFloat(), pieRectF.top - (pieCell * sin).toFloat(),
-                            pieRectF.right - (pieCell * cos).toFloat(), pieRectF.bottom - (pieCell * sin).toFloat())
-                    mCanvas!!.drawArc(tempRectF, startRadius, slice.radius, true, mPaint)
-                } else {
-                    mCanvas!!.drawArc(tempRectF, startRadius, slice.radius - abs(offRadius - sumRadius), true, mPaint)
-                    break
-                }
-            } else {
-                if (sumRadius <= offRadius) {
-                    mCanvas!!.drawArc(pieRectF, startRadius, slice.radius, true, mPaint)
-                } else {
-                    mCanvas!!.drawArc(pieRectF, startRadius, slice.radius - abs(offRadius - sumRadius), true, mPaint)
-                    break
-                }
-
-            }
-            startRadius += slice.radius
-            if (cell > 0 && pieCell == 0f) {
-                mPaint.color = backGroundColor
-                mPaint.strokeWidth = cell.toFloat()
-                mCanvas!!.drawLine((getWidth() / 2).toFloat(), (getHeight() / 2).toFloat(), tempPoint.x.toFloat(), tempPoint.y.toFloat(), mPaint)
-            }
-        }
-        if (cell > 0 && firstPoint != null && pieCell == 0f) {
-            mPaint.color = backGroundColor
-            mPaint.strokeWidth = cell.toFloat()
-            mCanvas!!.drawLine((getWidth() / 2).toFloat(), (getHeight() / 2).toFloat(), firstPoint!!.x.toFloat(), firstPoint!!.y.toFloat(), mPaint)
-        }
-        mPaint.style = Paint.Style.FILL
-        mPaint.color = backGroundColor
-        if (innerRadius > 0 && pieCell == 0f) {
-            mCanvas!!.drawCircle((mWidth / 2).toFloat(), (mHeight / 2).toFloat(), radius * innerRadius, mPaint)
         }
     }
 
@@ -269,24 +242,16 @@ class PieChartView : View {
         mPaint.alpha = 256
     }
 
-    fun clearData() = sliceList.clear()
+    fun clearData() = sectors.clear()
 
-    fun addSector(slice: Slice) = sliceList.add(slice)
+    fun addSector(sector: Sector) = sectors.add(sector)
 
-    /**
-     * Set the gap between slices.
-     */
-    fun setCell(cell: Int) {
-        this.cell = cell
+    fun setSectorGap(gap: Int) {
+        this.gap = gap.toFloat()
     }
 
     fun setInnerRadius(innerRadius: Float) {
-        var innerRadius = innerRadius
-        if (innerRadius > 1f)
-            innerRadius = 1f
-        else if (innerRadius < 0) innerRadius = 0f
-
-        this.innerRadius = innerRadius
+        this.innerRadius = innerRadius.coerceIn(0f, 1f)
     }
 
     fun setBackGroundColor(backGroundColor: Int) {
@@ -302,12 +267,12 @@ class PieChartView : View {
     /**
      * Sets vertical padding between the text and its horizontal line
      */
+    @Suppress("unused")
     fun setTextPadding(textPadding: Int) {
         this.textPadding = textPadding
     }
 
-    class Slice(internal var type: String, internal var widget: Int, internal var color: Int) {
-
+    class Sector(internal var type: String, internal var widget: Int, internal var color: Int) {
         internal var radius: Float = 0f
         internal val percent: String get() = formatPercent(radius / 360f)
     }

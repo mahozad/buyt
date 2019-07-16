@@ -16,7 +16,7 @@ import com.pleon.buyt.database.dto.DailyCost
 import com.pleon.buyt.database.dto.PieSlice
 import com.pleon.buyt.database.dto.Stats
 import com.pleon.buyt.model.Category
-import com.pleon.buyt.ui.PieChartView.Slice
+import com.pleon.buyt.ui.PieChartView.Sector
 import com.pleon.buyt.util.FormatterUtil.formatNumber
 import com.pleon.buyt.util.FormatterUtil.formatPrice
 import com.pleon.buyt.util.LineChartBuilder
@@ -50,7 +50,7 @@ class StatsFragment : BaseFragment() {
         pieBgColor = typedValue.data
 
         lineChart.setTypeface(ResourcesCompat.getFont(context!!, R.font.vazir_scaled_down)!!)
-        pieChart.setCell(4) // gap between slices
+        pieChart.setSectorGap(4) // gap between slices
         pieChart.setInnerRadius(0.6f)
         pieChart.setBackGroundColor(pieBgColor)
         pieChart.setItemTextSize(13.5f)
@@ -89,12 +89,11 @@ class StatsFragment : BaseFragment() {
         for ((index, slice) in pieSlices.withIndex()) {
             if (index < PIE_CHART_MAX_SLICES - 1) {
                 val sliceName = getString(Category.valueOf(slice.name).nameRes)
-                pieChart.addSector(Slice(sliceName, slice.value, pieSliceColors[index]))
+                pieChart.addSector(Sector(sliceName, slice.value, pieSliceColors[index]))
             } else other += slice.value
         }
-        if (other > 0) {
-            pieChart.addSector(Slice(getString(R.string.pie_chart_other), other, pieSliceColors[PIE_CHART_MAX_SLICES - 1]))
-        }
+
+        if (other > 0) pieChart.addSector(Sector(getString(R.string.pie_chart_other), other, pieSliceColors[PIE_CHART_MAX_SLICES - 1]))
 
         pieChart.startAnim(if (isStartup) 0 else 480)
     }
