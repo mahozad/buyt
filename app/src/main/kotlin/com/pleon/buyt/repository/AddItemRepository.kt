@@ -19,7 +19,7 @@ class AddItemRepository @Inject constructor(private val itemDao: ItemDao,
                                             private val storeDao: StoreDao,
                                             private val purchaseDao: PurchaseDao) {
 
-    private val itemNameCats = SingleLiveEvent<Map<String, String>>()
+    val itemNameCats = itemDao.getNameCats()
     private val allStores = SingleLiveEvent<List<Store>>()
 
     fun addItem(item: Item) = doAsync { itemDao.insert(item) }
@@ -30,14 +30,6 @@ class AddItemRepository @Inject constructor(private val itemDao: ItemDao,
             purchaseDao.insert(purchase).also { item.purchaseId = it }
             itemDao.insert(item)
         }
-    }
-
-    fun getItemNameCats(): LiveData<Map<String, String>> {
-        doAsync {
-            val nameCats = itemDao.getItemNamesAndCats()
-            uiThread { itemNameCats.value = nameCats }
-        }
-        return itemNameCats
     }
 
     fun getAllStores(): LiveData<List<Store>> {

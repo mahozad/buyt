@@ -25,9 +25,9 @@ class AddItemViewModel @Inject constructor(app: Application, val repository: Add
     var purchaseDate = Date()
 
     init {
-        nameCatsMediator.addSource(repository.getItemNameCats()) { dbNameCats ->
+        nameCatsMediator.addSource(repository.itemNameCats) { dbNameCats ->
             // Do NOT reorder the operands in the following + operation
-            nameCatsMediator.value = defaultItemNameCats + dbNameCats
+            nameCatsMediator.value = defaultItemNameCats + dbNameCats.associateBy({ it.name }, { it.category })
         }
     }
 

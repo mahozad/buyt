@@ -18,13 +18,8 @@ abstract class ItemDao {
     @Query("SELECT count(*) FROM Item")
     abstract fun getCount(): Long
 
-    @Transaction
-    open fun getItemNamesAndCats() = getNameCats().associateBy({ it.name }, { it.category })
-
     @Query("SELECT name, category from item group by name")
-    protected abstract fun getNameCats(): Array<NameCat>
-
-    protected class NameCat(val name: String, val category: String)
+    abstract fun getNameCats(): LiveData<Array<NameCat>>
 
     @Transaction
     open fun insert(item: Item): Long {
