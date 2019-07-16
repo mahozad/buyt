@@ -2,6 +2,7 @@ package com.pleon.buyt.repository
 
 import androidx.lifecycle.LiveData
 import com.pleon.buyt.database.dao.PurchaseDao
+import com.pleon.buyt.database.dto.PurchaseDetail
 import com.pleon.buyt.database.dto.Stats
 import com.pleon.buyt.util.SingleLiveEvent
 import com.pleon.buyt.viewmodel.StatsViewModel.Filter
@@ -21,5 +22,9 @@ class StatsRepository @Inject constructor(private val purchaseDao: PurchaseDao) 
             uiThread { stats.value = statistics }
         }
         return stats
+    }
+
+    fun getPurchaseDetails(period: Int, filter: Filter): LiveData<List<PurchaseDetail>> {
+        return purchaseDao.getPurchaseDetails(period, filter.criterion)
     }
 }

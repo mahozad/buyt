@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations.switchMap
 import com.pleon.buyt.R
+import com.pleon.buyt.database.dto.PurchaseDetail
 import com.pleon.buyt.database.dto.Stats
 import com.pleon.buyt.model.Category
 import com.pleon.buyt.repository.StatsRepository
@@ -35,9 +36,14 @@ class StatsViewModel @Inject constructor(private val app: Application, repositor
         override val imgRes = R.drawable.ic_filter
     }
 
-    private val triggerUpdate = MutableLiveData<Boolean>(true)
+    private val triggerUpdate = MutableLiveData(true)
+
     val stats: LiveData<Stats> = switchMap(triggerUpdate, Function {
         return@Function repository.getStats(period.length, filter)
+    })
+
+    val purchaseDetails: LiveData<List<PurchaseDetail>> = switchMap(triggerUpdate, Function {
+        return@Function repository.getPurchaseDetails(period.length, filter)
     })
 
     val filterList = initializeFilters()

@@ -7,13 +7,12 @@ class Stats {
 
     lateinit var dailyCosts: List<DailyCost>
     lateinit var mostPurchasedCategories: List<PieSlice>
-    lateinit var purchaseDetails: List<PurchaseDetail>
     var storeWithMaxPurchaseCount: Store? = null
-    var numberOfPurchases = 0
+    var numberOfPurchases = 0L
     var totalPurchaseCost = 0L
-    var averagePurchaseCost = 0L
     var maxPurchaseCost = 0L
     var minPurchaseCost = 0L
+    var averagePurchaseCost = 0L
     var weekdayWithMaxPurchases = 0
 
     val weekdayNameResWithMaxPurchases: Int

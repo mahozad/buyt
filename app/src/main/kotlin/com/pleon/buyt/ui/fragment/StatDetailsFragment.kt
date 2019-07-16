@@ -2,8 +2,6 @@ package com.pleon.buyt.ui.fragment
 
 import android.os.Bundle
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders.of
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +11,7 @@ import com.pleon.buyt.database.dto.PurchaseDetail
 import com.pleon.buyt.ui.DateHeaderDecoration
 import com.pleon.buyt.ui.DateHeaderDecoration.StickyHeaderInterface
 import com.pleon.buyt.ui.adapter.PurchaseDetailAdapter
+import com.pleon.buyt.util.AnimationUtil
 import com.pleon.buyt.util.FormatterUtil.formatDate
 import com.pleon.buyt.viewmodel.StatsViewModel
 import com.pleon.buyt.viewmodel.ViewModelFactory
@@ -29,7 +28,15 @@ class StatDetailsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedState: Bundle?) {
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(DateHeaderDecoration(recyclerView, adapter))
+        setScrollListener()
+        val viewModel = of(activity!!, viewModelFactory).get(StatsViewModel::class.java)
+        viewModel.purchaseDetails.observe(viewLifecycleOwner, Observer { purchaseDetails ->
+            showStats(purchaseDetails)
+            AnimationUtil.animateAlpha(emptyHint, if (purchaseDetails.isEmpty()) 1f else 0f)
+        })
+    }
 
+    private fun setScrollListener() {
         // For date headers to be shown correctly and smoothly, this listener is required
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -42,19 +49,14 @@ class StatDetailsFragment : BaseFragment() {
                     i++
                 }
                 val firstItem = layoutManager.findFirstVisibleItemPosition()
-                if ((recyclerView.adapter as StickyHeaderInterface).isHeader(firstItem)) {
+                if (firstItem >= 0 && (recyclerView.adapter as StickyHeaderInterface).isHeader(firstItem)) {
                     layoutManager.getChildAt(0)!!.alpha = 0f
                 }
             }
         })
-
-        val viewModel = of(activity!!, viewModelFactory).get(StatsViewModel::class.java)
-        viewModel.stats.observe(viewLifecycleOwner, Observer { stats -> showStats(stats.purchaseDetails) })
     }
 
     private fun showStats(purchaseDetails: List<PurchaseDetail>) {
-        emptyHint.visibility = if (purchaseDetails.isEmpty()) VISIBLE else GONE
-
         if (purchaseDetails.isEmpty()) {
             adapter.items = emptyList() // required to remove previous items on period toggle
             return

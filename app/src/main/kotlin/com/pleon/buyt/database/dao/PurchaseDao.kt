@@ -1,5 +1,6 @@
 package com.pleon.buyt.database.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -38,15 +39,14 @@ abstract class PurchaseDao {
         val stats = Stats()
 
         stats.dailyCosts = getDailyCosts(period, filter)
-        stats.totalPurchaseCost = getTotalPurchaseCost(period, filter)
-        stats.averagePurchaseCost = getAveragePurchaseCost(period, filter)
         stats.numberOfPurchases = getNumberOfPurchases(period, filter)
+        stats.totalPurchaseCost = getTotalPurchaseCost(period, filter)
         stats.maxPurchaseCost = getMaxPurchaseCost(period, filter)
         stats.minPurchaseCost = getMinPurchaseCost(period, filter)
+        stats.averagePurchaseCost = getAveragePurchaseCost(period, filter)
         stats.weekdayWithMaxPurchases = getWeekdayWithMaxPurchaseCount(period, filter)
         stats.storeWithMaxPurchaseCount = getStoreWithMaxPurchaseCount(period, filter)
         stats.mostPurchasedCategories = getMostPurchasedCategories(period, filter)
-        stats.purchaseDetails = getPurchaseDetails(period, filter)
 
         return stats
     }
@@ -59,7 +59,7 @@ abstract class PurchaseDao {
     // language=RoomSql see [https://youtrack.jetbrains.com/issue/KT-13233] if the issue is resolved
     @Query("SELECT COUNT(DISTINCT purchaseId) FROM Purchase NATURAL JOIN Item " +
             "WHERE $PERIOD_AND_FILTER_CLAUSE")
-    protected abstract fun getNumberOfPurchases(period: Int, filter: String): Int
+    protected abstract fun getNumberOfPurchases(period: Int, filter: String): Long
 
     // language=RoomSql see [https://youtrack.jetbrains.com/issue/KT-13233] if the issue is resolved
     @Query("SELECT STRFTIME('%w', date, 'unixepoch', 'localtime') AS day, SUM(totalPrice)" +
@@ -136,7 +136,7 @@ abstract class PurchaseDao {
     protected abstract fun getMostPurchasedCategories(period: Int, filter: String): List<PieSlice>
 
     @Query("SELECT * FROM Purchase NATURAL JOIN Item WHERE $PERIOD_AND_FILTER_CLAUSE GROUP BY purchaseId ORDER BY date DESC")
-    protected abstract fun getPurchaseDetails(period: Int, filter: String): List<PurchaseDetail>
+    abstract fun getPurchaseDetails(period: Int, filter: String): LiveData<List<PurchaseDetail>>
 
     @Transaction
     open fun getPurchaseCountInPeriod(period: Int): Int {
