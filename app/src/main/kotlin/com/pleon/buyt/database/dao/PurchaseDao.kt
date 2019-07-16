@@ -52,59 +52,52 @@ abstract class PurchaseDao {
     }
 
     // language=RoomSql see [https://youtrack.jetbrains.com/issue/KT-13233] if the issue is resolved
-    @Query("SELECT sum(totalPrice) from purchase natural join item " +
-            "where $PERIOD_AND_FILTER_CLAUSE")
+    @Query("SELECT SUM(totalPrice) FROM Purchase NATURAL JOIN Item " +
+            "WHERE $PERIOD_AND_FILTER_CLAUSE")
     protected abstract fun getTotalPurchaseCost(period: Int, filter: String): Long
 
     // language=RoomSql see [https://youtrack.jetbrains.com/issue/KT-13233] if the issue is resolved
-    @Query("select count(Distinct purchaseId) from purchase natural join item " +
-            "where $PERIOD_AND_FILTER_CLAUSE")
+    @Query("SELECT COUNT(DISTINCT purchaseId) FROM Purchase NATURAL JOIN Item " +
+            "WHERE $PERIOD_AND_FILTER_CLAUSE")
     protected abstract fun getNumberOfPurchases(period: Int, filter: String): Int
 
     // language=RoomSql see [https://youtrack.jetbrains.com/issue/KT-13233] if the issue is resolved
-    @Query("select strftime('%w', date, 'unixepoch', 'localtime') AS day, sum(totalPrice)" +
-            "from purchase natural join item " +
-            "where $PERIOD_AND_FILTER_CLAUSE" +
-            "group by day " +
-            "order by sum(totalPrice) desc " +
-            "limit 1;")
+    @Query("SELECT STRFTIME('%w', date, 'unixepoch', 'localtime') AS day, SUM(totalPrice)" +
+            "FROM Purchase NATURAL JOIN Item " +
+            "WHERE $PERIOD_AND_FILTER_CLAUSE" +
+            "GROUP BY day " +
+            "ORDER BY SUM(totalPrice) DESC " +
+            "LIMIT 1;")
     protected abstract fun getWeekdayWithMaxPurchaseCount(period: Int, filter: String): Int
 
     // language=RoomSql see [https://youtrack.jetbrains.com/issue/KT-13233] if the issue is resolved
-    @Query("select avg(cost) from " +
-            "(select sum(totalPrice) as cost from purchase natural join item " +
-            "where $PERIOD_AND_FILTER_CLAUSE" +
-            "group by purchaseId)")
-    protected abstract fun getAveragePurchaseCost(period: Int, filter: String): Long
-
-    // language=RoomSql see [https://youtrack.jetbrains.com/issue/KT-13233] if the issue is resolved
-    @Query("select store.* from purchase natural join store join item on purchase.purchaseId=item.purchaseId " +
-            "where" + PERIOD_CLAUSE + "and (:filter = 'NoFilter' or item.category = :filter) " +
-            "group by purchase.storeId " +
-            "order by count(purchase.storeId) desc " +
-            "limit 1;")
+    @Query("SELECT Store.* FROM Purchase NATURAL JOIN Store JOIN Item ON Purchase.purchaseId=Item.purchaseId " +
+            "WHERE $PERIOD_CLAUSE" + "AND (:filter = 'NoFilter' OR Item.category = :filter) " +
+            "GROUP BY Purchase.storeId " +
+            "ORDER BY COUNT(purchase.storeId) DESC " +
+            "LIMIT 1;")
     protected abstract fun getStoreWithMaxPurchaseCount(period: Int, filter: String): Store
 
     // language=RoomSql see [https://youtrack.jetbrains.com/issue/KT-13233] if the issue is resolved
-    @Query("select max(cost) from " +
-            "(select sum(totalPrice) as cost from purchase natural join item " +
-            "where $PERIOD_AND_FILTER_CLAUSE" +
-            "group by purchaseId)")
+    @Query("SELECT MAX(cost) FROM " +
+            "(SELECT SUM(totalPrice) AS cost FROM Purchase NATURAL JOIN Item " +
+            "WHERE $PERIOD_AND_FILTER_CLAUSE" +
+            "GROUP BY purchaseId)")
     protected abstract fun getMaxPurchaseCost(period: Int, filter: String): Long
 
     // language=RoomSql see [https://youtrack.jetbrains.com/issue/KT-13233] if the issue is resolved
-    @Query("select min(cost) from " +
-            "(select sum(totalPrice) as cost from purchase natural join item " +
-            "where $PERIOD_AND_FILTER_CLAUSE" +
-            "group by purchaseId)")
-    protected abstract fun getMinPurchaseCost(period: Int, filter: String): Long
+    @Query("SELECT AVG(cost) FROM " +
+            "(SELECT SUM(totalPrice) AS cost FROM Purchase NATURAL JOIN Item " +
+            "WHERE $PERIOD_AND_FILTER_CLAUSE" +
+            "GROUP BY purchaseId)")
+    protected abstract fun getAveragePurchaseCost(period: Int, filter: String): Long
 
     // language=RoomSql see [https://youtrack.jetbrains.com/issue/KT-13233] if the issue is resolved
-    @Query("select strftime('%j', date, 'unixepoch', 'localtime') AS day, avg(totalPrice) " +
-            "from purchase natural join item " +
-            "where $PERIOD_AND_FILTER_CLAUSE" +
-            "group by day")
-    protected abstract fun getAverageDailyPurchaseCost(period: Int, filter: String): Long
+    @Query("SELECT MIN(cost) FROM " +
+            "(SELECT SUM(totalPrice) AS cost FROM Purchase NATURAL JOIN Item " +
+            "WHERE $PERIOD_AND_FILTER_CLAUSE" +
+            "GROUP BY purchaseId)")
+    protected abstract fun getMinPurchaseCost(period: Int, filter: String): Long
 
     //language=RoomSql see [https://youtrack.jetbrains.com/issue/KT-13233] if the issue is resolved
     /**
@@ -138,11 +131,11 @@ abstract class PurchaseDao {
             "GROUP BY AllDates.date")
     protected abstract fun getDailyCosts(period: Int, filter: String): List<DailyCost>
 
-    @Query("SELECT category as name, sum(totalPrice) as value FROM Item natural join purchase " +
-            "WHERE $PERIOD_AND_FILTER_CLAUSE group by category order by value desc")
+    @Query("SELECT category AS name, SUM(totalPrice) AS value FROM Item NATURAL JOIN Purchase " +
+            "WHERE $PERIOD_AND_FILTER_CLAUSE GROUP BY category ORDER BY value DESC")
     protected abstract fun getMostPurchasedCategories(period: Int, filter: String): List<PieSlice>
 
-    @Query("SELEct * FROM purchase natural join item where $PERIOD_AND_FILTER_CLAUSE group by purchaseId order by date desc")
+    @Query("SELECT * FROM Purchase NATURAL JOIN Item WHERE $PERIOD_AND_FILTER_CLAUSE GROUP BY purchaseId ORDER BY date DESC")
     protected abstract fun getPurchaseDetails(period: Int, filter: String): List<PurchaseDetail>
 
     @Transaction

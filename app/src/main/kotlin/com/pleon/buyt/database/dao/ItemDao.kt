@@ -16,10 +16,10 @@ abstract class ItemDao {
             "ORDER BY isUrgent DESC, position ASC")
     abstract fun getAll(): LiveData<List<Item>>
 
-    @Query("SELECT count(*) FROM Item")
+    @Query("SELECT COUNT(*) FROM Item")
     abstract fun getCount(): Long
 
-    @Query("SELECT name, category from item group by name")
+    @Query("SELECT name, category FROM Item GROUP BY name")
     abstract fun getNameCats(): LiveData<Array<NameCat>>
 
     @Transaction
