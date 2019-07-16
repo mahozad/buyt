@@ -1,9 +1,10 @@
 package com.pleon.buyt.viewmodel
 
 import android.app.Application
+import androidx.arch.core.util.Function
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.Transformations.map
 import com.pleon.buyt.R
 import com.pleon.buyt.model.Category.GROCERY
 import com.pleon.buyt.model.Item
@@ -16,20 +17,14 @@ import javax.inject.Inject
 class AddItemViewModel @Inject constructor(app: Application, val repository: AddItemRepository)
     : AndroidViewModel(app) {
 
-    private val nameCatsMediator = MediatorLiveData<Map<String, String>>()
-    val itemNameCats: LiveData<Map<String, String>> = nameCatsMediator
-    val allStores get() = repository.getAllStores()
     var category = GROCERY
-    var storeList: List<Store>? = null
     var store: Store? = null
+    var storeList: List<Store>? = null
     var purchaseDate = Date()
-
-    init {
-        nameCatsMediator.addSource(repository.itemNameCats) { dbNameCats ->
-            // Do NOT reorder the operands in the following + operation
-            nameCatsMediator.value = defaultItemNameCats + dbNameCats.associateBy({ it.name }, { it.category })
-        }
-    }
+    val allStores get() = repository.getAllStores()
+    val itemNameCats: LiveData<Map<String, String>> = map(repository.itemNameCats, Function { dbNameCats ->
+        return@Function defaultItemNameCats + dbNameCats.associateBy({ it.name }, { it.category })
+    })
 
     private val defaultItemNameCats by lazy {
         InputStreamReader(app.resources.openRawResource(R.raw.item_names)).readLines()
