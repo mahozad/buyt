@@ -1,4 +1,14 @@
 ﻿┌───────────────────────────┐
+├ versionName = 1.3.0       │
+├ versionCode = 6           │
+│ ──────────────────────────┘
+├ Improve some animations and icons
+├ Fix date header bugs and improve its layout
+├ Made add item screen expandable
+├ Fix the bug in stores screen when deleting a store
+├ Make newly added item name suggested immediately
+├ Update app light theme
+├───────────────────────────┐
 ├ versionName = 1.2.0       │
 ├ versionCode = 5           │
 │ ──────────────────────────┘
