@@ -21,7 +21,7 @@
     <!--<PreferenceCategory />-->
 
     <ListPreference
-        android:defaultValue="dark"
+        android:defaultValue="minimal"
         android:dialogTitle="@string/dialog_title_select_theme"
         android:entries="@array/pref_theme_names"
         android:entryValues="@array/pref_theme_vals"

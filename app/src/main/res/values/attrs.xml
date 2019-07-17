@@ -3,9 +3,9 @@
     <declare-styleable name="TextInputEditTextWithSuffix">
         <attr name="suffix" format="string|reference" />
     </declare-styleable>
-    <attr name="cardBgColor" format="reference|color" />
+    <attr name="rearCardBgColor" format="reference|color" />
     <attr name="bottomBarColor" format="reference" />
-    <attr name="emptyHintColor" format="reference" />
+    <attr name="emptyHintColor" format="reference|color" />
     <attr name="unitUnfocusedColor" format="reference" />
     <attr name="unitBorderUnfocusedColor" format="reference" />
     <attr name="pieChartBackgroundColor" format="reference" />

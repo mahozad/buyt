@@ -12,7 +12,7 @@ import java.text.DecimalFormat
 object LineChartBuilder {
 
     fun buildLineChart(cxt: Context, chartView: LineChartView, data: List<DataSet>,
-                       hasDots: Boolean = true, dotsRadius: Float = 2.5f,
+                       hasDots: Boolean = true, dotsRadius: Float = 3f,
                        thickness: Float = 3f, isSmooth: Boolean = false, isDashed: Boolean = false,
                        gridRows: Int = 3, gridCols: Int = 0): LineChartView {
 

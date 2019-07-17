@@ -1,5 +1,27 @@
 <resources>
 
+    <style name="MinimalTheme" parent="Theme.MaterialComponents.Light">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorSecondary">@color/colorPrimary</item>
+        <item name="colorSurface">@android:color/white</item>
+
+        <item name="android:fontFamily">@font/vazir_scaled_down</item>
+        <item name="fontFamily">@font/vazir_scaled_down</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
+
+        <item name="rearCardBgColor">#BBB</item>
+        <item name="emptyHintColor">#D2D2D2</item>
+        <item name="pieChartBackgroundColor">@android:color/white</item>
+        <item name="unitUnfocusedColor">@color/unitUnfocusedLight</item>
+        <item name="unitBorderUnfocusedColor">@color/unitBorderUnfocusedLight</item>
+        <item name="android:windowBackground">@color/materialWindowBgColor</item>
+        <item name="floatingActionButtonStyle">@style/fabStyle</item>
+
+        <!-- To use normal parent themes above (without .NoActionBar) -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <!-- Dark and base application theme -->
     <style name="DarkTheme" parent="Theme.MaterialComponents">
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -9,9 +31,8 @@
 
         <item name="android:fontFamily">@font/vazir_scaled_down</item>
         <item name="fontFamily">@font/vazir_scaled_down</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
-        <!--<item name="android:textViewStyle">@style/textViewStyle</item>-->
 
-        <item name="cardBgColor">#4A5E4A</item>
+        <item name="rearCardBgColor">#4A5E4A</item>
         <item name="bottomBarColor">@color/bottomBarDarkBgColor</item>
         <item name="emptyHintColor">@color/emptyHintDarkColor</item>
         <item name="pieChartBackgroundColor">@color/pieChartDarkBgColor</item>
@@ -19,7 +40,6 @@
         <item name="unitBorderUnfocusedColor">@color/unitBorderUnfocusedDark</item>
         <item name="bottomAppBarStyle">@style/bottomAppBarStyle</item>
         <item name="floatingActionButtonStyle">@style/fabStyle</item>
-        <!--<item name="alertDialogTheme">@style/customDialogTheme</item>-->
 
         <!-- To use normal parent themes above (without .NoActionBar) -->
         <item name="windowActionBar">false</item>
@@ -35,9 +55,8 @@
 
         <item name="android:fontFamily">@font/vazir_scaled_down</item>
         <item name="fontFamily">@font/vazir_scaled_down</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
-        <!--<item name="android:textViewStyle">@style/textViewStyle</item>-->
 
-        <item name="cardBgColor">#A9B8A9</item>
+        <item name="rearCardBgColor">#A9B8A9</item>
         <item name="bottomBarColor">@color/bottomBarLightBgColor</item>
         <item name="emptyHintColor">@color/emptyHintLightColor</item>
         <item name="pieChartBackgroundColor">@color/pieChartLightBgColor</item>
@@ -45,7 +64,6 @@
         <item name="unitBorderUnfocusedColor">@color/unitBorderUnfocusedLight</item>
         <item name="bottomAppBarStyle">@style/bottomAppBarStyle</item>
         <item name="floatingActionButtonStyle">@style/fabStyle</item>
-        <!--<item name="alertDialogTheme">@style/customDialogTheme</item>-->
 
         <!-- To use normal parent themes above (without .NoActionBar) -->
         <item name="windowActionBar">false</item>
@@ -93,9 +111,5 @@
         <item name="strokeColor">@color/unit_btn_unfocused_color</item>
         <!--<item name="strokeWidth">@dimen/mtrl_btn_stroke_size</item>-->
     </style>
-
-    <!--<style name="textViewStyle">-->
-    <!--<item name="android:textSize">14sp</item>-->
-    <!--</style>-->
 
 </resources>

@@ -278,8 +278,8 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
             val persianCal = PersianCalendar()
             val datePicker = DatePickerDialog.newInstance(this, persianCal.persianYear,
                     persianCal.persianMonth, persianCal.persianDay)
-            val theme = prefs.getString(PREF_THEME, PREF_THEME_DEF)
-            datePicker.isThemeDark = (theme == PREF_THEME_DEF) // for changing colors see colors.xml
+            val theme = prefs.getString(PREF_THEME, PREF_THEME_MINIMAL)
+            datePicker.isThemeDark = (theme == PREF_THEME_DARK) // for changing colors see colors.xml
             datePicker.retainInstance = true
 
             val selectableDays = arrayOfNulls<PersianCalendar>(10)

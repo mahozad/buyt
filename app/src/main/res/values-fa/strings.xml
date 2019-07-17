@@ -102,6 +102,7 @@
     <string name="dialog_title_select_theme">انتخاب قالب</string>
     <string name="dialog_title_select_lang">انتخاب زبان</string>
     <string name="currency_format">##,### ت</string>
+    <string name="pref_theme_minimal">مینیمال</string>
     <string name="pref_theme_dark">تیره</string>
     <string name="pref_theme_light">روشن</string>
     <string name="pref_lang_auto">خودکار (زبان دستگاه)</string>

@@ -119,13 +119,16 @@
     <string name="menu_text_period">last %1$d days</string>
 
     <string-array name="pref_theme_names">
+        <item>@string/pref_theme_minimal</item>
         <item>@string/pref_theme_dark</item>
         <item>@string/pref_theme_light</item>
     </string-array>
     <string-array name="pref_theme_vals">
+        <item>minimal</item>
         <item>dark</item>
         <item>light</item>
     </string-array>
+    <string name="pref_theme_minimal">Minimal</string>
     <string name="pref_theme_dark">Dark</string>
     <string name="pref_theme_light">Light</string>
     <string name="pref_title_theme">Theme</string>

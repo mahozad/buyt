@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:alpha="0"
+        android:backgroundTint="?emptyHintColor"
         android:text="@string/stores_empty_hint"
         app:chipEndPadding="8dp"
         app:chipStartPadding="8dp" />

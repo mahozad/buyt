@@ -20,9 +20,9 @@ const val PREF_NEWBIE = "NEWBIE"
 const val PREF_VIBRATE = "VIBRATE"
 const val PREF_SEARCH_DIST = "DISTANCE"
 const val PREF_TASK_RECREATED = "TASK_RECREATED"
-
-const val PREF_THEME_DEF = "dark"
 const val PREF_SEARCH_DIST_DEF = "50"
+const val PREF_THEME_MINIMAL= "minimal"
+const val PREF_THEME_DARK = "dark"
 
 class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeListener {
 
