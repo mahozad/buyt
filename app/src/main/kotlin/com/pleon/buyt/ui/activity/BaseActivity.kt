@@ -6,7 +6,6 @@ import androidx.lifecycle.LifecycleOwner
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.fragment.PREF_THEME
 import com.pleon.buyt.ui.fragment.PREF_THEME_DARK
-import com.pleon.buyt.ui.fragment.PREF_THEME_MINIMAL
 import com.pleon.buyt.util.LocaleUtil.setLocale
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -34,9 +33,8 @@ abstract class BaseActivity : DaggerAppCompatActivity() {
     }
 
     private fun setTheme() {
-        val theme = prefs.getString(PREF_THEME, PREF_THEME_MINIMAL)
+        val theme = prefs.getString(PREF_THEME, PREF_THEME_DARK)
         setTheme(when (theme) {
-            PREF_THEME_MINIMAL -> R.style.MinimalTheme
             PREF_THEME_DARK -> R.style.DarkTheme
             else -> R.style.LightTheme
         })
