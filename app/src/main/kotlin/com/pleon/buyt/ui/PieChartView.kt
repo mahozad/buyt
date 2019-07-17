@@ -132,7 +132,7 @@ class PieChartView : View {
                 break
             }
             startRadius += slice.radius
-            if (gap > 0 && pieCell == 0f) {
+            if (sectors.size > 1 && gap > 0 && pieCell == 0f) {
                 mPaint.color = backGroundColor
                 mPaint.strokeWidth = if (index == 0) gap + 4 else gap
                 mCanvas!!.drawLine(width / 2f, height / 2f, tempPoint.x.toFloat(), tempPoint.y.toFloat(), mPaint)
