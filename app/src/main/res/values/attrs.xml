@@ -4,10 +4,10 @@
         <attr name="suffix" format="string|reference" />
     </declare-styleable>
     <attr name="rearCardBgColor" format="reference|color" />
-    <attr name="bottomBarColor" format="reference" />
+    <attr name="bottomBarColor" format="reference|color" />
     <attr name="emptyHintColor" format="reference|color" />
-    <attr name="unitUnfocusedColor" format="reference" />
     <attr name="unitBorderUnfocusedColor" format="reference" />
-    <attr name="pieChartBackgroundColor" format="reference" />
+    <attr name="pieChartBackgroundColor" format="reference|color" />
+    <attr name="unitUnfocusedColor" format="reference" />
     <bool name="isRtl">false</bool>
 </resources>
