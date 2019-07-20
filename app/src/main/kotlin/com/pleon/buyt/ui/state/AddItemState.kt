@@ -17,9 +17,10 @@ object AddItemState : State() {
         when (event) {
             is FabClicked -> onFabClicked()
             is HomeClicked, BackClicked -> shiftToIdleState()
-            is OptionsMenuCreated -> onOptionsMenuCreated()
             is RestoreInstanceCalled -> onRestoreInstanceCalled()
-            is SaveInstanceCalled, ItemListEmptied -> {}
+            is OptionsMenuCreated -> onOptionsMenuCreated()
+            is SaveInstanceCalled -> {}
+            is ItemListChanged -> {}
             else -> throw IllegalStateException("Event $event is not valid in $this")
         }
     }
@@ -44,8 +45,8 @@ object AddItemState : State() {
     private fun onOptionsMenuCreated() = with(activity) {
         bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
         (bottom_bar.navigationIcon as Animatable).start()
-        addMenuItem.isVisible = false
         // Because animating views was buggy in onOptionsItemSelected we do it here
+        addMenuItem.isVisible = false
         reorderMenuItem.isVisible = false
         bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
         fab.setImageResource(R.drawable.avd_find_done)

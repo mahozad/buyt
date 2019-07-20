@@ -12,6 +12,7 @@ import androidx.annotation.DrawableRes
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.activity.MainActivity
+import com.pleon.buyt.util.AnimationUtil.animateIconInfinitely
 import kotlinx.android.synthetic.main.activity_main.*
 
 lateinit var activity: MainActivity
@@ -46,6 +47,11 @@ abstract class State {
         findViewById<ImageView>(R.id.icon).setImageResource(activity.viewModel.getStoreIcon())
         findViewById<TextView>(R.id.text).text = activity.viewModel.getStoreTitle()
         activity.storeMenuItem.isVisible = true
+    }
+
+    protected fun animateAddIcon() {
+        activity.addMenuItem.setIcon(R.drawable.avd_add_glow)
+        animateIconInfinitely(activity.addMenuItem.icon)
     }
 
 }

@@ -28,14 +28,15 @@ object IdleState : State() {
     override fun event(event: Event) {
         when (event) {
             is FabClicked -> onFabClicked()
-            is FindingSkipped -> onSkipClicked()
             is HomeClicked -> onHomeClicked()
             is BackClicked -> onBackClicked()
-            is LocationFound, ItemListEmptied -> {}
-            is LocationPermissionGranted -> onLocationPermissionGranted()
+            is FindingSkipped -> onSkipClicked()
             is OptionsMenuCreated -> onOptionsMenuCreated()
             is SaveInstanceCalled -> onSaveInstanceCalled()
             is RestoreInstanceCalled -> onRestoreInstanceCalled()
+            is ItemListChanged -> onItemListChanged(event.isListEmpty)
+            is LocationPermissionGranted -> onLocationPermissionGranted()
+            is LocationFound -> {}
             else -> throw IllegalStateException("Event $event is not valid in $this")
         }
     }
@@ -107,12 +108,16 @@ object IdleState : State() {
         BottomDrawerFragment().show(activity.supportFragmentManager, "BOTTOM_SHEET")
     }
 
+    private fun onItemListChanged(isListEmpty: Boolean) {
+        if (isListEmpty) animateAddIcon() else activity.addMenuItem.setIcon(R.drawable.avd_add_hide)
+    }
+
     private fun onBackClicked() = activity.callSuperOnBackPressed()
 
     private fun onLocationPermissionGranted() = findLocation()
 
     private fun onOptionsMenuCreated() {
-        if (!activity.itemsFragment.isListEmpty) activity.addMenuItem.setIcon(R.drawable.avd_add_hide)
+        if (activity.itemsFragment.isListEmpty) animateAddIcon()
     }
 
     //There is nothing special in IDLE state to save here;

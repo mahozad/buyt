@@ -10,7 +10,6 @@ import com.pleon.buyt.ui.activity.STATE_LOCATION
 import com.pleon.buyt.ui.dialog.CreateStoreDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.ui.state.Event.*
-import com.pleon.buyt.util.AnimationUtil
 import com.pleon.buyt.util.SnackbarUtil.showSnackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -24,9 +23,9 @@ object SelectingState : State() {
             is OptionsMenuCreated -> onOptionsMenuCreated()
             is SaveInstanceCalled -> onSaveInstanceCalled(event.outState)
             is RestoreInstanceCalled -> onRestoreInstanceCalled()
+            is ItemListChanged -> onItemListChanged(event.isListEmpty)
             is StoreSelected -> onStoreSelected(event.storeIndex)
             is StoreCreated -> onStoreCreated(event.store)
-            is ItemListEmptied -> onListEmptied()
             else -> throw IllegalStateException("Event $event is not valid in $this")
         }
     }
@@ -73,13 +72,10 @@ object SelectingState : State() {
     private fun onOptionsMenuCreated() = with(activity) {
         bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
         (bottom_bar.navigationIcon as Animatable).start()
-        addMenuItem.isVisible = false
-
         setStoreMenuItemIcon()
+        addMenuItem.isVisible = false
         reorderMenuItem.isVisible = false
         bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
-
-        if (!itemsFragment.isListEmpty) addMenuItem.setIcon(R.drawable.avd_add_hide)
     }
 
     private fun onSaveInstanceCalled(outState: Bundle) {
@@ -102,10 +98,11 @@ object SelectingState : State() {
 
     private fun onStoreSelected(index: Int) = completeBuy(activity.viewModel.foundStores[index])
 
-    private fun onListEmptied() {
-        shiftToIdleState()
-        activity.addMenuItem.setIcon(R.drawable.avd_add_glow)
-        AnimationUtil.animateIconInfinitely(activity.addMenuItem.icon)
+    private fun onItemListChanged(isListEmpty: Boolean) {
+        if (isListEmpty) {
+            shiftToIdleState()
+            animateAddIcon()
+        }
     }
 
     override fun toString() = "SELECTING state"

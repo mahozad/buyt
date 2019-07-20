@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
-import android.os.Handler
 import android.util.TypedValue.COMPLEX_UNIT_DIP
 import android.util.TypedValue.applyDimension
 import android.view.Menu
@@ -30,11 +29,11 @@ import com.pleon.buyt.ui.fragment.AddItemFragment
 import com.pleon.buyt.ui.fragment.AddItemFragment.FullScreen
 import com.pleon.buyt.ui.fragment.BottomDrawerFragment
 import com.pleon.buyt.ui.fragment.ItemsFragment
+import com.pleon.buyt.ui.fragment.ItemsFragment.ItemListListener
 import com.pleon.buyt.ui.fragment.PREF_TASK_RECREATED
 import com.pleon.buyt.ui.state.AddItemState
 import com.pleon.buyt.ui.state.Event.*
 import com.pleon.buyt.ui.state.activity
-import com.pleon.buyt.util.AnimationUtil.animateIconInfinitely
 import com.pleon.buyt.util.SnackbarUtil.showSnackbar
 import com.pleon.buyt.viewmodel.MainViewModel
 import com.pleon.buyt.viewmodel.ViewModelFactory
@@ -50,7 +49,7 @@ const val REQUEST_LOCATION_PERMISSION = 1
  * react to user actions, or handle operating system communication, such as permission requests.
  */
 class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
-        CreateStoreListener, LocationEnableListener {
+        CreateStoreListener, LocationEnableListener, ItemListListener {
 
     // To force kill the app, go to the desired activity, press home button and then run this command:
     // adb shell am kill com.pleon.buyt
@@ -118,17 +117,6 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
 
         scrim.setOnClickListener { if (scrim.alpha == 1f) onBackPressed() }
         fab.setOnClickListener { viewModel.event(FabClicked) }
-        setupEmptyListListener()
-    }
-
-    private fun setupEmptyListListener() {
-        Handler().postDelayed({
-            if (!::addMenuItem.isInitialized) return@postDelayed
-            viewModel.items.observe(this@MainActivity, Observer { items ->
-                if (items.isEmpty()) viewModel.event(ItemListEmptied)
-                else addMenuItem.setIcon(R.drawable.avd_add_hide)
-            })
-        }, 3500)
     }
 
     private fun restoreBottomDrawerIfNeeded() {
@@ -138,13 +126,16 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
         }
     }
 
+    override fun onItemListChanged(isListEmpty: Boolean) {
+        if (::addMenuItem.isInitialized) viewModel.event(ItemListChanged(isListEmpty))
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_bottom_home, menu)
-
         addMenuItem = menu.findItem(R.id.action_add)
-        if (itemsFragment.isListEmpty) animateIconInfinitely(addMenuItem.icon) // This is needed
-        reorderMenuItem = menu.findItem(R.id.action_reorder_skip)
         storeMenuItem = menu.findItem(R.id.found_stores)
+        reorderMenuItem = menu.findItem(R.id.action_reorder_skip)
+
         initializeAddStorePopup(storeMenuItem.actionView)
         storeMenuItem.actionView.setOnClickListener {
             if (!viewModel.isFindingSkipped && viewModel.foundStores.isNotEmpty()) addStorePopup.show()
@@ -181,7 +172,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
                 supportFragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.slide_up, 0, 0, R.anim.slide_down)
                         .replace(R.id.fragContainer, AddItemFragment())
-                        .addToBackStack("tag")
+                        .addToBackStack("AddItemFrag")
                         .commit()
             }
 

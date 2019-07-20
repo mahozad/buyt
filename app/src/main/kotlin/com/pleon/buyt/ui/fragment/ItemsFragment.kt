@@ -1,5 +1,6 @@
 package com.pleon.buyt.ui.fragment
 
+import android.content.Context
 import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
@@ -28,6 +29,10 @@ import kotlin.Comparator
 
 class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
 
+    interface ItemListListener {
+        fun onItemListChanged(isListEmpty: Boolean)
+    }
+
     @Inject internal lateinit var viewModelFactory: ViewModelFactory<MainViewModel>
     @Inject internal lateinit var touchHelperCallback: TouchHelperCallback
     @Inject internal lateinit var adapter: ItemListAdapter
@@ -35,6 +40,7 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
     val selectedItems get() = adapter.selectedItems
     val isListEmpty get() = adapter.items.isEmpty()
     private lateinit var viewModel: MainViewModel
+    private var listener: ItemListListener? = null
 
     override fun layout() = R.layout.fragment_item_list
 
@@ -44,6 +50,7 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
         viewModel.items.observe(viewLifecycleOwner, Observer { items ->
             adapter.items = items
             animateAlpha(emptyHint, if (items.isEmpty()) 1f else 0f)
+            listener?.onItemListChanged(items.isEmpty())
         })
 
         (emptyHint.drawable as Animatable).start()
@@ -75,6 +82,16 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
                 onUndo = { viewModel.restoreDeletedItem(item) },
                 onDismiss = { viewModel.deleteItem(item) }
         )
+    }
+
+    override fun onAttach(cxt: Context) {
+        super.onAttach(cxt)
+        listener = if (cxt is ItemListListener) cxt else null
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
     }
 
     // **

@@ -12,7 +12,6 @@ import com.pleon.buyt.model.Coordinates
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.ui.fragment.PREF_VIBRATE
 import com.pleon.buyt.ui.state.Event.*
-import com.pleon.buyt.util.AnimationUtil.animateIconInfinitely
 import com.pleon.buyt.util.SnackbarUtil.showSnackbar
 import com.pleon.buyt.util.VibrationUtil.vibrate
 import kotlinx.android.synthetic.main.activity_main.*
@@ -23,13 +22,13 @@ object FindingState : State() {
         when (event) {
             is FabClicked -> {}
             is FindingSkipped -> onSkipClicked()
-            is HomeClicked, BackClicked -> shiftToIdleState()
-            is LocationFound -> onLocationFound(event.location)
-            is StoresFound -> onStoresFound(event.stores)
             is OptionsMenuCreated -> onOptionsMenuCreated()
             is SaveInstanceCalled -> onSaveInstanceCalled()
+            is HomeClicked, BackClicked -> shiftToIdleState()
             is RestoreInstanceCalled -> onRestoreInstanceCalled()
-            is ItemListEmptied -> onListEmptied()
+            is StoresFound -> onStoresFound(event.stores)
+            is LocationFound -> onLocationFound(event.location)
+            is ItemListChanged -> onItemListChanged(event.isListEmpty)
             else -> throw IllegalStateException("Event $event is not valid in $this")
         }
     }
@@ -94,7 +93,6 @@ object FindingState : State() {
         (bottom_bar.navigationIcon as Animatable).start()
         addMenuItem.isVisible = false
         reorderMenuItem.setIcon(R.drawable.avd_skip_reorder).setTitle(R.string.menu_hint_skip_finding)
-        if (!itemsFragment.isListEmpty) addMenuItem.setIcon(R.drawable.avd_add_hide)
     }
 
     private fun onSaveInstanceCalled() {
@@ -107,10 +105,11 @@ object FindingState : State() {
         (activity.fab.drawable as Animatable).start()
     }
 
-    private fun onListEmptied() {
-        shiftToIdleState()
-        activity.addMenuItem.setIcon(R.drawable.avd_add_glow)
-        animateIconInfinitely(activity.addMenuItem.icon)
+    private fun onItemListChanged(isListEmpty: Boolean) {
+        if (isListEmpty) {
+            shiftToIdleState()
+            animateAddIcon()
+        }
     }
 
     override fun toString() = "FINDING state"
