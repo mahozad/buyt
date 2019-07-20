@@ -29,6 +29,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorSecondary">@color/colorPrimary</item>
+        <item name="colorSurface">@android:color/white</item> <!-- required for quantity btns -->
 
         <item name="android:fontFamily">@font/vazir_scaled_down</item>
         <item name="fontFamily">@font/vazir_scaled_down</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
