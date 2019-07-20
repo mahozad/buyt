@@ -13,7 +13,6 @@ import com.pleon.buyt.model.Store
 import com.pleon.buyt.repository.MainRepository
 import com.pleon.buyt.ui.fragment.PREF_SEARCH_DIST
 import com.pleon.buyt.ui.fragment.PREF_SEARCH_DIST_DEF
-import com.pleon.buyt.ui.state.Event
 import com.pleon.buyt.ui.state.IdleState
 import com.pleon.buyt.ui.state.State
 import com.pleon.buyt.util.FormatterUtil.formatNumber
@@ -56,8 +55,6 @@ class MainViewModel @Inject constructor(private val app: Application,
         val searchDist = cos(searchDistInMeters / EARTH_RADIUS)
         return repository.findNearStores(origin, searchDist)
     }
-
-    fun event(event: Event) = state.event(event)
 
     fun buy(items: Collection<Item>, store: Store, date: Date) = repository.buy(items, store, date)
 

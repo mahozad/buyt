@@ -17,7 +17,6 @@ import com.pleon.buyt.ui.dialog.LocationOffDialogFragment
 import com.pleon.buyt.ui.dialog.LocationOffDialogFragment.RationalType
 import com.pleon.buyt.ui.dialog.UpgradePromptDialogFragment
 import com.pleon.buyt.ui.fragment.BottomDrawerFragment
-import com.pleon.buyt.ui.state.Event.*
 import com.pleon.buyt.viewmodel.FREE_BUY_LIMIT
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -25,23 +24,7 @@ object IdleState : State() {
 
     lateinit var locationMgr: LocationManager
 
-    override fun event(event: Event) {
-        when (event) {
-            is FabClicked -> onFabClicked()
-            is HomeClicked -> onHomeClicked()
-            is BackClicked -> onBackClicked()
-            is FindingSkipped -> onSkipClicked()
-            is OptionsMenuCreated -> onOptionsMenuCreated()
-            is SaveInstanceCalled -> onSaveInstanceCalled()
-            is RestoreInstanceCalled -> onRestoreInstanceCalled()
-            is ItemListChanged -> onItemListChanged(event.isListEmpty)
-            is LocationPermissionGranted -> onLocationPermissionGranted()
-            is LocationFound -> {}
-            else -> throw IllegalStateException("Event $event is not valid in $this")
-        }
-    }
-
-    private fun onFabClicked() = with(activity) {
+    override fun onFabClicked() = with(activity) {
         viewModel.purchaseCountInPeriod.observe(this, Observer { purchaseCount ->
             if (itemsFragment.isListEmpty) itemsFragment.emphasisEmpty()
             else if (!isPremium && purchaseCount >= FREE_BUY_LIMIT)
@@ -100,30 +83,25 @@ object IdleState : State() {
         // new BottomAppBar.Behavior().slideUp(mBottomAppBar);
     }
 
-    private fun onSkipClicked() {
+    override fun onFindingSkipped() {
         if (!activity.itemsFragment.isListEmpty) activity.itemsFragment.toggleDragMode()
     }
 
-    private fun onHomeClicked() {
+    override fun onHomeClicked() {
         BottomDrawerFragment().show(activity.supportFragmentManager, "BOTTOM_SHEET")
     }
 
-    private fun onItemListChanged(isListEmpty: Boolean) {
+    override fun onBackClicked() = activity.callSuperOnBackPressed()
+
+    override fun onItemListChanged(isListEmpty: Boolean) {
         if (isListEmpty) animateAddIcon() else activity.addMenuItem.setIcon(R.drawable.avd_add_hide)
     }
 
-    private fun onBackClicked() = activity.callSuperOnBackPressed()
+    override fun onLocationPermissionGranted() = findLocation()
 
-    private fun onLocationPermissionGranted() = findLocation()
-
-    private fun onOptionsMenuCreated() {
+    override fun onOptionsMenuCreated() {
         if (activity.itemsFragment.isListEmpty) animateAddIcon()
     }
-
-    //There is nothing special in IDLE state to save here;
-    private fun onSaveInstanceCalled() {}
-
-    private fun onRestoreInstanceCalled() {}
 
     override fun toString() = "IDLE state"
 }

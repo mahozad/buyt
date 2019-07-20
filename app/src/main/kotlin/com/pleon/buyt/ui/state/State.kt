@@ -3,6 +3,8 @@ package com.pleon.buyt.ui.state
 import android.app.NotificationManager
 import android.content.Context.NOTIFICATION_SERVICE
 import android.graphics.drawable.Animatable
+import android.location.Location
+import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.FrameLayout
@@ -11,6 +13,7 @@ import android.widget.TextView
 import androidx.annotation.DrawableRes
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
 import com.pleon.buyt.R
+import com.pleon.buyt.model.Store
 import com.pleon.buyt.ui.activity.MainActivity
 import com.pleon.buyt.util.AnimationUtil.animateIconInfinitely
 import kotlinx.android.synthetic.main.activity_main.*
@@ -20,7 +23,31 @@ lateinit var activity: MainActivity
 // State Design Pattern
 abstract class State {
 
-    abstract fun event(event: Event)
+    open fun onFabClicked() {}
+
+    open fun onBackClicked() {}
+
+    open fun onFindingSkipped() {}
+
+    open fun onOptionsMenuCreated() {}
+
+    open fun onLocationPermissionGranted() {}
+
+    open fun onHomeClicked() = onBackClicked()
+
+    open fun onStoresFound(stores: List<Store>) {}
+
+    open fun onStoreCreated(store: Store) {}
+
+    open fun onSaveInstance(outState: Bundle) {}
+
+    open fun onStoreSelected(storeIndex: Int) {}
+
+    open fun onLocationFound(location: Location) {}
+
+    open fun onRestoreInstance(savedState: Bundle) {}
+
+    open fun onItemListChanged(isListEmpty: Boolean) {}
 
     protected fun shiftToIdleState(@DrawableRes fabResId: Int) = with(activity) {
         bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_CENTER

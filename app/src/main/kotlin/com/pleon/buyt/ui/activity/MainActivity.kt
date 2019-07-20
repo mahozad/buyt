@@ -32,7 +32,6 @@ import com.pleon.buyt.ui.fragment.ItemsFragment
 import com.pleon.buyt.ui.fragment.ItemsFragment.ItemListListener
 import com.pleon.buyt.ui.fragment.PREF_TASK_RECREATED
 import com.pleon.buyt.ui.state.AddItemState
-import com.pleon.buyt.ui.state.Event.*
 import com.pleon.buyt.ui.state.activity
 import com.pleon.buyt.util.SnackbarUtil.showSnackbar
 import com.pleon.buyt.viewmodel.MainViewModel
@@ -69,9 +68,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
     @Inject internal lateinit var broadcastMgr: LocalBroadcastManager
     lateinit var viewModel: MainViewModel
     lateinit var itemsFragment: ItemsFragment
-    lateinit var addMenuItem: MenuItem
     lateinit var reorderMenuItem: MenuItem
     lateinit var storeMenuItem: MenuItem
+    lateinit var addMenuItem: MenuItem
     lateinit var addStorePopup: PopupMenu
 
     override fun layout() = R.layout.activity_main
@@ -112,11 +111,11 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
         activity = this
         viewModel = of(this, viewModelFactory).get(MainViewModel::class.java)
         broadcastMgr.registerReceiver(locationReceiver, IntentFilter(ACTION_LOCATION_EVENT))
-        locationReceiver.getLocation().observe(this, Observer { viewModel.event(LocationFound(it)) })
+        locationReceiver.getLocation().observe(this, Observer { viewModel.state.onLocationFound(it) })
         itemsFragment = supportFragmentManager.findFragmentById(R.id.itemsFragment) as ItemsFragment
 
         scrim.setOnClickListener { if (scrim.alpha == 1f) onBackPressed() }
-        fab.setOnClickListener { viewModel.event(FabClicked) }
+        fab.setOnClickListener { viewModel.state.onFabClicked() }
     }
 
     private fun restoreBottomDrawerIfNeeded() {
@@ -127,7 +126,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
     }
 
     override fun onItemListChanged(isListEmpty: Boolean) {
-        if (::addMenuItem.isInitialized) viewModel.event(ItemListChanged(isListEmpty))
+        if (::addMenuItem.isInitialized) viewModel.state.onItemListChanged(isListEmpty)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -141,7 +140,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
             if (!viewModel.isFindingSkipped && viewModel.foundStores.isNotEmpty()) addStorePopup.show()
         }
 
-        viewModel.event(OptionsMenuCreated)
+        viewModel.state.onOptionsMenuCreated()
         return true
     }
 
@@ -182,9 +181,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
                 createStoreDialog.show(supportFragmentManager, "CREATE_STORE_DIALOG")
             }
 
-            R.id.action_reorder_skip -> viewModel.event(FindingSkipped)
+            R.id.action_reorder_skip -> viewModel.state.onFindingSkipped()
 
-            android.R.id.home -> viewModel.event(HomeClicked)
+            android.R.id.home ->viewModel.state.onHomeClicked()
         }
         return true
     }
@@ -194,7 +193,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
      * super.onBackPressed() from your overridden method. Otherwise the Back button behavior
      * may be jarring to the user.
      */
-    override fun onBackPressed() = viewModel.event(BackClicked)
+    override fun onBackPressed() = viewModel.state.onBackClicked()
 
     fun callSuperOnBackPressed() = super.onBackPressed()
 
@@ -216,7 +215,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
      */
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        viewModel.event(SaveInstanceCalled(outState))
+        viewModel.state.onSaveInstance(outState)
         /* TODO: Use Saved State module for ViewModel instead.
          *  See [https://developer.android.com/topic/libraries/architecture/viewmodel-savedstate] */
     }
@@ -224,9 +223,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
     // NOTE: menu items are restored in onCreateOptionsMenu()
     override fun onRestoreInstanceState(savedState: Bundle) {
         super.onRestoreInstanceState(savedState)
-
-        viewModel.event(RestoreInstanceCalled(savedState))
-
+        viewModel.state.onRestoreInstance(savedState)
         if (savedState.containsKey(STATE_LOCATION)) {
             // TODO: Restore the selecting state
             // Bundle contains location but previous condition (viewModel.getState() == SELECTING)
@@ -240,7 +237,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
     override fun onRequestPermissionsResult(reqCode: Int, perms: Array<String>, grants: IntArray) {
         if (reqCode == REQUEST_LOCATION_PERMISSION) {
             // If request is cancelled, the result arrays are empty.
-            if (grants.isNotEmpty() && grants[0] == PERMISSION_GRANTED) viewModel.event(LocationPermissionGranted)
+            if (grants.isNotEmpty() && grants[0] == PERMISSION_GRANTED) viewModel.state.onLocationPermissionGranted()
         }
         super.onRequestPermissionsResult(reqCode, perms, grants)
     }
@@ -263,12 +260,12 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
         if (isFinishing) stopService(Intent(this, GpsService::class.java))
     }
 
-    override fun onEnableLocationDenied() = viewModel.event(FindingSkipped)
+    override fun onEnableLocationDenied() = viewModel.state.onFindingSkipped()
 
-    override fun onStoreCreated(store: Store) = viewModel.event(StoreCreated(store))
+    override fun onStoreCreated(store: Store) = viewModel.state.onStoreCreated(store)
 
     // On store selected from store selection dialog
-    override fun onSelected(index: Int) = viewModel.event(StoreSelected(index))
+    override fun onSelected(index: Int) = viewModel.state.onStoreSelected(index)
 
     override fun expandToFullScreen(fragmentRootView: View) {
         if (parentView.measuredHeight < applyDimension(COMPLEX_UNIT_DIP, 600f, displayMetrics)) {

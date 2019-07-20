@@ -9,28 +9,20 @@ import com.pleon.buyt.model.Store
 import com.pleon.buyt.ui.activity.STATE_LOCATION
 import com.pleon.buyt.ui.dialog.CreateStoreDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
-import com.pleon.buyt.ui.state.Event.*
 import com.pleon.buyt.util.SnackbarUtil.showSnackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 object SelectingState : State() {
 
-    override fun event(event: Event) {
-        when (event) {
-            is FabClicked -> onFabClicked()
-            is HomeClicked, BackClicked -> shiftToIdleState()
-            is OptionsMenuCreated -> onOptionsMenuCreated()
-            is SaveInstanceCalled -> onSaveInstanceCalled(event.outState)
-            is RestoreInstanceCalled -> onRestoreInstanceCalled()
-            is ItemListChanged -> onItemListChanged(event.isListEmpty)
-            is StoreSelected -> onStoreSelected(event.storeIndex)
-            is StoreCreated -> onStoreCreated(event.store)
-            else -> throw IllegalStateException("Event $event is not valid in $this")
-        }
+    override fun onBackClicked() = with(activity) {
+        super.shiftToIdleState(fabResId = R.drawable.avd_done_buyt)
+        itemsFragment.toggleItemsCheckbox(false)
+        itemsFragment.clearSelectedItems()
+        itemsFragment.sortItemsByOrder()
     }
 
-    private fun onFabClicked() = with(activity) {
+    override fun onFabClicked() = with(activity) {
         if (itemsFragment.isSelectedEmpty) showSnackbar(snbContainer, R.string.snackbar_message_no_item_selected, LENGTH_SHORT)
         else buySelectedItems()
     }
@@ -59,17 +51,10 @@ object SelectingState : State() {
     private fun completeBuy(store: Store) {
         // With toList(), a new list is passed to buy() so clearing selected items wont effect it
         activity.viewModel.buy(activity.itemsFragment.selectedItems.toList(), store, Date())
-        shiftToIdleState()
+        onBackClicked()
     }
 
-    private fun shiftToIdleState() = with(activity) {
-        super.shiftToIdleState(fabResId = R.drawable.avd_done_buyt)
-        itemsFragment.toggleItemsCheckbox(false)
-        itemsFragment.clearSelectedItems()
-        itemsFragment.sortItemsByOrder()
-    }
-
-    private fun onOptionsMenuCreated() = with(activity) {
+    override fun onOptionsMenuCreated() = with(activity) {
         bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
         (bottom_bar.navigationIcon as Animatable).start()
         setStoreMenuItemIcon()
@@ -78,16 +63,16 @@ object SelectingState : State() {
         bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
     }
 
-    private fun onSaveInstanceCalled(outState: Bundle) {
+    override fun onSaveInstance(outState: Bundle) {
         outState.putParcelable(STATE_LOCATION, activity.viewModel.location)
     }
 
-    private fun onRestoreInstanceCalled() {
+    override fun onRestoreInstance(savedState: Bundle) {
         activity.fab.setImageResource(R.drawable.ic_done)
         activity.itemsFragment.toggleItemsCheckbox(true)
     }
 
-    private fun onStoreCreated(store: Store) {
+    override fun onStoreCreated(store: Store) {
         if (activity.viewModel.shouldCompletePurchase) {
             completeBuy(store)
         } else {
@@ -96,11 +81,11 @@ object SelectingState : State() {
         }
     }
 
-    private fun onStoreSelected(index: Int) = completeBuy(activity.viewModel.foundStores[index])
+    override fun onStoreSelected(storeIndex: Int) = completeBuy(activity.viewModel.foundStores[storeIndex])
 
-    private fun onItemListChanged(isListEmpty: Boolean) {
+    override fun onItemListChanged(isListEmpty: Boolean) {
         if (isListEmpty) {
-            shiftToIdleState()
+            onBackClicked()
             animateAddIcon()
         }
     }
