@@ -1,13 +1,8 @@
 package com.pleon.buyt.ui.state
 
-import android.app.NotificationManager
-import android.content.Context
 import android.graphics.drawable.Animatable
 import android.os.Bundle
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.TextView
-import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_END
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
 import com.pleon.buyt.R
 import com.pleon.buyt.model.Store
@@ -20,7 +15,7 @@ import com.pleon.buyt.util.SnackbarUtil.showSnackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
-object SelectingState : MainScreenState {
+object SelectingState : State() {
 
     override fun event(event: Event) {
         when (event) {
@@ -36,27 +31,27 @@ object SelectingState : MainScreenState {
         }
     }
 
-    private fun onFabClicked() {
-        if (activity.itemsFragment.isSelectedEmpty) showSnackbar(activity.snbContainer, R.string.snackbar_message_no_item_selected, LENGTH_SHORT)
+    private fun onFabClicked() = with(activity) {
+        if (itemsFragment.isSelectedEmpty) showSnackbar(snbContainer, R.string.snackbar_message_no_item_selected, LENGTH_SHORT)
         else buySelectedItems()
     }
 
-    private fun buySelectedItems() {
-        if (activity.itemsFragment.validateSelectedItemsPrice()) {
-            if (activity.viewModel.foundStores.size == 0) {
-                activity.viewModel.shouldCompletePurchase = true
-                val createStoreDialog = CreateStoreDialogFragment.newInstance(activity.viewModel.location!!)
-                createStoreDialog.show(activity.supportFragmentManager, "CREATE_STORE_DIALOG")
-            } else if (activity.viewModel.foundStores.size == 1) {
-                completeBuy(activity.viewModel.foundStores[0])
+    private fun buySelectedItems() = with(activity) {
+        if (itemsFragment.validateSelectedItemsPrice()) {
+            if (viewModel.foundStores.size == 0) {
+                viewModel.shouldCompletePurchase = true
+                val createStoreDialog = CreateStoreDialogFragment.newInstance(viewModel.location!!)
+                createStoreDialog.show(supportFragmentManager, "CREATE_STORE_DIALOG")
+            } else if (viewModel.foundStores.size == 1) {
+                completeBuy(viewModel.foundStores[0])
             } else { // show store selection dialog
                 val selectionList = ArrayList<SelectDialogFragment.SelectDialogRow>() // dialog requires ArrayList
-                for (store in activity.viewModel.foundStores) {
+                for (store in viewModel.foundStores) {
                     val selection = SelectDialogFragment.SelectDialogRow(store.name, store.category.storeImageRes)
                     selectionList.add(selection)
                 }
-                val selectDialog = SelectDialogFragment.newInstance(activity, R.string.dialog_title_select_store, selectionList)
-                selectDialog.show(activity.supportFragmentManager, "SELECT_STORE_DIALOG")
+                val selectDialog = SelectDialogFragment.newInstance(this, R.string.dialog_title_select_store, selectionList)
+                selectDialog.show(supportFragmentManager, "SELECT_STORE_DIALOG")
                 // next this::completeBuy() is called
             }
         }
@@ -68,52 +63,23 @@ object SelectingState : MainScreenState {
         shiftToIdleState()
     }
 
-    private fun shiftToIdleState() {
-        activity.itemsFragment.sortItemsByOrder()
-        activity.itemsFragment.clearSelectedItems()
-        activity.itemsFragment.toggleItemsCheckbox(false)
-
-        activity.fab.setImageResource(R.drawable.avd_done_buyt)
-        (activity.fab.drawable as Animatable).start()
-
-        activity.bottom_bar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
-        activity.bottom_bar.setNavigationIcon(R.drawable.avd_cancel_nav)
-        (activity.bottom_bar.navigationIcon as Animatable).start()
-
-        activity.storeMenuItem.isVisible = false
-        activity.reorderMenuItem.setIcon(R.drawable.avd_skip_reorder).setTitle(R.string.menu_hint_reorder_items).isVisible = true
-        (activity.reorderMenuItem.icon as Animatable).start()
-        activity.addMenuItem.setIcon(R.drawable.avd_add_show).apply { (icon as Animatable).start() }.also { it.isVisible = true }
-
-        (activity.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).cancelAll()
-
-        activity.viewModel.resetFoundStores()
-
-        activity.viewModel.shouldCompletePurchase = false
-
-        activity.viewModel.state = IdleState
+    private fun shiftToIdleState() = with(activity) {
+        super.shiftToIdleState(fabResId = R.drawable.avd_done_buyt)
+        itemsFragment.toggleItemsCheckbox(false)
+        itemsFragment.clearSelectedItems()
+        itemsFragment.sortItemsByOrder()
     }
 
-    private fun onOptionsMenuCreated() {
-        activity.bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
-        (activity.bottom_bar.navigationIcon as Animatable).start()
-        activity.addMenuItem.isVisible = false
+    private fun onOptionsMenuCreated() = with(activity) {
+        bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
+        (bottom_bar.navigationIcon as Animatable).start()
+        addMenuItem.isVisible = false
 
         setStoreMenuItemIcon()
-        activity.reorderMenuItem.isVisible = false
-        activity.bottom_bar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_END
+        reorderMenuItem.isVisible = false
+        bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
 
-        if (!activity.itemsFragment.isListEmpty) activity.addMenuItem.setIcon(R.drawable.avd_add_hide)
-    }
-
-    private fun setStoreMenuItemIcon() {
-        with(activity.storeMenuItem.actionView) {
-            val visibility = if (activity.viewModel.foundStores.size == 1) android.view.View.GONE else android.view.View.VISIBLE
-            this.findViewById<FrameLayout>(R.id.textContainer).visibility = visibility
-            this.findViewById<ImageView>(R.id.icon).setImageResource(activity.viewModel.getStoreIcon())
-            this.findViewById<TextView>(R.id.text).text = activity.viewModel.getStoreTitle()
-        }
-        activity.storeMenuItem.isVisible = true
+        if (!itemsFragment.isListEmpty) addMenuItem.setIcon(R.drawable.avd_add_hide)
     }
 
     private fun onSaveInstanceCalled(outState: Bundle) {

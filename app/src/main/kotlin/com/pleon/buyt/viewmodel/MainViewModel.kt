@@ -15,7 +15,7 @@ import com.pleon.buyt.ui.fragment.PREF_SEARCH_DIST
 import com.pleon.buyt.ui.fragment.PREF_SEARCH_DIST_DEF
 import com.pleon.buyt.ui.state.Event
 import com.pleon.buyt.ui.state.IdleState
-import com.pleon.buyt.ui.state.MainScreenState
+import com.pleon.buyt.ui.state.State
 import com.pleon.buyt.util.FormatterUtil.formatNumber
 import java.util.*
 import javax.inject.Inject
@@ -39,7 +39,7 @@ class MainViewModel @Inject constructor(private val app: Application,
                                         initialState: IdleState)
     : AndroidViewModel(app) {
 
-    var state: MainScreenState = initialState
+    var state: State = initialState
     var location: Location? = null
     var foundStores = mutableListOf<Store>()
     var shouldCompletePurchase = false
@@ -75,7 +75,13 @@ class MainViewModel @Inject constructor(private val app: Application,
         updateItems(listOf(item))
     }
 
-    fun resetFoundStores() = foundStores.clear()
+    fun shiftToIdleState() {
+        state = IdleState
+        foundStores.clear()
+        isFindingSkipped = false // ???
+        shouldAnimateNavIcon = false // ???
+        shouldCompletePurchase = false // ???
+    }
 
     fun getStoreIcon() = if (foundStores.size != 1) R.drawable.ic_store
     else foundStores[0].category.storeImageRes
