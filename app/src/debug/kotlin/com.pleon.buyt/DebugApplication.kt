@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.res.Configuration
 import com.facebook.stetho.Stetho
 import com.pleon.buyt.billing.IabHelper
-import com.pleon.buyt.di.DaggerAppComponent
+import com.pleon.buyt.di.DaggerDebugAppComponent
 import com.pleon.buyt.util.LocaleUtil.setLocale
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
@@ -26,7 +26,7 @@ class DebugApplication : DaggerApplication() {
     fun disposeIabHelper() = iabHelper.dispose()
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-        return DaggerAppComponent.builder().application(this).build()
+        return DaggerDebugAppComponent.builder().application(this).build()
     }
 
     /**
