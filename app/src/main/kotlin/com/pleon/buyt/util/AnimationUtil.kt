@@ -9,7 +9,7 @@ import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat.registerAnimationCallback
 
-object AnimationUtil{
+object AnimationUtil {
 
     /**
      * See this answer [https://stackoverflow.com/a/49431260/8583692] for why we are doing this!
@@ -25,11 +25,11 @@ object AnimationUtil{
         (icon as Animatable).start()
     }
 
-    fun animateAlpha(hintView: View, alphaValue: Float) {
-        hintView.animate()
+    fun animateAlpha(view: View, alphaValue: Float, duration: Long = 200) {
+        view.animate()
                 .alpha(alphaValue)
                 .setInterpolator(FastOutSlowInInterpolator())
-                .setDuration(200)
+                .setDuration(duration)
                 .start()
     }
 }

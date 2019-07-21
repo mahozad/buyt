@@ -27,11 +27,11 @@ android {
     // for sliding tutorial
     dataBinding { isEnabled = true }
 
-    buildToolsVersion = "28.0.3"
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    buildToolsVersion = "28.0.3"
     compileSdkVersion(28)
     defaultConfig {
         // specifies default settings that will be shared across all different product flavors

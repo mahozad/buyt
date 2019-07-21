@@ -54,14 +54,14 @@ abstract class State {
         bottom_bar.setNavigationIcon(R.drawable.avd_cancel_nav)
         (bottom_bar.navigationIcon as Animatable).start()
 
-        fab.setImageResource(fabResId)
-        (fab.drawable as Animatable).start()
-
         storeMenuItem.isVisible = false
         reorderMenuItem.setIcon(R.drawable.avd_skip_reorder).setTitle(R.string.menu_hint_reorder_items).isVisible = true
         (reorderMenuItem.icon as Animatable).start()
         addMenuItem.setIcon(R.drawable.avd_add_show).isVisible = true
         (addMenuItem.icon as Animatable).start()
+
+        fab.setImageResource(fabResId)
+        (fab.drawable as Animatable).start()
 
         (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).cancelAll()
 
@@ -76,9 +76,9 @@ abstract class State {
         activity.storeMenuItem.isVisible = true
     }
 
-    protected fun animateAddIcon() {
-        activity.addMenuItem.setIcon(R.drawable.avd_add_glow)
-        animateIconInfinitely(activity.addMenuItem.icon)
+    protected fun animateAddIcon() = with(activity) {
+        addMenuItem.setIcon(R.drawable.avd_add_glow)
+        animateIconInfinitely(addMenuItem.icon)
     }
 
 }
