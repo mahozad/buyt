@@ -3,16 +3,12 @@ package com.pleon.buyt
 import android.content.Context
 import android.content.res.Configuration
 import com.facebook.stetho.Stetho
-import com.pleon.buyt.billing.IabHelper
 import com.pleon.buyt.di.DaggerDebugAppComponent
 import com.pleon.buyt.util.LocaleUtil.setLocale
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
-import javax.inject.Inject
 
 class DebugApplication : DaggerApplication() {
-
-    @Inject internal lateinit var iabHelper: IabHelper
 
     override fun onCreate() {
         super.onCreate()
@@ -20,14 +16,13 @@ class DebugApplication : DaggerApplication() {
         Stetho.initializeWithDefaults(this)
     }
 
-    // FIXME: duplicate methods. The same as the ones in BuytApplication class
-
-    // TODO: This is a very important call that stops background services and so on
-    fun disposeIabHelper() = iabHelper.dispose()
-
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
         return DaggerDebugAppComponent.builder().application(this).build()
     }
+
+
+    // FIXME: duplicate methods. The same as the ones in BuytApplication class
+
 
     /**
      * This is for android N and higher.
