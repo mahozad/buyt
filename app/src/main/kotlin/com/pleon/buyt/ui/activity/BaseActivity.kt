@@ -14,10 +14,6 @@ import org.koin.android.ext.android.inject
 @Suppress("unused")
 val <T : LifecycleOwner> T.TAG: String get() = javaClass.simpleName
 
-/**
- * Extends from DaggerAppCompatActivity (which itself extends from AppCompatActivity) so that the
- * activities do not have to call AndroidInjector.inject(this) for dagger dependency injection.
- */
 abstract class BaseActivity : AppCompatActivity() {
 
     val prefs: SharedPreferences by inject()

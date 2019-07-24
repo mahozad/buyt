@@ -51,9 +51,6 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
     // adb shell am kill com.pleon.buyt
     // return to the app from recent apps screen (or maybe by pressing its launcher icon)
 
-    // For a good article about dagger see
-    // [https://medium.com/@iammert/new-android-injector-with-dagger-2-part-1-8baa60152abe]
-
     /* FIXME: The bug that sometimes occur when expanding an item
      *  (the bottom item jumps up one moment), is produced when another item was swiped partially */
 

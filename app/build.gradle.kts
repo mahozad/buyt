@@ -123,10 +123,6 @@ dependencies {
     implementation("androidx.room:room-runtime:2.1.0")
     kapt("androidx.room:room-compiler:2.1.0")
     implementation("org.koin:koin-androidx-viewmodel:2.0.1")
-    implementation("com.google.dagger:dagger:2.23.2")
-    implementation("com.google.dagger:dagger-android-support:2.23.2")
-    kapt("com.google.dagger:dagger-compiler:2.23.2")
-    kapt("com.google.dagger:dagger-android-processor:2.23.2")
 
     /* If you're targeting JDK 8, you can use extended versions of the Kotlin standard library
      * which contain additional extension functions for APIs added in new JDK versions.

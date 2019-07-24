@@ -10,6 +10,7 @@ import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.lifecycle.Observer
 import com.google.android.material.textfield.TextInputLayout
 import com.pleon.buyt.R
@@ -18,10 +19,9 @@ import com.pleon.buyt.model.Coordinates
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.ui.adapter.CatsSpinnerAdapter
 import com.pleon.buyt.viewmodel.CreateStoreViewModel
-import dagger.android.support.DaggerDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CreateStoreDialogFragment : DaggerDialogFragment() {
+class CreateStoreDialogFragment : AppCompatDialogFragment() {
 
     private val viewModel by viewModel<CreateStoreViewModel>()
     private lateinit var name: EditText
