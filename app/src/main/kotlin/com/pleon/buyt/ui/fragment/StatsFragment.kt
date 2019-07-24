@@ -9,7 +9,6 @@ import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders.of
 import com.db.chart.animation.Animation
 import com.pleon.buyt.R
 import com.pleon.buyt.database.dto.DailyCost
@@ -21,24 +20,21 @@ import com.pleon.buyt.util.FormatterUtil.formatNumber
 import com.pleon.buyt.util.FormatterUtil.formatPrice
 import com.pleon.buyt.util.LineChartBuilder.buildLineChart
 import com.pleon.buyt.viewmodel.StatsViewModel
-import com.pleon.buyt.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_stats.*
-import javax.inject.Inject
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 private const val PIE_CHART_MAX_SLICES = 5
 
 class StatsFragment : BaseFragment() {
 
-    @Inject internal lateinit var viewModelFactory: ViewModelFactory<StatsViewModel>
     @ColorInt private lateinit var pieSliceColors: IntArray
     @ColorRes private var pieBgColor: Int = 0 // This color varies based on the app theme
     @Volatile private var isStartup = true // Required due to LiveData called twice on startup
-    private lateinit var viewModel: StatsViewModel
+    private val viewModel by sharedViewModel<StatsViewModel>()
 
     override fun layout() = R.layout.fragment_stats
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
-        viewModel = of(activity!!, viewModelFactory).get(StatsViewModel::class.java)
         viewModel.stats.observe(viewLifecycleOwner, Observer { stats ->
             showStats(stats)
             isStartup = false

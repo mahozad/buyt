@@ -11,11 +11,10 @@ import com.pleon.buyt.database.dto.StoreDetail
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.repository.StoreRepository
 import com.pleon.buyt.viewmodel.StoresViewModel.Sort.TOTAL_SPENDING
-import javax.inject.Inject
 
 private const val STORE_STATS_PERIOD = 30
 
-class StoresViewModel @Inject constructor(app: Application, private val repository: StoreRepository)
+class StoresViewModel constructor(app: Application, private val repository: StoreRepository)
     : AndroidViewModel(app) {
 
     enum class Sort(val nameRes: Int, val imgRes: Int) {

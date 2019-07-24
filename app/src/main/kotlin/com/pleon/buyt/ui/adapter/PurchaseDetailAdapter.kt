@@ -17,9 +17,8 @@ import com.pleon.buyt.util.FormatterUtil.formatPrice
 import kotlinx.android.synthetic.main.date_header.view.*
 import kotlinx.android.synthetic.main.purchase_detail.view.*
 import java.util.*
-import javax.inject.Inject
 
-class PurchaseDetailAdapter @Inject constructor(private val cxt: Application)
+class PurchaseDetailAdapter constructor(private val app: Application)
     : Adapter<ViewHolder>(), StickyHeaderInterface {
 
     enum class ItemType { ITEM, DATE }
@@ -76,14 +75,14 @@ class PurchaseDetailAdapter @Inject constructor(private val cxt: Application)
     inner class PurchaseHolder(view: View) : BaseViewHolder(view) {
         fun bindItem(purchaseDetail: PurchaseDetail) {
             itemView.storeName.text =
-                    if (purchaseDetail.store.isEmpty()) cxt.getString(R.string.hint_store_not_available) // store is deleted by user
+                    if (purchaseDetail.store.isEmpty()) app.getString(R.string.hint_store_not_available) // store is deleted by user
                     else purchaseDetail.store[0].name
-            itemView.itemDetails.adapter = ItemDetailAdapter(cxt).apply {
+            itemView.itemDetails.adapter = ItemDetailAdapter(app).apply {
                 items = purchaseDetail.item
             }
             var totalCost = 0L
             for (item in purchaseDetail.item) totalCost += item.totalPrice
-            itemView.totalCost.text = cxt.resources.getQuantityString(R.plurals.price_with_suffix, totalCost.toInt(), formatPrice(totalCost))
+            itemView.totalCost.text = app.resources.getQuantityString(R.plurals.price_with_suffix, totalCost.toInt(), formatPrice(totalCost))
         }
     }
 

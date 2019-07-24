@@ -12,9 +12,8 @@ import com.pleon.buyt.model.Store
 import com.pleon.buyt.repository.AddItemRepository
 import java.io.InputStreamReader
 import java.util.*
-import javax.inject.Inject
 
-class AddItemViewModel @Inject constructor(app: Application, val repository: AddItemRepository)
+class AddItemViewModel constructor(app: Application, val repository: AddItemRepository)
     : AndroidViewModel(app) {
 
     var category = GROCERY

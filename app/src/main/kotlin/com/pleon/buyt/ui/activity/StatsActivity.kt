@@ -9,24 +9,23 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
-import androidx.lifecycle.ViewModelProviders.of
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.pleon.buyt.R
 import com.pleon.buyt.isPremium
+import com.pleon.buyt.ui.adapter.StatsPagerAdapter
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.ui.dialog.UpgradePromptDialogFragment
 import com.pleon.buyt.viewmodel.StatsViewModel
-import com.pleon.buyt.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_stats.*
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import java.util.*
-import javax.inject.Inject
 
 class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
 
-    @Inject internal lateinit var viewModelFactory: ViewModelFactory<StatsViewModel>
-    @Inject internal lateinit var adapter: FragmentStateAdapter
-    private lateinit var viewModel: StatsViewModel
+    private val adapter by inject<StatsPagerAdapter> { parametersOf(this@StatsActivity) }
+    private val viewModel by viewModel<StatsViewModel>()
     private lateinit var filterMenuItem: MenuItem
     private lateinit var periodMenuItemView: TextView
 
@@ -45,10 +44,7 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
 
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
-
-        viewModel = of(this, viewModelFactory).get(StatsViewModel::class.java)
         registerReceiver(timeReceiver, IntentFilter(Intent.ACTION_TIME_TICK))
-
         viewPager.adapter = adapter
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = if (position == 0) getString(R.string.tab_title_charts) else getString(R.string.tab_title_details)

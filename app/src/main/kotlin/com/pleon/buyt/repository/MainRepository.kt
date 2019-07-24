@@ -12,17 +12,14 @@ import com.pleon.buyt.util.SingleLiveEvent
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import java.util.*
-import javax.inject.Inject
-import javax.inject.Singleton
 
 // A Repository class handles data operations. It provides a clean API to the rest of the app for app data
 // A Repository manages query threads and allows you to use multiple back-ends.
 // In the most common example, the Repository implements the logic for deciding whether
 // to fetch data from a network or use results cached in a local database.
-@Singleton
-class MainRepository @Inject constructor(private val itemDao: ItemDao,
-                                         private val storeDao: StoreDao,
-                                         private val purchaseDao: PurchaseDao) {
+class MainRepository constructor(private val itemDao: ItemDao,
+                                 private val storeDao: StoreDao,
+                                 private val purchaseDao: PurchaseDao) {
 
     val items = itemDao.getAll()
     private val nearStores = SingleLiveEvent<List<Store>>()

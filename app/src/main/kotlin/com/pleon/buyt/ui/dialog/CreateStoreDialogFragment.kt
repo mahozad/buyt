@@ -11,7 +11,6 @@ import android.widget.EditText
 import android.widget.Spinner
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders.of
 import com.google.android.material.textfield.TextInputLayout
 import com.pleon.buyt.R
 import com.pleon.buyt.model.Category
@@ -19,14 +18,12 @@ import com.pleon.buyt.model.Coordinates
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.ui.adapter.CatsSpinnerAdapter
 import com.pleon.buyt.viewmodel.CreateStoreViewModel
-import com.pleon.buyt.viewmodel.ViewModelFactory
 import dagger.android.support.DaggerDialogFragment
-import javax.inject.Inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CreateStoreDialogFragment : DaggerDialogFragment() {
 
-    @Inject internal lateinit var viewModelFactory: ViewModelFactory<CreateStoreViewModel>
-    private lateinit var viewModel: CreateStoreViewModel
+    private val viewModel by viewModel<CreateStoreViewModel>()
     private lateinit var name: EditText
     private lateinit var name_layout: TextInputLayout
     private lateinit var spinner: Spinner
@@ -56,7 +53,6 @@ class CreateStoreDialogFragment : DaggerDialogFragment() {
     override fun onCreateDialog(savedState: Bundle?): Dialog {
         val customView = activity!!.layoutInflater.inflate(R.layout.create_store_dialog, null)
 
-        viewModel = of(this, viewModelFactory).get(CreateStoreViewModel::class.java)
         location = arguments!!.getParcelable("LOCATION")!!
 
         spinner = customView.findViewById(R.id.catSpinner)

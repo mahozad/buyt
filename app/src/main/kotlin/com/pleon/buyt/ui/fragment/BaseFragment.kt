@@ -5,12 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import dagger.android.support.DaggerFragment
-import javax.inject.Inject
+import androidx.fragment.app.Fragment
+import org.koin.android.ext.android.inject
 
-abstract class BaseFragment : DaggerFragment() {
+abstract class BaseFragment : Fragment() {
 
-    @Inject internal lateinit var prefs: SharedPreferences
+    protected val prefs: SharedPreferences by inject()
 
     abstract fun layout(): Int
 

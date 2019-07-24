@@ -7,7 +7,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders.of
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -21,9 +20,10 @@ import com.pleon.buyt.ui.dialog.UpgradePromptDialogFragment
 import com.pleon.buyt.util.AnimationUtil.animateAlpha
 import com.pleon.buyt.util.SnackbarUtil.showUndoSnackbar
 import com.pleon.buyt.viewmodel.StoresViewModel
-import com.pleon.buyt.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_store_list.*
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 /**
  * Mandatory empty constructor for the fragment manager to instantiate the
@@ -31,10 +31,13 @@ import javax.inject.Inject
  */
 class StoresFragment : BaseFragment(), ItemTouchHelperListener {
 
-    @Inject internal lateinit var viewModelFactory: ViewModelFactory<StoresViewModel>
-    @Inject internal lateinit var touchHelperCallback: TouchHelperCallback
-    @Inject internal lateinit var adapter: StoresAdapter
-    private lateinit var viewModel: StoresViewModel
+    private val viewModel by viewModel<StoresViewModel>()
+    private val adapter by inject<StoresAdapter> {
+        parametersOf(this@StoresFragment)
+    }
+    private val touchHelperCallback by inject<TouchHelperCallback> {
+        parametersOf(this@StoresFragment)
+    }
     private lateinit var sortMenuItemView: TextView
 
     override fun layout() = R.layout.fragment_store_list
@@ -42,7 +45,6 @@ class StoresFragment : BaseFragment(), ItemTouchHelperListener {
     override fun onViewCreated(view: View, savedState: Bundle?) {
         setHasOptionsMenu(true) // for onCreateOptionsMenu() to be called
 
-        viewModel = of(this, viewModelFactory).get(StoresViewModel::class.java)
         viewModel.stores.observe(viewLifecycleOwner, Observer { stores ->
             adapter.storeDetails = stores
             animateAlpha(emptyHint, if (stores.isEmpty()) 1f else 0f)
@@ -97,6 +99,4 @@ class StoresFragment : BaseFragment(), ItemTouchHelperListener {
                 onDismiss = { viewModel.deleteStore(store) }
         )
     }
-
-    fun shouldShowChartButton() = resources.getInteger(R.integer.layout_columns) == 1
 }

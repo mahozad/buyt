@@ -5,7 +5,6 @@ import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders.of
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -21,10 +20,11 @@ import com.pleon.buyt.util.AnimationUtil.animateAlpha
 import com.pleon.buyt.util.SnackbarUtil.showSnackbar
 import com.pleon.buyt.util.SnackbarUtil.showUndoSnackbar
 import com.pleon.buyt.viewmodel.MainViewModel
-import com.pleon.buyt.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_item_list.*
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import java.util.*
-import javax.inject.Inject
 import kotlin.Comparator
 
 class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
@@ -33,19 +33,20 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
         fun onItemListChanged(isListEmpty: Boolean)
     }
 
-    @Inject internal lateinit var viewModelFactory: ViewModelFactory<MainViewModel>
-    @Inject internal lateinit var touchHelperCallback: TouchHelperCallback
-    @Inject internal lateinit var adapter: ItemListAdapter
+    private val adapter by inject<ItemListAdapter>()
+    private val viewModel by viewModel<MainViewModel>()
+    private val touchHelperCallback by inject<TouchHelperCallback> {
+        parametersOf(this@ItemsFragment)
+    }
+
     val isSelectedEmpty get() = adapter.selectedItems.isEmpty()
     val selectedItems get() = adapter.selectedItems
     val isListEmpty get() = adapter.items.isEmpty()
-    private lateinit var viewModel: MainViewModel
     private var listener: ItemListListener? = null
 
     override fun layout() = R.layout.fragment_item_list
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
-        viewModel = of(this, viewModelFactory).get(MainViewModel::class.java)
         // In fragments use getViewLifecycleOwner() as owner argument
         viewModel.items.observe(viewLifecycleOwner, Observer { items ->
             adapter.items = items

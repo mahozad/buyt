@@ -21,7 +21,6 @@ import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.ContextCompat.getColorStateList
 import androidx.core.widget.CompoundButtonCompat
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders.of
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
@@ -38,12 +37,11 @@ import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
 import com.pleon.buyt.util.AnimationUtil.animateIconInfinitely
 import com.pleon.buyt.viewmodel.AddItemViewModel
-import com.pleon.buyt.viewmodel.ViewModelFactory
 import ir.huri.jcal.JalaliCalendar
 import kotlinx.android.synthetic.main.fragment_add_item.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
-import javax.inject.Inject
 
 /**
  * This fragment requires a Toolbar as it needs to inflate and use a menu item for selection of
@@ -65,8 +63,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
     @ColorRes private var colorUnfocused = 0
     @ColorRes private var colorUnfocusedBorder = 0
 
-    @Inject internal lateinit var viewModelFactory: ViewModelFactory<AddItemViewModel>
-    private lateinit var viewModel: AddItemViewModel
+    private val viewModel by viewModel<AddItemViewModel>()
     private lateinit var unitBtns: Array<MaterialButton>
     private var selectCategoryTxvi: TextView? = null
     private lateinit var nameCats: Map<String, String>
@@ -94,8 +91,6 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
 
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
-
-        viewModel = of(this, viewModelFactory).get(AddItemViewModel::class.java)
 
         val typedValue = TypedValue()
         context!!.theme.resolveAttribute(R.attr.colorError, typedValue, true)

@@ -8,11 +8,8 @@ import com.pleon.buyt.util.SingleLiveEvent
 import com.pleon.buyt.viewmodel.StatsViewModel.Filter
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class StatsRepository @Inject constructor(private val purchaseDao: PurchaseDao) {
+class StatsRepository constructor(private val purchaseDao: PurchaseDao) {
 
     private val stats = SingleLiveEvent<Stats>()
 

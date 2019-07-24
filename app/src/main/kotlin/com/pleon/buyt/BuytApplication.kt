@@ -1,29 +1,40 @@
 package com.pleon.buyt
 
+import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
 import android.util.Log
 import com.pleon.buyt.billing.IabHelper
-import com.pleon.buyt.di.DaggerAppComponent
+import com.pleon.buyt.di.*
 import com.pleon.buyt.repository.SubscriptionRepository
 import com.pleon.buyt.util.LocaleUtil.setLocale
-import dagger.android.AndroidInjector
-import dagger.android.DaggerApplication
+import org.koin.android.ext.android.inject
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 import org.mindrot.jbcrypt.BCrypt
-import javax.inject.Inject
 
-// SKU of our product (defined in Bazaar): the premium upgrade
-const val SKU_PREMIUM = "full_features"
-// Does the user have the premium upgrade?
-@Volatile var isPremium = false
+const val SKU_PREMIUM = "full_features" // SKU of premium upgrade (defined in Bazaar)
+@Volatile var isPremium = false // Does the user have the premium upgrade?
 
-class BuytApplication : DaggerApplication() {
+class BuytApplication : Application() {
 
-    @Inject internal lateinit var subscriptionRepository: SubscriptionRepository
-    @Inject internal lateinit var iabHelper: IabHelper
+    private val iabHelper: IabHelper by inject()
+    private val subscriptionRepository: SubscriptionRepository by inject()
 
     override fun onCreate() {
         super.onCreate()
+
+        startKoin {
+            modules(listOf(
+                    uiModule,
+                    appModule,
+                    serviceModule,
+                    databaseModule,
+                    viewModelModule,
+                    repositoryModule)
+            )
+            androidContext(this@BuytApplication)
+        }
 
         // Setup stetho only for debug build mode. If android cannot recognize stetho, either make its
         // dependency in gradle a regular one (instead of debug one) or move this to DebugApplication
@@ -59,13 +70,6 @@ class BuytApplication : DaggerApplication() {
         } catch (e: Exception) {
             // BillingErrorDialogFragment().show(supportFragmentManager, "BILLING-DIALOG")
         }
-    }
-
-    // TODO: This is a very important call that stops background services and so on
-    fun disposeIabHelper() = iabHelper.dispose()
-
-    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-        return DaggerAppComponent.builder().application(this).build()
     }
 
     /**

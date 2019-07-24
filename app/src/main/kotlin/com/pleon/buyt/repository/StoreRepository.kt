@@ -8,11 +8,8 @@ import com.pleon.buyt.util.SingleLiveEvent
 import com.pleon.buyt.viewmodel.StoresViewModel.Sort
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class StoreRepository @Inject constructor(private val storeDao: StoreDao) {
+class StoreRepository constructor(private val storeDao: StoreDao) {
 
     private val storeStats = SingleLiveEvent<List<DailyCost>>()
     private val createdStore = SingleLiveEvent<Store>()

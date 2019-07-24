@@ -17,7 +17,6 @@ import com.pleon.buyt.ui.state.IdleState
 import com.pleon.buyt.ui.state.State
 import com.pleon.buyt.util.FormatterUtil.formatNumber
 import java.util.*
-import javax.inject.Inject
 import kotlin.math.cos
 
 const val FREE_BUY_LIMIT = 5
@@ -32,10 +31,10 @@ private const val EARTH_RADIUS = 6_371_000.0 // In meters
  * force-kills. So to survive process stops, implement
  * [AppCompatActivity.onSaveInstanceState] method in your activity/fragment.
  */
-class MainViewModel @Inject constructor(private val app: Application,
-                                        private val repository: MainRepository,
-                                        private val prefs: SharedPreferences,
-                                        initialState: IdleState)
+class MainViewModel constructor(private val app: Application,
+                                private val repository: MainRepository,
+                                private val prefs: SharedPreferences,
+                                initialState: State)
     : AndroidViewModel(app) {
 
     var state: State = initialState

@@ -6,11 +6,8 @@ import android.content.Intent
 import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class LocationReceiver @Inject constructor() : BroadcastReceiver() {
+class LocationReceiver : BroadcastReceiver() {
 
     private val location = MutableLiveData<Location>()
 

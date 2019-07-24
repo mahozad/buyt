@@ -21,9 +21,8 @@ import com.pleon.buyt.ui.NumberInputWatcher
 import com.pleon.buyt.ui.adapter.ItemListAdapter.ItemHolder
 import kotlinx.android.synthetic.main.item_list_row.view.*
 import java.lang.Long.parseLong
-import javax.inject.Inject
 
-class ItemListAdapter @Inject constructor(private val cxt: Application) : Adapter<ItemHolder>() {
+class ItemListAdapter constructor(private val app: Application) : Adapter<ItemHolder>() {
 
     lateinit var touchHelper: ItemTouchHelper
 
@@ -100,7 +99,7 @@ class ItemListAdapter @Inject constructor(private val cxt: Application) : Adapte
     inner class ItemHolder(view: View) : BaseViewHolder(view) {
 
         init {
-            val suffix = cxt.getString(R.string.input_suffix_price)
+            val suffix = app.getString(R.string.input_suffix_price)
             itemView.price.addTextChangedListener(NumberInputWatcher(itemView.price_layout, itemView.price, suffix))
             itemView.price.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) = onPriceChanged()
@@ -116,8 +115,8 @@ class ItemListAdapter @Inject constructor(private val cxt: Application) : Adapte
             itemView.categoryIcon.setImageResource(item.category.imageRes)
             itemView.item_name.text = item.name
             itemView.description.text = item.description
-            itemView.item_quantity.text = cxt.getString(R.string.item_quantity,
-                    item.quantity.value, cxt.getString(item.quantity.unit.nameRes))
+            itemView.item_quantity.text = app.getString(R.string.item_quantity,
+                    item.quantity.value, app.getString(item.quantity.unit.nameRes))
             itemView.urgentIcon.visibility = if (item.isUrgent) VISIBLE else INVISIBLE
             itemView.selectCheckBox.isChecked = selectedItems.contains(item)
             itemView.description.visibility = if (item.description.isNullOrEmpty()) GONE else VISIBLE

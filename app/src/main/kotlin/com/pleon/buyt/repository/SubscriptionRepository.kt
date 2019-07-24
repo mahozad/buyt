@@ -6,11 +6,8 @@ import com.pleon.buyt.model.Subscription
 import com.pleon.buyt.util.SingleLiveEvent
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class SubscriptionRepository @Inject constructor(private val subscriptionDao: SubscriptionDao) {
+class SubscriptionRepository constructor(private val subscriptionDao: SubscriptionDao) {
 
     private val subscriptionToken = SingleLiveEvent<String>()
 

@@ -122,6 +122,7 @@ dependencies {
     implementation("androidx.viewpager2:viewpager2:1.0.0-alpha06")
     implementation("androidx.room:room-runtime:2.1.0")
     kapt("androidx.room:room-compiler:2.1.0")
+    implementation("org.koin:koin-androidx-viewmodel:2.0.1")
     implementation("com.google.dagger:dagger:2.23.2")
     implementation("com.google.dagger:dagger-android-support:2.23.2")
     kapt("com.google.dagger:dagger-compiler:2.23.2")

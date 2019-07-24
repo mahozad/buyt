@@ -3,7 +3,6 @@ package com.pleon.buyt.ui.fragment
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders.of
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pleon.buyt.R
@@ -14,14 +13,14 @@ import com.pleon.buyt.ui.adapter.PurchaseDetailAdapter
 import com.pleon.buyt.util.AnimationUtil
 import com.pleon.buyt.util.FormatterUtil.formatDate
 import com.pleon.buyt.viewmodel.StatsViewModel
-import com.pleon.buyt.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_stat_details.*
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class StatDetailsFragment : BaseFragment() {
 
-    @Inject internal lateinit var viewModelFactory: ViewModelFactory<StatsViewModel>
-    @Inject internal lateinit var adapter: PurchaseDetailAdapter
+    private val viewModel by sharedViewModel<StatsViewModel>()
+    private val adapter by inject<PurchaseDetailAdapter>()
 
     override fun layout() = R.layout.fragment_stat_details
 
@@ -29,7 +28,6 @@ class StatDetailsFragment : BaseFragment() {
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(DateHeaderDecoration(recyclerView, adapter))
         setScrollListener()
-        val viewModel = of(activity!!, viewModelFactory).get(StatsViewModel::class.java)
         viewModel.purchaseDetails.observe(viewLifecycleOwner, Observer { purchaseDetails ->
             showStats(purchaseDetails)
             AnimationUtil.animateAlpha(emptyHint, if (purchaseDetails.isEmpty()) 1f else 0f)

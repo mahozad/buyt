@@ -6,8 +6,8 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
-import androidx.lifecycle.ViewModelProviders
+import androidx.core.content.res.ResourcesCompat.getFont
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.transition.ChangeBounds
@@ -16,19 +16,16 @@ import com.pleon.buyt.R
 import com.pleon.buyt.database.dto.StoreDetail
 import com.pleon.buyt.ui.BaseViewHolder
 import com.pleon.buyt.ui.adapter.StoresAdapter.StoreHolder
-import com.pleon.buyt.ui.fragment.StoresFragment
 import com.pleon.buyt.util.FormatterUtil.formatPrice
 import com.pleon.buyt.util.LineChartBuilder.buildLineChart
 import com.pleon.buyt.viewmodel.StoresViewModel
-import com.pleon.buyt.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.store_list_row.view.*
-import javax.inject.Inject
 
-class StoresAdapter @Inject constructor(private val frag: StoresFragment) : Adapter<StoreHolder>() {
+class StoresAdapter constructor(private val frag: Fragment,
+                                private val viewModel: StoresViewModel)
+    : Adapter<StoreHolder>() {
 
-    @Inject internal lateinit var viewModelFactory: ViewModelFactory<StoresViewModel>
     private lateinit var recyclerView: RecyclerView
-    private lateinit var viewModel: StoresViewModel
     private var extendedStoreId = 0L
 
     var storeDetails = listOf<StoreDetail>()
@@ -40,13 +37,12 @@ class StoresAdapter @Inject constructor(private val frag: StoresFragment) : Adap
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         this.recyclerView = recyclerView
-        viewModel = ViewModelProviders.of(frag, viewModelFactory).get(StoresViewModel::class.java)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoreHolder {
         val itemView = LayoutInflater.from(parent.context)
                 .inflate(R.layout.store_list_row, parent, false)
-        itemView.lineChart.setTypeface(ResourcesCompat.getFont(frag.context!!, R.font.vazir_scaled_down)!!)
+        itemView.lineChart.setTypeface(getFont(frag.context!!, R.font.vazir_scaled_down)!!)
         return StoreHolder(itemView)
     }
 
@@ -94,7 +90,7 @@ class StoresAdapter @Inject constructor(private val frag: StoresFragment) : Adap
             itemView.purchaseCount.text = frag.resources.getQuantityString(R.plurals.store_detail_purchase_count, storeDetail.purchaseCount, storeDetail.purchaseCount)
             itemView.totalSpending.text = frag.resources.getQuantityString(R.plurals.price_with_suffix, storeDetail.totalSpending, formatPrice(storeDetail.totalSpending))
             itemView.circular_reveal.alpha = 0f // for the case of undo of deleted item
-            itemView.showChartButton.visibility = if (frag.shouldShowChartButton()) VISIBLE else GONE
+            itemView.showChartButton.visibility = if (frag.resources.getInteger(R.integer.layout_columns) == 1) VISIBLE else GONE
             if (storeDetail.store.storeId != extendedStoreId && itemView.lineChart.visibility == VISIBLE) {
                 itemView.showChartButton.setImageResource(R.drawable.avd_line_chart_off)
                 (itemView.showChartButton.drawable as Animatable).start()

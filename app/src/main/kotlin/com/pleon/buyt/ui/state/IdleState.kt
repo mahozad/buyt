@@ -19,10 +19,12 @@ import com.pleon.buyt.ui.dialog.UpgradePromptDialogFragment
 import com.pleon.buyt.ui.fragment.BottomDrawerFragment
 import com.pleon.buyt.viewmodel.FREE_BUY_LIMIT
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-object IdleState : State() {
+object IdleState : State(), KoinComponent {
 
-    lateinit var locationMgr: LocationManager
+    private val locationMgr: LocationManager by inject()
 
     override fun onFabClicked() = with(activity) {
         viewModel.purchaseCountInPeriod.observe(this, Observer { purchaseCount ->

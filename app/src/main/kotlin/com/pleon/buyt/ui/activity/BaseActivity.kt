@@ -2,14 +2,14 @@ package com.pleon.buyt.ui.activity
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.fragment.PREF_THEME
 import com.pleon.buyt.ui.fragment.PREF_THEME_DARK
 import com.pleon.buyt.util.LocaleUtil.setLocale
-import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
 
 @Suppress("unused")
 val <T : LifecycleOwner> T.TAG: String get() = javaClass.simpleName
@@ -18,9 +18,9 @@ val <T : LifecycleOwner> T.TAG: String get() = javaClass.simpleName
  * Extends from DaggerAppCompatActivity (which itself extends from AppCompatActivity) so that the
  * activities do not have to call AndroidInjector.inject(this) for dagger dependency injection.
  */
-abstract class BaseActivity : DaggerAppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity() {
 
-    @Inject internal lateinit var prefs: SharedPreferences
+    val prefs: SharedPreferences by inject()
 
     abstract fun layout(): Int
 

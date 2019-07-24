@@ -1,23 +1,35 @@
 package com.pleon.buyt
 
+import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import com.facebook.stetho.Stetho
-import com.pleon.buyt.di.DaggerDebugAppComponent
+import com.pleon.buyt.di.*
 import com.pleon.buyt.util.LocaleUtil.setLocale
-import dagger.android.AndroidInjector
-import dagger.android.DaggerApplication
+import org.koin.android.ext.android.inject
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
 
-class DebugApplication : DaggerApplication() {
+class DebugApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
         isPremium = true
         Stetho.initializeWithDefaults(this)
-    }
-
-    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-        return DaggerDebugAppComponent.builder().application(this).build()
+        startKoin {
+            modules(listOf(
+                    uiModule,
+                    appModule,
+                    serviceModule,
+                    databaseModule,
+                    viewModelModule,
+                    repositoryModule)
+            )
+            androidLogger() // Use koin android logger
+            androidContext(this@DebugApplication)
+        }
     }
 
 

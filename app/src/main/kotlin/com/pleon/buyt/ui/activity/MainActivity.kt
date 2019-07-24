@@ -11,7 +11,6 @@ import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders.of
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
 import com.pleon.buyt.R
@@ -33,10 +32,10 @@ import com.pleon.buyt.ui.state.AddItemState
 import com.pleon.buyt.ui.state.activity
 import com.pleon.buyt.util.SnackbarUtil.showSnackbar
 import com.pleon.buyt.viewmodel.MainViewModel
-import com.pleon.buyt.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.dip
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 const val STATE_LOCATION = "com.pleon.buyt.state.LOCATION"
 const val REQUEST_LOCATION_PERMISSION = 1
@@ -61,10 +60,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
     /* FIXME: While store creation dialog is shown, if a config change occurs and then the store
      *  is created, the behaviour is buggy */
 
-    @Inject internal lateinit var viewModelFactory: ViewModelFactory<MainViewModel>
-    @Inject internal lateinit var locationReceiver: LocationReceiver
-    @Inject internal lateinit var broadcastMgr: LocalBroadcastManager
-    lateinit var viewModel: MainViewModel
+    val viewModel: MainViewModel by viewModel()
+    private val broadcastMgr: LocalBroadcastManager by inject()
+    private val locationReceiver: LocationReceiver by inject()
     lateinit var itemsFragment: ItemsFragment
     lateinit var reorderMenuItem: MenuItem
     lateinit var storeMenuItem: MenuItem
@@ -107,7 +105,6 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
         restoreBottomDrawerIfNeeded()
 
         activity = this
-        viewModel = of(this, viewModelFactory).get(MainViewModel::class.java)
         broadcastMgr.registerReceiver(locationReceiver, IntentFilter(ACTION_LOCATION_EVENT))
         locationReceiver.getLocation().observe(this, Observer { viewModel.state.onLocationFound(it) })
         itemsFragment = supportFragmentManager.findFragmentById(R.id.itemsFragment) as ItemsFragment

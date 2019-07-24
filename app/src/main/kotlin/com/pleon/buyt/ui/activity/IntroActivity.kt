@@ -6,16 +6,17 @@ import android.os.Bundle
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.ColorUtils
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.animation.ArgbEvaluatorCompat
 import com.pleon.buyt.R
+import com.pleon.buyt.ui.adapter.IntroPageAdapter
 import com.pleon.buyt.ui.fragment.PREF_NEWBIE
 import kotlinx.android.synthetic.main.activity_intro.*
 import kotlinx.android.synthetic.main.fragment_intro_1.view.*
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.startActivity
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.core.parameter.parametersOf
 import kotlin.math.max
 import kotlin.math.min
 
@@ -23,12 +24,12 @@ const val EXTRA_LAUNCH_MAIN_ACTIVITY = "com.pleon.buyt.extra.LAUNCH_MAIN_ACTIVIT
 
 class IntroActivity : BaseActivity() {
 
-    @Inject internal lateinit var adapter: FragmentStateAdapter
-    @Inject internal lateinit var argbEvaluator: ArgbEvaluatorCompat
-    private lateinit var colors: IntArray
+    private val argbEvaluator by inject<ArgbEvaluatorCompat>()
+    private val adapter by inject<IntroPageAdapter> { parametersOf(this@IntroActivity) }
     private lateinit var dots: Array<ImageView>
-    private var lastPage = 0
+    private lateinit var colors: IntArray
     private var lastOffset = 0f
+    private var lastPage = 0
 
     override fun layout() = R.layout.activity_intro
 

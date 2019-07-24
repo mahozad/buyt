@@ -20,9 +20,9 @@ import com.pleon.buyt.ui.dialog.BillingErrorDialogFragment
 import com.pleon.buyt.ui.dialog.UpgradeSuccessDialogFragment
 import kotlinx.android.synthetic.main.activity_help.*
 import org.jetbrains.anko.startActivity
+import org.koin.android.ext.android.inject
 import org.mindrot.jbcrypt.BCrypt
 import java.util.*
-import javax.inject.Inject
 
 const val EXTRA_SHOULD_START_UPGRADE = "com.pleon.buyt.extra.SHOULD_START_UPGRADE"
 private const val TRANSLATION_PAGE_URL = "https://pleonco.oneskyapp.com/collaboration/project?id=158739"
@@ -32,8 +32,8 @@ private const val RC_REQUEST: Int = 62026
 
 class HelpActivity : BaseActivity() {
 
-    @Inject internal lateinit var iabHelper: IabHelper
-    @Inject internal lateinit var subscriptionRepository: SubscriptionRepository
+    private val iabHelper by inject<IabHelper>()
+    private val subscriptionRepository by inject<SubscriptionRepository>()
 
     override fun layout() = R.layout.activity_help
 

@@ -1,11 +1,8 @@
 package com.pleon.buyt.component
 
 import android.annotation.SuppressLint
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
+import android.app.*
 import android.app.NotificationManager.IMPORTANCE_DEFAULT
-import android.app.PendingIntent
 import android.content.Intent
 import android.location.Location
 import android.location.LocationListener
@@ -20,9 +17,8 @@ import androidx.core.content.ContextCompat.getColor
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.activity.MainActivity
-import dagger.android.DaggerService
 import org.jetbrains.anko.intentFor
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
 
 const val ACTION_LOCATION_EVENT = "com.pleon.buyt.broadcast.LOCATION_EVENT"
 const val EXTRA_LOCATION = "com.pleon.buyt.extra.LOCATION"
@@ -42,10 +38,10 @@ private const val NOTIFICATION_ID = 238
  * [https://android-developers.googleblog.com/2018/10/modern-background-execution-in-android.html]
  * for more information.
  */
-class GpsService : DaggerService(), LocationListener {
+class GpsService : Service(), LocationListener {
 
-    @Inject internal lateinit var locationManager: LocationManager
-    @Inject internal lateinit var notificationManager: NotificationManager
+    private val locationManager by inject<LocationManager>()
+    private val notificationManager by inject<NotificationManager>()
     private lateinit var pendingIntent: PendingIntent
 
     override fun onCreate() {
