@@ -2,10 +2,12 @@ package com.pleon.buyt.ui.state
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.inputmethod.InputMethodManager
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_END
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.fragment.AddItemFragment
@@ -21,6 +23,7 @@ object AddItemState : State() {
     override fun onBackClicked() {
         super.shiftToIdleState(fabResId = R.drawable.avd_done_buyt)
         closeAddItemPopup()
+        hideKeyboard()
     }
 
     private fun closeAddItemPopup() = with(activity) {
@@ -28,6 +31,11 @@ object AddItemState : State() {
         scrim.animate().alpha(0f).setDuration(300).setListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(anim: Animator?) = scrim.setVisibility(GONE)
         })
+    }
+
+    private fun hideKeyboard() {
+        val imm = activity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(activity.currentFocus!!.windowToken, 0)
     }
 
     override fun onOptionsMenuCreated() = with(activity) {
