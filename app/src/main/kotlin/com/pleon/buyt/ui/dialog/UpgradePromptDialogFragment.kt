@@ -1,13 +1,13 @@
 package com.pleon.buyt.ui.dialog
 
 import android.app.Dialog
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.activity.EXTRA_SHOULD_START_UPGRADE
 import com.pleon.buyt.ui.activity.HelpActivity
+import org.jetbrains.anko.startActivity
 
 class UpgradePromptDialogFragment : AppCompatDialogFragment() {
 
@@ -39,9 +39,7 @@ class UpgradePromptDialogFragment : AppCompatDialogFragment() {
         val dialog = MaterialAlertDialogBuilder(context!!)
                 .setIcon(R.drawable.ic_premium)
                 .setPositiveButton(R.string.dialog_action_upgrade_to_premium) { _, _ ->
-                    val intent = Intent(context, HelpActivity::class.java)
-                    intent.putExtra(EXTRA_SHOULD_START_UPGRADE, true)
-                    startActivity(intent)
+                    context!!.startActivity<HelpActivity>(EXTRA_SHOULD_START_UPGRADE to true)
                 }
                 .setNegativeButton(android.R.string.cancel) { _, _ -> /* To dismiss on click */ }
                 .create()

@@ -1,11 +1,8 @@
 package com.pleon.buyt.ui.activity
 
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Animatable
 import android.os.Bundle
-import android.util.TypedValue.COMPLEX_UNIT_DIP
-import android.util.TypedValue.applyDimension
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.ColorUtils
@@ -16,6 +13,8 @@ import com.pleon.buyt.R
 import com.pleon.buyt.ui.fragment.PREF_NEWBIE
 import kotlinx.android.synthetic.main.activity_intro.*
 import kotlinx.android.synthetic.main.fragment_intro_1.view.*
+import org.jetbrains.anko.dip
+import org.jetbrains.anko.startActivity
 import javax.inject.Inject
 import kotlin.math.max
 import kotlin.math.min
@@ -63,7 +62,7 @@ class IntroActivity : BaseActivity() {
             if (viewPager.currentItem == adapter.itemCount - 1) {
                 prefs.edit().putBoolean(PREF_NEWBIE, false).apply()
                 if (intent.extras == null || intent.extras!!.getBoolean(EXTRA_LAUNCH_MAIN_ACTIVITY))
-                    startActivity(Intent(this, MainActivity::class.java))
+                    startActivity<MainActivity>()
                 finish()
             }
             viewPager.currentItem = min(viewPager.currentItem + 1, adapter.itemCount - 1)
@@ -87,7 +86,7 @@ class IntroActivity : BaseActivity() {
 
     private fun updateBackButtonPlacement(position: Int, offset: Float) {
         val params = backButton.layoutParams as ConstraintLayout.LayoutParams
-        val finalPos = applyDimension(COMPLEX_UNIT_DIP, 84F, resources.displayMetrics).toInt()
+        val finalPos = dip(84)
         val bottomMargin = if (position < 1) (offset * finalPos).toInt() else finalPos
         params.setMargins(params.leftMargin, params.topMargin, params.rightMargin, bottomMargin)
         backButton.layoutParams = params

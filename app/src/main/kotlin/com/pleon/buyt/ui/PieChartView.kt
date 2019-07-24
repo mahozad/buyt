@@ -2,18 +2,16 @@ package com.pleon.buyt.ui
 
 import android.animation.ValueAnimator
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.*
 import android.graphics.Paint.ANTI_ALIAS_FLAG
 import android.graphics.Paint.DITHER_FLAG
 import android.util.AttributeSet
-import android.util.TypedValue.COMPLEX_UNIT_DIP
-import android.util.TypedValue.applyDimension
 import android.view.View
 import android.view.animation.LinearInterpolator
 import androidx.core.content.res.ResourcesCompat
 import com.pleon.buyt.R
 import com.pleon.buyt.util.FormatterUtil.formatPercent
+import org.jetbrains.anko.sp
 import kotlin.math.*
 
 /**
@@ -235,7 +233,7 @@ class PieChartView : View {
         }
     }
 
-    fun resetPaint() {
+    private fun resetPaint() {
         mPaint.reset()
         mPaint.isAntiAlias = true
         mPaint.isDither = true
@@ -259,9 +257,7 @@ class PieChartView : View {
     }
 
     fun setItemTextSize(itemTextSize: Float) {
-        val displayMetrics = Resources.getSystem().displayMetrics
-        val textSize = applyDimension(COMPLEX_UNIT_DIP, itemTextSize, displayMetrics)
-        this.itemTextSize = textSize.toInt()
+        this.itemTextSize = sp(itemTextSize)
     }
 
     /**

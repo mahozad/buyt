@@ -21,6 +21,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.activity.MainActivity
 import dagger.android.DaggerService
+import org.jetbrains.anko.intentFor
 import javax.inject.Inject
 
 const val ACTION_LOCATION_EVENT = "com.pleon.buyt.broadcast.LOCATION_EVENT"
@@ -51,8 +52,7 @@ class GpsService : DaggerService(), LocationListener {
         super.onCreate()
 
         createNotificationChannel()
-        val notificationIntent = Intent(this, MainActivity::class.java)
-        pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
+        pendingIntent = PendingIntent.getActivity(this, 0, intentFor<MainActivity>(), 0)
 
         // Note that apps targeting android P (API level 28) or later must declare the permission
         // Manifest.permission.FOREGROUND_SERVICE in order to use startForeground()

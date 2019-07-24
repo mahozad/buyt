@@ -19,6 +19,7 @@ import com.pleon.buyt.repository.SubscriptionRepository
 import com.pleon.buyt.ui.dialog.BillingErrorDialogFragment
 import com.pleon.buyt.ui.dialog.UpgradeSuccessDialogFragment
 import kotlinx.android.synthetic.main.activity_help.*
+import org.jetbrains.anko.startActivity
 import org.mindrot.jbcrypt.BCrypt
 import java.util.*
 import javax.inject.Inject
@@ -120,17 +121,12 @@ class HelpActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_show_tutorial -> showTutorial()
-            R.id.action_translate -> openTranslationPage()
             android.R.id.home -> finish()
+            R.id.action_translate -> openTranslationPage()
+            R.id.action_show_tutorial ->
+                startActivity<IntroActivity>(EXTRA_LAUNCH_MAIN_ACTIVITY to false)
         }
         return true
-    }
-
-    private fun showTutorial() {
-        val intent = Intent(this, IntroActivity::class.java)
-        intent.putExtra(EXTRA_LAUNCH_MAIN_ACTIVITY, false)
-        startActivity(intent)
     }
 
     private fun openTranslationPage() {

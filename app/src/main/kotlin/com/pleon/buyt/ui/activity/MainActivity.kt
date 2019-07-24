@@ -5,8 +5,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
-import android.util.TypedValue.COMPLEX_UNIT_DIP
-import android.util.TypedValue.applyDimension
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -37,7 +35,7 @@ import com.pleon.buyt.util.SnackbarUtil.showSnackbar
 import com.pleon.buyt.viewmodel.MainViewModel
 import com.pleon.buyt.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.displayMetrics
+import org.jetbrains.anko.dip
 import javax.inject.Inject
 
 const val STATE_LOCATION = "com.pleon.buyt.state.LOCATION"
@@ -162,7 +160,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
                 viewModel.state = AddItemState
 
                 val layoutParams = fragContainer.layoutParams
-                layoutParams.height = applyDimension(COMPLEX_UNIT_DIP, 263f, displayMetrics).toInt()
+                layoutParams.height = dip(263)
                 fragContainer.layoutParams = layoutParams
 
                 // Note that because AddItemFragment has setHasOptionsMenu(true) every time the
@@ -183,7 +181,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
 
             R.id.action_reorder_skip -> viewModel.state.onFindingSkipped()
 
-            android.R.id.home ->viewModel.state.onHomeClicked()
+            android.R.id.home -> viewModel.state.onHomeClicked()
         }
         return true
     }
@@ -268,10 +266,9 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
     override fun onSelected(index: Int) = viewModel.state.onStoreSelected(index)
 
     override fun expandToFullScreen(fragmentRootView: View) {
-        if (parentView.measuredHeight < applyDimension(COMPLEX_UNIT_DIP, 600f, displayMetrics)) {
+        if (parentView.measuredHeight < dip(600)) {
             (supportFragmentManager.findFragmentById(R.id.fragContainer) as AddItemFragment).isScrollLocked = false
-            val bottomPadding = applyDimension(COMPLEX_UNIT_DIP, 88f, displayMetrics).toInt()
-            fragmentRootView.setPadding(0, 0, 0, bottomPadding)
+            fragmentRootView.setPadding(0, 0, 0, dip(88))
         }
 
         val anim = ValueAnimator.ofInt(fragContainer.measuredHeight, parentView.measuredHeight)

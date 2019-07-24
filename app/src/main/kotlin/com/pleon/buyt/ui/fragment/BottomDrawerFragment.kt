@@ -1,6 +1,5 @@
 package com.pleon.buyt.ui.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -14,6 +13,7 @@ import com.pleon.buyt.ui.activity.HelpActivity
 import com.pleon.buyt.ui.activity.SettingsActivity
 import com.pleon.buyt.ui.activity.StatsActivity
 import com.pleon.buyt.ui.activity.StoresActivity
+import org.jetbrains.anko.startActivity
 
 class BottomDrawerFragment : BottomSheetDialogFragment(), OnNavigationItemSelectedListener {
 
@@ -26,10 +26,10 @@ class BottomDrawerFragment : BottomSheetDialogFragment(), OnNavigationItemSelect
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
-            R.id.stats -> startActivity(Intent(context, StatsActivity::class.java))
-            R.id.stores -> startActivity(Intent(context, StoresActivity::class.java))
-            R.id.settings -> startActivity(Intent(context, SettingsActivity::class.java))
-            R.id.help -> startActivity(Intent(context, HelpActivity::class.java))
+            R.id.stats -> context!!.startActivity<StatsActivity>()
+            R.id.stores -> context!!.startActivity<StoresActivity>()
+            R.id.settings -> context!!.startActivity<SettingsActivity>()
+            R.id.help -> context!!.startActivity<HelpActivity>()
         }
         return true
     }

@@ -1,10 +1,8 @@
 package com.pleon.buyt.ui
 
-import android.content.res.Resources
+import android.content.Context
 import android.graphics.Canvas
 import android.graphics.drawable.Animatable
-import android.util.TypedValue.COMPLEX_UNIT_DIP
-import android.util.TypedValue.applyDimension
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
@@ -16,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.pleon.buyt.R
 import kotlinx.android.synthetic.main.item_list_row.view.*
+import org.jetbrains.anko.dip
 import kotlin.math.abs
 import kotlin.math.pow
 import kotlin.math.sign
@@ -31,7 +30,8 @@ private const val SWIPE_THRESHOLD = 0.3f // to be considered done
  * In order to use ItemTouchHelper, we’ll create an ItemTouchHelper.Callback to
  * listen for “move” and “swipe” events.
  */
-class TouchHelperCallback(private var listener: ItemTouchHelperListener) : ItemTouchHelper.Callback() {
+class TouchHelperCallback(cxt: Context, private var listener: ItemTouchHelperListener)
+    : ItemTouchHelper.Callback() {
 
     interface ItemTouchHelperListener {
         fun onMoved(oldPosition: Int, newPosition: Int)
@@ -39,8 +39,7 @@ class TouchHelperCallback(private var listener: ItemTouchHelperListener) : ItemT
     }
 
     private var dragModeEnabled = false
-    private val displayMetrics = Resources.getSystem().displayMetrics
-    private val maxSwipeDistInPx = applyDimension(COMPLEX_UNIT_DIP, MAX_SWIPE_DIST, displayMetrics)
+    private val maxSwipeDistInPx = cxt.dip(MAX_SWIPE_DIST).toFloat()
 
     // If you want to just disable long press drag-n-drop, override isLongPressDragEnabled()
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: ViewHolder): Int {
@@ -111,9 +110,9 @@ class TouchHelperCallback(private var listener: ItemTouchHelperListener) : ItemT
         anim.start()
     }
 
-    private fun calculateFinalRadius(view: View): Float {
-        val roundCorner = applyDimension(COMPLEX_UNIT_DIP, 2f, displayMetrics)
-        return sqrt((view.width / 2f).pow(2) + (view.height / 2f).pow(2)) - roundCorner
+    private fun calculateFinalRadius(view: View): Float = with(view) {
+        val roundCorner = dip(2)
+        return sqrt((width / 2f).pow(2) + (height / 2f).pow(2)) - roundCorner
     }
 
     private fun hideCircularReveal(viewHolder: BaseViewHolder, revealView: View) {
