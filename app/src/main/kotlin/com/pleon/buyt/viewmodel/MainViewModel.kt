@@ -41,12 +41,10 @@ class MainViewModel @Inject constructor(private val app: Application,
     var state: State = initialState
     var location: Location? = null
     var foundStores = mutableListOf<Store>()
+    val items = repository.items
     var shouldCompletePurchase = false
     var shouldAnimateNavIcon = false
     var isFindingSkipped = false
-
-    // TODO: Use paging architecture component library
-    val items = repository.items
     val allStores get() = repository.getAllStores()
     val purchaseCountInPeriod get() = repository.getPurchaseCountInPeriod(7)
 
