@@ -1,14 +1,10 @@
 package com.pleon.buyt.ui.activity
 
 import android.content.Intent
-import android.graphics.drawable.Animatable
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import com.pleon.buyt.BuildConfig
 import com.pleon.buyt.R
 import com.pleon.buyt.SKU_PREMIUM
@@ -20,11 +16,13 @@ import com.pleon.buyt.model.Subscription
 import com.pleon.buyt.repository.SubscriptionRepository
 import com.pleon.buyt.ui.dialog.BillingErrorDialogFragment
 import com.pleon.buyt.ui.dialog.UpgradeSuccessDialogFragment
+import com.pleon.buyt.util.AnimationUtil.animateAlpha
+import com.pleon.buyt.util.AnimationUtil.animateIcon
+import com.pleon.buyt.util.TextUtil.localizeDigits
 import kotlinx.android.synthetic.main.activity_help.*
 import org.jetbrains.anko.startActivity
 import org.koin.android.ext.android.inject
 import org.mindrot.jbcrypt.BCrypt
-import java.util.*
 
 const val EXTRA_SHOULD_START_UPGRADE = "com.pleon.buyt.extra.SHOULD_START_UPGRADE"
 private const val TRANSLATION_PAGE_URL = "https://pleonco.oneskyapp.com/collaboration/project?id=158739"
@@ -42,42 +40,24 @@ class HelpActivity : BaseActivity() {
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
         waveHeader.start()
-        nameVersion.text = getString(R.string.appNameVersion, getLocalizedAppVersion())
+        nameVersion.text = getString(R.string.appNameVersion, localizeDigits(BuildConfig.VERSION_NAME))
+        logo.setOnClickListener { animateIcon(logo.drawable) }
+        upgradePremiumBtn.setOnClickListener { upgradeToPremium() }
         animateViews()
-        logo.setOnClickListener {
-            logo.setImageResource(R.drawable.avd_logo)
-            (logo.drawable as Animatable).start()
-        }
-
-        // TODO: Encrypt premium attribute in preferences to prevent the user from hacking it.
-        //  See [https://developer.android.com/jetpack/androidx/releases/security]
-        //  and [https://developer.android.com/topic/security/data]
-
-        upgradePremiumBtn.visibility = if (isPremium) GONE else VISIBLE
-        upgradePremiumBtn.setOnClickListener {
-            iabHelper.flagEndAsync() // To prevent error when previous purchases abandoned
-            try {
-                startPurchase()
-            } catch (e: Exception) {
-                BillingErrorDialogFragment().show(supportFragmentManager, "BILLING-DIALOG")
-            }
-        }
-
-        // performClick() does not work if the click listener has not been set
-        if (intent.getBooleanExtra(EXTRA_SHOULD_START_UPGRADE, false))
-            Handler().postDelayed({ upgradePremiumBtn.performClick() }, 500)
+        if (intent.getBooleanExtra(EXTRA_SHOULD_START_UPGRADE, false)) upgradeToPremium()
     }
 
-    private fun getLocalizedAppVersion() = if (Locale.getDefault().language == "fa") {
-        BuildConfig.VERSION_NAME
-                .replace("alpha", "آلفا").replace("beta", "بتا")
-                .replace('0', '۰').replace('1', '۱')
-                .replace('2', '۲').replace('3', '۳')
-                .replace('4', '۴').replace('5', '۵')
-                .replace('6', '۶').replace('7', '۷')
-                .replace('8', '۸').replace('9', '۹')
-    } else {
-        BuildConfig.VERSION_NAME
+    private fun animateViews() {
+        animateIcon(logo.drawable, startDelay = 300)
+        animateAlpha(nameVersion, toAlpha = 1f, duration = 300, startDelay = 500)
+        if (!isPremium) animateAlpha(upgradePremiumBtn, toAlpha = 1f, duration = 300, startDelay = 1000)
+    }
+
+    private fun upgradeToPremium() = try {
+        iabHelper.flagEndAsync() // To prevent error when previous purchases abandoned
+        startPurchase()
+    } catch (e: Exception) {
+        BillingErrorDialogFragment().show(supportFragmentManager, "BILLING-DIALOG")
     }
 
     private fun startPurchase() {
@@ -94,7 +74,7 @@ class HelpActivity : BaseActivity() {
             val subscription = Subscription(BCrypt.hashpw("PREMIUM", BCrypt.gensalt()))
             subscriptionRepository.insertSubscription(subscription)
             UpgradeSuccessDialogFragment().show(supportFragmentManager, "UPG_DIALOG")
-            Handler().postDelayed({ upgradePremiumBtn.visibility = GONE }, 300)
+            animateAlpha(upgradePremiumBtn, 0f, duration = 200, startDelay = 300)
         }
     }
 
@@ -110,12 +90,6 @@ class HelpActivity : BaseActivity() {
             // activity results not related to in-app billing...
             super.onActivityResult(requestCode, resultCode, data)
         }
-    }
-
-    private fun animateViews() {
-        Handler().postDelayed({ (logo.drawable as Animatable).start() }, 300)
-        Handler().postDelayed({ nameVersion.animate().alpha(1f).duration = 300 }, 500)
-        Handler().postDelayed({ upgradePremiumBtn.animate().alpha(1f).duration = 300 }, 1000)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
