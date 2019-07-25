@@ -1,7 +1,8 @@
 package com.pleon.buyt.ui.activity
 
 import android.content.Intent
-import android.net.Uri
+import android.content.Intent.ACTION_VIEW
+import android.net.Uri.parse
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -79,23 +80,18 @@ class HelpActivity : BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (!iabHelper.handleActivityResult(requestCode, resultCode, data)) {
-            // Not handled, so handle it ourselves (here's where you'd perform any handling of
-            // activity results not related to in-app billing...
+            // Not handled, so handle it ourselves (here's where you'd perform
+            // any handling of activity results not related to in-app billing...
             super.onActivityResult(requestCode, resultCode, data)
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> finish()
-            R.id.action_translate -> openTranslationPage()
+            R.id.action_translate -> startActivity(Intent(ACTION_VIEW, parse(TRANSLATION_PAGE_URL)))
             R.id.action_show_tutorial -> startActivity<IntroActivity>()
+            android.R.id.home -> finish()
         }
         return true
-    }
-
-    private fun openTranslationPage() {
-        val uri = Uri.parse(TRANSLATION_PAGE_URL)
-        startActivity(Intent(Intent.ACTION_VIEW, uri))
     }
 }
