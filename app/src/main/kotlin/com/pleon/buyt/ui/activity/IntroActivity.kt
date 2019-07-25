@@ -20,6 +20,7 @@ import org.jetbrains.anko.dip
 import org.jetbrains.anko.startActivity
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
+import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
@@ -33,7 +34,6 @@ class IntroActivity : BaseActivity() {
     }
     private lateinit var indicators: Array<ImageView>
     private lateinit var pageColors: IntArray
-    private var lastOffset = 0f
     private var lastPage = 0
 
     override fun layout() = R.layout.activity_intro
@@ -51,17 +51,20 @@ class IntroActivity : BaseActivity() {
     private fun setupViewPager() {
         viewPager.adapter = adapter
         viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
-            override fun onPageScrolled(position: Int, offset: Float, offsetPx: Int) {
-                updatePageAndStatusBarColor(position, offset)
-                updateBackButtonPlacement(position, offset)
-                updateIndicators(position, offset)
-            }
-
-            override fun onPageSelected(position: Int) {
-                animateNextButtonIconIfNeeded(position)
-                lastPage = position // should be the last statement
-            }
+            override fun onPageScrolled(pos: Int, off: Float, offPx: Int) = onPageScroll(pos, off)
+            override fun onPageSelected(pos: Int) = onPageSelect(pos)
         })
+    }
+
+    private fun onPageScroll(position: Int, offset: Float) {
+        updatePageAndStatusBarColor(position, offset)
+        updateBackButtonPlacement(position, offset)
+        updateIndicators(position, offset)
+    }
+
+    private fun onPageSelect(position: Int) {
+        animateNextButtonIconIfNeeded(position)
+        lastPage = position // should be the last statement
     }
 
     private fun isLastPage() = viewPager.currentItem == adapter.itemCount - 1
@@ -74,8 +77,7 @@ class IntroActivity : BaseActivity() {
 
     private fun createIndicators() {
         indicators = Array(adapter.itemCount) {
-            val indicator = ImageView(this)
-            indicator.alpha = 0.2f
+            val indicator = ImageView(this).apply { alpha = 0.2f }
             indicator.setImageResource(R.drawable.shape_circle_cylinder)
             indicator.layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
                 setMargins(dip(8), dip(8), dip(8), dip(8))
@@ -87,7 +89,7 @@ class IntroActivity : BaseActivity() {
 
     private fun setupParallaxEffect() {
         viewPager.setPageTransformer { page, position ->
-            if (position >= -1 && position <= 1) page.img.translationX = -position * page.width / 2
+            if (abs(position) <= 1) page.img.translationX = -position * page.width / 2
         }
     }
 
@@ -108,13 +110,8 @@ class IntroActivity : BaseActivity() {
     }
 
     private fun updateIndicators(position: Int, offset: Float) {
-        if (offset >= lastOffset) {
-            indicators[position].alpha = max(1 - offset, 0.2f)
-            if (position < adapter.itemCount - 1) indicators[position + 1].alpha = max(0.2f, offset)
-        } else {
-            indicators[position].alpha = max(offset, 0.2f)
-            if (position > 0) indicators[position - 1].alpha = max(1 - offset, 0.2f)
-        }
+        indicators[position].alpha = max(1 - offset, 0.2f)
+        if (position < adapter.itemCount - 1) indicators[position + 1].alpha = max(0.2f, offset)
     }
 
     private fun animateNextButtonIconIfNeeded(position: Int) {
