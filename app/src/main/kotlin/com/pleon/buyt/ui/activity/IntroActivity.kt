@@ -71,7 +71,7 @@ class IntroActivity : BaseActivity() {
 
     private fun finishIntro() {
         prefs.edit().putBoolean(PREF_NEWBIE, false).apply()
-        intent.extras?.let { /* extras is not null */ startActivity<MainActivity>() }
+        intent.extras?.getBoolean(FLAG_START_MAIN)?.let { startActivity<MainActivity>() }
         finish()
     }
 

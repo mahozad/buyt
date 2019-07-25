@@ -47,7 +47,7 @@ class HelpActivity : BaseActivity() {
         logo.setOnClickListener { animateIcon(logo.drawable) }
         upgradePremiumBtn.setOnClickListener { upgradeToPremium() }
         animateBrandAndUpgradeButton()
-        intent.extras?.let { /* extras is not null */ upgradeToPremium() }
+        intent.extras?.getBoolean(FLAG_START_UPGRADE)?.let { upgradeToPremium() }
     }
 
     private fun animateBrandAndUpgradeButton() {
