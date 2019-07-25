@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="84dp"
+        android:layout_marginBottom="@dimen/intro_btn_margin_bottom"
         android:tint="#fff"
         app:backgroundTint="#808080"
         app:fabSize="mini"
@@ -47,41 +47,13 @@
         app:srcCompat="@drawable/ic_arrow_backward" />
 
     <LinearLayout
+        android:id="@+id/indicatorContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="84dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <ImageView
-            android:id="@+id/dot1"
-            android:layout_width="16dp"
-            android:layout_height="8dp"
-            android:layout_margin="8dp"
-            android:alpha="0.2"
-            app:srcCompat="@drawable/shape_circle_cylinder"
-            tools:ignore="ContentDescription" />
-
-        <ImageView
-            android:id="@+id/dot2"
-            android:layout_width="16dp"
-            android:layout_height="8dp"
-            android:layout_margin="8dp"
-            android:alpha="0.2"
-            app:srcCompat="@drawable/shape_circle_cylinder"
-            tools:ignore="ContentDescription" />
-
-        <ImageView
-            android:id="@+id/dot3"
-            android:layout_width="16dp"
-            android:layout_height="8dp"
-            android:layout_margin="8dp"
-            android:alpha="0.2"
-            app:srcCompat="@drawable/shape_circle_cylinder"
-            tools:ignore="ContentDescription" />
-
-    </LinearLayout>
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

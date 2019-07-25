@@ -20,9 +20,9 @@ class SplashActivity : BaseActivity() {
 
     private fun scheduleProperActivity() {
         Handler().postDelayed({
-            val activity = if (prefs.getBoolean(PREF_NEWBIE, true)) IntroActivity::class.java
-            else MainActivity::class.java
-            startActivity(Intent(this, activity))
+            val isNewbie = prefs.getBoolean(PREF_NEWBIE, true)
+            val activity = if (isNewbie) IntroActivity::class.java else MainActivity::class.java
+            startActivity(Intent(this, activity).putExtra(EXTRA_START_MAIN, true))
             finish()
         }, 900)
     }

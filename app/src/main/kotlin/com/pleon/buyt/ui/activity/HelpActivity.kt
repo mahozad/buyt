@@ -26,9 +26,11 @@ import org.mindrot.jbcrypt.BCrypt
 
 const val EXTRA_SHOULD_START_UPGRADE = "com.pleon.buyt.extra.SHOULD_START_UPGRADE"
 private const val TRANSLATION_PAGE_URL = "https://pleonco.oneskyapp.com/collaboration/project?id=158739"
-
-// (arbitrary) request code for the purchase flow
-private const val RC_REQUEST: Int = 62026
+// TODO: for security, generate your payload here for verification.
+//  Since this is a SAMPLE, we just use a random string, but on a production app
+//  you should carefully generate this.
+private const val PAYLOAD = "payload-string"
+private const val RC_REQUEST: Int = 62026 // (arbitrary) request code for the purchase flow
 
 class HelpActivity : BaseActivity() {
 
@@ -55,17 +57,9 @@ class HelpActivity : BaseActivity() {
 
     private fun upgradeToPremium() = try {
         iabHelper.flagEndAsync() // To prevent error when previous purchases abandoned
-        startPurchase()
+        iabHelper.launchPurchaseFlow(this, SKU_PREMIUM, RC_REQUEST, onPurchaseResult(), PAYLOAD)
     } catch (e: Exception) {
         BillingErrorDialogFragment().show(supportFragmentManager, "BILLING-DIALOG")
-    }
-
-    private fun startPurchase() {
-        /* TODO: for security, generate your payload here for verification.
-         *  Since this is a SAMPLE, we just use a random string, but on a production app
-         *  you should carefully generate this. */
-        iabHelper.launchPurchaseFlow(this, SKU_PREMIUM, RC_REQUEST,
-                onPurchaseResult(), "payload-string")
     }
 
     private fun onPurchaseResult() = { result: IabResult, info: Purchase ->
@@ -74,7 +68,7 @@ class HelpActivity : BaseActivity() {
             val subscription = Subscription(BCrypt.hashpw("PREMIUM", BCrypt.gensalt()))
             subscriptionRepository.insertSubscription(subscription)
             UpgradeSuccessDialogFragment().show(supportFragmentManager, "UPG_DIALOG")
-            animateAlpha(upgradePremiumBtn, 0f, duration = 200, startDelay = 300)
+            animateAlpha(upgradePremiumBtn, toAlpha = 0f, duration = 200, startDelay = 300)
         }
     }
 
@@ -84,7 +78,6 @@ class HelpActivity : BaseActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        // Pass on the activity result to the billing helper for handling
         if (!iabHelper.handleActivityResult(requestCode, resultCode, data)) {
             // Not handled, so handle it ourselves (here's where you'd perform any handling of
             // activity results not related to in-app billing...
@@ -96,8 +89,7 @@ class HelpActivity : BaseActivity() {
         when (item.itemId) {
             android.R.id.home -> finish()
             R.id.action_translate -> openTranslationPage()
-            R.id.action_show_tutorial ->
-                startActivity<IntroActivity>(EXTRA_LAUNCH_MAIN_ACTIVITY to false)
+            R.id.action_show_tutorial -> startActivity<IntroActivity>()
         }
         return true
     }

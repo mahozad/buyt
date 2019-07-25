@@ -3,8 +3,10 @@ package com.pleon.buyt.ui.activity
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.ImageView
+import android.widget.LinearLayout.LayoutParams
+import android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.graphics.ColorUtils
+import androidx.core.graphics.ColorUtils.blendARGB
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.animation.ArgbEvaluatorCompat
 import com.pleon.buyt.R
@@ -13,6 +15,7 @@ import com.pleon.buyt.ui.fragment.PREF_NEWBIE
 import com.pleon.buyt.util.AnimationUtil.animateIcon
 import kotlinx.android.synthetic.main.activity_intro.*
 import kotlinx.android.synthetic.main.fragment_intro_1.view.*
+import org.jetbrains.anko.dimen
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.startActivity
 import org.koin.android.ext.android.inject
@@ -20,7 +23,7 @@ import org.koin.core.parameter.parametersOf
 import kotlin.math.max
 import kotlin.math.min
 
-const val EXTRA_LAUNCH_MAIN_ACTIVITY = "com.pleon.buyt.extra.LAUNCH_MAIN_ACTIVITY"
+const val EXTRA_START_MAIN = "com.pleon.buyt.extra.LAUNCH_MAIN_ACTIVITY"
 
 class IntroActivity : BaseActivity() {
 
@@ -28,8 +31,8 @@ class IntroActivity : BaseActivity() {
     private val adapter by inject<IntroPageAdapter> {
         parametersOf(this@IntroActivity)
     }
-    private lateinit var dots: Array<ImageView>
-    private lateinit var colors: IntArray
+    private lateinit var indicators: Array<ImageView>
+    private lateinit var pageColors: IntArray
     private var lastOffset = 0f
     private var lastPage = 0
 
@@ -37,21 +40,21 @@ class IntroActivity : BaseActivity() {
 
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
-
-        viewPager.adapter = adapter
-        colors = resources.getIntArray(R.array.introPageColors)
-        dots = arrayOf(dot1, dot2, dot3)
-
-        viewPager.offscreenPageLimit = 2 // to cache pages for smooth scrolling
+        pageColors = resources.getIntArray(R.array.introPageColors)
+        setupViewPager()
+        createIndicators()
         setupParallaxEffect()
-        for ((i, dot) in dots.withIndex()) dot.setOnClickListener { viewPager.currentItem = i }
+        backButton.setOnClickListener { viewPager.currentItem-- }
+        nextButton.setOnClickListener { if (isLastPage()) finishIntro() else viewPager.currentItem++ }
+    }
 
+    private fun setupViewPager() {
+        viewPager.adapter = adapter
         viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
-
             override fun onPageScrolled(position: Int, offset: Float, offsetPx: Int) {
                 updatePageAndStatusBarColor(position, offset)
                 updateBackButtonPlacement(position, offset)
-                updateDots(position, offset)
+                updateIndicators(position, offset)
             }
 
             override fun onPageSelected(position: Int) {
@@ -59,49 +62,58 @@ class IntroActivity : BaseActivity() {
                 lastPage = position // should be the last statement
             }
         })
+    }
 
-        backButton.setOnClickListener { viewPager.currentItem = viewPager.currentItem - 1 }
-        nextButton.setOnClickListener {
-            if (viewPager.currentItem == adapter.itemCount - 1) {
-                prefs.edit().putBoolean(PREF_NEWBIE, false).apply()
-                if (intent.extras == null || intent.extras!!.getBoolean(EXTRA_LAUNCH_MAIN_ACTIVITY))
-                    startActivity<MainActivity>()
-                finish()
+    private fun isLastPage() = viewPager.currentItem == adapter.itemCount - 1
+
+    private fun finishIntro() {
+        prefs.edit().putBoolean(PREF_NEWBIE, false).apply()
+        intent.extras?.let { startActivity<MainActivity>() }
+        finish()
+    }
+
+    private fun createIndicators() {
+        indicators = Array(adapter.itemCount) {
+            val indicator = ImageView(this)
+            indicator.alpha = 0.2f
+            indicator.setImageResource(R.drawable.shape_circle_cylinder)
+            indicator.layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
+                setMargins(dip(8), dip(8), dip(8), dip(8))
             }
-            viewPager.currentItem = min(viewPager.currentItem + 1, adapter.itemCount - 1)
+            indicatorContainer.addView(indicator)
+            return@Array indicator
         }
     }
 
     private fun setupParallaxEffect() {
-        viewPager.setPageTransformer { page, pos ->
-            if (pos >= -1 && pos <= 1) page.img.translationX = -pos * page.width / 2
-            else page.alpha = 1.0f
+        viewPager.setPageTransformer { page, position ->
+            if (position >= -1 && position <= 1) page.img.translationX = -position * page.width / 2
         }
     }
 
     private fun updatePageAndStatusBarColor(position: Int, offset: Float) {
-        val startColor = colors[position]
-        val endColor = colors[min(position + 1, adapter.itemCount - 1)]
+        val startColor = pageColors[position]
+        val endColor = pageColors[min(position + 1, adapter.itemCount - 1)]
         val color = argbEvaluator.evaluate(offset, startColor, endColor)
         parentLayout.setBackgroundColor(color)
-        window.statusBarColor = ColorUtils.blendARGB(color, Color.BLACK, 0.3f)
+        window.statusBarColor = blendARGB(color, Color.BLACK, 0.3f)
     }
 
     private fun updateBackButtonPlacement(position: Int, offset: Float) {
         val params = backButton.layoutParams as ConstraintLayout.LayoutParams
-        val finalPos = dip(84)
+        val finalPos = dimen(R.dimen.intro_btn_margin_bottom)
         val bottomMargin = if (position < 1) (offset * finalPos).toInt() else finalPos
         params.setMargins(params.leftMargin, params.topMargin, params.rightMargin, bottomMargin)
         backButton.layoutParams = params
     }
 
-    private fun updateDots(position: Int, offset: Float) {
+    private fun updateIndicators(position: Int, offset: Float) {
         if (offset >= lastOffset) {
-            dots[position].alpha = max(1 - offset, 0.2f)
-            if (position < adapter.itemCount - 1) dots[position + 1].alpha = max(0.2f, offset)
+            indicators[position].alpha = max(1 - offset, 0.2f)
+            if (position < adapter.itemCount - 1) indicators[position + 1].alpha = max(0.2f, offset)
         } else {
-            dots[position].alpha = max(offset, 0.2f)
-            if (position > 0) dots[position - 1].alpha = max(1 - offset, 0.2f)
+            indicators[position].alpha = max(offset, 0.2f)
+            if (position > 0) indicators[position - 1].alpha = max(1 - offset, 0.2f)
         }
     }
 
