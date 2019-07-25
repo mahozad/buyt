@@ -3,8 +3,6 @@ package com.pleon.buyt.ui.fragment
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.core.content.res.ResourcesCompat
@@ -76,10 +74,6 @@ class StatsFragment : BaseFragment() {
 
     private fun showPieChart(pieSlices: List<PieSlice>) {
         pieChart.clearData()
-
-        // If filter is set then the whole chart will be one category so better to show empty hint
-        pieChart.visibility = if (pieSlices.isEmpty()) GONE else VISIBLE
-        emptyHint.visibility = if (pieSlices.isEmpty()) VISIBLE else GONE
 
         var other = 0
         for ((index, slice) in pieSlices.withIndex()) {

@@ -8,6 +8,7 @@ import android.graphics.Paint.DITHER_FLAG
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.LinearInterpolator
+import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.res.ResourcesCompat
 import com.pleon.buyt.R
 import com.pleon.buyt.util.FormatterUtil.formatPercent
@@ -39,6 +40,7 @@ class PieChartView : View {
     private var textAlpha: Int = 0
     private var firstPoint: Point? = null
     private var backGroundColor = Color.TRANSPARENT
+    private var emptyColor = getColor(context, R.color.chartEmptyColor)
     private var itemTextSize = 30
     private var textPadding = 8
     private val defaultStartAngle = -90
@@ -136,6 +138,13 @@ class PieChartView : View {
                 mCanvas!!.drawLine(width / 2f, height / 2f, tempPoint.x.toFloat(), tempPoint.y.toFloat(), mPaint)
             }
         }
+
+        if (sectors.isEmpty()) {
+            mPaint.style = Paint.Style.FILL
+            mPaint.color = emptyColor
+            mCanvas!!.drawCircle(mWidth / 2f, mHeight / 2f, radius.toFloat(), mPaint)
+        }
+
         mPaint.style = Paint.Style.FILL
         mPaint.color = backGroundColor
         if (innerRadius > 0 && pieCell == 0f) {

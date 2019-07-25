@@ -78,16 +78,6 @@
                 android:text="@string/pieChart_caption"
                 android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/emptyHint"
-                android:layout_width="134dp"
-                android:layout_height="134dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="15dp"
-                android:visibility="gone"
-                app:srcCompat="@drawable/empty_pie"
-                tools:ignore="ContentDescription" />
-
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
