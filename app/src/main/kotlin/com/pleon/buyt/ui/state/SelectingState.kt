@@ -1,6 +1,5 @@
 package com.pleon.buyt.ui.state
 
-import android.graphics.drawable.Animatable
 import android.os.Bundle
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_END
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
@@ -9,6 +8,7 @@ import com.pleon.buyt.model.Store
 import com.pleon.buyt.ui.activity.STATE_LOCATION
 import com.pleon.buyt.ui.dialog.CreateStoreDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
+import com.pleon.buyt.util.AnimationUtil.animateIcon
 import com.pleon.buyt.util.SnackbarUtil.showSnackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -56,7 +56,7 @@ object SelectingState : State() {
 
     override fun onOptionsMenuCreated() = with(activity) {
         bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
-        (bottom_bar.navigationIcon as Animatable).start()
+        animateIcon(bottom_bar.navigationIcon!!)
         setStoreMenuItemIcon()
         addMenuItem.isVisible = false
         reorderMenuItem.isVisible = false

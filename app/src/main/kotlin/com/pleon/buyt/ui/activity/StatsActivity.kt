@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -15,6 +14,7 @@ import com.pleon.buyt.isPremium
 import com.pleon.buyt.ui.adapter.StatsPagerAdapter
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.ui.dialog.UpgradePromptDialogFragment
+import com.pleon.buyt.util.AnimationUtil.animateIcon
 import com.pleon.buyt.viewmodel.StatsViewModel
 import kotlinx.android.synthetic.main.activity_stats.*
 import org.koin.android.ext.android.inject
@@ -71,7 +71,7 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
         periodMenuItemView.setCompoundDrawablesRelativeWithIntrinsicBounds(
                 0, 0, viewModel.period.imageRes, 0
         )
-        (periodMenuItemView.compoundDrawablesRelative[2] as Animatable).start()
+        animateIcon(periodMenuItemView.compoundDrawablesRelative[2])
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

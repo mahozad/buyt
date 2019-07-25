@@ -1,7 +1,6 @@
 package com.pleon.buyt.ui.fragment
 
 import android.content.res.ColorStateList
-import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -35,6 +34,7 @@ import com.pleon.buyt.ui.activity.MainActivity
 import com.pleon.buyt.ui.dialog.DatePickerDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
+import com.pleon.buyt.util.AnimationUtil.animateIcon
 import com.pleon.buyt.util.AnimationUtil.animateIconInfinitely
 import com.pleon.buyt.viewmodel.AddItemViewModel
 import ir.huri.jcal.JalaliCalendar
@@ -350,12 +350,12 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
 
     private fun onUrgentToggled(isChecked: Boolean) {
         urgent.setButtonDrawable(if (isChecked) R.drawable.avd_urgent_check else R.drawable.avd_urgent_uncheck)
-        (CompoundButtonCompat.getButtonDrawable(urgent) as Animatable).start()
+        animateIcon(CompoundButtonCompat.getButtonDrawable(urgent)!!)
     }
 
     private fun onBoughtToggled(checked: Boolean) {
         bought.setButtonDrawable(if (checked) R.drawable.avd_expand else R.drawable.avd_collapse)
-        (CompoundButtonCompat.getButtonDrawable(bought) as Animatable).start()
+        animateIcon(CompoundButtonCompat.getButtonDrawable(bought)!!)
         if (selectCategoryTxvi != null) { // to fix bug on config change
             selectCategoryTxvi!!.text = if (checked) getString(R.string.menu_title_select_store) else getString(viewModel.category.nameRes)
             selectCategoryTxvi!!.setTextColor(getColor(context!!, colorOnSurface))
@@ -500,7 +500,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
             selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(
                     R.drawable.avd_store_error, 0, 0, 0
             )
-            (selectCategoryTxvi!!.compoundDrawablesRelative[0] as Animatable).start()
+            animateIcon(selectCategoryTxvi!!.compoundDrawablesRelative[0])
             validated = false
         }
 

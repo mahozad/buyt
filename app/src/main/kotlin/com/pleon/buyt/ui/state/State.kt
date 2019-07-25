@@ -2,7 +2,6 @@ package com.pleon.buyt.ui.state
 
 import android.app.NotificationManager
 import android.content.Context.NOTIFICATION_SERVICE
-import android.graphics.drawable.Animatable
 import android.location.Location
 import android.os.Bundle
 import android.view.View.GONE
@@ -15,6 +14,7 @@ import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_
 import com.pleon.buyt.R
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.ui.activity.MainActivity
+import com.pleon.buyt.util.AnimationUtil.animateIcon
 import com.pleon.buyt.util.AnimationUtil.animateIconInfinitely
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -52,16 +52,14 @@ abstract class State {
     protected fun shiftToIdleState(@DrawableRes fabResId: Int) = with(activity) {
         bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_CENTER
         bottom_bar.setNavigationIcon(R.drawable.avd_cancel_nav)
-        (bottom_bar.navigationIcon as Animatable).start()
+        animateIcon(bottom_bar.navigationIcon!!)
 
         storeMenuItem.isVisible = false
         reorderMenuItem.setIcon(R.drawable.avd_skip_reorder).setTitle(R.string.menu_hint_reorder_items).isVisible = true
-        (reorderMenuItem.icon as Animatable).start()
+        animateIcon(reorderMenuItem.icon)
         addMenuItem.setIcon(R.drawable.avd_add_show).isVisible = true
-        (addMenuItem.icon as Animatable).start()
-
-        fab.setImageResource(fabResId)
-        (fab.drawable as Animatable).start()
+        animateIcon(addMenuItem.icon)
+        fab.setImageResource(fabResId).apply { animateIcon(fab.drawable) }
 
         (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).cancelAll()
 

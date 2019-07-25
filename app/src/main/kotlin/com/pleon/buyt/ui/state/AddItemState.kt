@@ -1,16 +1,13 @@
 package com.pleon.buyt.ui.state
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.content.Context.INPUT_METHOD_SERVICE
-import android.graphics.drawable.Animatable
 import android.os.Bundle
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.inputmethod.InputMethodManager
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_END
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.fragment.AddItemFragment
+import com.pleon.buyt.util.AnimationUtil.animateAlpha
+import com.pleon.buyt.util.AnimationUtil.animateIcon
 import kotlinx.android.synthetic.main.activity_main.*
 
 object AddItemState : State() {
@@ -28,9 +25,7 @@ object AddItemState : State() {
 
     private fun closeAddItemPopup() = with(activity) {
         supportFragmentManager.popBackStack()
-        scrim.animate().alpha(0f).setDuration(300).setListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(anim: Animator?) = scrim.setVisibility(GONE)
-        })
+        animateAlpha(scrim, toAlpha = 0f, duration = 300)
     }
 
     private fun hideKeyboard() {
@@ -39,17 +34,15 @@ object AddItemState : State() {
     }
 
     override fun onOptionsMenuCreated() = with(activity) {
-        bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
-        (bottom_bar.navigationIcon as Animatable).start()
         // Because animating views was buggy in onOptionsItemSelected we do it here
+        bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
+        animateIcon(bottom_bar.navigationIcon!!)
         addMenuItem.isVisible = false
         reorderMenuItem.isVisible = false
         bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
-        scrim.animate().alpha(1f).setDuration(300).setListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationStart(anim: Animator?) = scrim.setVisibility(VISIBLE)
-        })
+        animateAlpha(scrim, toAlpha = 1f, duration = 300)
         fab.setImageResource(R.drawable.avd_find_done)
-        (fab.drawable as Animatable).start()
+        animateIcon(fab.drawable)
     }
 
     override fun onRestoreInstance(savedState: Bundle) = activity.fab.setImageResource(R.drawable.ic_done)

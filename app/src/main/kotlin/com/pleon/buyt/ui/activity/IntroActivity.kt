@@ -1,7 +1,6 @@
 package com.pleon.buyt.ui.activity
 
 import android.graphics.Color
-import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -11,6 +10,7 @@ import com.google.android.material.animation.ArgbEvaluatorCompat
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.adapter.IntroPageAdapter
 import com.pleon.buyt.ui.fragment.PREF_NEWBIE
+import com.pleon.buyt.util.AnimationUtil.animateIcon
 import kotlinx.android.synthetic.main.activity_intro.*
 import kotlinx.android.synthetic.main.fragment_intro_1.view.*
 import org.jetbrains.anko.dip
@@ -108,10 +108,10 @@ class IntroActivity : BaseActivity() {
     private fun animateNextButtonIconIfNeeded(position: Int) {
         if (position == adapter.itemCount - 1) {
             nextButton.setImageResource(R.drawable.avd_next_done)
-            (nextButton.drawable as Animatable).start()
+            animateIcon(nextButton.drawable)
         } else if (position < adapter.itemCount - 1 && lastPage == adapter.itemCount - 1) {
             nextButton.setImageResource(R.drawable.avd_done_next)
-            (nextButton.drawable as Animatable).start()
+            animateIcon(nextButton.drawable)
         }
     }
 }

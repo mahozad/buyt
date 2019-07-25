@@ -1,6 +1,5 @@
 package com.pleon.buyt.ui.adapter
 
-import android.graphics.drawable.Animatable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -16,6 +15,7 @@ import com.pleon.buyt.R
 import com.pleon.buyt.database.dto.StoreDetail
 import com.pleon.buyt.ui.BaseViewHolder
 import com.pleon.buyt.ui.adapter.StoresAdapter.StoreHolder
+import com.pleon.buyt.util.AnimationUtil.animateIcon
 import com.pleon.buyt.util.FormatterUtil.formatPrice
 import com.pleon.buyt.util.LineChartBuilder.buildLineChart
 import com.pleon.buyt.viewmodel.StoresViewModel
@@ -68,7 +68,7 @@ class StoresAdapter(private val frag: Fragment, private val viewModel: StoresVie
                 val isChartShown = (itemView.lineChart.visibility == VISIBLE)
                 extendedStoreId = if (isChartShown) getStore(adapterPosition).storeId else 0
                 itemView.showChartButton.setImageResource(if (isChartShown) R.drawable.avd_line_chart_on else R.drawable.avd_line_chart_off)
-                (itemView.showChartButton.drawable as Animatable).start()
+                animateIcon(itemView.showChartButton.drawable)
 
                 if (isChartShown) {
                     // removeObservers() is REQUIRED; MUST be called before the observeForever
@@ -92,10 +92,10 @@ class StoresAdapter(private val frag: Fragment, private val viewModel: StoresVie
             itemView.showChartButton.visibility = if (frag.resources.getInteger(R.integer.layout_columns) == 1) VISIBLE else GONE
             if (storeDetail.store.storeId != extendedStoreId && itemView.lineChart.visibility == VISIBLE) {
                 itemView.showChartButton.setImageResource(R.drawable.avd_line_chart_off)
-                (itemView.showChartButton.drawable as Animatable).start()
+                animateIcon(itemView.showChartButton.drawable)
             } else if (storeDetail.store.storeId == extendedStoreId) {
                 itemView.showChartButton.setImageResource(R.drawable.avd_line_chart_on)
-                (itemView.showChartButton.drawable as Animatable).start()
+                animateIcon(itemView.showChartButton.drawable)
             }
             itemView.lineChart.visibility = if (storeDetail.store.storeId == extendedStoreId) VISIBLE else GONE
         }

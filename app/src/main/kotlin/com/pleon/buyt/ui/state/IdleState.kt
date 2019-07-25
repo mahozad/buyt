@@ -3,7 +3,6 @@ package com.pleon.buyt.ui.state
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
-import android.graphics.drawable.Animatable
 import android.location.LocationManager
 import android.os.Handler
 import androidx.core.app.ActivityCompat
@@ -17,6 +16,7 @@ import com.pleon.buyt.ui.dialog.LocationOffDialogFragment
 import com.pleon.buyt.ui.dialog.LocationOffDialogFragment.RationalType
 import com.pleon.buyt.ui.dialog.UpgradePromptDialogFragment
 import com.pleon.buyt.ui.fragment.BottomDrawerFragment
+import com.pleon.buyt.util.AnimationUtil.animateIcon
 import com.pleon.buyt.viewmodel.FREE_BUY_LIMIT
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.core.KoinComponent
@@ -44,7 +44,7 @@ object IdleState : State(), KoinComponent {
             val rationaleDialog = LocationOffDialogFragment.newInstance(RationalType.LOCATION_OFF)
             rationaleDialog.show(activity.supportFragmentManager, "LOCATION_OFF_DIALOG")
         } else {
-            activity.addMenuItem.setIcon(R.drawable.avd_add_hide).apply { (icon as Animatable).start() }
+            activity.addMenuItem.setIcon(R.drawable.avd_add_hide).apply { animateIcon(icon) }
             // disable effect of tapping on the menu item and also hide its ripple
             Handler().postDelayed({ activity.addMenuItem.isVisible = false }, 300)
             shiftToFindingState()
@@ -72,14 +72,11 @@ object IdleState : State(), KoinComponent {
     private fun shiftToFindingState() = with(activity) {
         viewModel.state = FindingState
 
-        fab.setImageResource(R.drawable.avd_buyt)
-        (fab.drawable as Animatable).start()
-
+        fab.setImageResource(R.drawable.avd_buyt).apply { animateIcon(fab.drawable) }
         bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
-        (bottom_bar.navigationIcon as Animatable).start()
-
+        animateIcon(bottom_bar.navigationIcon!!)
         reorderMenuItem.setIcon(R.drawable.avd_reorder_skip).setTitle(R.string.menu_hint_skip_finding)
-        (reorderMenuItem.icon as Animatable).start()
+        animateIcon(reorderMenuItem.icon)
 
         // Make sure the bottomAppBar is not hidden and make it not hide on scroll
         // new BottomAppBar.Behavior().slideUp(mBottomAppBar);

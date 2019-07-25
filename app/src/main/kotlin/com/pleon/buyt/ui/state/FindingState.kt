@@ -1,17 +1,17 @@
 package com.pleon.buyt.ui.state
 
 import android.content.Intent
-import android.graphics.drawable.Animatable
 import android.location.Location
 import android.os.Bundle
 import androidx.lifecycle.Observer
-import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_END
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.pleon.buyt.R
 import com.pleon.buyt.component.GpsService
 import com.pleon.buyt.model.Coordinates
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.ui.fragment.PREF_VIBRATE
+import com.pleon.buyt.util.AnimationUtil.animateIcon
 import com.pleon.buyt.util.SnackbarUtil.showSnackbar
 import com.pleon.buyt.util.VibrationUtil.vibrate
 import kotlinx.android.synthetic.main.activity_main.*
@@ -41,14 +41,14 @@ object FindingState : State() {
 
         if (viewModel.shouldAnimateNavIcon) {
             bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
-            (bottom_bar.navigationIcon as Animatable).start()
+            animateIcon(bottom_bar.navigationIcon!!)
         }
 
         reorderMenuItem.isVisible = false
-        bottom_bar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_END
+        bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
 
         fab.setImageResource(R.drawable.avd_find_done)
-        (fab.drawable as Animatable).start()
+        animateIcon(fab.drawable)
 
         viewModel.state = SelectingState
     }
@@ -75,7 +75,7 @@ object FindingState : State() {
 
     override fun onOptionsMenuCreated() = with(activity) {
         bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
-        (bottom_bar.navigationIcon as Animatable).start()
+        animateIcon(bottom_bar.navigationIcon!!)
         reorderMenuItem.setIcon(R.drawable.avd_skip_reorder).setTitle(R.string.menu_hint_skip_finding)
         addMenuItem.isVisible = false
     }
@@ -84,9 +84,9 @@ object FindingState : State() {
     // so this state also doesn't need to save its data
     override fun onSaveInstance(outState: Bundle) {}
 
-    override fun onRestoreInstance(savedState: Bundle) {
-        activity.fab.setImageResource(R.drawable.avd_finding)
-        (activity.fab.drawable as Animatable).start()
+    override fun onRestoreInstance(savedState: Bundle) = with(activity) {
+        fab.setImageResource(R.drawable.avd_finding)
+        animateIcon(fab.drawable)
     }
 
     override fun onItemListChanged(isListEmpty: Boolean) {

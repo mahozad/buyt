@@ -1,11 +1,11 @@
 package com.pleon.buyt.ui.activity
 
 import android.content.Intent
-import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.os.Handler
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.fragment.PREF_NEWBIE
+import com.pleon.buyt.util.AnimationUtil.animateIcon
 import kotlinx.android.synthetic.main.activity_help.*
 
 class SplashActivity : BaseActivity() {
@@ -14,7 +14,7 @@ class SplashActivity : BaseActivity() {
 
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
-        (logo.drawable as Animatable).start()
+        animateIcon(logo.drawable)
         scheduleProperActivity()
     }
 

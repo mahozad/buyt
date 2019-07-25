@@ -1,7 +1,6 @@
 package com.pleon.buyt.ui.fragment
 
 import android.content.Context
-import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
@@ -17,6 +16,7 @@ import com.pleon.buyt.ui.TouchHelperCallback
 import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener
 import com.pleon.buyt.ui.adapter.ItemsAdapter
 import com.pleon.buyt.util.AnimationUtil.animateAlpha
+import com.pleon.buyt.util.AnimationUtil.animateIcon
 import com.pleon.buyt.util.SnackbarUtil.showSnackbar
 import com.pleon.buyt.util.SnackbarUtil.showUndoSnackbar
 import com.pleon.buyt.viewmodel.MainViewModel
@@ -54,7 +54,7 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
             listener?.onItemListChanged(items.isEmpty())
         })
 
-        (emptyHint.drawable as Animatable).start()
+        animateIcon(emptyHint.drawable)
 
         val touchHelper = ItemTouchHelper(touchHelperCallback)
         touchHelper.attachToRecyclerView(recyclerView)

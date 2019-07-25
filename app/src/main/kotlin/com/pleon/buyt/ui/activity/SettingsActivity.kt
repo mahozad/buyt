@@ -1,12 +1,12 @@
 package com.pleon.buyt.ui.activity
 
-import android.graphics.drawable.Animatable
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import androidx.preference.PreferenceManager
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.fragment.PREF_NEWBIE
+import com.pleon.buyt.util.AnimationUtil.animateIcon
 
 class SettingsActivity : BaseActivity() {
 
@@ -28,7 +28,7 @@ class SettingsActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_reset -> {
-                (resetMenuItemView.compoundDrawablesRelative[2] as Animatable).start()
+                animateIcon(resetMenuItemView.compoundDrawablesRelative[2])
                 resetPreferences()
             }
             android.R.id.home -> finish()

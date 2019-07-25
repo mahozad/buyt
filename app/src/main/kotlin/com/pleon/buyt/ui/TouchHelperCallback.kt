@@ -2,7 +2,6 @@ package com.pleon.buyt.ui
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.drawable.Animatable
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
@@ -13,6 +12,7 @@ import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.pleon.buyt.R
+import com.pleon.buyt.util.AnimationUtil.animateIcon
 import kotlinx.android.synthetic.main.item_list_row.view.*
 import org.jetbrains.anko.dip
 import kotlin.math.abs
@@ -85,11 +85,11 @@ class TouchHelperCallback(cxt: Context, private var listener: ItemTouchHelperLis
         // Animate delete circular reveal
         if (abs(dX) == maxSwipeDistInPx && !viewHolder.delAnimating) {
             viewHolder.itemView.delete_icon.setImageResource(R.drawable.avd_delete_open)
-            (viewHolder.itemView.delete_icon.drawable as Animatable).start()
+            animateIcon(viewHolder.itemView.delete_icon.drawable)
             showCircularReveal(viewHolder, viewHolder.itemView.circular_reveal)
         } else if (abs(dX) < maxSwipeDistInPx && viewHolder.delAnimating) {
             viewHolder.itemView.delete_icon.setImageResource(R.drawable.avd_delete_close)
-            (viewHolder.itemView.delete_icon.drawable as Animatable).start()
+            animateIcon(viewHolder.itemView.delete_icon.drawable)
             hideCircularReveal(viewHolder, viewHolder.itemView.circular_reveal)
         }
 
