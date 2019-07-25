@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pleon.buyt.R
 import com.pleon.buyt.database.dto.PurchaseDetail
 import com.pleon.buyt.ui.DateHeaderDecoration
-import com.pleon.buyt.ui.DateHeaderDecoration.StickyHeaderInterface
+import com.pleon.buyt.ui.DateHeaderDecoration.HasStickyHeader
 import com.pleon.buyt.ui.adapter.PurchaseDetailAdapter
 import com.pleon.buyt.util.AnimationUtil
 import com.pleon.buyt.util.FormatterUtil.formatDate
@@ -47,7 +47,7 @@ class StatDetailsFragment : BaseFragment() {
                     i++
                 }
                 val firstItem = layoutManager.findFirstVisibleItemPosition()
-                if (firstItem >= 0 && (recyclerView.adapter as StickyHeaderInterface).isHeader(firstItem)) {
+                if (firstItem >= 0 && (recyclerView.adapter as HasStickyHeader).isHeader(firstItem)) {
                     layoutManager.getChildAt(0)!!.alpha = 0f
                 }
             }

@@ -19,14 +19,8 @@ class DebugApplication : Application() {
         isPremium = true
         Stetho.initializeWithDefaults(this)
         startKoin {
-            modules(listOf(
-                    uiModule,
-                    appModule,
-                    serviceModule,
-                    databaseModule,
-                    viewModelModule,
-                    repositoryModule)
-            )
+            modules(listOf(uiModule, appModule, serviceModule,
+                    databaseModule, viewModelModule, repositoryModule))
             androidLogger() // Use koin android logger
             androidContext(this@DebugApplication)
         }
@@ -43,9 +37,7 @@ class DebugApplication : Application() {
      * user’s language preference, we need to override the base Context of the application
      * to have default locale configuration.
      */
-    override fun attachBaseContext(cxt: Context) {
-        super.attachBaseContext(setLocale(cxt))
-    }
+    override fun attachBaseContext(cxt: Context) = super.attachBaseContext(setLocale(cxt))
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)

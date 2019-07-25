@@ -21,8 +21,7 @@ import com.pleon.buyt.util.LineChartBuilder.buildLineChart
 import com.pleon.buyt.viewmodel.StoresViewModel
 import kotlinx.android.synthetic.main.store_list_row.view.*
 
-class StoresAdapter constructor(private val frag: Fragment,
-                                private val viewModel: StoresViewModel)
+class StoresAdapter(private val frag: Fragment, private val viewModel: StoresViewModel)
     : Adapter<StoreHolder>() {
 
     private lateinit var recyclerView: RecyclerView

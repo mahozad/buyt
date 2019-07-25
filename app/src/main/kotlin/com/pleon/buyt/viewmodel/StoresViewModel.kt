@@ -14,7 +14,7 @@ import com.pleon.buyt.viewmodel.StoresViewModel.Sort.TOTAL_SPENDING
 
 private const val STORE_STATS_PERIOD = 30
 
-class StoresViewModel constructor(app: Application, private val repository: StoreRepository)
+class StoresViewModel(app: Application, private val repository: StoreRepository)
     : AndroidViewModel(app) {
 
     enum class Sort(val nameRes: Int, val imgRes: Int) {

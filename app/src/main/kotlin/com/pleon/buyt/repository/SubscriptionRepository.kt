@@ -7,7 +7,7 @@ import com.pleon.buyt.util.SingleLiveEvent
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
-class SubscriptionRepository constructor(private val subscriptionDao: SubscriptionDao) {
+class SubscriptionRepository(private val subscriptionDao: SubscriptionDao) {
 
     private val subscriptionToken = SingleLiveEvent<String>()
 

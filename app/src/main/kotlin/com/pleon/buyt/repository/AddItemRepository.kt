@@ -12,9 +12,9 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import java.util.*
 
-class AddItemRepository constructor(private val itemDao: ItemDao,
-                                    private val storeDao: StoreDao,
-                                    private val purchaseDao: PurchaseDao) {
+class AddItemRepository(private val itemDao: ItemDao,
+                        private val storeDao: StoreDao,
+                        private val purchaseDao: PurchaseDao) {
 
     val itemNameCats = itemDao.getNameCats()
     private val allStores = SingleLiveEvent<List<Store>>()

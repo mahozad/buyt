@@ -15,7 +15,7 @@ import com.pleon.buyt.model.Category
 import com.pleon.buyt.ui.ItemSpacingDecoration
 import com.pleon.buyt.ui.TouchHelperCallback
 import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener
-import com.pleon.buyt.ui.adapter.ItemListAdapter
+import com.pleon.buyt.ui.adapter.ItemsAdapter
 import com.pleon.buyt.util.AnimationUtil.animateAlpha
 import com.pleon.buyt.util.SnackbarUtil.showSnackbar
 import com.pleon.buyt.util.SnackbarUtil.showUndoSnackbar
@@ -33,7 +33,7 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
         fun onItemListChanged(isListEmpty: Boolean)
     }
 
-    private val adapter by inject<ItemListAdapter>()
+    private val adapter by inject<ItemsAdapter>()
     private val viewModel by viewModel<MainViewModel>()
     private val touchHelperCallback by inject<TouchHelperCallback> {
         parametersOf(this@ItemsFragment)

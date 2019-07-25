@@ -25,7 +25,9 @@ const val EXTRA_LAUNCH_MAIN_ACTIVITY = "com.pleon.buyt.extra.LAUNCH_MAIN_ACTIVIT
 class IntroActivity : BaseActivity() {
 
     private val argbEvaluator by inject<ArgbEvaluatorCompat>()
-    private val adapter by inject<IntroPageAdapter> { parametersOf(this@IntroActivity) }
+    private val adapter by inject<IntroPageAdapter> {
+        parametersOf(this@IntroActivity)
+    }
     private lateinit var dots: Array<ImageView>
     private lateinit var colors: IntArray
     private var lastOffset = 0f

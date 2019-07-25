@@ -13,6 +13,8 @@ import com.pleon.buyt.BuildConfig
 import com.pleon.buyt.R
 import com.pleon.buyt.SKU_PREMIUM
 import com.pleon.buyt.billing.IabHelper
+import com.pleon.buyt.billing.IabResult
+import com.pleon.buyt.billing.Purchase
 import com.pleon.buyt.isPremium
 import com.pleon.buyt.model.Subscription
 import com.pleon.buyt.repository.SubscriptionRepository
@@ -82,21 +84,18 @@ class HelpActivity : BaseActivity() {
         /* TODO: for security, generate your payload here for verification.
          *  Since this is a SAMPLE, we just use a random string, but on a production app
          *  you should carefully generate this. */
-        iabHelper.launchPurchaseFlow(
-                this,
-                SKU_PREMIUM,
-                RC_REQUEST,
-                { result, _ ->
-                    if (result.isSuccess) {
-                        isPremium = true
-                        val subscription = Subscription(BCrypt.hashpw("PREMIUM", BCrypt.gensalt()))
-                        subscriptionRepository.insertSubscription(subscription)
-                        UpgradeSuccessDialogFragment().show(supportFragmentManager, "UPG_DIALOG")
-                        Handler().postDelayed({ upgradePremiumBtn.visibility = GONE }, 300)
-                    }
-                },
-                "payload-string"
-        )
+        iabHelper.launchPurchaseFlow(this, SKU_PREMIUM, RC_REQUEST,
+                onPurchaseResult(), "payload-string")
+    }
+
+    private fun onPurchaseResult() = { result: IabResult, info: Purchase ->
+        if (result.isSuccess) {
+            isPremium = true
+            val subscription = Subscription(BCrypt.hashpw("PREMIUM", BCrypt.gensalt()))
+            subscriptionRepository.insertSubscription(subscription)
+            UpgradeSuccessDialogFragment().show(supportFragmentManager, "UPG_DIALOG")
+            Handler().postDelayed({ upgradePremiumBtn.visibility = GONE }, 300)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

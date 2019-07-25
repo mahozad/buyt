@@ -18,11 +18,11 @@ import com.pleon.buyt.R
 import com.pleon.buyt.model.Item
 import com.pleon.buyt.ui.BaseViewHolder
 import com.pleon.buyt.ui.NumberInputWatcher
-import com.pleon.buyt.ui.adapter.ItemListAdapter.ItemHolder
+import com.pleon.buyt.ui.adapter.ItemsAdapter.ItemHolder
 import kotlinx.android.synthetic.main.item_list_row.view.*
 import java.lang.Long.parseLong
 
-class ItemListAdapter constructor(private val app: Application) : Adapter<ItemHolder>() {
+class ItemsAdapter(private val app: Application) : Adapter<ItemHolder>() {
 
     lateinit var touchHelper: ItemTouchHelper
 

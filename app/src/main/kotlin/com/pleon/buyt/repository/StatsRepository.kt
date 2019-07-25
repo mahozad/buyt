@@ -9,7 +9,7 @@ import com.pleon.buyt.viewmodel.StatsViewModel.Filter
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
-class StatsRepository constructor(private val purchaseDao: PurchaseDao) {
+class StatsRepository(private val purchaseDao: PurchaseDao) {
 
     private val stats = SingleLiveEvent<Stats>()
 

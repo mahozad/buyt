@@ -31,10 +31,8 @@ private const val EARTH_RADIUS = 6_371_000.0 // In meters
  * force-kills. So to survive process stops, implement
  * [AppCompatActivity.onSaveInstanceState] method in your activity/fragment.
  */
-class MainViewModel constructor(private val app: Application,
-                                private val repository: MainRepository,
-                                private val prefs: SharedPreferences,
-                                initialState: State)
+class MainViewModel(private val app: Application, private val repository: MainRepository,
+                    private val prefs: SharedPreferences, initialState: State)
     : AndroidViewModel(app) {
 
     var state: State = initialState

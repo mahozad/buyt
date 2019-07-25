@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.pleon.buyt.R
 import com.pleon.buyt.database.dto.PurchaseDetail
 import com.pleon.buyt.ui.BaseViewHolder
-import com.pleon.buyt.ui.DateHeaderDecoration.StickyHeaderInterface
+import com.pleon.buyt.ui.DateHeaderDecoration.HasStickyHeader
 import com.pleon.buyt.ui.adapter.PurchaseDetailAdapter.ItemType.DATE
 import com.pleon.buyt.ui.adapter.PurchaseDetailAdapter.ItemType.ITEM
 import com.pleon.buyt.util.FormatterUtil.formatDate
@@ -18,8 +18,7 @@ import kotlinx.android.synthetic.main.date_header.view.*
 import kotlinx.android.synthetic.main.purchase_detail.view.*
 import java.util.*
 
-class PurchaseDetailAdapter constructor(private val app: Application)
-    : Adapter<ViewHolder>(), StickyHeaderInterface {
+class PurchaseDetailAdapter(private val app: Application) : Adapter<ViewHolder>(), HasStickyHeader {
 
     enum class ItemType { ITEM, DATE }
 

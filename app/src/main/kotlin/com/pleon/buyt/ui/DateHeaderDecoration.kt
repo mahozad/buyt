@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 
-class DateHeaderDecoration(recyclerView: RecyclerView, private val listener: StickyHeaderInterface)
+class DateHeaderDecoration(recyclerView: RecyclerView, private val listener: HasStickyHeader)
     : ItemDecoration() {
 
     private var stickyHeaderHeight: Int = 0
@@ -105,7 +105,7 @@ class DateHeaderDecoration(recyclerView: RecyclerView, private val listener: Sti
         view.layout(0, 0, view.measuredWidth, stickyHeaderHeight)
     }
 
-    interface StickyHeaderInterface {
+    interface HasStickyHeader {
         /**
          * This method gets called by [DateHeaderDecoration] to fetch the position of the header item in the adapter
          * that is used for (represents) item at specified position.

@@ -13,8 +13,7 @@ import com.pleon.buyt.repository.AddItemRepository
 import java.io.InputStreamReader
 import java.util.*
 
-class AddItemViewModel constructor(app: Application, val repository: AddItemRepository)
-    : AndroidViewModel(app) {
+class AddItemViewModel(app: Application, val repository: AddItemRepository) : AndroidViewModel(app) {
 
     var category = GROCERY
     var store: Store? = null

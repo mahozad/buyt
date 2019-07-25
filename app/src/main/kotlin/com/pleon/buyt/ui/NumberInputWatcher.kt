@@ -7,8 +7,8 @@ import com.google.android.material.textfield.TextInputLayout
 import com.pleon.buyt.util.FormatterUtil.formatPrice
 
 class NumberInputWatcher(private val textInputLayout: TextInputLayout,
-                         private val editText: EditText, private val suffix: String = ""
-) : TextWatcher {
+                         private val editText: EditText, private val suffix: String = "")
+    : TextWatcher {
 
     override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
     override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
@@ -27,4 +27,5 @@ class NumberInputWatcher(private val textInputLayout: TextInputLayout,
         }
         editText.addTextChangedListener(this)
     }
+
 }

@@ -9,7 +9,7 @@ import com.pleon.buyt.viewmodel.StoresViewModel.Sort
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
-class StoreRepository constructor(private val storeDao: StoreDao) {
+class StoreRepository(private val storeDao: StoreDao) {
 
     private val storeStats = SingleLiveEvent<List<DailyCost>>()
     private val createdStore = SingleLiveEvent<Store>()

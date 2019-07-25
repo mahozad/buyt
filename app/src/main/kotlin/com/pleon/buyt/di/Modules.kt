@@ -40,7 +40,7 @@ val appModule = module {
 }
 
 val uiModule = module {
-    factory { ItemListAdapter(androidApplication()) }
+    factory { ItemsAdapter(androidApplication()) }
     factory { PurchaseDetailAdapter(androidApplication()) }
     factory { (fragment: Fragment) -> StoresAdapter(fragment, get()) }
     factory { (activity: FragmentActivity) -> IntroPageAdapter(activity) }
