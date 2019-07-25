@@ -87,10 +87,8 @@ class IntroActivity : BaseActivity() {
         }
     }
 
-    private fun setupParallaxEffect() {
-        viewPager.setPageTransformer { page, position ->
-            if (abs(position) <= 1) page.img.translationX = -position * page.width / 2
-        }
+    private fun setupParallaxEffect() = viewPager.setPageTransformer { page, position ->
+        if (abs(position) <= 1) page.img.translationX = -position * page.width / 2
     }
 
     private fun updatePageAndStatusBarColor(position: Int, offset: Float) {
