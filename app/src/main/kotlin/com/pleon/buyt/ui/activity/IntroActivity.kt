@@ -24,7 +24,7 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
-const val EXTRA_START_MAIN = "com.pleon.buyt.extra.LAUNCH_MAIN_ACTIVITY"
+const val FLAG_START_MAIN = "com.pleon.buyt.flag.LAUNCH_MAIN_ACTIVITY"
 
 class IntroActivity : BaseActivity() {
 
@@ -71,7 +71,7 @@ class IntroActivity : BaseActivity() {
 
     private fun finishIntro() {
         prefs.edit().putBoolean(PREF_NEWBIE, false).apply()
-        intent.extras?.let { startActivity<MainActivity>() }
+        intent.extras?.let { /* extras is not null */ startActivity<MainActivity>() }
         finish()
     }
 

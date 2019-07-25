@@ -22,7 +22,7 @@ class SplashActivity : BaseActivity() {
         Handler().postDelayed({
             val isNewbie = prefs.getBoolean(PREF_NEWBIE, true)
             val activity = if (isNewbie) IntroActivity::class.java else MainActivity::class.java
-            startActivity(Intent(this, activity).putExtra(EXTRA_START_MAIN, true))
+            startActivity(Intent(this, activity).putExtra(FLAG_START_MAIN, true))
             finish()
         }, 900)
     }

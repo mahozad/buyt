@@ -25,7 +25,7 @@ import org.jetbrains.anko.startActivity
 import org.koin.android.ext.android.inject
 import org.mindrot.jbcrypt.BCrypt
 
-const val EXTRA_SHOULD_START_UPGRADE = "com.pleon.buyt.extra.SHOULD_START_UPGRADE"
+const val FLAG_START_UPGRADE = "com.pleon.buyt.flag.START_UPGRADE"
 private const val TRANSLATION_PAGE_URL = "https://pleonco.oneskyapp.com/collaboration/project?id=158739"
 // TODO: for security, generate your payload here for verification.
 //  Since this is a SAMPLE, we just use a random string, but on a production app
@@ -46,11 +46,11 @@ class HelpActivity : BaseActivity() {
         nameVersion.text = getString(R.string.appNameVersion, localizeDigits(BuildConfig.VERSION_NAME))
         logo.setOnClickListener { animateIcon(logo.drawable) }
         upgradePremiumBtn.setOnClickListener { upgradeToPremium() }
-        animateViews()
-        if (intent.getBooleanExtra(EXTRA_SHOULD_START_UPGRADE, false)) upgradeToPremium()
+        animateBrandAndUpgradeButton()
+        intent.extras?.let { /* extras is not null */ upgradeToPremium() }
     }
 
-    private fun animateViews() {
+    private fun animateBrandAndUpgradeButton() {
         animateIcon(logo.drawable, startDelay = 300)
         animateAlpha(nameVersion, toAlpha = 1f, duration = 300, startDelay = 500)
         if (!isPremium) animateAlpha(upgradePremiumBtn, toAlpha = 1f, duration = 300, startDelay = 1000)
