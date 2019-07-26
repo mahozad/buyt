@@ -119,10 +119,10 @@ dependencies {
     implementation("androidx.coordinatorlayout:coordinatorlayout:1.1.0-beta01")
     implementation("androidx.recyclerview:recyclerview:1.1.0-beta01")
     implementation("androidx.preference:preference:1.1.0-rc01")
-    implementation("androidx.viewpager2:viewpager2:1.0.0-alpha06")
+    implementation("androidx.viewpager2:viewpager2:1.0.0-beta02")
+    implementation("org.koin:koin-androidx-viewmodel:2.0.1")
     implementation("androidx.room:room-runtime:2.1.0")
     kapt("androidx.room:room-compiler:2.1.0")
-    implementation("org.koin:koin-androidx-viewmodel:2.0.1")
 
     /* If you're targeting JDK 8, you can use extended versions of the Kotlin standard library
      * which contain additional extension functions for APIs added in new JDK versions.
@@ -151,8 +151,8 @@ dependencies {
     testImplementation("org.mockito:mockito-junit-jupiter:3.0.0")
     testImplementation("org.hamcrest:hamcrest-library:2.1")
     // Dependencies for instrumented tests
-    androidTestImplementation("androidx.test.ext:junit:1.1.2-alpha01")
-    androidTestImplementation("androidx.test:runner:1.3.0-alpha01")
+    androidTestImplementation("androidx.test.ext:junit:1.1.2-alpha02")
+    androidTestImplementation("androidx.test:runner:1.3.0-alpha02")
     androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.5.0")
     androidTestImplementation("org.mockito:mockito-android:3.0.0")
     androidTestImplementation("org.mockito:mockito-junit-jupiter:3.0.0")
