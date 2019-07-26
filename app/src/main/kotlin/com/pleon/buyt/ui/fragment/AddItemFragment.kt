@@ -10,6 +10,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.View.*
+import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.EditText
@@ -143,6 +144,13 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         val priceSuffix = getString(R.string.input_suffix_price)
         priceEd.addTextChangedListener(NumberInputWatcher(price_layout, priceEd, priceSuffix))
         quantityEd.addTextChangedListener(NumberInputWatcher(quantity_layout, quantityEd))
+        quantityEd.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                onDonePressed()
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
+        }
 
         scrollView.isVerticalScrollBarEnabled = false
         scrollView.setOnTouchListener { _, _ ->
