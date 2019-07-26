@@ -68,7 +68,7 @@ object FindingState : State() {
             if (addMenuItem.isVisible) addMenuItem.isVisible = false
             stopService(Intent(this, GpsService::class.java)) // for the case if finding skipped
             shiftToSelectingState()
-            itemsFragment.sortItemsByCategory(viewModel.foundStores[0].category)
+            itemsFragment.sortItemsByCategory(viewModel.foundStores.first().category)
             setStoreMenuItemIcon()
         }
     }

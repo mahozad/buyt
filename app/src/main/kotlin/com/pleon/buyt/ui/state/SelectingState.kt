@@ -34,7 +34,7 @@ object SelectingState : State() {
                 val createStoreDialog = CreateStoreDialogFragment.newInstance(viewModel.location!!)
                 createStoreDialog.show(supportFragmentManager, "CREATE_STORE_DIALOG")
             } else if (viewModel.foundStores.size == 1) {
-                completeBuy(viewModel.foundStores[0])
+                completeBuy(viewModel.foundStores.first())
             } else { // show store selection dialog
                 val selectionList = ArrayList<SelectDialogFragment.SelectDialogRow>() // dialog requires ArrayList
                 for (store in viewModel.foundStores) {

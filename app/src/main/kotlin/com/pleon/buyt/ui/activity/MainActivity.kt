@@ -174,7 +174,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
     override fun onRequestPermissionsResult(reqCode: Int, perms: Array<String>, grants: IntArray) {
         if (reqCode == REQUEST_LOCATION_PERMISSION) {
             // If request is cancelled, the result arrays are empty.
-            if (grants.isNotEmpty() && grants[0] == PERMISSION_GRANTED) viewModel.state.onLocationPermissionGranted()
+            if (grants.isNotEmpty() && grants.first() == PERMISSION_GRANTED) viewModel.state.onLocationPermissionGranted()
         }
         super.onRequestPermissionsResult(reqCode, perms, grants)
     }

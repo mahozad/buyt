@@ -76,11 +76,11 @@ class MainViewModel(private val app: Application, private val repository: MainRe
     }
 
     fun getStoreIcon() = if (foundStores.size != 1) R.drawable.ic_store
-    else foundStores[0].category.storeImageRes
+    else foundStores.first().category.storeImageRes
 
     fun getStoreTitle(): String = when (foundStores.size) {
         0 -> app.getString(R.string.menu_text_new_store_found)
-        1 -> foundStores[0].name
+        1 -> foundStores.first().name
         else -> formatNumber(foundStores.size)
     }
 }
