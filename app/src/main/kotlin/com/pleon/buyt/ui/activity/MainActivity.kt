@@ -40,10 +40,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 const val STATE_LOCATION = "com.pleon.buyt.state.LOCATION"
 const val REQUEST_LOCATION_PERMISSION = 1
 
-/**
- * UI controllers such as activities and fragments are primarily intended to display UI data,
- * react to user actions, or handle operating system communication, such as permission requests.
- */
 class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
         CreateStoreListener, LocationEnableListener, ItemListListener {
 
@@ -75,25 +71,6 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
      * visible, it can reflect the resulting state of affairs? Then you need to use
      * onCreate()/onDestroy() to register/unregister. (Note there are other ways to implement
      * this kind of functionality.)" See this answer: [https://stackoverflow.com/a/44526685/8583692]
-     *
-     * // If the activity is re-created due to a config change, any fragments added using the
-     * // Fragment Manager will automatically be re-added. As a result, we only add a new fragment
-     * // if this is not a configuration-change restart (by checking the savedInstanceState bundle)
-     * if (savedInstanceState == null) {
-     *     itemListFragment = ItemListFragment.newInstance();
-     *     // call commit to add the fragment to the UI queue asynchronously, or
-     *     // commitNow (preferred) to block until the transaction is fully complete.
-     *     fragMgr.beginTransaction().add(R.id.fragment_items, itemListFragment).commitNow();
-     * } else {
-     *     itemListFragment = ((ItemListFragment) fragMgr.findFragmentById(R.id.fragment_items));
-     * }
-     *
-     * for fragment example see [https://developer.android.com/guide/components/fragments#Example]
-     * As in android developers guild, make this variable a field if needed:
-     * boolean wideLayout = findViewById(R.id.chart) != null;
-     * if (wideLayout) {
-     *     Do whatever needed
-     * }
      *
      * @param savedState
      */
@@ -144,10 +121,6 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
         })
     }
 
-    /**
-     * If setSupportActionBar() is used to set up the BottomAppBar, navigation menu item
-     * can be identified by checking if the id of menu item equals android.R.id.home.
-     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_add -> {
@@ -180,31 +153,10 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
         return true
     }
 
-    /**
-     * If you override the onBackPressed() method, we still highly recommend that you invoke
-     * super.onBackPressed() from your overridden method. Otherwise the Back button behavior
-     * may be jarring to the user.
-     */
     override fun onBackPressed() = viewModel.state.onBackClicked()
 
     fun callSuperOnBackPressed() = super.onBackPressed()
 
-    /**
-     * [ViewModels][androidx.lifecycle.ViewModel] only survive configuration changes but
-     * not process kills. On the other hand, [.onSaveInstanceState] method is called
-     * for both configuration changes and process kills. So because we have ViewModel in our app,
-     * here this method is used to save data just for the case of **process kills**.
-     *
-     * This method will NOT be called if the system determines that the current state will not
-     * be resumed—for example, if the activity is closed by pressing the back button or if it calls
-     * [.finish].
-     *
-     * Even if the system destroys the process while the activity is stopped, super.onSaveInstanceState();
-     * still retains the state of the View objects with an 'android:id' attribute (such as text in
-     * an EditText widget) in a Bundle and restores them if the user navigates back to the activity.
-     *
-     * @param outState
-     */
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         viewModel.state.onSaveInstance(outState)
@@ -237,8 +189,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
     /**
      * Unregistering the broadcast receiver is done in this method instead of onPause() because
      * we want to get the broadcast even if the app went to background and then again resumed.
-     *
-     * See onCreate javadoc for mor info.
+     * See [onCreate] javadoc for mor info.
      */
     override fun onDestroy() {
         super.onDestroy()
