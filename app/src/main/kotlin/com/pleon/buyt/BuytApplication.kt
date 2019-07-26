@@ -44,8 +44,6 @@ class BuytApplication : Application() {
         }
     }
 
-    // Start in-app billing setup. This is asynchronous and the specified listener
-    // will be called once setup completes.
     private fun setupIabHelper() {
         iabHelper.startSetup { setupResult ->
             if (setupResult.isFailure) {
