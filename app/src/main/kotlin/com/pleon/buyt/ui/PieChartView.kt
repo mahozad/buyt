@@ -33,15 +33,15 @@ class PieChartView : View {
     private val leftTypeList = ArrayList<Sector>()
     private val rightTypeList = ArrayList<Sector>()
     private val itemPoints = ArrayList<Point>()
-    private var gap = 0f
-    private var innerRadius = 0f
+    private var gap = 4f
+    private var innerRadius = 0.6f
     private var offRadius = 0f
     private var offLine = 0f
     private var textAlpha: Int = 0
     private var firstPoint: Point? = null
     private var backGroundColor = Color.TRANSPARENT
     private var emptyColor = getColor(context, R.color.chartEmptyColor)
-    private var itemTextSize = 30
+    private var itemTextSize = sp(13.5f)
     private var textPadding = 8
     private val defaultStartAngle = -90
     private val pieCell = 0f
@@ -253,16 +253,16 @@ class PieChartView : View {
 
     fun addSector(sector: Sector) = sectors.add(sector)
 
+    fun setBackGroundColor(backGroundColor: Int) {
+        this.backGroundColor = backGroundColor
+    }
+
     fun setSectorGap(gap: Int) {
         this.gap = gap.toFloat()
     }
 
     fun setInnerRadius(innerRadius: Float) {
         this.innerRadius = innerRadius.coerceIn(0f, 1f)
-    }
-
-    fun setBackGroundColor(backGroundColor: Int) {
-        this.backGroundColor = backGroundColor
     }
 
     fun setItemTextSize(itemTextSize: Float) {
