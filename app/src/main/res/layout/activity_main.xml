@@ -33,7 +33,7 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/fragContainer"
         android:layout_width="0dp"
-        android:layout_height="263dp"
+        android:layout_height="@dimen/frag_container_height"
         app:cardBackgroundColor="@android:color/transparent"
         app:cardCornerRadius="8dp"
         app:cardElevation="0dp"

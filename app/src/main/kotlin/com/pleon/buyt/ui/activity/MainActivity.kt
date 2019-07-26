@@ -12,6 +12,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
 import com.pleon.buyt.R
 import com.pleon.buyt.component.ACTION_LOCATION_EVENT
@@ -29,10 +30,12 @@ import com.pleon.buyt.ui.fragment.ItemsFragment
 import com.pleon.buyt.ui.fragment.ItemsFragment.ItemListListener
 import com.pleon.buyt.ui.fragment.PREF_TASK_RECREATED
 import com.pleon.buyt.ui.state.AddItemState
+import com.pleon.buyt.ui.state.IdleState
 import com.pleon.buyt.ui.state.activity
 import com.pleon.buyt.util.SnackbarUtil.showSnackbar
 import com.pleon.buyt.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.dimen
 import org.jetbrains.anko.dip
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -121,11 +124,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
         when (item.itemId) {
             R.id.action_add -> {
                 viewModel.state = AddItemState
-
-                val layoutParams = fragContainer.layoutParams
-                layoutParams.height = dip(263)
-                fragContainer.layoutParams = layoutParams
-
+                resetFragContainerHeight()
                 // Note that because AddItemFragment has setHasOptionsMenu(true) every time the
                 // fragment manager adds or replaces that fragment, the onCreateOptionsMenu() of
                 // this activity is called so we had to animate views in there.
@@ -135,19 +134,18 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
                         .addToBackStack("AddItemFrag")
                         .commit()
             }
-
             R.id.action_add_store -> {
                 viewModel.shouldCompletePurchase = false
                 val createStoreDialog = CreateStoreDialogFragment.newInstance(viewModel.location!!)
                 createStoreDialog.show(supportFragmentManager, "CREATE_STORE_DIALOG")
             }
-
             R.id.action_reorder_skip -> viewModel.state.onFindingSkipped()
-
             android.R.id.home -> viewModel.state.onHomeClicked()
         }
         return true
     }
+
+    private fun resetFragContainerHeight() = fragContainer.layoutParams.apply { height = dimen(R.dimen.frag_container_height) }
 
     override fun onBackPressed() = viewModel.state.onBackClicked()
 
@@ -156,20 +154,19 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         viewModel.state.onSaveInstance(outState)
-        /* TODO: Use Saved State module for ViewModel instead.
-         *  See [https://developer.android.com/topic/libraries/architecture/viewmodel-savedstate] */
+        // TODO: Use ViewModel SavedState instead.
     }
 
     // NOTE: menu items are restored in onCreateOptionsMenu()
     override fun onRestoreInstanceState(savedState: Bundle) {
         super.onRestoreInstanceState(savedState)
         viewModel.state.onRestoreInstance(savedState)
-        if (savedState.containsKey(STATE_LOCATION)) {
-            // TODO: Restore the selecting state
-            // Bundle contains location but previous condition (viewModel.getState() == SELECTING)
-            // was not true, so this is restore from a PROCESS KILL
+        if (savedState.containsKey(STATE_LOCATION) && viewModel.state == IdleState) {
+            // Bundle contains location but we are not in SelectingState
+            // so this is restore from a PROCESS KILL
             // val location = savedState.getParcelable<Location>(STATE_LOCATION)
-            // bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
+            // TODO: Restore the selecting state
+            bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_CENTER
             showSnackbar(snbContainer, R.string.snackbar_message_start_over, LENGTH_INDEFINITE, android.R.string.ok)
         }
     }
