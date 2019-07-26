@@ -3,15 +3,14 @@ package com.pleon.buyt.ui
 import android.content.Context
 import android.graphics.Canvas
 import android.view.View
-import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewAnimationUtils.createCircularReveal
-import android.view.animation.AlphaAnimation
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.pleon.buyt.R
+import com.pleon.buyt.util.AnimationUtil.animateAlpha
 import com.pleon.buyt.util.AnimationUtil.animateIcon
 import kotlinx.android.synthetic.main.item_list_row.view.*
 import org.jetbrains.anko.dip
@@ -96,18 +95,15 @@ class TouchHelperCallback(cxt: Context, private var listener: ItemTouchHelperLis
         ItemTouchHelper.Callback.getDefaultUIUtil().onDraw(c, recyclerView, view, dX, dY, actionState, isCurrentlyActive)
     }
 
-    private fun showCircularReveal(viewHolder: BaseViewHolder, revealView: View) {
+    private fun showCircularReveal(viewHolder: BaseViewHolder, view: View) {
         viewHolder.delAnimating = true
+        view.visibility = VISIBLE
+        view.alpha = 1.0f
+        val finalRadius = calculateFinalRadius(view)
+        createCircularReveal(view, view.width / 2, view.height / 2, 0f, finalRadius)
+                .setDuration(200)
+                .start()
 
-        val finalRadius = calculateFinalRadius(revealView)
-        val centerX = revealView.width / 2
-        val centerY = revealView.height / 2
-
-        val anim = createCircularReveal(revealView, centerX, centerY, 0f, finalRadius)
-        revealView.alpha = 1.0f
-        revealView.visibility = VISIBLE
-        anim.duration = 200
-        anim.start()
     }
 
     private fun calculateFinalRadius(view: View): Float = with(view) {
@@ -117,10 +113,7 @@ class TouchHelperCallback(cxt: Context, private var listener: ItemTouchHelperLis
 
     private fun hideCircularReveal(viewHolder: BaseViewHolder, revealView: View) {
         viewHolder.delAnimating = false
-
-        val anim = AlphaAnimation(1.0f, 0.0f).also { it.duration = 100 }
-        revealView.startAnimation(anim)
-        revealView.visibility = INVISIBLE
+        animateAlpha(revealView, toAlpha = 0f, duration = 100)
     }
 
     // Set how much swipe is considered done. Default is 0.5f.

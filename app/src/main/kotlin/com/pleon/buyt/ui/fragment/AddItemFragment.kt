@@ -30,10 +30,10 @@ import com.pleon.buyt.model.Category
 import com.pleon.buyt.model.Item
 import com.pleon.buyt.model.Item.Quantity.Unit.*
 import com.pleon.buyt.ui.NumberInputWatcher
-import com.pleon.buyt.ui.activity.MainActivity
 import com.pleon.buyt.ui.dialog.DatePickerDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
+import com.pleon.buyt.util.AnimationUtil.animateAlpha
 import com.pleon.buyt.util.AnimationUtil.animateIcon
 import com.pleon.buyt.util.AnimationUtil.animateIconInfinitely
 import com.pleon.buyt.viewmodel.AddItemViewModel
@@ -153,12 +153,12 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         animateIconInfinitely(expandHandle.drawable)
         expandHandle.setOnClickListener {
             if (activity is FullScreen) {
-                expandHandle.animate().alpha(0f)
-                description_layout.animate().alpha(1f).startDelay = 200
-                urgent.animate().alpha(1f).startDelay = 300
-                bought.animate().alpha(1f).startDelay = 400
-                divider.animate().alpha(1f).startDelay = 400
-                (activity as MainActivity).expandToFullScreen(parentView)
+                animateAlpha(expandHandle, toAlpha = 0f)
+                animateAlpha(description_layout, toAlpha = 1f, startDelay = 200)
+                animateAlpha(urgent, toAlpha = 1f, startDelay = 300)
+                animateAlpha(bought, toAlpha = 1f, startDelay = 400)
+                animateAlpha(divider, toAlpha = 1f, startDelay = 400)
+                (activity as FullScreen).expandToFullScreen(parentView)
             }
         }
 

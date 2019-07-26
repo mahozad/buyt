@@ -90,8 +90,8 @@ class ItemsAdapter(private val app: Application) : Adapter<ItemHolder>() {
         }
     }
 
-    fun togglePriceInput(enabled: Boolean) {
-        selectionModeEnabled = enabled
+    fun togglePriceInput(isEnabled: Boolean) {
+        selectionModeEnabled = isEnabled
         notifyDataSetChanged()
     }
 
