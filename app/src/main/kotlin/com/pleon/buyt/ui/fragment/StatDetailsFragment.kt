@@ -55,22 +55,11 @@ class StatDetailsFragment : BaseFragment() {
     }
 
     private fun showStats(purchaseDetails: List<PurchaseDetail>) {
-        if (purchaseDetails.isEmpty()) {
-            adapter.items = emptyList() // required to remove previous items on period toggle
-            return
+        val list = mutableListOf<Any>()
+        purchaseDetails.groupBy { formatDate(it.purchase.date) }.forEach {
+            list.add(it.value.first().purchase.date)
+            list.addAll(it.value)
         }
-
-        // Add dates and details to a list together
-        var date = purchaseDetails[0].purchase.date
-        val list = mutableListOf<Any>(date)
-        for (detail in purchaseDetails) {
-            if (formatDate(detail.purchase.date) != formatDate(date)) {
-                list.add(detail.purchase.date)
-                date = detail.purchase.date
-            }
-            list.add(detail)
-        }
-
         adapter.items = list
     }
 }
