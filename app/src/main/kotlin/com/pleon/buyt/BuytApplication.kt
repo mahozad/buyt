@@ -21,26 +21,26 @@ private const val TAG = "BuytApplication"
 
 class BuytApplication : Application() {
 
-    private val iabHelper: IabHelper by inject()
-    private val subscriptionRepository: SubscriptionRepository by inject()
+    private val iabHelper by inject<IabHelper>()
+    private val subscriptionRepository by inject<SubscriptionRepository>()
 
     override fun onCreate() {
         super.onCreate()
-
         startKoin {
             modules(listOf(uiModule, appModule, serviceModule,
                     databaseModule, viewModelModule, repositoryModule))
             androidContext(this@BuytApplication)
         }
-
         // For more info about saving purchase status locally see [https://stackoverflow.com/q/14231859]
-        subscriptionRepository.getSubscriptionToken().observeForever { token ->
-            isPremium = token != null && BCrypt.checkpw("PREMIUM", token)
-            if (!isPremium) try {
-                setupIabHelper()
-            } catch (e: Exception) {
-                Log.d(TAG, "Exception occurred in Iab setup: $e")
-            }
+        subscriptionRepository.getSubscriptionToken().observeForever { checkSubscription(it) }
+    }
+
+    private fun checkSubscription(token: String?) {
+        isPremium = token != null && BCrypt.checkpw("PREMIUM", token)
+        if (!isPremium) try {
+            setupIabHelper()
+        } catch (e: Exception) {
+            Log.i(TAG, "Exception occurred in Iab setup: $e")
         }
     }
 
@@ -49,24 +49,23 @@ class BuytApplication : Application() {
     private fun setupIabHelper() {
         iabHelper.startSetup { setupResult ->
             if (setupResult.isFailure) {
-                Log.d(TAG, "Failed to setup Iab: $setupResult")
+                Log.i(TAG, "Failed to setup Iab: $setupResult")
             } else {
                 // Call queryInventoryAsync to find out what is already purchased
-                iabHelper.queryInventoryAsync { result, inventory ->
-                    onInventoryQueryResult(result, inventory)
-                }
+                iabHelper.queryInventoryAsync { result, inventory -> onQueryResult(result, inventory) }
             }
         }
     }
 
-    private fun onInventoryQueryResult(result: IabResult, inventory: Inventory) {
-        if (result.isFailure) {
-            Log.d(TAG, "Failed to query inventory: $result")
+    private fun onQueryResult(result: IabResult, inventory: Inventory?) {
+        if (inventory == null || result.isFailure) {
+            Log.i(TAG, "Failed to query inventory: $result")
         } else {
-            Log.d(TAG, "Query inventory was successful: $result")
             isPremium = inventory.hasPurchase(SKU_PREMIUM)
         }
     }
+
+    fun disposeIabHelper() = iabHelper.dispose()
 
     /**
      * This is for android N and higher.

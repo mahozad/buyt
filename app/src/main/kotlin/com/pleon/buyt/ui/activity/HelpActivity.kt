@@ -79,7 +79,7 @@ class HelpActivity : BaseActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (!iabHelper.handleActivityResult(requestCode, resultCode, data)) {
+        if (data != null && !iabHelper.handleActivityResult(requestCode, resultCode, data)) {
             // Not handled, so handle it ourselves (here's where you'd perform
             // any handling of activity results not related to in-app billing...
             super.onActivityResult(requestCode, resultCode, data)

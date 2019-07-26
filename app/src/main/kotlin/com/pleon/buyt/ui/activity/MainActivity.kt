@@ -243,13 +243,13 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
     override fun onDestroy() {
         super.onDestroy()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(locationReceiver)
-
-        // FIXME: This call is necessary but if the app is relaunched, the buy premium button in
-        //  help activity throws exception (maybe because of android cashing activities and objects)
-        // (application as BuytApplication).disposeIabHelper()
-
         // if activity being destroyed because of back button (not because of config change)
-        if (isFinishing) stopService(Intent(this, GpsService::class.java))
+        if (isFinishing) {
+            stopService(Intent(this, GpsService::class.java))
+            // FIXME: This call is necessary but if the app is relaunched, the buy premium button in
+            //  help activity throws exception (maybe because of android cashing activities and objects)
+            // (application as BuytApplication).disposeIabHelper()
+        }
     }
 
     override fun onEnableLocationDenied() = viewModel.state.onFindingSkipped()
