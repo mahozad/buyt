@@ -60,7 +60,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
     lateinit var reorderMenuItem: MenuItem
     lateinit var storeMenuItem: MenuItem
     lateinit var addMenuItem: MenuItem
-    lateinit var addStorePopup: PopupMenu
+    lateinit var addStorePopupMenu: PopupMenu
 
     override fun layout() = R.layout.activity_main
 
@@ -103,20 +103,16 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
         addMenuItem = menu.findItem(R.id.action_add)
         storeMenuItem = menu.findItem(R.id.found_stores)
         reorderMenuItem = menu.findItem(R.id.action_reorder_skip)
-
-        initializeAddStorePopup(storeMenuItem.actionView)
-        storeMenuItem.actionView.setOnClickListener {
-            if (!viewModel.isFindingSkipped && viewModel.foundStores.isNotEmpty()) addStorePopup.show()
-        }
-
+        initializeAddStorePopupMenu(storeMenuItem.actionView)
+        storeMenuItem.actionView.setOnClickListener { viewModel.state.onStoreMenuItemClicked() }
         viewModel.state.onOptionsMenuCreated()
         return true
     }
 
-    private fun initializeAddStorePopup(view: View) {
-        addStorePopup = PopupMenu(this, view)
-        addStorePopup.menuInflater.inflate(R.menu.menu_popup_add_store, addStorePopup.menu)
-        addStorePopup.setOnMenuItemClickListener(OnMenuItemClickListener {
+    private fun initializeAddStorePopupMenu(view: View) {
+        addStorePopupMenu = PopupMenu(this, view)
+        addStorePopupMenu.menuInflater.inflate(R.menu.menu_popup_add_store, addStorePopupMenu.menu)
+        addStorePopupMenu.setOnMenuItemClickListener(OnMenuItemClickListener {
             return@OnMenuItemClickListener onOptionsItemSelected(it)
         })
     }

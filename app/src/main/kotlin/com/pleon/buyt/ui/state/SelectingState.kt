@@ -48,6 +48,10 @@ object SelectingState : State() {
         }
     }
 
+    override fun onStoreMenuItemClicked() = with(activity) {
+        if (!viewModel.isFindingSkipped && viewModel.foundStores.isNotEmpty()) addStorePopupMenu.show()
+    }
+
     private fun completeBuy(store: Store) {
         // With toList(), a new list is passed to buy() so clearing selected items wont effect it
         activity.viewModel.buy(activity.itemsFragment.selectedItems.toList(), store, Date())

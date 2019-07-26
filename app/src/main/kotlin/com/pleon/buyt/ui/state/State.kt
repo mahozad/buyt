@@ -49,6 +49,8 @@ abstract class State {
 
     open fun onItemListChanged(isListEmpty: Boolean) {}
 
+    open fun onStoreMenuItemClicked(){}
+
     protected fun shiftToIdleState(@DrawableRes fabResId: Int) = with(activity) {
         bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_CENTER
         bottom_bar.setNavigationIcon(R.drawable.avd_cancel_nav)
