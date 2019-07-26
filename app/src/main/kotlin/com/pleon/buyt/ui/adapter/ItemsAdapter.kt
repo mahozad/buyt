@@ -163,8 +163,7 @@ class ItemsAdapter(private val app: Application) : Adapter<ItemHolder>() {
             } else {
                 itemView.price_container.visibility = GONE
                 selectedItems.remove(items[adapterPosition])
-                val item = items[adapterPosition]
-                item.totalPrice = 0
+                items[adapterPosition].totalPrice = 0
                 itemView.price.text?.clear()
             }
         }
