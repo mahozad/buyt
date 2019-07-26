@@ -10,7 +10,7 @@ import com.pleon.buyt.database.dto.PurchaseDetail
 import com.pleon.buyt.ui.DateHeaderDecoration
 import com.pleon.buyt.ui.DateHeaderDecoration.HasStickyHeader
 import com.pleon.buyt.ui.adapter.PurchaseDetailAdapter
-import com.pleon.buyt.util.AnimationUtil
+import com.pleon.buyt.util.AnimationUtil.animateAlpha
 import com.pleon.buyt.util.FormatterUtil.formatDate
 import com.pleon.buyt.viewmodel.StatsViewModel
 import kotlinx.android.synthetic.main.fragment_stat_details.*
@@ -31,7 +31,7 @@ class StatDetailsFragment : BaseFragment() {
         recyclerView.addOnScrollListener(recyclerViewScrollListener())
         viewModel.purchaseDetails.observe(viewLifecycleOwner, Observer { purchaseDetails ->
             showStats(purchaseDetails)
-            AnimationUtil.animateAlpha(emptyHint, if (purchaseDetails.isEmpty()) 1f else 0f)
+            animateAlpha(emptyHint, if (purchaseDetails.isEmpty()) 1f else 0f, duration = 0)
         })
     }
 
