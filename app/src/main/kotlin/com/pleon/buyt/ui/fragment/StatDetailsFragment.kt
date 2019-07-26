@@ -27,31 +27,25 @@ class StatDetailsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedState: Bundle?) {
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(DateHeaderDecoration(recyclerView, adapter))
-        setScrollListener()
+        // For date headers to be shown correctly and smoothly, this listener is required
+        recyclerView.addOnScrollListener(recyclerViewScrollListener())
         viewModel.purchaseDetails.observe(viewLifecycleOwner, Observer { purchaseDetails ->
             showStats(purchaseDetails)
             AnimationUtil.animateAlpha(emptyHint, if (purchaseDetails.isEmpty()) 1f else 0f)
         })
     }
 
-    private fun setScrollListener() {
-        // For date headers to be shown correctly and smoothly, this listener is required
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                // because of the viewHolder reuse, upcoming items alpha might be 0 so we set it 1
-                // Note that getChildAt() is based on the visible items not real item positions
-                var i = 0
-                while (layoutManager.getChildAt(i) != null) {
-                    layoutManager.getChildAt(i)!!.alpha = 1f
-                    i++
-                }
-                val firstItem = layoutManager.findFirstVisibleItemPosition()
-                if (firstItem >= 0 && (recyclerView.adapter as HasStickyHeader).isHeader(firstItem)) {
-                    layoutManager.getChildAt(0)!!.alpha = 0f
-                }
+    private fun recyclerViewScrollListener() = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+            // Because of the viewHolder reuse, upcoming items alpha might be 0 so we set it 1
+            // Note that getChildAt() is based on the visible items not real item positions
+            for (i in 0..recyclerView.childCount) layoutManager.getChildAt(i)?.alpha = 1f
+            val firstItem = layoutManager.findFirstVisibleItemPosition()
+            if (firstItem >= 0 && (recyclerView.adapter as HasStickyHeader).isHeader(firstItem)) {
+                layoutManager.getChildAt(0)?.alpha = 0f
             }
-        })
+        }
     }
 
     private fun showStats(purchaseDetails: List<PurchaseDetail>) {
