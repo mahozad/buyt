@@ -140,7 +140,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
                 val createStoreDialog = CreateStoreDialogFragment.newInstance(viewModel.location!!)
                 createStoreDialog.show(supportFragmentManager, "CREATE_STORE_DIALOG")
             }
-            R.id.action_reorder_skip -> viewModel.state.onFindingSkipped()
+            R.id.action_reorder_skip -> viewModel.state.onReorderSkipClicked()
             android.R.id.home -> viewModel.state.onHomeClicked()
         }
         return true
@@ -197,7 +197,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
         }
     }
 
-    override fun onEnableLocationDenied() = viewModel.state.onFindingSkipped()
+    override fun onEnableLocationDenied() = viewModel.state.skipFinding()
 
     override fun onStoreCreated(store: Store) = viewModel.state.onStoreCreated(store)
 

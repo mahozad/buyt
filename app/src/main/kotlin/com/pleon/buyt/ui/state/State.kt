@@ -10,6 +10,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
+import androidx.lifecycle.Observer
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
 import com.pleon.buyt.R
 import com.pleon.buyt.model.Store
@@ -27,7 +28,7 @@ abstract class State {
 
     open fun onBackClicked() {}
 
-    open fun onFindingSkipped() {}
+    open fun onReorderSkipClicked() {}
 
     open fun onOptionsMenuCreated() {}
 
@@ -49,7 +50,13 @@ abstract class State {
 
     open fun onItemListChanged(isListEmpty: Boolean) {}
 
-    open fun onStoreMenuItemClicked(){}
+    open fun onStoreMenuItemClicked() {}
+
+    fun skipFinding() = with(activity) {
+        viewModel.shouldAnimateNavIcon = true
+        viewModel.isFindingSkipped = true
+        viewModel.allStores.observe(this, Observer<List<Store>> { FindingState.onStoresFound(it) })
+    }
 
     protected fun shiftToIdleState(@DrawableRes fabResId: Int) = with(activity) {
         bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_CENTER

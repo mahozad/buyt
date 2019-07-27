@@ -36,6 +36,10 @@ object IdleState : State(), KoinComponent {
         })
     }
 
+    override fun onReorderSkipClicked() {
+        if (!activity.itemsFragment.isListEmpty) activity.itemsFragment.toggleDragMode()
+    }
+
     private fun findLocation() {
         // Dangerous permissions should be checked EVERY time
         if (ContextCompat.checkSelfPermission(activity, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
@@ -80,10 +84,6 @@ object IdleState : State(), KoinComponent {
 
         // Make sure the bottomAppBar is not hidden and make it not hide on scroll
         // new BottomAppBar.Behavior().slideUp(mBottomAppBar);
-    }
-
-    override fun onFindingSkipped() {
-        if (!activity.itemsFragment.isListEmpty) activity.itemsFragment.toggleDragMode()
     }
 
     override fun onHomeClicked() {

@@ -19,11 +19,7 @@ import kotlinx.android.synthetic.main.snackbar_container.*
 
 object FindingState : State() {
 
-    override fun onFindingSkipped() = with(activity) {
-        viewModel.shouldAnimateNavIcon = true
-        viewModel.isFindingSkipped = true
-        viewModel.allStores.observe(this, Observer<List<Store>> { onStoresFound(it) })
-    }
+    override fun onReorderSkipClicked() = skipFinding()
 
     override fun onBackClicked() {
         super.shiftToIdleState(fabResId = R.drawable.avd_buyt_reverse)
