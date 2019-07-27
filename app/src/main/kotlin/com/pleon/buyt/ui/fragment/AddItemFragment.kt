@@ -67,7 +67,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
     private val viewModel by viewModel<AddItemViewModel>()
     private lateinit var unitBtns: Array<MaterialButton>
     private var selectCategoryTxvi: TextView? = null
-    private lateinit var nameCats: Map<String, String>
+    private lateinit var nameCats: Map<String, Category>
     private val isBoughtChecked get() = bought.isChecked
 
     private val price: Long
@@ -130,16 +130,9 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
     override fun onViewCreated(view: View, savedState: Bundle?) {
         unitBtns = arrayOf(btn1, btn2, btn3)
         setColorOfAllUnits(colorUnfocused) // because sometimes the color is not right
-
         setHasOptionsMenu(true) // for onCreateOptionsMenu() to be called
 
-        // Setup auto complete for item name
-        viewModel.itemNameCats.observe(viewLifecycleOwner, Observer { nameCats ->
-            this.nameCats = nameCats
-            val adapter = ArrayAdapter(context!!,
-                    android.R.layout.simple_dropdown_item_1line, nameCats.keys.toList())
-            name.setAdapter(adapter)
-        })
+        setupItemNameAutoComplete()
 
         val priceSuffix = getString(R.string.input_suffix_price)
         priceEd.addTextChangedListener(NumberInputWatcher(price_layout, priceEd, priceSuffix))
@@ -202,6 +195,15 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
             override fun afterTextChanged(s: Editable?) = onDescriptionChanged()
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+    }
+
+    private fun setupItemNameAutoComplete() {
+        viewModel.itemNameCats.observe(viewLifecycleOwner, Observer { nameCats ->
+            this.nameCats = nameCats
+            val adapter = ArrayAdapter(context!!,
+                    android.R.layout.simple_dropdown_item_1line, nameCats.keys.toList())
+            name.setAdapter(adapter)
         })
     }
 
@@ -407,15 +409,14 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
             name_layout.error = null // clear error if exists
             setCounterEnabledIfInputLong(name_layout)
 
-            if (!isBoughtChecked) try {
-                val cat = Category.valueOf(nameCats.getValue(itemName))
-                viewModel.category = cat
-                selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                        cat.imageRes, 0, 0, 0
-                )
-                selectCategoryTxvi!!.setText(cat.nameRes)
-            } catch (e: Exception) {
-                // Do nothing
+            if (!isBoughtChecked) {
+                nameCats[itemName]?.let {
+                    viewModel.category = it
+                    selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                            it.imageRes, 0, 0, 0
+                    )
+                    selectCategoryTxvi!!.setText(it.nameRes)
+                }
             }
         }
     }
