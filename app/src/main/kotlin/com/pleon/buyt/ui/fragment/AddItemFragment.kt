@@ -3,20 +3,19 @@ package com.pleon.buyt.ui.fragment
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.Editable
-import android.text.TextWatcher
 import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.View.*
-import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.EditorInfo.IME_ACTION_DONE
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.TextView
+import androidx.annotation.AttrRes
 import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.ContextCompat.getColorStateList
 import androidx.core.widget.CompoundButtonCompat
@@ -31,6 +30,7 @@ import com.pleon.buyt.model.Category
 import com.pleon.buyt.model.Item
 import com.pleon.buyt.model.Item.Quantity.Unit.*
 import com.pleon.buyt.ui.NumberInputWatcher
+import com.pleon.buyt.ui.TextWatcherAdapter
 import com.pleon.buyt.ui.dialog.DatePickerDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
@@ -56,59 +56,19 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
     }
 
     var isScrollLocked = true
-
     // These colors vary based on the app theme
     @ColorRes private var colorError = 0
     @ColorRes private var colorSurface = 0
     @ColorRes private var colorOnSurface = 0
     @ColorRes private var colorUnfocused = 0
     @ColorRes private var colorUnfocusedBorder = 0
-
     private val viewModel by viewModel<AddItemViewModel>()
-    private lateinit var unitBtns: Array<MaterialButton>
-    private var selectCategoryTxvi: TextView? = null
-    private lateinit var nameCats: Map<String, Category>
     private val isBoughtChecked get() = bought.isChecked
-
-    private val price: Long
-        get() = try {
-            priceEd.text.toString().replace(Regex("[^\\d]"), "").toLong()
-        } catch (e: NumberFormatException) {
-            0
-        }
-
-    private val quantity: Item.Quantity
-        get() {
-            val quantity = quantityEd.text.toString().replace(Regex("[^\\d]"), "").toLong()
-            val unit = when (btnGrp.checkedButtonId) {
-                R.id.btn1 -> UNIT
-                R.id.btn2 -> KILOGRAM
-                else -> GRAM
-            }
-            return Item.Quantity(quantity, unit)
-        }
+    private var selectCategoryTxvi: TextView? = null
+    private lateinit var unitBtns: Array<MaterialButton>
+    private lateinit var nameCats: Map<String, Category>
 
     override fun layout() = R.layout.fragment_add_item
-
-    override fun onCreate(savedState: Bundle?) {
-        super.onCreate(savedState)
-
-        val typedValue = TypedValue()
-        context!!.theme.resolveAttribute(R.attr.colorError, typedValue, true)
-        colorError = typedValue.resourceId
-
-        context!!.theme.resolveAttribute(R.attr.colorSurface, typedValue, true)
-        colorSurface = typedValue.resourceId
-
-        context!!.theme.resolveAttribute(R.attr.colorOnSurface, typedValue, true)
-        colorOnSurface = typedValue.resourceId
-
-        context!!.theme.resolveAttribute(R.attr.unitUnfocusedColor, typedValue, true)
-        colorUnfocused = typedValue.resourceId
-
-        context!!.theme.resolveAttribute(R.attr.unitBorderUnfocusedColor, typedValue, true)
-        colorUnfocusedBorder = typedValue.resourceId
-    }
 
     /**
      * Your fragments can contribute menu items to the activity's Options Menu (and, consequently,
@@ -129,73 +89,74 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
      */
     override fun onViewCreated(view: View, savedState: Bundle?) {
         unitBtns = arrayOf(btn1, btn2, btn3)
-        setColorOfAllUnits(colorUnfocused) // because sometimes the color is not right
+        colorError = resolveThemeAttribute(R.attr.colorError)
+        colorSurface = resolveThemeAttribute(R.attr.colorSurface)
+        colorOnSurface = resolveThemeAttribute(R.attr.colorOnSurface)
+        colorUnfocused = resolveThemeAttribute(R.attr.unitUnfocusedColor)
+        colorUnfocusedBorder = resolveThemeAttribute(R.attr.unitBorderUnfocusedColor)
         setHasOptionsMenu(true) // for onCreateOptionsMenu() to be called
-
+        setColorOfAllUnits(colorUnfocused) // because sometimes the color is not right
         setupItemNameAutoComplete()
-
-        val priceSuffix = getString(R.string.input_suffix_price)
-        priceEd.addTextChangedListener(NumberInputWatcher(price_layout, priceEd, priceSuffix))
-        quantityEd.addTextChangedListener(NumberInputWatcher(quantity_layout, quantityEd))
-        quantityEd.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                onDonePressed()
-                return@setOnEditorActionListener true
-            }
-            return@setOnEditorActionListener false
-        }
-
+        setupBoughtButton()
+        setupListeners()
         scrollView.isVerticalScrollBarEnabled = false
-        scrollView.setOnTouchListener { _, _ ->
-            scrollView.isVerticalScrollBarEnabled = !isScrollLocked
-            return@setOnTouchListener isScrollLocked
-        }
-
         animateIconInfinitely(expandHandle.drawable)
-        expandHandle.setOnClickListener {
-            if (activity is FullScreen) {
-                animateAlpha(expandHandle, toAlpha = 0f)
-                animateAlpha(description_layout, toAlpha = 1f, startDelay = 200)
-                animateAlpha(urgent, toAlpha = 1f, startDelay = 300)
-                animateAlpha(bought, toAlpha = 1f, startDelay = 400)
-                animateAlpha(divider, toAlpha = 1f, startDelay = 400)
-                (activity as FullScreen).expandToFullScreen(parentView)
-            }
-        }
+    }
 
-        bought.apply {
-            // To reverse position of its checkbox icon
-            if (Locale.getDefault().language == "fa") layoutDirection = LAYOUT_DIRECTION_LTR
-            isEnabled = isPremium
-            setText(if (isPremium) R.string.checkbox_purchased else R.string.checkbox_purchased_disabled)
-            if (!isPremium) {
-                buttonTintList = getColorStateList(context, R.color.unit_btn_unfocused_color)
-                setTextColor(getColor(context, R.color.unit_btn_unfocused_color))
-            }
-        }
+    private fun resolveThemeAttribute(@AttrRes attr: Int): Int {
+        val typedValue = TypedValue()
+        context?.theme?.resolveAttribute(attr, typedValue, true)
+        return typedValue.resourceId
+    }
 
+    private fun setupBoughtButton() = bought.apply {
+        // To reverse position of its checkbox icon
+        if (Locale.getDefault().language == "fa") layoutDirection = LAYOUT_DIRECTION_LTR
+        if (!isPremium) {
+            isEnabled = false
+            buttonTintList = getColorStateList(context, R.color.unit_btn_unfocused_color)
+            setTextColor(getColor(context, R.color.unit_btn_unfocused_color))
+            setText(R.string.checkbox_purchased_disabled)
+        }
+    }
+
+    private fun setupListeners() {
+        priceEd.addTextChangedListener(NumberInputWatcher(price_layout, priceEd, getString(R.string.input_suffix_price)))
+        quantityEd.addTextChangedListener(NumberInputWatcher(quantity_layout, quantityEd))
+        expandHandle.setOnClickListener { expandToFullScreen() }
         dateEd.setOnClickListener { onDateClicked() }
         dateEd.setOnFocusChangeListener { _, hasFocus -> onDateGainedFocus(hasFocus) }
         urgent.setOnCheckedChangeListener { _, isChecked -> onUrgentToggled(isChecked) }
         bought.setOnCheckedChangeListener { _, isChecked -> onBoughtToggled(isChecked) }
         quantityEd.setOnFocusChangeListener { _, hasFocus -> onQuantityFocusChanged(hasFocus) }
-        name.addTextChangedListener(object : TextWatcher {
+        quantityEd.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == IME_ACTION_DONE) onDonePressed()
+            return@setOnEditorActionListener true
+        }
+        scrollView.setOnTouchListener { _, _ ->
+            scrollView.isVerticalScrollBarEnabled = !isScrollLocked
+            return@setOnTouchListener isScrollLocked
+        }
+        name.addTextChangedListener(object : TextWatcherAdapter() {
             override fun afterTextChanged(s: Editable?) = onNameChanged()
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
-
-        quantityEd.addTextChangedListener(object : TextWatcher {
+        quantityEd.addTextChangedListener(object : TextWatcherAdapter() {
             override fun afterTextChanged(s: Editable?) = onQuantityChanged()
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
-
-        description.addTextChangedListener(object : TextWatcher {
+        description.addTextChangedListener(object : TextWatcherAdapter() {
             override fun afterTextChanged(s: Editable?) = onDescriptionChanged()
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
+    }
+
+    private fun expandToFullScreen() {
+        if (activity is FullScreen) {
+            animateAlpha(expandHandle, toAlpha = 0f)
+            animateAlpha(description_layout, toAlpha = 1f, startDelay = 200)
+            animateAlpha(urgent, toAlpha = 1f, startDelay = 300)
+            animateAlpha(bought, toAlpha = 1f, startDelay = 400)
+            animateAlpha(divider, toAlpha = 1f, startDelay = 400)
+            (activity as FullScreen).expandToFullScreen(parentView)
+        }
     }
 
     private fun setupItemNameAutoComplete() {
@@ -255,6 +216,22 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
             selectDialog.show(activity!!.supportFragmentManager, "SELECT_DIALOG")
         }
         return true
+    }
+
+    private fun price(): Long = try {
+        priceEd.text.toString().replace(Regex("[^\\d]"), "").toLong()
+    } catch (e: NumberFormatException) {
+        0
+    }
+
+    private fun quantity(): Item.Quantity {
+        val quantity = quantityEd.text.toString().replace(Regex("[^\\d]"), "").toLong()
+        val unit = when (btnGrp.checkedButtonId) {
+            R.id.btn1 -> UNIT
+            R.id.btn2 -> KILOGRAM
+            else -> GRAM
+        }
+        return Item.Quantity(quantity, unit)
     }
 
     /* FIXME: If date picker dialog is shown (at least once) and a configuration change happens
@@ -359,7 +336,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         if (selectCategoryTxvi != null) { // to fix bug on config change
             selectCategoryTxvi!!.text = if (checked) getString(R.string.menu_title_select_store) else getString(viewModel.category.nameRes)
             selectCategoryTxvi!!.setTextColor(getColor(context!!, colorOnSurface))
-            @DrawableRes val icon = if (checked) R.drawable.avd_store_error else R.drawable.ic_item_grocery
+            val icon = if (checked) R.drawable.avd_store_error else R.drawable.ic_item_grocery
             selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(
                     icon, 0, 0, 0
             )
@@ -398,7 +375,6 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         if (itemName.isNotEmpty()) {
             name_layout.error = null // clear error if exists
             setCounterEnabledIfInputLong(name_layout)
-
             if (!isBoughtChecked) {
                 nameCats[itemName]?.let {
                     viewModel.category = it
@@ -426,36 +402,34 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
     }
 
     fun onDonePressed() {
-        val validated = validateFields()
-
-        if (validated) {
+        if (validateFields()) {
             val itemName = name.text.toString()
-            val item = Item(itemName, quantity, viewModel.category, urgent.isChecked, bought.isChecked)
-
+            val item = Item(itemName, quantity(), viewModel.category, urgent.isChecked, bought.isChecked)
             if (!isEmpty(description)) item.description = description.text.toString()
-            if (isBoughtChecked && !isEmpty(priceEd)) item.totalPrice = price
-
+            if (isBoughtChecked && !isEmpty(priceEd)) item.totalPrice = price()
             viewModel.addItem(item, isBoughtChecked)
-
-            // Reset fields
-            name.text.clear()
-            name_layout.isCounterEnabled = false
-            name.requestFocus()
-            quantityEd.setText("1")
-            btnGrp.check(R.id.btn1)
-            setColorOfAllUnits(colorUnfocused)
-            selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                    R.drawable.ic_item_grocery, 0, 0, 0
-            )
-            selectCategoryTxvi!!.setTextColor(getColor(context!!, colorOnSurface))
-            selectCategoryTxvi!!.text = getString(Category.GROCERY.nameRes)
-            viewModel.category = Category.GROCERY
-            viewModel.store = null
-            description.text?.clear()
-            priceEd.text?.clear()
-            urgent.isChecked = false
-            bought.isChecked = false
+            resetFields()
         }
+    }
+
+    private fun resetFields() {
+        name.text.clear()
+        name_layout.isCounterEnabled = false
+        name.requestFocus()
+        quantityEd.setText("1")
+        btnGrp.check(R.id.btn1)
+        setColorOfAllUnits(colorUnfocused)
+        selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                R.drawable.ic_item_grocery, 0, 0, 0
+        )
+        selectCategoryTxvi!!.setTextColor(getColor(context!!, colorOnSurface))
+        selectCategoryTxvi!!.text = getString(Category.GROCERY.nameRes)
+        viewModel.category = Category.GROCERY
+        viewModel.store = null
+        description.text?.clear()
+        priceEd.text?.clear()
+        urgent.isChecked = false
+        bought.isChecked = false
     }
 
     override fun onSelected(index: Int) {
@@ -490,7 +464,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
             setColorOfAllUnits(colorError)
             validated = false
         }
-        if (bought.isChecked && (isEmpty(priceEd) || price == 0L)) {
+        if (bought.isChecked && (isEmpty(priceEd) || price() == 0L)) {
             price_layout.error = getString(R.string.input_error_price)
             validated = false
         }
