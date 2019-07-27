@@ -22,7 +22,7 @@ class AddItemViewModel(app: Application, val repository: AddItemRepository) : An
     var storeList: List<Store>? = null
     val allStores get() = repository.getAllStores()
     val itemNameCats: LiveData<Map<String, Category>> = map(repository.itemNameCats, Function { dbNameCats ->
-        return@Function defaultNameCats + dbNameCats.associateBy({ it.name }, { cat(it.category) })
+        return@Function defaultNameCats + dbNameCats.associateBy({ it.name }, { it.category })
     })
 
     private val defaultNameCats by lazy {

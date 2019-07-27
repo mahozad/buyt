@@ -1,3 +1,5 @@
 package com.pleon.buyt.database.dto
 
-class NameCat(val name: String, val category: String)
+import com.pleon.buyt.model.Category
+
+class NameCat(val name: String, val category: Category)
