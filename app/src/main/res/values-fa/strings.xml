@@ -8,8 +8,8 @@
     <string name="input_def_purchase_date">امروز</string>
     <string name="input_suffix_price">" تومان"</string>
     <string name="dialog_action_go_to_settings">برو به تنظیمات</string>
-    <string name="snackbar_message_item_deleted">کالای \"%1$s\" حذف شد</string>
-    <string name="snackbar_message_store_deleted">مغازه \"%1$s\" حذف شد</string>
+    <string name="snackbar_message_item_deleted">کالای «%1$s» حذف شد</string>
+    <string name="snackbar_message_store_deleted">مغازه «%1$s» حذف شد</string>
     <string name="snackbar_action_undo">لغو</string>
     <string name="snackbar_message_cart_empty">لیست خرید خالی است</string>
     <string name="snackbar_message_no_item_selected">کالایی انتخاب نشده است</string>
