@@ -16,11 +16,14 @@ import java.util.*
 
 class AddItemViewModel(app: Application, val repository: AddItemRepository) : AndroidViewModel(app) {
 
+    init {
+        repository.getAllStores().observeForever { storeList = it }
+    }
+
+    lateinit var storeList: List<Store>
     var category = GROCERY
     var purchaseDate = Date()
     var store: Store? = null
-    var storeList: List<Store>? = null
-    val allStores get() = repository.getAllStores()
     val itemNameCats: LiveData<Map<String, Category>> = map(repository.itemNameCats, Function { dbNameCats ->
         return@Function defaultNameCats + dbNameCats.associateBy({ it.name }, { it.category })
     })

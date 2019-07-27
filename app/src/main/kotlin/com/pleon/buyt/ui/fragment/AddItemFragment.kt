@@ -240,29 +240,19 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_item_category) {
-            // FIXME: initialize this only once
             val selectionList = ArrayList<SelectDialogRow>() // dialog requires ArrayList
+            val dialogTitle: Int
             if (isBoughtChecked) {
-                viewModel.allStores.observe(viewLifecycleOwner, Observer { stores ->
-                    viewModel.storeList = stores
-                    selectionList.clear()
-                    for (store in stores) {
-                        val selection = SelectDialogRow(store.name, store.category.storeImageRes)
-                        selectionList.add(selection)
-                    }
-                    val selectStoreDialog = SelectDialogFragment
-                            .newInstance(this, R.string.dialog_title_select_store, selectionList)
-                    selectStoreDialog.show(activity!!.supportFragmentManager, "SELECT_ITEM_DIALOG")
-                })
+                for (store in viewModel.storeList)
+                    selectionList.add(SelectDialogRow(store.name, store.category.storeImageRes))
+                dialogTitle = R.string.dialog_title_select_store
             } else {
-                for (category in Category.values()) {
-                    val selection = SelectDialogRow(getString(category.nameRes), category.imageRes)
-                    selectionList.add(selection)
-                }
-                val selectStoreDialog = SelectDialogFragment
-                        .newInstance(this, R.string.dialog_title_select_cat, selectionList)
-                selectStoreDialog.show(activity!!.supportFragmentManager, "SELECT_ITEM_DIALOG")
+                for (category in Category.values())
+                    selectionList.add(SelectDialogRow(getString(category.nameRes), category.imageRes))
+                dialogTitle = R.string.dialog_title_select_cat
             }
+            val selectDialog = SelectDialogFragment.newInstance(this, dialogTitle, selectionList)
+            selectDialog.show(activity!!.supportFragmentManager, "SELECT_DIALOG")
         }
         return true
     }
