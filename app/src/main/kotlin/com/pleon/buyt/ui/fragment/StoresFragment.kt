@@ -21,6 +21,7 @@ import com.pleon.buyt.util.AnimationUtil.animateAlpha
 import com.pleon.buyt.util.SnackbarUtil.showUndoSnackbar
 import com.pleon.buyt.viewmodel.StoresViewModel
 import kotlinx.android.synthetic.main.fragment_store_list.*
+import kotlinx.android.synthetic.main.snackbar_container.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf

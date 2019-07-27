@@ -34,11 +34,6 @@
         app:chipEndPadding="8dp"
         app:chipStartPadding="8dp" />
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/snbContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="86dp" />
+    <include layout="@layout/snackbar_container" />
 
 </FrameLayout>

@@ -41,19 +41,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/snbContainer"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:elevation="2dp"
-        app:layout_constraintBottom_toTopOf="@id/bar_container"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    <include layout="@layout/snackbar_container" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/bar_container"
         android:layout_width="match_parent"
-        android:layout_height="86dp"
+        android:layout_height="100dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
