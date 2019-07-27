@@ -12,11 +12,9 @@ import com.pleon.buyt.ui.BaseViewHolder
 import com.pleon.buyt.ui.DateHeaderDecoration.HasStickyHeader
 import com.pleon.buyt.ui.adapter.PurchaseDetailAdapter.ItemType.DATE
 import com.pleon.buyt.ui.adapter.PurchaseDetailAdapter.ItemType.ITEM
-import com.pleon.buyt.util.FormatterUtil.formatDate
 import com.pleon.buyt.util.FormatterUtil.formatPrice
 import kotlinx.android.synthetic.main.date_header.view.*
 import kotlinx.android.synthetic.main.purchase_detail.view.*
-import java.util.*
 
 class PurchaseDetailAdapter(private val app: Application) : Adapter<ViewHolder>(), HasStickyHeader {
 
@@ -31,7 +29,7 @@ class PurchaseDetailAdapter(private val app: Application) : Adapter<ViewHolder>(
     /**
      * Note that unlike in ListView adapters, types don't have to be contiguous
      */
-    override fun getItemViewType(pos: Int) = if (items[pos] is Date) DATE.ordinal else ITEM.ordinal
+    override fun getItemViewType(pos: Int) = if (items[pos] is String) DATE.ordinal else ITEM.ordinal
 
     override fun getItemCount() = items.size
 
@@ -46,7 +44,7 @@ class PurchaseDetailAdapter(private val app: Application) : Adapter<ViewHolder>(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (holder.itemViewType) {
             ITEM.ordinal -> (holder as PurchaseHolder).bindItem(items[position] as PurchaseDetail)
-            else -> (holder as DateHolder).bindItem(items[position] as Date)
+            else -> (holder as DateHolder).bindItem(items[position] as String)
         }
     }
 
@@ -64,12 +62,12 @@ class PurchaseDetailAdapter(private val app: Application) : Adapter<ViewHolder>(
     }
 
     override fun bindHeaderData(header: View, headerPosition: Int) {
-        header.headerText.text = formatDate(items[headerPosition] as Date)
+        header.headerText.text = items[headerPosition] as String
     }
 
     override fun getHeaderLayout(headerPosition: Int) = R.layout.date_header
 
-    override fun isHeader(itemPosition: Int) = items[itemPosition] is Date
+    override fun isHeader(itemPosition: Int) = items[itemPosition] is String
 
     inner class PurchaseHolder(view: View) : BaseViewHolder(view) {
         fun bindItem(purchaseDetail: PurchaseDetail) {
@@ -86,8 +84,6 @@ class PurchaseDetailAdapter(private val app: Application) : Adapter<ViewHolder>(
     }
 
     inner class DateHolder(view: View) : BaseViewHolder(view) {
-        fun bindItem(date: Date) {
-            itemView.headerText.text = formatDate(date)
-        }
+        fun bindItem(date: String) = itemView.headerText.setText(date)
     }
 }

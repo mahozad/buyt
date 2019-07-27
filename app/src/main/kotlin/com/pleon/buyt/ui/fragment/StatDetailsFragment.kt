@@ -37,13 +37,13 @@ class StatDetailsFragment : BaseFragment() {
 
     private fun recyclerViewScrollListener() = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+            val layoutMgr = recyclerView.layoutManager as LinearLayoutManager
             // Because of the viewHolder reuse, upcoming items alpha might be 0 so we set it 1
             // Note that getChildAt() is based on the visible items not real item positions
-            for (i in 0..recyclerView.childCount) layoutManager.getChildAt(i)?.alpha = 1f
-            val firstItem = layoutManager.findFirstVisibleItemPosition()
+            for (i in 0..recyclerView.childCount) layoutMgr.getChildAt(i)?.alpha = 1f
+            val firstItem = layoutMgr.findFirstVisibleItemPosition()
             if (firstItem >= 0 && (recyclerView.adapter as HasStickyHeader).isHeader(firstItem)) {
-                layoutManager.getChildAt(0)?.alpha = 0f
+                layoutMgr.getChildAt(0)?.alpha = 0f
             }
         }
     }
@@ -51,7 +51,7 @@ class StatDetailsFragment : BaseFragment() {
     private fun showStats(purchaseDetails: List<PurchaseDetail>) {
         val list = mutableListOf<Any>()
         purchaseDetails.groupBy { formatDate(it.purchase.date) }.forEach {
-            list.add(it.value.first().purchase.date)
+            list.add(it.key)
             list.addAll(it.value)
         }
         adapter.items = list
