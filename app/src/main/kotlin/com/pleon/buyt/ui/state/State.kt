@@ -9,7 +9,6 @@ import android.view.View.VISIBLE
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.DrawableRes
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
 import com.pleon.buyt.R
@@ -55,10 +54,10 @@ abstract class State {
     fun skipFinding() = with(activity) {
         viewModel.shouldAnimateNavIcon = true
         viewModel.isFindingSkipped = true
-        viewModel.allStores.observe(this, Observer<List<Store>> { FindingState.onStoresFound(it) })
+        viewModel.allStores.observe(this, Observer { FindingState::onStoresFound })
     }
 
-    protected fun shiftToIdleState(@DrawableRes fabResId: Int) = with(activity) {
+    protected fun shiftToIdleState(fabResId: Int) = with(activity) {
         bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_CENTER
         bottom_bar.setNavigationIcon(R.drawable.avd_cancel_nav)
         animateIcon(bottom_bar.navigationIcon!!)

@@ -84,7 +84,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
 
         activity = this
         broadcastMgr.registerReceiver(locationReceiver, IntentFilter(ACTION_LOCATION_EVENT))
-        locationReceiver.getLocation().observe(this, Observer { viewModel.state.onLocationFound(it) })
+        locationReceiver.getLocation().observe(this, Observer { viewModel.state::onLocationFound })
         itemsFragment = supportFragmentManager.findFragmentById(R.id.itemsFragment) as ItemsFragment
 
         scrim.setOnClickListener { if (scrim.alpha == 1f) onBackPressed() }
