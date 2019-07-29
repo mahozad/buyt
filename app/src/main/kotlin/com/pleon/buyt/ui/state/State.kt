@@ -54,7 +54,7 @@ abstract class State {
     fun skipFinding() = with(activity) {
         viewModel.shouldAnimateNavIcon = true
         viewModel.isFindingSkipped = true
-        viewModel.allStores.observe(this, Observer { FindingState::onStoresFound })
+        viewModel.allStores.observe(this, Observer { FindingState.onStoresFound(it) })
     }
 
     protected fun shiftToIdleState(fabResId: Int) = with(activity) {
