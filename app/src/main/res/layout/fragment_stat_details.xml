@@ -17,16 +17,19 @@
         tools:listheader="@layout/date_header"
         tools:listitem="@layout/purchase_detail" />
 
-    <com.google.android.material.chip.Chip
+    <TextView
         android:id="@+id/emptyHint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:alpha="0"
+        android:background="@drawable/shape_date_empty_hint"
         android:backgroundTint="?emptyHintColor"
+        android:paddingStart="18dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="18dp"
+        android:paddingBottom="8dp"
         android:text="@string/purchase_empty_hint"
-        app:chipEndPadding="8dp"
-        app:chipStartPadding="8dp"
-        tools:visibility="invisible" />
+        android:textStyle="bold" />
 
 </FrameLayout>

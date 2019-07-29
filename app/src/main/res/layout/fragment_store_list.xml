@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -23,16 +22,20 @@
         tools:listitem="@layout/store_list_row"
         tools:padding="4dp" />
 
-    <com.google.android.material.chip.Chip
+    <TextView
         android:id="@+id/emptyHint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:alpha="0"
+        android:background="@drawable/shape_date_empty_hint"
         android:backgroundTint="?emptyHintColor"
+        android:paddingStart="18dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="18dp"
+        android:paddingBottom="8dp"
         android:text="@string/stores_empty_hint"
-        app:chipEndPadding="8dp"
-        app:chipStartPadding="8dp" />
+        android:textStyle="bold" />
 
     <include layout="@layout/snackbar_container" />
 

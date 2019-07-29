@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|end"
-            android:background="@drawable/shape_rounded_rectangle"
+            android:background="@drawable/shape_store_count"
             android:minWidth="18dp">
 
             <TextView
@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|center_horizontal"
-                android:background="@drawable/shape_rounded_rectangle"
+                android:background="@drawable/shape_store_count"
                 android:paddingHorizontal="1dp"
                 android:textColor="?colorOnSurface"
                 android:textSize="10sp" />

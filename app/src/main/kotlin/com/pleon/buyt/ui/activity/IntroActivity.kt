@@ -78,7 +78,7 @@ class IntroActivity : BaseActivity() {
     private fun createIndicators() {
         indicators = Array(adapter.itemCount) {
             val indicator = ImageView(this).apply { alpha = 0.2f }
-            indicator.setImageResource(R.drawable.shape_circle_cylinder)
+            indicator.setImageResource(R.drawable.shape_page_indicator)
             indicator.layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
                 setMargins(dip(8), dip(8), dip(8), dip(8))
             }
