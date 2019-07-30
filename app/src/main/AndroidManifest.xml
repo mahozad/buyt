@@ -34,7 +34,7 @@
         <activity
             android:name=".ui.activity.MainActivity"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan" /> <!--This causes bug when an item is selected and keyboard is shown and then another item is selected-->
         <activity android:name=".ui.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -2,7 +2,6 @@ package com.pleon.buyt.ui.adapter
 
 import android.app.Application
 import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.MotionEvent.ACTION_DOWN
@@ -18,6 +17,7 @@ import com.pleon.buyt.R
 import com.pleon.buyt.model.Item
 import com.pleon.buyt.ui.BaseViewHolder
 import com.pleon.buyt.ui.NumberInputWatcher
+import com.pleon.buyt.ui.TextWatcherAdapter
 import com.pleon.buyt.ui.adapter.ItemsAdapter.ItemHolder
 import com.pleon.buyt.util.removeNonDigitChars
 import kotlinx.android.synthetic.main.item_list_row.view.*
@@ -102,10 +102,8 @@ class ItemsAdapter(private val app: Application) : Adapter<ItemHolder>() {
         init {
             val suffix = app.getString(R.string.input_suffix_price)
             itemView.price.addTextChangedListener(NumberInputWatcher(itemView.price_layout, itemView.price, suffix))
-            itemView.price.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable?) = onPriceChanged()
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            itemView.price.addTextChangedListener(object : TextWatcherAdapter() {
+                override fun afterTextChanged(s: Editable) = onPriceChanged()
             })
             itemView.dragButton.setOnTouchListener { _, event -> onDragHandleTouch(event) }
             itemView.cardForeground.setOnClickListener { onCardClick() }
@@ -116,12 +114,12 @@ class ItemsAdapter(private val app: Application) : Adapter<ItemHolder>() {
             itemView.categoryIcon.setImageResource(item.category.imageRes)
             itemView.item_name.text = item.name
             itemView.description.text = item.description
+            itemView.description.visibility = if (item.description.isNullOrEmpty()) GONE else VISIBLE
             itemView.item_quantity.text = app.getString(R.string.item_quantity,
                     item.quantity.value, app.getString(item.quantity.unit.nameRes))
             itemView.urgentIcon.visibility = if (item.isUrgent) VISIBLE else INVISIBLE
             itemView.selectCheckBox.isChecked = selectedItems.contains(item)
             itemView.selectCheckBox.visibility = if (selectionModeEnabled) VISIBLE else INVISIBLE
-            itemView.description.visibility = if (item.description.isNullOrEmpty()) GONE else VISIBLE
             itemView.circular_reveal.alpha = 0f // for the case of undo of deleted item
             itemView.price.setText(if (item.totalPrice != 0L) item.totalPrice.toString() else "")
             itemView.dragButton.visibility = INVISIBLE
@@ -147,12 +145,11 @@ class ItemsAdapter(private val app: Application) : Adapter<ItemHolder>() {
             if (selectionModeEnabled) itemView.selectCheckBox.performClick()
         }
 
-        fun onPriceChanged() {
+        private fun onPriceChanged() {
             val priceString = itemView.price.text!!.removeNonDigitChars()
             if (priceString.isNotEmpty()) {
                 val price = parseLong(priceString)
-                val item = items[adapterPosition]
-                item.totalPrice = price
+                items[adapterPosition].totalPrice = price
             }
         }
 
@@ -163,10 +160,12 @@ class ItemsAdapter(private val app: Application) : Adapter<ItemHolder>() {
                 selectedItems.add(items[adapterPosition])
             } else {
                 itemView.price_container.visibility = GONE
-                selectedItems.remove(items[adapterPosition])
                 items[adapterPosition].totalPrice = 0
+                selectedItems.remove(items[adapterPosition])
                 itemView.price.text?.clear()
             }
+            // because of a bug due to "adjustPan" attribute in manifest
+            recyclerView.post { notifyItemChanged(adapterPosition) }
         }
     }
 }
