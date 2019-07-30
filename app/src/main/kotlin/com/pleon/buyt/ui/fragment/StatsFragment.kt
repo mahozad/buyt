@@ -20,7 +20,7 @@ import com.pleon.buyt.viewmodel.StatsViewModel
 import kotlinx.android.synthetic.main.fragment_stats.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-private const val PIE_TOTAL_SLICES = 5
+private const val PIE_MAX_SLICES = 5
 
 class StatsFragment : BaseFragment() {
 
@@ -71,12 +71,12 @@ class StatsFragment : BaseFragment() {
     private fun showPieChart(pieSlices: List<PieSlice>) {
         pieChart.clearData()
 
-        pieSlices.take(PIE_TOTAL_SLICES - 1).forEachIndexed { index, slice ->
+        pieSlices.take(PIE_MAX_SLICES - 1).forEachIndexed { index, slice ->
             val sliceName = getString(Category.valueOf(slice.name).nameRes)
             pieChart.addSlice(Slice(sliceName, slice.value, pieSliceColors[index]))
         }
-        val other = pieSlices.drop(PIE_TOTAL_SLICES - 1).sumBy { it.value }
-        if (other > 0) pieChart.addSlice(Slice(getString(R.string.pie_chart_other), other, pieSliceColors[PIE_TOTAL_SLICES - 1]))
+        val other = pieSlices.drop(PIE_MAX_SLICES - 1).sumBy { it.value }
+        if (other > 0) pieChart.addSlice(Slice(getString(R.string.pie_chart_other), other, pieSliceColors[PIE_MAX_SLICES - 1]))
 
         pieChart.startAnim(if (isStartup) 0 else 480)
     }
