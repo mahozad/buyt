@@ -19,6 +19,7 @@ import com.pleon.buyt.model.Item
 import com.pleon.buyt.ui.BaseViewHolder
 import com.pleon.buyt.ui.NumberInputWatcher
 import com.pleon.buyt.ui.adapter.ItemsAdapter.ItemHolder
+import com.pleon.buyt.util.removeNonDigitChars
 import kotlinx.android.synthetic.main.item_list_row.view.*
 import java.lang.Long.parseLong
 
@@ -147,7 +148,7 @@ class ItemsAdapter(private val app: Application) : Adapter<ItemHolder>() {
         }
 
         fun onPriceChanged() {
-            val priceString = itemView.price.text.toString().replace("[^\\d]".toRegex(), "")
+            val priceString = itemView.price.text!!.removeNonDigitChars()
             if (priceString.isNotEmpty()) {
                 val price = parseLong(priceString)
                 val item = items[adapterPosition]

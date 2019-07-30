@@ -37,12 +37,14 @@ import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
 import com.pleon.buyt.util.AnimationUtil.animateAlpha
 import com.pleon.buyt.util.AnimationUtil.animateIcon
 import com.pleon.buyt.util.AnimationUtil.animateIconInfinitely
+import com.pleon.buyt.util.toNumber
 import com.pleon.buyt.viewmodel.AddItemViewModel
 import ir.huri.jcal.JalaliCalendar
 import kotlinx.android.synthetic.main.fragment_add_item.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.Calendar.DAY_OF_YEAR
 
 /**
  * This fragment requires a Toolbar as it needs to inflate and use a menu item for selection of
@@ -138,13 +140,13 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
             return@setOnTouchListener isScrollLocked
         }
         name.addTextChangedListener(object : TextWatcherAdapter() {
-            override fun afterTextChanged(s: Editable?) = onNameChanged()
+            override fun afterTextChanged(s: Editable) = onNameChanged()
         })
         quantityEd.addTextChangedListener(object : TextWatcherAdapter() {
-            override fun afterTextChanged(s: Editable?) = onQuantityChanged()
+            override fun afterTextChanged(s: Editable) = onQuantityChanged()
         })
         description.addTextChangedListener(object : TextWatcherAdapter() {
-            override fun afterTextChanged(s: Editable?) = onDescriptionChanged()
+            override fun afterTextChanged(s: Editable) = onDescriptionChanged()
         })
     }
 
@@ -219,13 +221,13 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
     }
 
     private fun price(): Long = try {
-        priceEd.text.toString().replace(Regex("[^\\d]"), "").toLong()
+        priceEd.text!!.toNumber()
     } catch (e: NumberFormatException) {
         0
     }
 
     private fun quantity(): Item.Quantity {
-        val quantity = quantityEd.text.toString().replace(Regex("[^\\d]"), "").toLong()
+        val quantity = quantityEd.text!!.toNumber()
         val unit = when (btnGrp.checkedButtonId) {
             R.id.btn1 -> UNIT
             R.id.btn2 -> KILOGRAM
@@ -248,25 +250,27 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
     private fun onDateClicked() {
         if (Locale.getDefault().language == "fa") {
             val persianCal = PersianCalendar()
-            val datePicker = DatePickerDialog.newInstance(this, persianCal.persianYear,
-                    persianCal.persianMonth, persianCal.persianDay)
+            val datePicker = DatePickerDialog.newInstance(this,
+                    persianCal.persianYear,
+                    persianCal.persianMonth,
+                    persianCal.persianDay
+            )
+
             val theme = prefs.getString(PREF_THEME, PREF_THEME_DARK)
             datePicker.isThemeDark = (theme == PREF_THEME_DARK) // for changing colors see colors.xml
-            datePicker.retainInstance = true
 
             val selectableDays = arrayOfNulls<PersianCalendar>(10)
             for (i in selectableDays.indices) {
                 val selectableDay = PersianCalendar()
-                selectableDay.addPersianDate(Calendar.DAY_OF_YEAR, -i)
+                selectableDay.addPersianDate(DAY_OF_YEAR, -i)
                 selectableDays[i] = selectableDay
             }
             datePicker.selectableDays = selectableDays
 
+            datePicker.retainInstance = true
             datePicker.show(activity!!.fragmentManager, "DATE_PICKER")
         } else {
-            val datePicker = DatePickerDialogFragment()
-            // datePicker.setRetainInstance(true);
-            datePicker.show(childFragmentManager, "DATE_PICKER")
+            DatePickerDialogFragment().show(childFragmentManager, "DATE_PICKER")
         }
     }
 
