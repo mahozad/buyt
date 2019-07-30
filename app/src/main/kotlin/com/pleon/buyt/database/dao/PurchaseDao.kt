@@ -6,8 +6,8 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import com.pleon.buyt.database.converter.DateConverter
+import com.pleon.buyt.database.dto.CategorySum
 import com.pleon.buyt.database.dto.DailyCost
-import com.pleon.buyt.database.dto.PieSlice
 import com.pleon.buyt.database.dto.PurchaseDetail
 import com.pleon.buyt.database.dto.Stats
 import com.pleon.buyt.model.Category
@@ -132,7 +132,7 @@ abstract class PurchaseDao {
 
     @Query("SELECT category AS name, SUM(totalPrice) AS value FROM Item NATURAL JOIN Purchase " +
             "WHERE $PERIOD_AND_FILTER_CLAUSE GROUP BY category ORDER BY value DESC")
-    protected abstract fun getMostPurchasedCategories(period: Int, filter: String): List<PieSlice>
+    protected abstract fun getMostPurchasedCategories(period: Int, filter: String): List<CategorySum>
 
     @Query("SELECT * FROM Purchase NATURAL JOIN Item WHERE $PERIOD_AND_FILTER_CLAUSE GROUP BY purchaseId ORDER BY date DESC")
     abstract fun getPurchaseDetails(period: Int, filter: String): LiveData<List<PurchaseDetail>>

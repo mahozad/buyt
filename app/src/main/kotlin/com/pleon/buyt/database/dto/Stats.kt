@@ -6,7 +6,7 @@ import com.pleon.buyt.model.Store
 class Stats {
 
     lateinit var dailyCosts: List<DailyCost>
-    lateinit var mostPurchasedCategories: List<PieSlice>
+    lateinit var mostPurchasedCategories: List<CategorySum>
     var storeWithMaxPurchaseCount: Store? = null
     var numberOfPurchases = 0L
     var totalPurchaseCost = 0L

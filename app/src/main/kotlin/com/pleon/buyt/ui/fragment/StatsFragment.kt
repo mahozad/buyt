@@ -8,8 +8,8 @@ import androidx.core.content.res.ResourcesCompat.getFont
 import androidx.lifecycle.Observer
 import com.db.chart.animation.Animation
 import com.pleon.buyt.R
+import com.pleon.buyt.database.dto.CategorySum
 import com.pleon.buyt.database.dto.DailyCost
-import com.pleon.buyt.database.dto.PieSlice
 import com.pleon.buyt.database.dto.Stats
 import com.pleon.buyt.model.Category
 import com.pleon.buyt.ui.PieChartView.Slice
@@ -68,14 +68,14 @@ class StatsFragment : BaseFragment() {
         if (isStartup) lineChart.show() else lineChart.show(Animation(500))
     }
 
-    private fun showPieChart(pieSlices: List<PieSlice>) {
+    private fun showPieChart(categorySums: List<CategorySum>) {
         pieChart.clearData()
 
-        pieSlices.take(PIE_MAX_SLICES - 1).forEachIndexed { index, slice ->
-            val sliceName = getString(Category.valueOf(slice.name).nameRes)
-            pieChart.addSlice(Slice(sliceName, slice.value, pieSliceColors[index]))
+        categorySums.take(PIE_MAX_SLICES - 1).forEachIndexed { index, categorySum ->
+            val sliceName = getString(Category.valueOf(categorySum.name).nameRes)
+            pieChart.addSlice(Slice(sliceName, categorySum.value, pieSliceColors[index]))
         }
-        val other = pieSlices.drop(PIE_MAX_SLICES - 1).sumBy { it.value }
+        val other = categorySums.drop(PIE_MAX_SLICES - 1).sumBy { it.value }
         if (other > 0) pieChart.addSlice(Slice(getString(R.string.pie_chart_other), other, pieSliceColors[PIE_MAX_SLICES - 1]))
 
         pieChart.startAnim(if (isStartup) 0 else 480)
