@@ -33,7 +33,8 @@
             android:parentActivityName=".ui.activity.MainActivity" /> <!-- android:windowSoftInputMode attribute is to prevent the bottom app bar to jump when keyboard appears -->
         <activity
             android:name=".ui.activity.MainActivity"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

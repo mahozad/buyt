@@ -120,17 +120,17 @@ class ItemsAdapter(private val app: Application) : Adapter<ItemHolder>() {
                     item.quantity.value, app.getString(item.quantity.unit.nameRes))
             itemView.urgentIcon.visibility = if (item.isUrgent) VISIBLE else INVISIBLE
             itemView.selectCheckBox.isChecked = selectedItems.contains(item)
+            itemView.selectCheckBox.visibility = if (selectionModeEnabled) VISIBLE else INVISIBLE
             itemView.description.visibility = if (item.description.isNullOrEmpty()) GONE else VISIBLE
             itemView.circular_reveal.alpha = 0f // for the case of undo of deleted item
             itemView.price.setText(if (item.totalPrice != 0L) item.totalPrice.toString() else "")
+            itemView.dragButton.visibility = INVISIBLE
+            if (dragModeEnabled && !selectionModeEnabled) itemView.dragButton.visibility = VISIBLE
 
-            if (selectionModeEnabled) {
-                itemView.selectCheckBox.visibility = VISIBLE
-                itemView.dragButton.visibility = INVISIBLE
+            if (selectionModeEnabled && selectedItems.contains(item)) {
+                itemView.price_container.visibility = VISIBLE
             } else {
-                itemView.selectCheckBox.visibility = INVISIBLE
                 itemView.price_container.visibility = GONE
-                itemView.dragButton.visibility = if (dragModeEnabled) VISIBLE else INVISIBLE
             }
         }
 
