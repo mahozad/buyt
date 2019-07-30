@@ -26,7 +26,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {
-    factory { ArgbEvaluatorCompat() } // FIXME: should be singleton?
+    factory { ArgbEvaluatorCompat() }
     single { getDefaultSharedPreferences(androidApplication()) }
     single<State> { IdleState }
     single {
