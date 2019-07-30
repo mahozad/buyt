@@ -29,9 +29,9 @@ class PieChartView : View {
     private var mHeight: Int = 0
     private val pieRectF = RectF()
     private var radius: Int = 0
-    private val sectors = ArrayList<Sector>()
-    private val leftTypeList = ArrayList<Sector>()
-    private val rightTypeList = ArrayList<Sector>()
+    private val slices = ArrayList<Slice>()
+    private val leftTypeList = ArrayList<Slice>()
+    private val rightTypeList = ArrayList<Slice>()
     private val itemPoints = ArrayList<Point>()
     private var gap = 4f
     private var innerRadius = 0.6f
@@ -103,7 +103,7 @@ class PieChartView : View {
         mPaint.style = Paint.Style.FILL
 
         var sum = 0
-        for (slice in sectors) sum += slice.widget
+        for (slice in slices) sum += slice.widget
         val a = 360f / sum
 
         var startRadius = defaultStartAngle.toFloat()
@@ -111,7 +111,7 @@ class PieChartView : View {
         leftTypeList.clear()
         rightTypeList.clear()
         itemPoints.clear()
-        for ((index, slice) in sectors.withIndex()) {
+        for ((index, slice) in slices.withIndex()) {
             slice.radius = slice.widget * a
             val al = 2.0 * PI * ((startRadius + 90) / 360.0)
             tempPoint.set((mWidth / 2 + radius * sin(al)).toInt(), (mHeight / 2 - radius * cos(al)).toInt())
@@ -132,14 +132,14 @@ class PieChartView : View {
                 break
             }
             startRadius += slice.radius
-            if (sectors.size > 1 && gap > 0 && pieCell == 0f) {
+            if (slices.size > 1 && gap > 0 && pieCell == 0f) {
                 mPaint.color = backGroundColor
                 mPaint.strokeWidth = if (index == 0) gap + 4 else gap
                 mCanvas!!.drawLine(width / 2f, height / 2f, tempPoint.x.toFloat(), tempPoint.y.toFloat(), mPaint)
             }
         }
 
-        if (sectors.isEmpty()) {
+        if (slices.isEmpty()) {
             mPaint.style = Paint.Style.FILL
             mPaint.color = emptyColor
             mCanvas!!.drawCircle(mWidth / 2f, mHeight / 2f, radius.toFloat(), mPaint)
@@ -235,7 +235,7 @@ class PieChartView : View {
         }
 
         if (textAlpha.toFloat() == 1f) {
-            sectors.clear()
+            slices.clear()
             leftTypeList.clear()
             rightTypeList.clear()
             itemPoints.clear()
@@ -249,15 +249,15 @@ class PieChartView : View {
         mPaint.alpha = 256
     }
 
-    fun clearData() = sectors.clear()
+    fun clearData() = slices.clear()
 
-    fun addSector(sector: Sector) = sectors.add(sector)
+    fun addSlice(slice: Slice) = slices.add(slice)
 
     fun setBackGroundColor(backGroundColor: Int) {
         this.backGroundColor = backGroundColor
     }
 
-    fun setSectorGap(gap: Int) {
+    fun setSliceGap(gap: Int) {
         this.gap = gap.toFloat()
     }
 
@@ -277,7 +277,7 @@ class PieChartView : View {
         this.textPadding = textPadding
     }
 
-    class Sector(internal var type: String, internal var widget: Int, internal var color: Int) {
+    class Slice(internal var type: String, internal var widget: Int, internal var color: Int) {
         internal var radius: Float = 0f
         internal val percent: String get() = formatPercent(radius / 360f)
     }

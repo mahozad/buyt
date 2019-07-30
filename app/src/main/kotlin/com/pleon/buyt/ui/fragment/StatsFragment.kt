@@ -12,7 +12,7 @@ import com.pleon.buyt.database.dto.DailyCost
 import com.pleon.buyt.database.dto.PieSlice
 import com.pleon.buyt.database.dto.Stats
 import com.pleon.buyt.model.Category
-import com.pleon.buyt.ui.PieChartView.Sector
+import com.pleon.buyt.ui.PieChartView.Slice
 import com.pleon.buyt.util.FormatterUtil.formatNumber
 import com.pleon.buyt.util.FormatterUtil.formatPrice
 import com.pleon.buyt.util.LineChartBuilder.buildLineChart
@@ -73,10 +73,10 @@ class StatsFragment : BaseFragment() {
 
         pieSlices.take(PIE_TOTAL_SLICES - 1).forEachIndexed { index, slice ->
             val sliceName = getString(Category.valueOf(slice.name).nameRes)
-            pieChart.addSector(Sector(sliceName, slice.value, pieSliceColors[index]))
+            pieChart.addSlice(Slice(sliceName, slice.value, pieSliceColors[index]))
         }
         val other = pieSlices.drop(PIE_TOTAL_SLICES - 1).sumBy { it.value }
-        if (other > 0) pieChart.addSector(Sector(getString(R.string.pie_chart_other), other, pieSliceColors[PIE_TOTAL_SLICES - 1]))
+        if (other > 0) pieChart.addSlice(Slice(getString(R.string.pie_chart_other), other, pieSliceColors[PIE_TOTAL_SLICES - 1]))
 
         pieChart.startAnim(if (isStartup) 0 else 480)
     }
