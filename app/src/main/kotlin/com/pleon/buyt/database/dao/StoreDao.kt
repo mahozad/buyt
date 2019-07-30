@@ -50,7 +50,7 @@ abstract class StoreDao {
             "   ) AS DailyCosts " +
             "ON AllDates.date = DailyCosts.date " +
             "GROUP BY AllDates.date")
-    abstract fun getStats(storeId: Long, period: Int): List<DailyCost>
+    abstract fun getStoreStats(storeId: Long, period: Int): List<DailyCost>
 
     @Query("SELECT * FROM Store")
     abstract fun getAllSync(): List<Store>

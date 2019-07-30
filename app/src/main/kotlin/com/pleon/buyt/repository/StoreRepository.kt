@@ -18,7 +18,7 @@ class StoreRepository(private val storeDao: StoreDao) {
 
     fun getStoreStats(store: Store, period: Int): LiveData<List<DailyCost>> {
         doAsync {
-            val stats = storeDao.getStats(store.storeId, period)
+            val stats = storeDao.getStoreStats(store.storeId, period)
             uiThread { storeStats.value = stats }
         }
         return storeStats
