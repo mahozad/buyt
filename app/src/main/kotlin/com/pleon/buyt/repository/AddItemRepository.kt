@@ -16,7 +16,7 @@ class AddItemRepository(private val itemDao: ItemDao,
                         private val storeDao: StoreDao,
                         private val purchaseDao: PurchaseDao) {
 
-    val itemNameCats = itemDao.getNameCats()
+    val itemNameCats = itemDao.getItemNameCats()
     private val allStores = SingleLiveEvent<List<Store>>()
 
     fun addItem(item: Item) = doAsync { itemDao.insert(item) }

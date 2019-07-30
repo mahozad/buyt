@@ -3,7 +3,7 @@ package com.pleon.buyt.database.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
-import com.pleon.buyt.database.dto.NameCat
+import com.pleon.buyt.database.dto.ItemNameCat
 import com.pleon.buyt.model.Item
 
 // In DAOs, we specify SQL queries and associate them with method calls
@@ -20,7 +20,7 @@ abstract class ItemDao {
     abstract fun getCount(): Long
 
     @Query("SELECT name, category FROM Item GROUP BY name")
-    abstract fun getNameCats(): LiveData<Array<NameCat>>
+    abstract fun getItemNameCats(): LiveData<Array<ItemNameCat>>
 
     @Transaction
     open fun insert(item: Item): Long {
