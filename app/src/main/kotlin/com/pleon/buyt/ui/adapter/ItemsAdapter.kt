@@ -19,7 +19,7 @@ import com.pleon.buyt.ui.BaseViewHolder
 import com.pleon.buyt.ui.NumberInputWatcher
 import com.pleon.buyt.ui.TextWatcherAdapter
 import com.pleon.buyt.ui.adapter.ItemsAdapter.ItemHolder
-import com.pleon.buyt.util.removeNonDigitChars
+import com.pleon.buyt.util.TextUtil.removeNonDigitChars
 import kotlinx.android.synthetic.main.item_list_row.view.*
 import java.lang.Long.parseLong
 

@@ -3,11 +3,11 @@ package com.pleon.buyt.util
 import android.text.Editable
 import java.util.*
 
-fun Editable.removeNonDigitChars() = toString().replace(Regex("[^\\d]"), "")
-
-fun Editable.toNumber() = removeNonDigitChars().toLong()
-
 object TextUtil {
+
+    fun Editable.toNumber() = removeNonDigitChars().toLong()
+
+    fun Editable.removeNonDigitChars() = this.toString().replace(Regex("[^\\d]"), "")
 
     fun localizeDigits(input: String): String {
         return if (Locale.getDefault().language == "fa") input
