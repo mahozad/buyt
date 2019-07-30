@@ -1,18 +1,3 @@
-/* Copyright (c) 2012 Google Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.pleon.buyt.billing;
 
 import android.app.Activity;
@@ -147,7 +132,6 @@ public class IabHelper {
 
     // some fields on the getSkuDetails response bundle
     public static final String GET_SKU_DETAILS_ITEM_LIST = "ITEM_ID_LIST";
-    public static final String GET_SKU_DETAILS_ITEM_TYPE_LIST = "ITEM_TYPE_LIST";
 
     /**
      * Creates an instance. After creation, it will not yet be ready to use. You must perform
@@ -175,11 +159,6 @@ public class IabHelper {
         mDebugTag = tag;
     }
 
-    public void enableDebugLogging(boolean enable) {
-        checkNotDisposed();
-        mDebugLog = enable;
-    }
-
     /**
      * Callback for setup process. This listener's {@link #onIabSetupFinished} method is called
      * when the setup process is complete.
@@ -190,7 +169,7 @@ public class IabHelper {
          *
          * @param result The result of the setup process.
          */
-        public void onIabSetupFinished(IabResult result);
+        void onIabSetupFinished(IabResult result);
     }
 
     /**
@@ -302,13 +281,6 @@ public class IabHelper {
         if (mDisposed) throw new IllegalStateException("IabHelper was disposed of, so it cannot be used.");
     }
 
-    /** Returns whether subscriptions are supported. */
-    public boolean subscriptionsSupported() {
-        checkNotDisposed();
-        return mSubscriptionsSupported;
-    }
-
-
     /**
      * Callback that notifies when a purchase is finished.
      */
@@ -322,37 +294,23 @@ public class IabHelper {
          * @param result The result of the purchase.
          * @param info The purchase information (null if purchase failed)
          */
-        public void onIabPurchaseFinished(IabResult result, Purchase info);
+        void onIabPurchaseFinished(IabResult result, Purchase info);
     }
 
     // The listener registered on launchPurchaseFlow, which we have to call back when
     // the purchase finishes
     OnIabPurchaseFinishedListener mPurchaseListener;
 
-    public void launchPurchaseFlow(Activity act, String sku, int requestCode, OnIabPurchaseFinishedListener listener) {
-        launchPurchaseFlow(act, sku, requestCode, listener, "");
-    }
-
     public void launchPurchaseFlow(Activity act, String sku, int requestCode,
             OnIabPurchaseFinishedListener listener, String extraData) {
         launchPurchaseFlow(act, sku, ITEM_TYPE_INAPP, requestCode, listener, extraData);
-    }
-
-    public void launchSubscriptionPurchaseFlow(Activity act, String sku, int requestCode,
-            OnIabPurchaseFinishedListener listener) {
-        launchSubscriptionPurchaseFlow(act, sku, requestCode, listener, "");
-    }
-
-    public void launchSubscriptionPurchaseFlow(Activity act, String sku, int requestCode,
-            OnIabPurchaseFinishedListener listener, String extraData) {
-        launchPurchaseFlow(act, sku, ITEM_TYPE_SUBS, requestCode, listener, extraData);
     }
 
     /**
      * Initiate the UI flow for an in-app purchase. Call this method to initiate an in-app purchase,
      * which will involve bringing up the Google Play screen. The calling activity will be paused while
      * the user interacts with Google Play, and the result will be delivered via the activity's
-     * {@link android.app.Activity#onActivityResult} method, at which point you must call
+     * {@link android.app.Activity#onActivityResult(int, int, Intent)} method, at which point you must call
      * this object's {@link #handleActivityResult} method to continue the purchase flow. This method
      * MUST be called from the UI thread of the Activity.
      *
@@ -510,7 +468,7 @@ public class IabHelper {
             if (mPurchaseListener != null) mPurchaseListener.onIabPurchaseFinished(result, null);
         }
         else {
-            logError("Purchase failed. Result code: " + Integer.toString(resultCode)
+            logError("Purchase failed. Result code: " + resultCode
                     + ". Response: " + getResponseDesc(responseCode));
             result = new IabResult(IABHELPER_UNKNOWN_PURCHASE_RESPONSE, "Unknown purchase response.");
             if (mPurchaseListener != null) mPurchaseListener.onIabPurchaseFinished(result, null);
@@ -588,9 +546,8 @@ public class IabHelper {
          * @param result The result of the operation.
          * @param inv The inventory.
          */
-        public void onQueryInventoryFinished(IabResult result, Inventory inv);
+        void onQueryInventoryFinished(IabResult result, Inventory inv);
     }
-
 
     /**
      * Asynchronous wrapper for inventory query. This will perform an inventory
@@ -609,130 +566,28 @@ public class IabHelper {
         checkNotDisposed();
         checkSetupDone("queryInventory");
         flagStartAsync("refresh inventory");
-        (new Thread(new Runnable() {
-            public void run() {
-                IabResult result = new IabResult(BILLING_RESPONSE_RESULT_OK, "Inventory refresh successful.");
-                Inventory inv = null;
-                try {
-                    inv = queryInventory(querySkuDetails, moreSkus);
-                }
-                catch (IabException ex) {
-                    result = ex.getResult();
-                }
+        (new Thread(() -> {
+            IabResult result = new IabResult(BILLING_RESPONSE_RESULT_OK, "Inventory refresh successful.");
+            Inventory inv = null;
+            try {
+                inv = queryInventory(querySkuDetails, moreSkus);
+            }
+            catch (IabException ex) {
+                result = ex.getResult();
+            }
 
-                flagEndAsync();
+            flagEndAsync();
 
-                final IabResult result_f = result;
-                final Inventory inv_f = inv;
-                if (!mDisposed && listener != null) {
-                    handler.post(() -> listener.onQueryInventoryFinished(result_f, inv_f));
-                }
+            final IabResult result_f = result;
+            final Inventory inv_f = inv;
+            if (!mDisposed && listener != null) {
+                handler.post(() -> listener.onQueryInventoryFinished(result_f, inv_f));
             }
         })).start();
     }
 
     public void queryInventoryAsync(QueryInventoryFinishedListener listener) {
         queryInventoryAsync(true, null, listener);
-    }
-
-    public void queryInventoryAsync(boolean querySkuDetails, QueryInventoryFinishedListener listener) {
-        queryInventoryAsync(querySkuDetails, null, listener);
-    }
-
-    /**
-     * Consumes a given in-app product. Consuming can only be done on an item
-     * that's owned, and as a result of consumption, the user will no longer own it.
-     * This method may block or take long to return. Do not call from the UI thread.
-     * For that, see {@link #consumeAsync}.
-     *
-     * @param itemInfo The PurchaseInfo that represents the item to consume.
-     * @throws IabException if there is a problem during consumption.
-     */
-    void consume(Purchase itemInfo) throws IabException {
-        checkNotDisposed();
-        checkSetupDone("consume");
-
-        if (!itemInfo.mItemType.equals(ITEM_TYPE_INAPP)) {
-            throw new IabException(IABHELPER_INVALID_CONSUMPTION,
-                    "Items of type '" + itemInfo.mItemType + "' can't be consumed.");
-        }
-
-        try {
-            String token = itemInfo.getToken();
-            String sku = itemInfo.getSku();
-            if (token == null || token.equals("")) {
-               logError("Can't consume "+ sku + ". No token.");
-               throw new IabException(IABHELPER_MISSING_TOKEN, "PurchaseInfo is missing token for sku: "
-                   + sku + " " + itemInfo);
-            }
-
-            logDebug("Consuming sku: " + sku + ", token: " + token);
-            int response = mService.consumePurchase(3, mContext.getPackageName(), token);
-            if (response == BILLING_RESPONSE_RESULT_OK) {
-               logDebug("Successfully consumed sku: " + sku);
-            }
-            else {
-               logDebug("Error consuming consuming sku " + sku + ". " + getResponseDesc(response));
-               throw new IabException(response, "Error consuming sku " + sku);
-            }
-        }
-        catch (RemoteException e) {
-            throw new IabException(IABHELPER_REMOTE_EXCEPTION, "Remote exception while consuming. PurchaseInfo: " + itemInfo, e);
-        }
-    }
-
-    /**
-     * Callback that notifies when a consumption operation finishes.
-     */
-    public interface OnConsumeFinishedListener {
-        /**
-         * Called to notify that a consumption has finished.
-         *
-         * @param purchase The purchase that was (or was to be) consumed.
-         * @param result The result of the consumption operation.
-         */
-        public void onConsumeFinished(Purchase purchase, IabResult result);
-    }
-
-    /**
-     * Callback that notifies when a multi-item consumption operation finishes.
-     */
-    public interface OnConsumeMultiFinishedListener {
-        /**
-         * Called to notify that a consumption of multiple items has finished.
-         *
-         * @param purchases The purchases that were (or were to be) consumed.
-         * @param results The results of each consumption operation, corresponding to each
-         *     sku.
-         */
-        public void onConsumeMultiFinished(List<Purchase> purchases, List<IabResult> results);
-    }
-
-    /**
-     * Asynchronous wrapper to item consumption. Works like {@link #consume}, but
-     * performs the consumption in the background and notifies completion through
-     * the provided listener. This method is safe to call from a UI thread.
-     *
-     * @param purchase The purchase to be consumed.
-     * @param listener The listener to notify when the consumption operation finishes.
-     */
-    public void consumeAsync(Purchase purchase, OnConsumeFinishedListener listener) {
-        checkNotDisposed();
-        checkSetupDone("consume");
-        List<Purchase> purchases = new ArrayList<Purchase>();
-        purchases.add(purchase);
-        consumeAsyncInternal(purchases, listener, null);
-    }
-
-    /**
-     * Same as {@link consumeAsync}, but for multiple items at once.
-     * @param purchases The list of PurchaseInfo objects representing the purchases to consume.
-     * @param listener The listener to notify when the consumption operation finishes.
-     */
-    public void consumeAsync(List<Purchase> purchases, OnConsumeMultiFinishedListener listener) {
-        checkNotDisposed();
-        checkSetupDone("consume");
-        consumeAsyncInternal(purchases, null, listener);
     }
 
     /**
@@ -761,14 +616,13 @@ public class IabHelper {
         if (code <= IABHELPER_ERROR_BASE) {
             int index = IABHELPER_ERROR_BASE - code;
             if (index >= 0 && index < iabhelper_msgs.length) return iabhelper_msgs[index];
-            else return String.valueOf(code) + ":Unknown IAB Helper Error";
+            else return code + ":Unknown IAB Helper Error";
         }
         else if (code < 0 || code >= iab_msgs.length)
-            return String.valueOf(code) + ":Unknown";
+            return code + ":Unknown";
         else
             return iab_msgs[code];
     }
-
 
     // Checks that setup was done; if not, throws an exception.
     void checkSetupDone(String operation) {
@@ -785,7 +639,7 @@ public class IabHelper {
             logDebug("Bundle with null response code, assuming OK (known issue)");
             return BILLING_RESPONSE_RESULT_OK;
         }
-        else if (o instanceof Integer) return ((Integer)o).intValue();
+        else if (o instanceof Integer) return (Integer) o;
         else if (o instanceof Long) return (int)((Long)o).longValue();
         else {
             logError("Unexpected type for bundle response code.");
@@ -801,7 +655,7 @@ public class IabHelper {
             logError("Intent with no response code, assuming OK (known issue)");
             return BILLING_RESPONSE_RESULT_OK;
         }
-        else if (o instanceof Integer) return ((Integer)o).intValue();
+        else if (o instanceof Integer) return (Integer) o;
         else if (o instanceof Long) return (int)((Long)o).longValue();
         else {
             logError("Unexpected type for intent response code.");
@@ -927,41 +781,11 @@ public class IabHelper {
                 RESPONSE_GET_SKU_DETAILS_LIST);
 
         for (String thisResponse : responseList) {
-            SkuDetails d = new SkuDetails(itemType, thisResponse);
+            SkuDetails d = new SkuDetails(thisResponse);
             logDebug("Got sku details: " + d);
             inv.addSkuDetails(d);
         }
         return BILLING_RESPONSE_RESULT_OK;
-    }
-
-
-    void consumeAsyncInternal(final List<Purchase> purchases,
-                              final OnConsumeFinishedListener singleListener,
-                              final OnConsumeMultiFinishedListener multiListener) {
-        final Handler handler = new Handler();
-        flagStartAsync("consume");
-        (new Thread(new Runnable() {
-            public void run() {
-                final List<IabResult> results = new ArrayList<IabResult>();
-                for (Purchase purchase : purchases) {
-                    try {
-                        consume(purchase);
-                        results.add(new IabResult(BILLING_RESPONSE_RESULT_OK, "Successful consume of sku " + purchase.getSku()));
-                    }
-                    catch (IabException ex) {
-                        results.add(ex.getResult());
-                    }
-                }
-
-                flagEndAsync();
-                if (!mDisposed && singleListener != null) {
-                    handler.post(() -> singleListener.onConsumeFinished(purchases.get(0), results.get(0)));
-                }
-                if (!mDisposed && multiListener != null) {
-                    handler.post(() -> multiListener.onConsumeMultiFinished(purchases, results));
-                }
-            }
-        })).start();
     }
 
     void logDebug(String msg) {
