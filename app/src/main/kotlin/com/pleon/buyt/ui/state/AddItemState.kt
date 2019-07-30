@@ -30,7 +30,7 @@ object AddItemState : State() {
 
     private fun hideKeyboard() {
         val imm = activity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(activity.currentFocus!!.windowToken, 0)
+        activity.currentFocus?.run { imm.hideSoftInputFromWindow(this.windowToken, 0) }
     }
 
     override fun onOptionsMenuCreated() = with(activity) {
