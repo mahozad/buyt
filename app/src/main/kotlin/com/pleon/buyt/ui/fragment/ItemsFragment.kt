@@ -150,7 +150,5 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
         })
     }
 
-    fun emphasisEmpty() {
-        showSnackbar(snbContainer, R.string.snackbar_message_list_empty, LENGTH_LONG)
-    }
+    fun emphasisEmpty() = showSnackbar(snbContainer, R.string.snackbar_message_list_empty, LENGTH_LONG)
 }
