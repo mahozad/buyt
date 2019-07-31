@@ -6,12 +6,10 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pleon.buyt.R
-import com.pleon.buyt.database.dto.PurchaseDetail
 import com.pleon.buyt.ui.DateHeaderDecoration
 import com.pleon.buyt.ui.DateHeaderDecoration.HasStickyHeader
 import com.pleon.buyt.ui.adapter.PurchaseDetailAdapter
 import com.pleon.buyt.util.AnimationUtil.animateAlpha
-import com.pleon.buyt.util.FormatterUtil.formatDate
 import com.pleon.buyt.viewmodel.StatsViewModel
 import kotlinx.android.synthetic.main.fragment_stat_details.*
 import org.koin.android.ext.android.inject
@@ -27,14 +25,14 @@ class StatDetailsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedState: Bundle?) {
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(DateHeaderDecoration(recyclerView, adapter))
-        // For date headers to be shown correctly and smoothly, this listener is required
         recyclerView.addOnScrollListener(recyclerViewScrollListener())
         viewModel.purchaseDetails.observe(viewLifecycleOwner, Observer { purchaseDetails ->
-            showStats(purchaseDetails)
+            adapter.items = purchaseDetails
             animateAlpha(emptyHint, if (purchaseDetails.isEmpty()) 1f else 0f, duration = 0)
         })
     }
 
+    // For date headers to be shown correctly and smoothly, this listener is required
     private fun recyclerViewScrollListener() = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             val layoutMgr = recyclerView.layoutManager as LinearLayoutManager
@@ -46,14 +44,5 @@ class StatDetailsFragment : BaseFragment() {
                 layoutMgr.getChildAt(0)?.alpha = 0f
             }
         }
-    }
-
-    private fun showStats(purchaseDetails: List<PurchaseDetail>) {
-        val list = mutableListOf<Any>()
-        purchaseDetails.groupBy { formatDate(it.purchase.date) }.forEach {
-            list.add(it.key)
-            list.addAll(it.value)
-        }
-        adapter.items = list
     }
 }

@@ -5,6 +5,7 @@ import androidx.arch.core.util.Function
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.Transformations.switchMap
 import com.pleon.buyt.R
 import com.pleon.buyt.database.dto.PurchaseDetail
@@ -12,10 +13,10 @@ import com.pleon.buyt.database.dto.Stats
 import com.pleon.buyt.model.Category
 import com.pleon.buyt.repository.StatsRepository
 import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
+import com.pleon.buyt.util.FormatterUtil.formatDate
 import com.pleon.buyt.viewmodel.StatsViewModel.Period.NARROW
 
-class StatsViewModel(private val app: Application, repository: StatsRepository)
-    : AndroidViewModel(app) {
+class StatsViewModel(private val app: Application, repository: StatsRepository) : AndroidViewModel(app) {
 
     enum class Period(var length: Int, val imageRes: Int) {
         NARROW(7, R.drawable.avd_period_wid_nar),
@@ -37,12 +38,19 @@ class StatsViewModel(private val app: Application, repository: StatsRepository)
 
     private val triggerUpdate = MutableLiveData(true)
 
-    val stats: LiveData<Stats> = switchMap(triggerUpdate, Function {
-        return@Function repository.getStats(period.length, filter)
-    })
+    val stats: LiveData<Stats> = switchMap(triggerUpdate) { repository.getStats(period.length, filter) }
 
-    val purchaseDetails: LiveData<List<PurchaseDetail>> = switchMap(triggerUpdate, Function {
-        return@Function repository.getPurchaseDetails(period.length, filter)
+    private val rawPurchaseDetails: LiveData<List<PurchaseDetail>> = switchMap(triggerUpdate) {
+        repository.getPurchaseDetails(period.length, filter)
+    }
+
+    val purchaseDetails: LiveData<List<Any>> = map(rawPurchaseDetails, Function { purchases ->
+        val list = mutableListOf<Any>()
+        purchases.groupBy { formatDate(it.purchase.date) }.forEach { map ->
+            list.add(map.key) // date
+            list.addAll(map.value)
+        }
+        return@Function list
     })
 
     val filterList = initializeFilters()
