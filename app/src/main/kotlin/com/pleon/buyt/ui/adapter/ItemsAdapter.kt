@@ -164,7 +164,7 @@ class ItemsAdapter(private val app: Application) : Adapter<ItemHolder>() {
                 selectedItems.remove(items[adapterPosition])
                 itemView.price.text?.clear()
             }
-            // because of a bug due to "adjustPan" attribute in manifest
+            // FIXME: because of a bug due to "adjustPan" attribute in manifest
             recyclerView.post { notifyItemChanged(adapterPosition) }
         }
     }
