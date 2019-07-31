@@ -27,6 +27,7 @@
     <string name="weekday_tuesday">سه‌شنبه</string>
     <string name="weekday_monday">دوشنبه</string>
     <string name="weekday_sunday">یکشنبه</string>
+
     <string name="item_cat_grocery">خواروبار</string>
     <string name="item_cat_bread">نان</string>
     <string name="item_cat_dairy">لبنیات</string>
@@ -38,6 +39,12 @@
     <string name="item_cat_ice_cream">آبمیوه بستنی</string>
     <string name="item_cat_pastry">شیرینی</string>
     <string name="item_cat_tools">ابزار</string>
+    <string name="item_cat_drug">دارو</string>
+    <string name="item_cat_flower">گل</string>
+    <string name="item_cat_stationary">لوازم‌التحریر</string>
+    <string name="item_cat_other">سایر</string>
+    <string name="item_cat_book">کتاب</string>
+
     <string name="store_cat_grocery_store">سوپر مارکت</string>
     <string name="store_cat_bakery">نانوایی</string>
     <string name="store_cat_butchery">قصابی</string>
@@ -49,6 +56,12 @@
     <string name="store_cat_hardware_store">ابزار فروشی</string>
     <string name="store_cat_icecream_shop">آبمیوه بستنی</string>
     <string name="store_cat_confectionery">شیرینی فروشی</string>
+    <string name="store_cat_drugstore">داروخانه</string>
+    <string name="store_cat_flower_shop">گل فروشی</string>
+    <string name="store_cat_stationary_store">لوازم‌التحریر</string>
+    <string name="store_cat_book_shop">کتاب فروشی</string>
+    <string name="store_cat_other">سایر</string>
+
     <string name="qty_unit">عدد</string>
     <string name="qty_kilogram">کیلو</string>
     <string name="qty_gram">گرم</string>

@@ -18,15 +18,15 @@ enum class Category(val nameRes: Int, val imageRes: Int,
     FAST_FOOD(R.string.item_cat_fast_food, R.drawable.ic_item_fast_food, R.string.store_cat_fast_food, R.drawable.ic_store_fast_food),
     ICE_CREAM(R.string.item_cat_ice_cream, R.drawable.ic_item_icecream, R.string.store_cat_icecream_shop, R.drawable.ic_store_ice_creamy),
     PASTRY(R.string.item_cat_pastry, R.drawable.ic_item_pastry, R.string.store_cat_confectionery, R.drawable.ic_store_pastry),
+    DRUG(R.string.item_cat_drug, R.drawable.ic_item_drug, R.string.store_cat_drugstore, R.drawable.ic_store_drugstore),
+    BOOKSHOP(R.string.item_cat_book, R.drawable.ic_item_book, R.string.store_cat_book_shop, R.drawable.ic_store_book_shop),
     TOOLS(R.string.item_cat_tools, R.drawable.ic_item_tools, R.string.store_cat_hardware_store, R.drawable.ic_store_hardwary),
-    DRUG(R.string.store_cat_drugstore, R.drawable.ic_store_ice_creamy, R.string.store_cat_drugstore, R.drawable.ic_store_ice_creamy),
-    FLOWER(R.string.store_cat_flower_shop, R.drawable.ic_store_ice_creamy, R.string.store_cat_flower_shop, R.drawable.ic_store_ice_creamy),
-    STATIONARY(R.string.store_cat_stationary_store, R.drawable.ic_store_ice_creamy, R.string.app_name, R.drawable.ic_store);
-    // DRY_CLEANERS(R.string.store_cat_dry_cleaners, R.drawable.ic_store_ice_creamy),
-    // BOOKSHOP(R.string.store_cat_book_shop, R.drawable.ic_store_ice_creamy),
-    // CLOTHES_SHOP(R.string.store_cat_clothes_shop, R.drawable.ic_store_ice_creamy),
+    FLOWER(R.string.item_cat_flower, R.drawable.ic_item_flower, R.string.store_cat_flower_shop, R.drawable.ic_store_flower_shop),
+    STATIONARY(R.string.item_cat_stationary, R.drawable.ic_item_stationary, R.string.store_cat_stationary_store, R.drawable.ic_store_stationary_store),
+    OTHER(R.string.item_cat_other, R.drawable.ic_item_other, R.string.store_cat_other, R.drawable.ic_store_other);
     // SHOE_SHOP(R.string.store_cat_shoe_shop, R.drawable.ic_store_ice_creamy),
-    // OTHER(R.string.item_cat_other, R.drawable.ic_item_other)
+    // DRY_CLEANERS(R.string.store_cat_dry_cleaners, R.drawable.ic_store_ice_creamy),
+    // CLOTHES_SHOP(R.string.store_cat_clothes_shop, R.drawable.ic_store_ice_creamy);
 
     override val criterion = name
     override val imgRes = imageRes

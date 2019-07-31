@@ -69,6 +69,11 @@
     <string name="item_cat_ice_cream">Ice cream</string>
     <string name="item_cat_pastry">Pastry</string>
     <string name="item_cat_tools">Tools</string>
+    <string name="item_cat_drug">Drug</string>
+    <string name="item_cat_flower">Flower</string>
+    <string name="item_cat_stationary">Stationary</string>
+    <string name="item_cat_other">Other</string>
+    <string name="item_cat_book">Book</string>
 
     <string name="store_cat_grocery_store">Grocery store</string>
     <string name="store_cat_bakery">Bakery</string>
@@ -83,11 +88,9 @@
     <string name="store_cat_confectionery">Confectionery</string>
     <string name="store_cat_drugstore">Drugstore</string>
     <string name="store_cat_flower_shop">Flower shop</string>
-    <string name="store_cat_dry_cleaners">Dry cleaner\'s</string>
     <string name="store_cat_stationary_store">Stationary store</string>
     <string name="store_cat_book_shop">Bookshop</string>
-    <string name="store_cat_clothes_shop">Clothes shop</string>
-    <string name="store_cat_shoe_shop">Shoe shop</string>
+    <string name="store_cat_other">Other</string>
 
     <string name="qty_unit">unit</string>
     <string name="qty_kilogram">kg</string>
