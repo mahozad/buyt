@@ -72,27 +72,26 @@ class TouchHelperCallback(cxt: Context, private var listener: ItemTouchHelperLis
     // If you want to reduce or increase the speed of swipe, multiply dX by the desired factor
     override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, holder: ViewHolder,
                              dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
-        var dX = dX
         val viewHolder = holder as BaseViewHolder
 
         // If it's drag-n-drop move the whole card; if it's swipe just move the foreground
         val view = if (actionState == ACTION_STATE_DRAG) viewHolder.itemView.cardContainer else viewHolder.itemView.cardForeground
 
         // Limit the swipe distance. abs() and sign() are to support both LTR and RTL configs.
-        dX = if (abs(dX) < maxSwipeDistInPx) dX else dX.sign * maxSwipeDistInPx
+        val newDX = if (abs(dX) < maxSwipeDistInPx) dX else dX.sign * maxSwipeDistInPx
 
         // Animate delete circular reveal
-        if (abs(dX) == maxSwipeDistInPx && !viewHolder.delAnimating) {
+        if (abs(newDX) == maxSwipeDistInPx && !viewHolder.delAnimating) {
             viewHolder.itemView.delete_icon.setImageResource(R.drawable.avd_delete_open)
             animateIcon(viewHolder.itemView.delete_icon.drawable)
             showCircularReveal(viewHolder, viewHolder.itemView.circular_reveal)
-        } else if (abs(dX) < maxSwipeDistInPx && viewHolder.delAnimating) {
+        } else if (abs(newDX) < maxSwipeDistInPx && viewHolder.delAnimating) {
             viewHolder.itemView.delete_icon.setImageResource(R.drawable.avd_delete_close)
             animateIcon(viewHolder.itemView.delete_icon.drawable)
             hideCircularReveal(viewHolder, viewHolder.itemView.circular_reveal)
         }
 
-        ItemTouchHelper.Callback.getDefaultUIUtil().onDraw(c, recyclerView, view, dX, dY, actionState, isCurrentlyActive)
+        ItemTouchHelper.Callback.getDefaultUIUtil().onDraw(c, recyclerView, view, newDX, dY, actionState, isCurrentlyActive)
     }
 
     private fun showCircularReveal(viewHolder: BaseViewHolder, view: View) {

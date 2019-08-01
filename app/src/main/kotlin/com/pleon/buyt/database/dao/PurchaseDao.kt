@@ -34,18 +34,18 @@ abstract class PurchaseDao {
      */
     @Transaction
     open fun getStats(period: Int, filter: Filter): Stats {
-        val period = period - 1 // The queries return one extra day so subtract 1
+        val realPeriod = period - 1 // The queries return one extra day so subtract 1
         val stats = Stats()
 
-        stats.dailyCosts = getDailyCosts(period, filter.criterion)
-        stats.numberOfPurchases = getNumberOfPurchases(period, filter.criterion)
-        stats.totalPurchaseCost = getTotalPurchaseCost(period, filter.criterion)
-        stats.maxPurchaseCost = getMaxPurchaseCost(period, filter.criterion)
-        stats.minPurchaseCost = getMinPurchaseCost(period, filter.criterion)
-        stats.averagePurchaseCost = getAveragePurchaseCost(period, filter.criterion)
-        stats.weekdayWithMaxPurchases = getWeekdayWithMaxPurchaseCount(period, filter.criterion)
-        stats.storeWithMaxPurchaseCount = getStoreWithMaxPurchaseCount(period, filter.criterion)
-        stats.mostPurchasedCategories = getMostPurchasedCategories(period, filter.criterion)
+        stats.dailyCosts = getDailyCosts(realPeriod, filter.criterion)
+        stats.numberOfPurchases = getNumberOfPurchases(realPeriod, filter.criterion)
+        stats.totalPurchaseCost = getTotalPurchaseCost(realPeriod, filter.criterion)
+        stats.maxPurchaseCost = getMaxPurchaseCost(realPeriod, filter.criterion)
+        stats.minPurchaseCost = getMinPurchaseCost(realPeriod, filter.criterion)
+        stats.averagePurchaseCost = getAveragePurchaseCost(realPeriod, filter.criterion)
+        stats.weekdayWithMaxPurchases = getWeekdayWithMaxPurchaseCount(realPeriod, filter.criterion)
+        stats.storeWithMaxPurchaseCount = getStoreWithMaxPurchaseCount(realPeriod, filter.criterion)
+        stats.mostPurchasedCategories = getMostPurchasedCategories(realPeriod, filter.criterion)
 
         return stats
     }
