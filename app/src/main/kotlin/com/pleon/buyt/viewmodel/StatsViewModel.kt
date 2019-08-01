@@ -1,7 +1,6 @@
 package com.pleon.buyt.viewmodel
 
 import android.app.Application
-import androidx.arch.core.util.Function
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -44,14 +43,11 @@ class StatsViewModel(private val app: Application, repository: StatsRepository) 
         repository.getPurchaseDetails(period.length, filter)
     }
 
-    val purchaseDetails: LiveData<List<Any>> = map(rawPurchaseDetails, Function { details ->
-        val list = mutableListOf<Any>()
-        details.groupBy { formatDate(it.purchase.date) }.forEach { map ->
-            list.add(map.key) // date
-            list.addAll(map.value)
+    val purchaseDetails: LiveData<List<Any>> = map(rawPurchaseDetails) { details ->
+        details.groupBy { formatDate(it.purchase.date) }.flatMap { group ->
+            mutableListOf<Any>(group.key).also { it.addAll(group.value) }
         }
-        return@Function list
-    })
+    }
 
     val filterList = initializeFilters()
     var filter: Filter = NoFilter
