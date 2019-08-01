@@ -44,8 +44,8 @@ class StatsViewModel(private val app: Application, repository: StatsRepository) 
     }
 
     val purchaseDetails: LiveData<List<Any>> = map(rawPurchaseDetails) { details ->
-        details.groupBy { formatDate(it.purchase.date) }.flatMap { group ->
-            mutableListOf<Any>(group.key).also { it.addAll(group.value) }
+        details.groupBy { formatDate(it.purchase.date) }.flatMap { datePurchases ->
+            mutableListOf<Any>(datePurchases.key).apply { addAll(datePurchases.value) }
         }
     }
 
