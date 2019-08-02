@@ -29,6 +29,7 @@ class AddItemViewModel(app: Application, val repository: AddItemRepository) : An
     })
 
     private val defaultNameCats by lazy {
+        // FIXME: IO operation; do it on background
         InputStreamReader(app.resources.openRawResource(R.raw.item_names)).readLines()
                 .associateBy({ it.substringBefore(':') }, { cat(it.substringAfter(':')) })
     }
