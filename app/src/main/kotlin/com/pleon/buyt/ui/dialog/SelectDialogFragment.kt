@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.adapter.SelectionListAdapter
 import java.io.Serializable
-import java.util.*
 
 // DialogFragment is just another Fragment
 class SelectDialogFragment : AppCompatDialogFragment(), SelectionListAdapter.Callback {
@@ -90,14 +89,14 @@ class SelectDialogFragment : AppCompatDialogFragment(), SelectionListAdapter.Cal
         private var callback: Callback? = null
 
         fun newInstance(callback: Callback, @StringRes title: Int,
-                        list: ArrayList<SelectDialogRow>): SelectDialogFragment {
+                        list: List<SelectDialogRow>): SelectDialogFragment {
             /* FIXME: callback should be set in the onAttach() method, but because the context passed
              *  to it is the containing activity and not the containing fragment, we passed it here */
             Companion.callback = callback
 
             val fragment = SelectDialogFragment()
             val args = Bundle()
-            args.putSerializable("LIST", list)
+            args.putSerializable("LIST", list as Serializable)
             fragment.arguments = args
             args.putInt("TITLE", title)
 

@@ -49,19 +49,15 @@ class StatsViewModel(private val app: Application, repository: StatsRepository) 
         }
     }
 
-    val filterList = initializeFilters()
+    val filterList: List<SelectDialogRow> = run {
+        val list = mutableListOf(SelectDialogRow(app.getString(R.string.no_filter), R.drawable.ic_filter))
+        list.addAll(Category.values().map { SelectDialogRow(app.getString(it.nameRes), it.imageRes) })
+        return@run list
+    }
     var filter: Filter = NoFilter
         private set
     var period = NARROW
         private set
-
-    private fun initializeFilters(): ArrayList<SelectDialogRow> {
-        val filters = arrayListOf(SelectDialogRow(app.getString(R.string.no_filter), R.drawable.ic_filter))
-        for (category in Category.values()) {
-            filters.add(SelectDialogRow(app.getString(category.nameRes), category.imageRes))
-        }
-        return filters
-    }
 
     fun togglePeriod() {
         val currentIndex = Period.valueOf(period.name).ordinal
