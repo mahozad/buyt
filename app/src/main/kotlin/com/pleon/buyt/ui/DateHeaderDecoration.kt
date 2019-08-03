@@ -74,12 +74,10 @@ class DateHeaderDecoration(recyclerView: RecyclerView, private val listener: Has
         var childInContact: View? = null
         for (i in 0 until parent.childCount) {
             val child = parent.getChildAt(i)
-            if (child.bottom > contactPoint) {
-                if (child.top <= contactPoint) {
-                    // This child overlaps the contactPoint
-                    childInContact = child
-                    break
-                }
+            if (child.bottom > contactPoint && child.top <= contactPoint) {
+                // This child overlaps the contactPoint
+                childInContact = child
+                break
             }
         }
         return childInContact

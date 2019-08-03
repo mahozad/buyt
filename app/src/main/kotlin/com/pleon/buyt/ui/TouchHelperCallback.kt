@@ -57,10 +57,9 @@ class TouchHelperCallback(cxt: Context, private var listener: ItemTouchHelperLis
     override fun onSwiped(vh: ViewHolder, direction: Int) = listener.onSwiped(vh, direction)
 
     override fun onSelectedChanged(viewHolder: ViewHolder?, actionState: Int) {
-        if (viewHolder != null) {
-            val view = (viewHolder as BaseViewHolder).itemView.cardBackground
-            ItemTouchHelper.Callback.getDefaultUIUtil().onSelected(view)
-        }
+        if (viewHolder == null) return
+        val view = (viewHolder as BaseViewHolder).itemView.cardBackground
+        ItemTouchHelper.Callback.getDefaultUIUtil().onSelected(view)
     }
 
     override fun clearView(recyclerView: RecyclerView, viewHolder: ViewHolder) {

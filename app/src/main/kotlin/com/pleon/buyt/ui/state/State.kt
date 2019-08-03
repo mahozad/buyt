@@ -67,7 +67,7 @@ abstract class State {
         animateIcon(reorderMenuItem.icon)
         addMenuItem.setIcon(R.drawable.avd_add_show).isVisible = true
         animateIcon(addMenuItem.icon)
-        fab.setImageResource(fabResId).apply { animateIcon(fab.drawable) }
+        fab.setImageResource(fabResId).also { animateIcon(fab.drawable) }
 
         (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).cancelAll()
 
