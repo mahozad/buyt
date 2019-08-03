@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.snackbar_container.*
 
 object FindingState : State() {
 
-    override fun onReorderSkipClicked() = skipFinding()
+    override fun onReorderSkipClicked() = super.skipFinding()
 
     override fun onBackClicked() {
         super.shiftToIdleState(fabResId = R.drawable.avd_buyt_reverse)

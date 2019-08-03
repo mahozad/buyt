@@ -44,16 +44,10 @@ class StatsViewModel(private val app: Application, repository: StatsRepository) 
     }
 
     val purchaseDetails: LiveData<List<Any>> = map(rawPurchaseDetails) { details ->
-        details.groupBy { formatDate(it.purchase.date) }.flatMap { datePurchases ->
-            mutableListOf<Any>(datePurchases.key).apply { addAll(datePurchases.value) }
-        }
+        details.groupBy { formatDate(it.purchase.date) }.flatMap { listOf(it.key) + it.value }
     }
 
-    val filterList: List<SelectDialogRow> = run {
-        val list = mutableListOf(SelectDialogRow(app.getString(R.string.no_filter), R.drawable.ic_filter))
-        list.addAll(Category.values().map { SelectDialogRow(app.getString(it.nameRes), it.imageRes) })
-        return@run list
-    }
+    val filterList = listOf(SelectDialogRow(app.getString(R.string.no_filter), NoFilter.imgRes)) + categoryRows()
     var filter: Filter = NoFilter
         private set
     var period = NARROW
@@ -66,11 +60,15 @@ class StatsViewModel(private val app: Application, repository: StatsRepository) 
     }
 
     fun setFilter(index: Int) {
-        this.filter = getFilterByIndex(index)
+        filter = getFilterByIndex(index)
         triggerUpdate()
     }
 
     fun triggerUpdate() = triggerUpdate.setValue(true)
+
+    private fun categoryRows(): List<SelectDialogRow> {
+      return Category.values().map { SelectDialogRow(app.getString(it.nameRes), it.imageRes) }
+    }
 
     private fun getFilterByIndex(index: Int): Filter {
         val name = filterList[index].name
