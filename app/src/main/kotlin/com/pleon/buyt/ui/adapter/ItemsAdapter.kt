@@ -8,9 +8,10 @@ import android.view.MotionEvent.ACTION_DOWN
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager.beginDelayedTransition
 import com.pleon.buyt.R
@@ -23,16 +24,17 @@ import com.pleon.buyt.util.TextUtil.removeNonDigitChars
 import kotlinx.android.synthetic.main.item_list_row.view.*
 import java.lang.Long.parseLong
 
-class ItemsAdapter(private val app: Application) : Adapter<ItemHolder>() {
+class ItemsAdapter(private val app: Application) : ListAdapter<Item, ItemHolder>(TaskDiffCallback) {
 
-    lateinit var touchHelper: ItemTouchHelper
-
-    var items = listOf<Item>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
+    object TaskDiffCallback : DiffUtil.ItemCallback<Item>() {
+        override fun areItemsTheSame(oldItem: Item, newItem: Item) = oldItem.itemId == newItem.itemId
+        override fun areContentsTheSame(oldItem: Item, newItem: Item) = with(newItem) {
+            name == oldItem.name && quantity == oldItem.quantity && description == oldItem.description
         }
+    }
+
     val selectedItems = mutableSetOf<Item>()
+    lateinit var touchHelper: ItemTouchHelper
     private lateinit var recyclerView: RecyclerView
     private var dragModeEnabled = false
     private var selectionModeEnabled = false
@@ -67,25 +69,21 @@ class ItemsAdapter(private val app: Application) : Adapter<ItemHolder>() {
      * keep this method as lightweight as possible as it is called for every row
      */
     override fun onBindViewHolder(holder: ItemHolder, position: Int) {
-        // if (this.items != null) {
-        holder.bindItem(items[position])
-        // } else: case of data not being ready yet; set a placeholder or something
+        holder.bindItem(currentList[position])
     }
 
     /**
      * setHasStableIds() should also be set (in e.g. constructor). This is an optimization hint that you
      * give to the RecyclerView and tell it "when I provide a ViewHolder, its id is unique and won't change."
      */
-    override fun getItemId(position: Int) = items[position].itemId
+    override fun getItemId(position: Int) = currentList[position].itemId
 
-    override fun getItemCount() = items.size
-
-    fun getItem(position: Int) = items[position]
+    public override fun getItem(position: Int): Item = super.getItem(position)
 
     fun clearSelectedItems() = selectedItems.clear()
 
     fun toggleDragMode() {
-        if (items.isNotEmpty()) { // toggle only if there is any item
+        if (currentList.isNotEmpty()) { // toggle only if there is any item
             dragModeEnabled = !dragModeEnabled
             notifyDataSetChanged()
         }
@@ -149,7 +147,7 @@ class ItemsAdapter(private val app: Application) : Adapter<ItemHolder>() {
             val priceString = itemView.price.text!!.removeNonDigitChars()
             if (priceString.isNotEmpty()) {
                 val price = parseLong(priceString)
-                items[adapterPosition].totalPrice = price
+                currentList[adapterPosition].totalPrice = price
             }
         }
 
@@ -157,11 +155,11 @@ class ItemsAdapter(private val app: Application) : Adapter<ItemHolder>() {
             beginDelayedTransition(recyclerView, ChangeBounds().setDuration(200))
             if (checked) {
                 itemView.price_container.visibility = VISIBLE
-                selectedItems.add(items[adapterPosition])
+                selectedItems.add(currentList[adapterPosition])
             } else {
                 itemView.price_container.visibility = GONE
-                items[adapterPosition].totalPrice = 0
-                selectedItems.remove(items[adapterPosition])
+                currentList[adapterPosition].totalPrice = 0
+                selectedItems.remove(currentList[adapterPosition])
                 itemView.price.text?.clear()
             }
         }

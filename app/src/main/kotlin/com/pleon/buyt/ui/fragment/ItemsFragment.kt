@@ -25,8 +25,6 @@ import kotlinx.android.synthetic.main.snackbar_container.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import java.util.*
-import kotlin.Comparator
 
 class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
 
@@ -39,10 +37,9 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
     private val touchHelperCallback by inject<TouchHelperCallback> {
         parametersOf(this@ItemsFragment)
     }
-
     val isSelectedEmpty get() = adapter.selectedItems.isEmpty()
     val selectedItems get() = adapter.selectedItems
-    val isListEmpty get() = adapter.items.isEmpty()
+    val isListEmpty get() = adapter.currentList.isEmpty()
     private var listener: ItemListListener? = null
 
     override fun layout() = R.layout.fragment_item_list
@@ -50,7 +47,7 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
     override fun onViewCreated(view: View, savedState: Bundle?) {
         // In fragments use getViewLifecycleOwner() as owner argument
         viewModel.items.observe(viewLifecycleOwner, Observer { items ->
-            adapter.items = items
+            adapter.submitList(items)
             animateAlpha(emptyHint, if (items.isEmpty()) 1f else 0f)
             listener?.onItemListChanged(items.isEmpty())
         })
@@ -70,10 +67,7 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
     override fun onMoved(oldPosition: Int, newPosition: Int) {
         adapter.getItem(oldPosition).position = newPosition
         adapter.getItem(newPosition).position = oldPosition
-        Collections.swap(adapter.items, newPosition, oldPosition)
-        adapter.notifyItemMoved(oldPosition, newPosition)
-
-        viewModel.updateItems(adapter.items)
+        viewModel.updateItems(adapter.currentList)
         // or update items in onStop (causes bugs if before onStop some items are deleted)
     }
 
@@ -122,7 +116,7 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
         var validated = true
         for (item in adapter.selectedItems) {
             if (item.totalPrice == 0L) {
-                val itemIndex = adapter.items.indexOf(item) // FIXME: maybe heavy operation
+                val itemIndex = adapter.currentList.indexOf(item) // FIXME: maybe heavy operation
                 val itemView = recyclerView.layoutManager!!.findViewByPosition(itemIndex)
                 val priceLayout = itemView!!.findViewById<TextInputLayout>(R.id.price_layout)
                 priceLayout.error = getString(R.string.input_error_price)
@@ -133,21 +127,22 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
     }
 
     fun sortItemsByCategory(category: Category) {
-        adapter.items = adapter.items.sortedWith(Comparator { item1, item2 ->
+        val list = adapter.currentList.sortedWith(Comparator { item1, item2 ->
             when {
                 item1.category == item2.category -> 0
                 item1.category == category -> -1
                 else -> +1
             }
         })
-        adapter.notifyDataSetChanged()
+        adapter.submitList(list)
     }
 
     fun sortItemsByOrder() {
-        adapter.items = adapter.items.sortedWith(Comparator { item1, item2 ->
+        val list = adapter.currentList.sortedWith(Comparator { item1, item2 ->
             if (item1.isUrgent != item2.isUrgent) if (item1.isUrgent) -1 else +1
             else item1.position - item2.position
         })
+        adapter.submitList(list)
     }
 
     fun emphasisEmpty() = showSnackbar(snbContainer, R.string.snackbar_message_list_empty, LENGTH_LONG)
