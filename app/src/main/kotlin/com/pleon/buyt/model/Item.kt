@@ -14,7 +14,7 @@ import com.pleon.buyt.R
 class Item(val name: String, @Embedded val quantity: Quantity, var category: Category,
            val isUrgent: Boolean, var isBought: Boolean) {
 
-    class Quantity(val value: Long, val unit: Unit) {
+    data class Quantity(val value: Long, val unit: Unit) {
 
         enum class Unit(val nameRes: Int) { UNIT(R.string.qty_unit), KILOGRAM(R.string.qty_kilogram), GRAM(R.string.qty_gram) }
 
