@@ -1,4 +1,9 @@
 ﻿┌───────────────────────────┐
+├ versionName = 1.3.2       │
+├ versionCode = 8           │
+│ ──────────────────────────┘
+├ Fix animations when deleting or dragging items/stores
+┌───────────────────────────┐
 ├ versionName = 1.3.1       │
 ├ versionCode = 7           │
 │ ──────────────────────────┘
