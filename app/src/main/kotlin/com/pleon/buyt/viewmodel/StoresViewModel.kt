@@ -38,17 +38,15 @@ class StoresViewModel(app: Application, private val repository: StoreRepository)
 
     fun getSort() = sortLiveData.value!!
 
-    fun updateStores(stores: Collection<Store>) = repository.updateStores(stores)
-
     fun flagStoreForDeletion(store: Store) {
         store.isFlaggedForDeletion = true
-        updateStores(listOf(store))
+        repository.updateStore(store)
     }
 
     fun deleteStore(store: Store) = repository.deleteStore(store)
 
     fun restoreDeletedStore(store: Store) {
         store.isFlaggedForDeletion = false
-        updateStores(listOf(store))
+        repository.updateStore(store)
     }
 }

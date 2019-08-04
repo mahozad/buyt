@@ -47,7 +47,7 @@ class StoresFragment : BaseFragment(), ItemTouchHelperListener {
         setHasOptionsMenu(true) // for onCreateOptionsMenu() to be called
 
         viewModel.stores.observe(viewLifecycleOwner, Observer { stores ->
-            adapter.storeDetails = stores
+            adapter.submitList(stores)
             animateAlpha(emptyHint, if (stores.isEmpty()) 1f else 0f)
         })
 

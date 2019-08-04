@@ -7,8 +7,9 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat.getFont
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
 import com.pleon.buyt.R
@@ -22,16 +23,20 @@ import com.pleon.buyt.viewmodel.StoresViewModel
 import kotlinx.android.synthetic.main.store_list_row.view.*
 
 class StoresAdapter(private val frag: Fragment, private val viewModel: StoresViewModel)
-    : Adapter<StoreHolder>() {
+    : ListAdapter<StoreDetail, StoreHolder>(StoreDiffCallback) {
+
+    object StoreDiffCallback : DiffUtil.ItemCallback<StoreDetail>() {
+        override fun areItemsTheSame(oldItem: StoreDetail, newItem: StoreDetail): Boolean {
+            return oldItem.store.storeId == newItem.store.storeId
+        }
+
+        override fun areContentsTheSame(oldItem: StoreDetail, newItem: StoreDetail): Boolean {
+            return oldItem.store.name == newItem.store.name
+        }
+    }
 
     private lateinit var recyclerView: RecyclerView
     private var extendedStoreId = 0L
-
-    var storeDetails = listOf<StoreDetail>()
-        set(storeDetails) {
-            field = storeDetails
-            notifyDataSetChanged()
-        }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
@@ -48,14 +53,12 @@ class StoresAdapter(private val frag: Fragment, private val viewModel: StoresVie
     override fun setHasStableIds(hasStableIds: Boolean) = super.setHasStableIds(true)
 
     override fun onBindViewHolder(holder: StoreHolder, position: Int) {
-        holder.bindStore(storeDetails[position])
+        holder.bindStore(currentList[position])
     }
 
-    override fun getItemCount() = storeDetails.size
+    override fun getItemId(position: Int) = currentList[position].store.storeId
 
-    override fun getItemId(position: Int) = storeDetails[position].store.storeId
-
-    fun getStore(position: Int) = storeDetails[position].store
+    fun getStore(position: Int) = super.getItem(position).store
 
     inner class StoreHolder(v: View) : BaseViewHolder(v) {
 

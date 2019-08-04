@@ -62,7 +62,7 @@ abstract class StoreDao {
     abstract fun insert(store: Store): Long
 
     @Update
-    abstract fun updateAll(stores: Collection<Store>)
+    abstract fun update(store: Store)
 
     @Delete
     abstract fun delete(store: Store)
