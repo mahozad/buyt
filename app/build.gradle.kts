@@ -38,8 +38,8 @@ android {
         applicationId = "com.pleon.buyt"
         minSdkVersion(21)
         targetSdkVersion(28)
-        versionCode = 6 // don't forget this
-        versionName = "1.3.0" // alpha -> beta -> rc -> final
+        versionCode = 7 // don't forget this
+        versionName = "1.3.1" // alpha -> beta -> rc -> final
 
         /* This flag prevents the Android Gradle Plugin from generating PNG versions of
          * vector assets if minSdkVersion is < 21 */
