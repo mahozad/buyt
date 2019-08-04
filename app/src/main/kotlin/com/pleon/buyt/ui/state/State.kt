@@ -6,6 +6,7 @@ import android.location.Location
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
@@ -58,6 +59,7 @@ abstract class State {
     }
 
     protected fun shiftToIdleState(fabResId: Int) = with(activity) {
+        window.setSoftInputMode(SOFT_INPUT_ADJUST_PAN) // required
         bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_CENTER
         bottom_bar.setNavigationIcon(R.drawable.avd_cancel_nav)
         animateIcon(bottom_bar.navigationIcon!!)

@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
 import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener
 import androidx.lifecycle.Observer
@@ -80,6 +81,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
      */
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
+        window.setSoftInputMode(SOFT_INPUT_ADJUST_PAN) // required
         restoreBottomDrawerIfNeeded()
 
         activity = this

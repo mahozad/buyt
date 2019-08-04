@@ -1,6 +1,7 @@
 package com.pleon.buyt.ui.state
 
 import android.os.Bundle
+import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_END
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
 import com.pleon.buyt.R
@@ -72,9 +73,10 @@ object SelectingState : State() {
         outState.putParcelable(STATE_LOCATION, activity.viewModel.location)
     }
 
-    override fun onRestoreInstance(savedState: Bundle) {
-        activity.fab.setImageResource(R.drawable.ic_done)
-        activity.itemsFragment.toggleItemsCheckbox(true)
+    override fun onRestoreInstance(savedState: Bundle) = with(activity) {
+        window.setSoftInputMode(SOFT_INPUT_ADJUST_NOTHING) // required
+        fab.setImageResource(R.drawable.ic_done)
+        itemsFragment.toggleItemsCheckbox(true)
     }
 
     override fun onStoreCreated(store: Store) {

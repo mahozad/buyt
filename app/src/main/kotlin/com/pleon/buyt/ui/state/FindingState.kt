@@ -3,6 +3,7 @@ package com.pleon.buyt.ui.state
 import android.content.Intent
 import android.location.Location
 import android.os.Bundle
+import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_END
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
@@ -34,6 +35,7 @@ object FindingState : State() {
     }
 
     private fun shiftToSelectingState() = with(activity) {
+        window.setSoftInputMode(SOFT_INPUT_ADJUST_NOTHING) // required
         itemsFragment.toggleItemsCheckbox(true)
 
         if (viewModel.shouldAnimateNavIcon) {
