@@ -135,6 +135,7 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
             }
         })
         adapter.submitList(list)
+        recyclerView.smoothScrollToPosition( 0)
     }
 
     fun sortItemsByOrder() {
@@ -143,6 +144,7 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
             else item1.position - item2.position
         })
         adapter.submitList(list)
+        recyclerView.smoothScrollToPosition( 0)
     }
 
     fun emphasisEmpty() = showSnackbar(snbContainer, R.string.snackbar_message_list_empty, LENGTH_LONG)
