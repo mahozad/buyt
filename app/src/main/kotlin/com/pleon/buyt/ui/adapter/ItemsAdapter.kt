@@ -24,9 +24,9 @@ import com.pleon.buyt.util.TextUtil.removeNonDigitChars
 import kotlinx.android.synthetic.main.item_list_row.view.*
 import java.lang.Long.parseLong
 
-class ItemsAdapter(private val app: Application) : ListAdapter<Item, ItemHolder>(TaskDiffCallback) {
+class ItemsAdapter(private val app: Application) : ListAdapter<Item, ItemHolder>(ItemDiffCallback) {
 
-    object TaskDiffCallback : DiffUtil.ItemCallback<Item>() {
+    object ItemDiffCallback : DiffUtil.ItemCallback<Item>() {
         override fun areItemsTheSame(oldItem: Item, newItem: Item) = oldItem.itemId == newItem.itemId
         override fun areContentsTheSame(oldItem: Item, newItem: Item) = with(newItem) {
             name == oldItem.name && quantity == oldItem.quantity && description == oldItem.description
