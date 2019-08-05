@@ -47,7 +47,7 @@ class StatsViewModel(private val app: Application, repository: StatsRepository) 
         details.groupBy { formatDate(it.purchase.date) }.flatMap { listOf(it.key) + it.value }
     }
 
-    val filterList = listOf(SelectDialogRow(app.getString(R.string.no_filter), NoFilter.imgRes)) + categoryRows()
+    val filterList = listOf(SelectDialogRow(app.getString(R.string.no_filter), NoFilter.imgRes)) + categoriesAsRows()
     var filter: Filter = NoFilter
         private set
     var period = NARROW
@@ -60,13 +60,14 @@ class StatsViewModel(private val app: Application, repository: StatsRepository) 
     }
 
     fun setFilter(index: Int) {
+        assert(index >= 0)
         filter = getFilterByIndex(index)
         triggerUpdate()
     }
 
     fun triggerUpdate() = triggerUpdate.setValue(true)
 
-    private fun categoryRows(): List<SelectDialogRow> {
+    private fun categoriesAsRows(): List<SelectDialogRow> {
       return Category.values().map { SelectDialogRow(app.getString(it.nameRes), it.imageRes) }
     }
 
