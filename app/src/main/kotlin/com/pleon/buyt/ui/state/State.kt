@@ -30,8 +30,6 @@ abstract class State {
 
     open fun onReorderSkipClicked() {}
 
-    open fun onOptionsMenuCreated() {}
-
     open fun onLocationPermissionGranted() {}
 
     open fun onHomeClicked() = onBackClicked()
@@ -51,6 +49,12 @@ abstract class State {
     open fun onItemListChanged(isListEmpty: Boolean) {}
 
     open fun onStoreMenuItemClicked() {}
+
+    open fun onOptionsMenuCreated() = with(activity) {
+        bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
+        animateIcon(bottom_bar.navigationIcon!!)
+        addMenuItem.isVisible = false
+    }
 
     fun skipFinding() = with(activity) {
         viewModel.shouldAnimateNavIcon = true

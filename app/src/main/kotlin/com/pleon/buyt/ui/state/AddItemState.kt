@@ -35,14 +35,11 @@ object AddItemState : State() {
 
     override fun onOptionsMenuCreated() = with(activity) {
         // Because animating views was buggy in onOptionsItemSelected we do it here
-        bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
-        animateIcon(bottom_bar.navigationIcon!!)
-        addMenuItem.isVisible = false
+        super.onOptionsMenuCreated()
         reorderMenuItem.isVisible = false
         bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
         animateAlpha(scrim, toAlpha = 1f, duration = 300)
-        fab.setImageResource(R.drawable.avd_find_done)
-        animateIcon(fab.drawable)
+        fab.setImageResource(R.drawable.avd_find_done).also { animateIcon(fab.drawable) }
     }
 
     override fun onRestoreInstance(savedState: Bundle) = activity.fab.setImageResource(R.drawable.ic_done)

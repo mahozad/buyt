@@ -9,7 +9,6 @@ import com.pleon.buyt.model.Store
 import com.pleon.buyt.ui.activity.STATE_LOCATION
 import com.pleon.buyt.ui.dialog.CreateStoreDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
-import com.pleon.buyt.util.AnimationUtil.animateIcon
 import com.pleon.buyt.util.SnackbarUtil.showSnackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.snackbar_container.*
@@ -61,10 +60,8 @@ object SelectingState : State() {
     }
 
     override fun onOptionsMenuCreated() = with(activity) {
-        bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
-        animateIcon(bottom_bar.navigationIcon!!)
+        super.onOptionsMenuCreated()
         setStoreMenuItemIcon()
-        addMenuItem.isVisible = false
         reorderMenuItem.isVisible = false
         bottom_bar.fabAlignmentMode = FAB_ALIGNMENT_MODE_END
     }

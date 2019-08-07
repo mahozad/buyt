@@ -72,11 +72,9 @@ object FindingState : State() {
         }
     }
 
-    override fun onOptionsMenuCreated() = with(activity) {
-        bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
-        animateIcon(bottom_bar.navigationIcon!!)
-        reorderMenuItem.setIcon(R.drawable.avd_skip_reorder).setTitle(R.string.menu_hint_skip_finding)
-        addMenuItem.isVisible = false
+    override fun onOptionsMenuCreated() {
+        super.onOptionsMenuCreated()
+        activity.reorderMenuItem.setIcon(R.drawable.avd_skip_reorder).setTitle(R.string.menu_hint_skip_finding)
     }
 
     // In FINDING state, app runs a FOREGROUND service and is unkillable
