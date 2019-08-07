@@ -34,13 +34,14 @@ object AnimationUtil {
     }
 
     fun animateAlpha(view: View, toAlpha: Float, duration: Long = 200, startDelay: Long = 0) {
-        if (toAlpha == 1f) view.visibility = VISIBLE
-        view.animate()
-                .alpha(toAlpha)
-                .setInterpolator(FastOutSlowInInterpolator())
+        view.animate().alpha(toAlpha)
                 .setDuration(duration)
                 .setStartDelay(startDelay)
+                .setInterpolator(FastOutSlowInInterpolator())
                 .setListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationStart(animation: Animator?, isReverse: Boolean) {
+                        if (toAlpha == 1f) view.visibility = VISIBLE
+                    }
                     override fun onAnimationEnd(animation: Animator?) {
                         if (toAlpha == 0f) view.visibility = GONE
                     }
