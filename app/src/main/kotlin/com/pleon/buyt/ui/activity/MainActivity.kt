@@ -35,6 +35,8 @@ import com.pleon.buyt.ui.state.IdleState
 import com.pleon.buyt.ui.state.activity
 import com.pleon.buyt.util.SnackbarUtil.showSnackbar
 import com.pleon.buyt.viewmodel.MainViewModel
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.snackbar_container.*
 import org.jetbrains.anko.dimen
 import org.jetbrains.anko.dip
 import org.koin.android.ext.android.inject
