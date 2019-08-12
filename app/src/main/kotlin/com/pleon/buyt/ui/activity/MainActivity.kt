@@ -35,8 +35,6 @@ import com.pleon.buyt.ui.state.IdleState
 import com.pleon.buyt.ui.state.activity
 import com.pleon.buyt.util.SnackbarUtil.showSnackbar
 import com.pleon.buyt.viewmodel.MainViewModel
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.snackbar_container.*
 import org.jetbrains.anko.dimen
 import org.jetbrains.anko.dip
 import org.koin.android.ext.android.inject
@@ -57,6 +55,10 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
 
     /* FIXME: While store creation dialog is shown, if a config change occurs and then the store
      *  is created, the behaviour is buggy */
+
+    /* FIXME: There is a bug with toggle bought item: tap add item menu icon; tap on name field
+    *   to open the keyboard; tap on toggle full screen; tap on back to close the keyboard;
+    *   tap on bought toggle: it doesn't work */
 
     val viewModel: MainViewModel by viewModel()
     private val broadcastMgr: LocalBroadcastManager by inject()
