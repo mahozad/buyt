@@ -1,7 +1,5 @@
 package com.pleon.buyt.util
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
 import android.os.Handler
@@ -29,8 +27,11 @@ object AnimationUtil {
     }
 
     fun animateIcon(icon: Drawable, startDelay: Long = 0) {
-        if (startDelay > 0) Handler().postDelayed({ (icon as Animatable).start() }, startDelay)
-        else (icon as Animatable).start()
+        if (startDelay > 0) {
+            Handler().postDelayed({ (icon as Animatable).start() }, startDelay)
+        } else {
+            (icon as Animatable).start()
+        }
     }
 
     fun animateAlpha(view: View, toAlpha: Float, duration: Long = 200, startDelay: Long = 0) {
@@ -38,14 +39,8 @@ object AnimationUtil {
                 .setDuration(duration)
                 .setStartDelay(startDelay)
                 .setInterpolator(FastOutSlowInInterpolator())
-                .setListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationStart(animation: Animator?, isReverse: Boolean) {
-                        if (toAlpha == 1f) view.visibility = VISIBLE
-                    }
-                    override fun onAnimationEnd(animation: Animator?) {
-                        if (toAlpha == 0f) view.visibility = GONE
-                    }
-                })
+                .withStartAction { if (toAlpha == 1f) view.visibility = VISIBLE }
+                .withEndAction { if (toAlpha == 0f) view.visibility = GONE }
                 .start()
     }
 }
