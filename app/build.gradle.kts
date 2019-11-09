@@ -107,22 +107,22 @@ dependencies {
      * you don't have to add ONE big library (and include unwanted libs) and make your apk huge.
      * The following library for example adds support for ActionBar, AppCompatActivity and
      * some other for devices down to api v7. */
-    implementation("androidx.appcompat:appcompat:1.1.0-rc01")
+    implementation("androidx.appcompat:appcompat:1.1.0")
     /* The AndroidX version of "com.android.support:design"
      * Another support library that adds support for material components such as NavigationDrawer,
      * SnackBar, FAB and Tab for older android versions. */
-    implementation("com.google.android.material:material:1.1.0-alpha09")
+    implementation("com.google.android.material:material:1.2.0-alpha01")
     // ViewModel and LiveData
-    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0-alpha02")
-    implementation("androidx.lifecycle:lifecycle-common-java8:2.2.0-alpha02")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.0-beta2")
-    implementation("androidx.coordinatorlayout:coordinatorlayout:1.1.0-beta01")
-    implementation("androidx.recyclerview:recyclerview:1.1.0-beta01")
-    implementation("androidx.preference:preference:1.1.0-rc01")
-    implementation("androidx.viewpager2:viewpager2:1.0.0-beta02")
+    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0-rc02")
+    implementation("androidx.lifecycle:lifecycle-common-java8:2.2.0-rc02")
+    implementation("androidx.constraintlayout:constraintlayout:2.0.0-beta3")
+    implementation("androidx.coordinatorlayout:coordinatorlayout:1.1.0-rc01")
+    implementation("androidx.recyclerview:recyclerview:1.1.0-rc01")
+    implementation("androidx.preference:preference:1.1.0")
+    implementation("androidx.viewpager2:viewpager2:1.0.0-rc01")
     implementation("org.koin:koin-androidx-viewmodel:2.0.1")
-    implementation("androidx.room:room-runtime:2.1.0")
-    kapt("androidx.room:room-compiler:2.1.0")
+    implementation("androidx.room:room-runtime:2.2.1")
+    kapt("androidx.room:room-compiler:2.2.1")
 
     /* If you're targeting JDK 8, you can use extended versions of the Kotlin standard library
      * which contain additional extension functions for APIs added in new JDK versions.
@@ -156,7 +156,7 @@ dependencies {
     androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.5.0")
     androidTestImplementation("org.mockito:mockito-android:3.0.0")
     androidTestImplementation("org.mockito:mockito-junit-jupiter:3.0.0")
-    androidTestImplementation("androidx.room:room-testing:2.1.0")
+    androidTestImplementation("androidx.room:room-testing:2.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
     androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.0.0")
     androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.0.0")
