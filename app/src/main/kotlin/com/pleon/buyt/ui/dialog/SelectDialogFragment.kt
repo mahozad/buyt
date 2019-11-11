@@ -66,7 +66,7 @@ class SelectDialogFragment : AppCompatDialogFragment(), SelectionListAdapter.Cal
         return dialog
     }
 
-    override fun onStoreClick() {
+    override fun onItemClicked() {
         dialog.getButton(BUTTON_POSITIVE).isEnabled = true
     }
 

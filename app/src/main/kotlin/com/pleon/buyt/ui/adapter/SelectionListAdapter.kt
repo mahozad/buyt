@@ -15,12 +15,11 @@ import kotlinx.android.synthetic.main.selection_list_row.view.*
 class SelectionListAdapter(private val callback: Callback) : Adapter<StoreHolder>() {
 
     interface Callback {
-        fun onStoreClick()
+        fun onItemClicked()
     }
 
-    private var list: List<SelectDialogRow>? = null
-    private var callbackNotified = false
     var selectedIndex = -1
+    private var list: List<SelectDialogRow>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoreHolder {
         val itemView = LayoutInflater.from(parent.context)
@@ -36,9 +35,7 @@ class SelectionListAdapter(private val callback: Callback) : Adapter<StoreHolder
                 // To show radio button animation
                 if (it !is RadioButton) holder.itemView.storeRadioButton.performClick()
 
-                if (!callbackNotified) callback.onStoreClick()
-
-                callbackNotified = true
+                callback.onItemClicked()
 
                 notifyItemChanged(selectedIndex)
                 selectedIndex = position
