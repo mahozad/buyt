@@ -54,7 +54,7 @@ class SelectionListAdapter(private val callback: Callback) : Adapter<StoreHolder
     }
 
     // Adapter (and RecyclerView) works with ViewHolders instead of direct Views.
-    inner class StoreHolder internal constructor(internal val view: View) : ViewHolder(view) {
+    inner class StoreHolder(val view: View) : ViewHolder(view) {
         fun bindRow(selection: SelectDialogRow) {
             itemView.storeName.text = selection.name
             itemView.storeIcon.setImageResource(selection.imgRes)
