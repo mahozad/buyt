@@ -38,7 +38,7 @@ class SelectionListAdapter(private val callback: Callback) : Adapter<StoreHolder
                 callback.onItemClicked()
 
                 notifyItemChanged(selectedIndex)
-                selectedIndex = position
+                selectedIndex = holder.adapterPosition
                 notifyItemChanged(selectedIndex)
             }
             holder.itemView.storeRadioButton.setOnClickListener(clickListener)
@@ -58,7 +58,7 @@ class SelectionListAdapter(private val callback: Callback) : Adapter<StoreHolder
         fun bindRow(selection: SelectDialogRow) {
             itemView.storeName.text = selection.name
             itemView.storeIcon.setImageResource(selection.imgRes)
-            itemView.storeRadioButton.isChecked = position == selectedIndex
+            itemView.storeRadioButton.isChecked = (adapterPosition == selectedIndex)
         }
     }
 }
