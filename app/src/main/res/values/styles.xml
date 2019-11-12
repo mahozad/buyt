@@ -13,7 +13,6 @@
         <item name="rearCardBgColor">#4A5E4A</item>
         <item name="bottomBarColor">@color/bottomBarDarkBgColor</item>
         <item name="emptyHintColor">@color/emptyHintDarkColor</item>
-        <item name="pieChartBackgroundColor">@color/pieChartDarkBgColor</item>
         <item name="unitUnfocusedColor">@color/unitUnfocusedDark</item>
         <item name="unitBorderUnfocusedColor">@color/unitBorderUnfocusedDark</item>
         <item name="bottomAppBarStyle">@style/bottomAppBarStyle</item>
@@ -36,7 +35,6 @@
 
         <item name="rearCardBgColor">#BBB</item>
         <item name="emptyHintColor">#D2D2D2</item>
-        <item name="pieChartBackgroundColor">@android:color/white</item>
         <item name="unitUnfocusedColor">@color/unitUnfocusedLight</item>
         <item name="unitBorderUnfocusedColor">@color/unitBorderUnfocusedLight</item>
         <item name="android:windowBackground">@color/materialWindowBgColor</item>

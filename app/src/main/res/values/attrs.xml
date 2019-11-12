@@ -7,7 +7,6 @@
     <attr name="bottomBarColor" format="reference|color" />
     <attr name="emptyHintColor" format="reference|color" />
     <attr name="unitBorderUnfocusedColor" format="reference" />
-    <attr name="pieChartBackgroundColor" format="reference|color" />
     <attr name="unitUnfocusedColor" format="reference" />
     <bool name="isRtl">false</bool>
 </resources>

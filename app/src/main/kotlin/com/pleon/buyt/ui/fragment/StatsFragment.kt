@@ -1,7 +1,6 @@
 package com.pleon.buyt.ui.fragment
 
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.core.content.res.ResourcesCompat.getFont
@@ -38,14 +37,6 @@ class StatsFragment : BaseFragment() {
 
         pieSliceColors = resources.getIntArray(R.array.pieChartColors)
         lineChart.setTypeface(getFont(context!!, R.font.vazir_scaled_down)!!)
-        setPieChartBackgroundColor()
-    }
-
-    private fun setPieChartBackgroundColor() {
-        val typedValue = TypedValue()
-        context!!.theme.resolveAttribute(R.attr.pieChartBackgroundColor, typedValue, true)
-        val pieBgColor = typedValue.data
-        pieChart.setBackGroundColor(pieBgColor)
     }
 
     private fun showStats(stats: Stats) = with(stats) {
