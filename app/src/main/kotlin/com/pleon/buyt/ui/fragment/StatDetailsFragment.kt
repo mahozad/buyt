@@ -9,7 +9,7 @@ import com.pleon.buyt.R
 import com.pleon.buyt.ui.DateHeaderDecoration
 import com.pleon.buyt.ui.DateHeaderDecoration.HasStickyHeader
 import com.pleon.buyt.ui.adapter.PurchaseDetailAdapter
-import com.pleon.buyt.util.AnimationUtil.animateAlpha
+import com.pleon.buyt.util.animateAlpha
 import com.pleon.buyt.viewmodel.StatsViewModel
 import kotlinx.android.synthetic.main.fragment_stat_details.*
 import org.koin.android.ext.android.inject

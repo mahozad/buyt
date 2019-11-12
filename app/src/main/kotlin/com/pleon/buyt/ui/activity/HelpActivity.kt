@@ -17,9 +17,9 @@ import com.pleon.buyt.model.Subscription
 import com.pleon.buyt.repository.SubscriptionRepository
 import com.pleon.buyt.ui.dialog.BillingErrorDialogFragment
 import com.pleon.buyt.ui.dialog.UpgradeSuccessDialogFragment
-import com.pleon.buyt.util.AnimationUtil.animateAlpha
-import com.pleon.buyt.util.AnimationUtil.animateIcon
-import com.pleon.buyt.util.TextUtil.localizeDigits
+import com.pleon.buyt.util.animateAlpha
+import com.pleon.buyt.util.animateIcon
+import com.pleon.buyt.util.localizeDigits
 import kotlinx.android.synthetic.main.activity_help.*
 import org.jetbrains.anko.startActivity
 import org.koin.android.ext.android.inject

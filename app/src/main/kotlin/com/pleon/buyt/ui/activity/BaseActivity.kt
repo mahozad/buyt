@@ -7,7 +7,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.fragment.PREF_THEME
 import com.pleon.buyt.ui.fragment.PREF_THEME_DARK
-import com.pleon.buyt.util.LocaleUtil.setLocale
+import com.pleon.buyt.util.setLocale
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
 

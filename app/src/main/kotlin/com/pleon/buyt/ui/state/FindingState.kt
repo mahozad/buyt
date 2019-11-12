@@ -12,9 +12,9 @@ import com.pleon.buyt.component.GpsService
 import com.pleon.buyt.model.Coordinates
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.ui.fragment.PREF_VIBRATE
-import com.pleon.buyt.util.AnimationUtil.animateIcon
-import com.pleon.buyt.util.SnackbarUtil.showSnackbar
-import com.pleon.buyt.util.VibrationUtil.vibrate
+import com.pleon.buyt.util.animateIcon
+import com.pleon.buyt.util.showSnackbar
+import com.pleon.buyt.util.vibrate
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.snackbar_container.*
 

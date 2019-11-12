@@ -11,7 +11,7 @@ import android.view.animation.LinearInterpolator
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.res.ResourcesCompat
 import com.pleon.buyt.R
-import com.pleon.buyt.util.FormatterUtil.formatPercent
+import com.pleon.buyt.util.formatPercent
 import org.jetbrains.anko.sp
 import kotlin.math.*
 

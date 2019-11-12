@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.res.Configuration
 import com.facebook.stetho.Stetho
 import com.pleon.buyt.di.*
-import com.pleon.buyt.util.LocaleUtil.setLocale
+import com.pleon.buyt.util.setLocale
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin

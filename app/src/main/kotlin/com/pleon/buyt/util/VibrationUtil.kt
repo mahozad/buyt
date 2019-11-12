@@ -7,11 +7,8 @@ import android.os.VibrationEffect.createOneShot
 import android.os.Vibrator
 import androidx.core.content.ContextCompat.getSystemService
 
-object VibrationUtil {
-
-    fun vibrate(cxt: Context, duration: Long, intensity: Int) {
-        val vibrator = getSystemService(cxt, Vibrator::class.java) as Vibrator
-        if (SDK_INT >= O) vibrator.vibrate(createOneShot(duration, intensity))
-        else vibrator.vibrate(duration)
-    }
+fun vibrate(cxt: Context, duration: Long, intensity: Int) {
+    val vibrator = getSystemService(cxt, Vibrator::class.java) as Vibrator
+    if (SDK_INT >= O) vibrator.vibrate(createOneShot(duration, intensity))
+    else vibrator.vibrate(duration)
 }

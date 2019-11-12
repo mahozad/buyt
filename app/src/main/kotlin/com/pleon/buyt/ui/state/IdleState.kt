@@ -16,7 +16,7 @@ import com.pleon.buyt.ui.dialog.LocationOffDialogFragment
 import com.pleon.buyt.ui.dialog.LocationOffDialogFragment.RationalType
 import com.pleon.buyt.ui.dialog.UpgradePromptDialogFragment
 import com.pleon.buyt.ui.fragment.BottomDrawerFragment
-import com.pleon.buyt.util.AnimationUtil.animateIcon
+import com.pleon.buyt.util.animateIcon
 import com.pleon.buyt.viewmodel.FREE_BUY_LIMIT
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.core.KoinComponent

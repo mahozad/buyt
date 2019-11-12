@@ -34,10 +34,10 @@ import com.pleon.buyt.ui.TextWatcherAdapter
 import com.pleon.buyt.ui.dialog.DatePickerDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
-import com.pleon.buyt.util.AnimationUtil.animateAlpha
-import com.pleon.buyt.util.AnimationUtil.animateIcon
-import com.pleon.buyt.util.AnimationUtil.animateIconInfinitely
-import com.pleon.buyt.util.TextUtil.toNumber
+import com.pleon.buyt.util.animateAlpha
+import com.pleon.buyt.util.animateIcon
+import com.pleon.buyt.util.animateIconInfinitely
+import com.pleon.buyt.util.toNumber
 import com.pleon.buyt.viewmodel.AddItemViewModel
 import ir.huri.jcal.JalaliCalendar
 import kotlinx.android.synthetic.main.fragment_add_item.*

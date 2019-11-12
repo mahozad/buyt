@@ -9,7 +9,7 @@ import com.pleon.buyt.billing.IabResult
 import com.pleon.buyt.billing.Inventory
 import com.pleon.buyt.di.*
 import com.pleon.buyt.repository.SubscriptionRepository
-import com.pleon.buyt.util.LocaleUtil.setLocale
+import com.pleon.buyt.util.setLocale
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin

@@ -13,9 +13,9 @@ import com.pleon.buyt.database.dto.DailyCost
 import com.pleon.buyt.database.dto.Stats
 import com.pleon.buyt.model.Category
 import com.pleon.buyt.ui.PieChartView.Slice
-import com.pleon.buyt.util.FormatterUtil.formatNumber
-import com.pleon.buyt.util.FormatterUtil.formatPrice
-import com.pleon.buyt.util.LineChartBuilder.buildLineChart
+import com.pleon.buyt.util.buildLineChart
+import com.pleon.buyt.util.formatNumber
+import com.pleon.buyt.util.formatPrice
 import com.pleon.buyt.viewmodel.StatsViewModel
 import kotlinx.android.synthetic.main.fragment_stats.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel

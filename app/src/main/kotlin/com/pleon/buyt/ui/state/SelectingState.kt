@@ -9,7 +9,7 @@ import com.pleon.buyt.model.Store
 import com.pleon.buyt.ui.activity.STATE_LOCATION
 import com.pleon.buyt.ui.dialog.CreateStoreDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
-import com.pleon.buyt.util.SnackbarUtil.showSnackbar
+import com.pleon.buyt.util.showSnackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.snackbar_container.*
 import java.util.*

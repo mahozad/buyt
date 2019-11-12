@@ -12,7 +12,7 @@ import com.pleon.buyt.ui.BaseViewHolder
 import com.pleon.buyt.ui.DateHeaderDecoration.HasStickyHeader
 import com.pleon.buyt.ui.adapter.PurchaseDetailAdapter.ItemType.DATE
 import com.pleon.buyt.ui.adapter.PurchaseDetailAdapter.ItemType.ITEM
-import com.pleon.buyt.util.FormatterUtil.formatPrice
+import com.pleon.buyt.util.formatPrice
 import kotlinx.android.synthetic.main.date_header.view.*
 import kotlinx.android.synthetic.main.purchase_detail.view.*
 

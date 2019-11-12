@@ -12,7 +12,7 @@ import com.google.android.material.animation.ArgbEvaluatorCompat
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.adapter.IntroPageAdapter
 import com.pleon.buyt.ui.fragment.PREF_NEWBIE
-import com.pleon.buyt.util.AnimationUtil.animateIcon
+import com.pleon.buyt.util.animateIcon
 import kotlinx.android.synthetic.main.activity_intro.*
 import kotlinx.android.synthetic.main.fragment_intro_1.view.*
 import org.jetbrains.anko.dimen

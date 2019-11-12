@@ -14,7 +14,7 @@ import com.pleon.buyt.isPremium
 import com.pleon.buyt.ui.adapter.StatsPagerAdapter
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.ui.dialog.UpgradePromptDialogFragment
-import com.pleon.buyt.util.AnimationUtil.animateIcon
+import com.pleon.buyt.util.animateIcon
 import com.pleon.buyt.viewmodel.StatsViewModel
 import kotlinx.android.synthetic.main.activity_stats.*
 import org.koin.android.ext.android.inject

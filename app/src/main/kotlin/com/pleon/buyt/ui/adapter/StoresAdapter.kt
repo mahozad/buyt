@@ -16,9 +16,9 @@ import com.pleon.buyt.R
 import com.pleon.buyt.database.dto.StoreDetail
 import com.pleon.buyt.ui.BaseViewHolder
 import com.pleon.buyt.ui.adapter.StoresAdapter.StoreHolder
-import com.pleon.buyt.util.AnimationUtil.animateIcon
-import com.pleon.buyt.util.FormatterUtil.formatPrice
-import com.pleon.buyt.util.LineChartBuilder.buildLineChart
+import com.pleon.buyt.util.animateIcon
+import com.pleon.buyt.util.buildLineChart
+import com.pleon.buyt.util.formatPrice
 import com.pleon.buyt.viewmodel.StoresViewModel
 import kotlinx.android.synthetic.main.store_list_row.view.*
 

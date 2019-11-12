@@ -2,7 +2,7 @@ package com.pleon.buyt.database.dto
 
 import androidx.annotation.StringRes
 import com.pleon.buyt.R
-import com.pleon.buyt.util.LineChartBuilder.DataSet
+import com.pleon.buyt.util.DataSet
 
 class DailyCost(val date: String, val totalCost: Long) : DataSet {
 

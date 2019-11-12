@@ -12,7 +12,7 @@ import com.pleon.buyt.database.dto.Stats
 import com.pleon.buyt.model.Category
 import com.pleon.buyt.repository.StatsRepository
 import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
-import com.pleon.buyt.util.FormatterUtil.formatDate
+import com.pleon.buyt.util.formatDate
 import com.pleon.buyt.viewmodel.StatsViewModel.Period.NARROW
 
 class StatsViewModel(private val app: Application, repository: StatsRepository) : AndroidViewModel(app) {

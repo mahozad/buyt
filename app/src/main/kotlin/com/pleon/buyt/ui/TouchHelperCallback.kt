@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.pleon.buyt.R
-import com.pleon.buyt.util.AnimationUtil.animateAlpha
-import com.pleon.buyt.util.AnimationUtil.animateIcon
+import com.pleon.buyt.util.animateAlpha
+import com.pleon.buyt.util.animateIcon
 import kotlinx.android.synthetic.main.item_list_row.view.*
 import org.jetbrains.anko.dip
 import kotlin.math.abs

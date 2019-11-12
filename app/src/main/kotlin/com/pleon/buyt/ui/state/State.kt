@@ -15,8 +15,8 @@ import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_
 import com.pleon.buyt.R
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.ui.activity.MainActivity
-import com.pleon.buyt.util.AnimationUtil.animateIcon
-import com.pleon.buyt.util.AnimationUtil.animateIconInfinitely
+import com.pleon.buyt.util.animateIcon
+import com.pleon.buyt.util.animateIconInfinitely
 import kotlinx.android.synthetic.main.activity_main.*
 
 lateinit var activity: MainActivity

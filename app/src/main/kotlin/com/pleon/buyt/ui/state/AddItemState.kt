@@ -6,8 +6,8 @@ import android.view.inputmethod.InputMethodManager
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_END
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.fragment.AddItemFragment
-import com.pleon.buyt.util.AnimationUtil.animateAlpha
-import com.pleon.buyt.util.AnimationUtil.animateIcon
+import com.pleon.buyt.util.animateAlpha
+import com.pleon.buyt.util.animateIcon
 import kotlinx.android.synthetic.main.activity_main.*
 
 object AddItemState : State() {

@@ -15,10 +15,10 @@ import com.pleon.buyt.ui.ItemSpacingDecoration
 import com.pleon.buyt.ui.TouchHelperCallback
 import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener
 import com.pleon.buyt.ui.adapter.ItemsAdapter
-import com.pleon.buyt.util.AnimationUtil.animateAlpha
-import com.pleon.buyt.util.AnimationUtil.animateIcon
-import com.pleon.buyt.util.SnackbarUtil.showSnackbar
-import com.pleon.buyt.util.SnackbarUtil.showUndoSnackbar
+import com.pleon.buyt.util.animateAlpha
+import com.pleon.buyt.util.animateIcon
+import com.pleon.buyt.util.showSnackbar
+import com.pleon.buyt.util.showUndoSnackbar
 import com.pleon.buyt.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.fragment_item_list.*
 import kotlinx.android.synthetic.main.snackbar_container.*

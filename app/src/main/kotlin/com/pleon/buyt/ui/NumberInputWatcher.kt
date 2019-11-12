@@ -3,8 +3,8 @@ package com.pleon.buyt.ui
 import android.text.Editable
 import android.widget.EditText
 import com.google.android.material.textfield.TextInputLayout
-import com.pleon.buyt.util.FormatterUtil.formatPrice
-import com.pleon.buyt.util.TextUtil.removeNonDigitChars
+import com.pleon.buyt.util.formatPrice
+import com.pleon.buyt.util.removeNonDigitChars
 
 class NumberInputWatcher(private val textInputLayout: TextInputLayout,
                          private val editText: EditText,

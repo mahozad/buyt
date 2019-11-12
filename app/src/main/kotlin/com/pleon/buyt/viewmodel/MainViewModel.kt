@@ -15,7 +15,7 @@ import com.pleon.buyt.ui.fragment.PREF_SEARCH_DIST
 import com.pleon.buyt.ui.fragment.PREF_SEARCH_DIST_DEF
 import com.pleon.buyt.ui.state.IdleState
 import com.pleon.buyt.ui.state.State
-import com.pleon.buyt.util.FormatterUtil.formatNumber
+import com.pleon.buyt.util.formatNumber
 import java.util.*
 import kotlin.math.cos
 

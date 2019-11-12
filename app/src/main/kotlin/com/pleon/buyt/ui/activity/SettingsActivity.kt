@@ -6,7 +6,7 @@ import android.widget.TextView
 import androidx.preference.PreferenceManager
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.fragment.PREF_NEWBIE
-import com.pleon.buyt.util.AnimationUtil.animateIcon
+import com.pleon.buyt.util.animateIcon
 
 class SettingsActivity : BaseActivity() {
 
