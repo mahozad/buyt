@@ -61,14 +61,16 @@ abstract class PurchaseDao {
         FROM Purchase NATURAL JOIN Item
         WHERE $PERIOD_AND_FILTER_CLAUSE
         GROUP BY day
-        ORDER BY SUM(totalPrice) DESC LIMIT 1;""")
+        ORDER BY SUM(totalPrice) DESC
+        LIMIT 1;""")
     protected abstract fun getWeekdayWithMaxPurchaseCount(period: Int, filter: String): Int
 
     @Query("""
         SELECT Store.* FROM Purchase NATURAL JOIN Store JOIN Item ON Purchase.purchaseId=Item.purchaseId
         WHERE $PERIOD_CLAUSE AND (:filter = 'NoFilter' OR Item.category = :filter)
         GROUP BY Purchase.storeId
-        ORDER BY COUNT(purchase.storeId) DESC LIMIT 1;""")
+        ORDER BY COUNT(purchase.storeId) DESC
+        LIMIT 1;""")
     protected abstract fun getStoreWithMaxPurchaseCount(period: Int, filter: String): Store
 
     @Query("""
