@@ -10,16 +10,16 @@ import com.pleon.buyt.model.Item
 @Dao
 abstract class ItemDao {
 
-    // language=RoomSql see [https://youtrack.jetbrains.com/issue/KT-13233] if the issue is resolved
-    @Query("SELECT * FROM Item " +
-            "WHERE isBought = 0 AND isFlaggedForDeletion = 0 " +
-            "ORDER BY isUrgent DESC, position ASC")
+    @Query("""
+        SELECT * FROM Item
+        WHERE isBought = 0 AND isFlaggedForDeletion = 0
+        ORDER BY isUrgent DESC, position ASC""")
     abstract fun getAll(): LiveData<List<Item>>
 
-    @Query("SELECT COUNT(*) FROM Item")
+    @Query("""SELECT COUNT(*) FROM Item""")
     abstract fun getCount(): Long
 
-    @Query("SELECT name, category FROM Item GROUP BY name")
+    @Query("""SELECT name, category FROM Item GROUP BY name""")
     abstract fun getItemNameCats(): LiveData<Array<ItemNameCat>>
 
     @Transaction
@@ -32,7 +32,7 @@ abstract class ItemDao {
     @Insert(onConflict = REPLACE)
     protected abstract fun insertItem(item: Item): Long
 
-    @Query("UPDATE Item SET position = (SELECT MAX(position) + 1 FROM Item) WHERE itemId = :itemId")
+    @Query("""UPDATE Item SET position = (SELECT MAX(position) + 1 FROM Item) WHERE itemId = :itemId""")
     protected abstract fun updatePosition(itemId: Long)
 
     /* FIXME: very heavy operation. @Update method, updates all fields of an entity
@@ -49,6 +49,6 @@ abstract class ItemDao {
     @Delete
     protected abstract fun deleteItem(item: Item)
 
-    @Query("UPDATE Item SET position = position - 1 WHERE position > :itemPosition")
+    @Query("""UPDATE Item SET position = position - 1 WHERE position > :itemPosition""")
     protected abstract fun updateOtherPositions(itemPosition: Int)
 }

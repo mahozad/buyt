@@ -19,9 +19,9 @@ abstract class SubscriptionDao {
     @Insert(onConflict = REPLACE)
     protected abstract fun insert(subscription: Subscription)
 
-    @Query("DELETE FROM Subscription")
+    @Query("""DELETE FROM Subscription""")
     protected abstract fun deleteAll()
 
-    @Query("SELECT token FROM Subscription")
+    @Query("""SELECT token FROM Subscription""")
     abstract fun getToken(): String
 }
