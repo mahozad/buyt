@@ -34,13 +34,11 @@ class PieChartView : View {
     private val slices = ArrayList<Slice>()
     private val leftTypeList = ArrayList<Slice>()
     private val rightTypeList = ArrayList<Slice>()
-    private val itemPoints = ArrayList<Point>()
     private var gap = 4f
     private var innerRadius = 80f
     private var offRadius = 0f
     private var offLine = 0f
     private var textAlpha: Int = 0
-    private var firstPoint: Point? = null
     private var emptyColor = getColor(context, R.color.chartEmptyColor)
     private var itemTextSize = sp(13.5f)
     private var textPadding = 8
@@ -112,21 +110,16 @@ class PieChartView : View {
             temp.drawCircle(mWidth / 2f, mHeight / 2f, radius.toFloat(), mPaint)
         }
 
-        var sum = 0
-        for (slice in slices) sum += slice.weight
-        val a = 360f / sum
+        val sum = slices.sumBy { it.weight }.toFloat()
 
         var startRadius = defaultStartAngle.toFloat()
         var sumRadius = 0f
         leftTypeList.clear()
         rightTypeList.clear()
-        itemPoints.clear()
         for ((index, slice) in slices.withIndex()) {
-            slice.radius = slice.weight * a
+            slice.radius = slice.weight / sum * 360f
             val al = 2.0 * PI * ((startRadius + 90) / 360.0)
             tempPoint.set((mWidth / 2 + radius * sin(al)).toInt(), (mHeight / 2 - radius * cos(al)).toInt())
-
-            if (gap > 0 && startRadius == defaultStartAngle.toFloat()) firstPoint = tempPoint
 
             val angle = 2.0 * PI * ((startRadius + slice.radius / 2) / 360.0)
             val cos = -cos(angle)
@@ -144,7 +137,7 @@ class PieChartView : View {
             startRadius += slice.radius
             // draw transparent separating lines
             if (slices.size > 1 && gap > 0 && pieCell == 0f) {
-                transparentPaint.strokeWidth = if (index == 0) gap + 4 else gap
+                transparentPaint.strokeWidth = if (index == 0) gap * 2 else gap
                 temp.drawLine(width / 2f, height / 2f, tempPoint.x.toFloat(), tempPoint.y.toFloat(), transparentPaint)
             }
         }
@@ -241,7 +234,6 @@ class PieChartView : View {
             slices.clear()
             leftTypeList.clear()
             rightTypeList.clear()
-            itemPoints.clear()
         }
     }
 
