@@ -1,12 +1,12 @@
 package com.pleon.buyt.database.dao
 
 import android.content.Context
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.room.Room
 import androidx.test.platform.app.InstrumentationRegistry
 import com.pleon.buyt.database.AppDatabase
 import com.pleon.buyt.database.InstantExecutorExtension
+import com.pleon.buyt.database.blockingObserve
 import com.pleon.buyt.database.dto.ItemNameCat
 import com.pleon.buyt.model.Category.FRUIT
 import com.pleon.buyt.model.Category.GROCERY
@@ -24,8 +24,6 @@ import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.junit.jupiter.MockitoExtension
 import java.util.*
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
 
 /**
  * Instrumentation tests execute only on API level 26 (Android 8.0) and above.
@@ -41,24 +39,6 @@ class ItemDaoTests {
 
     @Mock
     private lateinit var observer: Observer<List<Item>>
-
-    /**
-     * For unit tests we want the behavior of LiveData to be synchronous,
-     * so we must block the test thread and wait for the value to be passed to the observer.
-     * See [https://stackoverflow.com/a/44991770/8583692]
-     */
-    private fun <T : Any> LiveData<T>.blockingObserve(): T {
-        lateinit var value: T
-        val latch = CountDownLatch(1)
-
-        observeForever {
-            value = it
-            latch.countDown()
-        }
-
-        latch.await(2, TimeUnit.SECONDS)
-        return value
-    }
 
     @BeforeEach
     internal fun setUp() {
