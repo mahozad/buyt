@@ -56,8 +56,7 @@ class ItemDaoTests {
 
     @Test
     fun getAll_addOneItem() {
-        val item = Item("Chocolate", Quantity(1, UNIT), GROCERY, isUrgent = false, isBought = false)
-        itemDao.insert(item)
+        itemDao.insert(Item("Chocolate", Quantity(1, UNIT), GROCERY, isUrgent = false, isBought = false))
 
         val list = itemDao.getAll().blockingObserve()
 
@@ -66,11 +65,9 @@ class ItemDaoTests {
 
     @Test
     fun getAll_addTwoItems() {
-        val item1 = Item("Chocolate", Quantity(1, UNIT), GROCERY, isUrgent = false, isBought = false)
-        val item2 = Item("Apple", Quantity(500, GRAM), FRUIT, isUrgent = true, isBought = false)
+        itemDao.insert(Item("Chocolate", Quantity(1, UNIT), GROCERY, isUrgent = false, isBought = false))
+        itemDao.insert(Item("Apple", Quantity(500, GRAM), FRUIT, isUrgent = true, isBought = false))
 
-        itemDao.insert(item1)
-        itemDao.insert(item2)
         val list = itemDao.getAll().blockingObserve()
 
         assertThat(list.size).isEqualTo(2)
@@ -78,9 +75,8 @@ class ItemDaoTests {
 
     @Test
     fun getCount_addOneItem() {
-        val item = Item("Chocolate", Quantity(1, UNIT), GROCERY, isUrgent = false, isBought = false)
+        itemDao.insert(Item("Chocolate", Quantity(1, UNIT), GROCERY, isUrgent = false, isBought = false))
 
-        itemDao.insert(item)
         val itemCount = itemDao.getCount()
 
         assertThat(itemCount).isEqualTo(1)
@@ -88,11 +84,9 @@ class ItemDaoTests {
 
     @Test
     fun getCount_addTwoItems() {
-        val item1 = Item("Chocolate", Quantity(1, UNIT), GROCERY, isUrgent = false, isBought = false)
-        val item2 = Item("Apple", Quantity(500, GRAM), FRUIT, isUrgent = true, isBought = false)
+        itemDao.insert(Item("Chocolate", Quantity(1, UNIT), GROCERY, isUrgent = false, isBought = false))
+        itemDao.insert(Item("Apple", Quantity(500, GRAM), FRUIT, isUrgent = true, isBought = false))
 
-        itemDao.insert(item1)
-        itemDao.insert(item2)
         val itemCount = itemDao.getCount()
 
         assertThat(itemCount).isEqualTo(2)
@@ -100,8 +94,7 @@ class ItemDaoTests {
 
     @Test
     fun getItemNameCats_addOneNewNameCat() {
-        val item2 = Item("Something", Quantity(500, GRAM), FRUIT, isUrgent = true, isBought = false)
-        itemDao.insert(item2)
+        itemDao.insert(Item("Something", Quantity(500, GRAM), FRUIT, isUrgent = true, isBought = false))
 
         val itemNameCats = itemDao.getItemNameCats().blockingObserve()
 
@@ -111,8 +104,8 @@ class ItemDaoTests {
     @Test
     fun delete_oneItem() {
         val item = Item("Chocolate", Quantity(1, UNIT), GROCERY, isUrgent = false, isBought = false)
-
         itemDao.insert(item).also { item.itemId = it }
+
         itemDao.delete(item)
 
         assertThat(itemDao.getCount()).isEqualTo(0)
