@@ -147,10 +147,12 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.5.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.5.0")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.5.0")
+    testImplementation("org.assertj:assertj-core:3.14.0")
     testImplementation("org.mockito:mockito-core:3.0.0")
     testImplementation("org.mockito:mockito-junit-jupiter:3.0.0")
     testImplementation("org.hamcrest:hamcrest-library:2.1")
     // Dependencies for instrumented tests
+    androidTestImplementation("org.assertj:assertj-core:3.14.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.2-alpha02")
     androidTestImplementation("androidx.test:runner:1.3.0-alpha02")
     androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.5.0")
