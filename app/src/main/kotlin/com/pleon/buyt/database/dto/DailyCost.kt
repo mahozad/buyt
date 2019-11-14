@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 import com.pleon.buyt.R
 import com.pleon.buyt.util.DataSet
 
-class DailyCost(val date: String, val totalCost: Long) : DataSet {
+data class DailyCost(val date: String, val totalCost: Long) : DataSet {
 
     override fun getLabel() = date
 
