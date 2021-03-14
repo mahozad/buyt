@@ -1,5 +1,7 @@
 ![Buyt logo](/app/src/main/base_hi_res_512.png?token=AHCNTO5UTDTPHEFMRS6MLU25FWK22)
 
+a good android example: https://proandroiddev.com/android-architecture-starring-kotlin-coroutines-jetpack-mvvm-room-paging-retrofit-and-dagger-7749b2bae5f7
+
 TODO list:
 
 - [x] if the bottomAppBar is hidden (by scrolling) and then you expand an Item, the fab jumps up
