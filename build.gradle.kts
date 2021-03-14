@@ -8,7 +8,7 @@ buildscript {
 
     repositories {
         google()
-        jcenter()
+        jcenter() // REMOVEME: Deprecated
         mavenCentral()
     }
     dependencies {
@@ -25,7 +25,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        jcenter() // REMOVEME: Deprecated
         mavenCentral()
         maven("https://jitpack.io")
     }
