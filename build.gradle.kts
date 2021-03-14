@@ -13,11 +13,11 @@ buildscript {
     }
     dependencies {
         // This dependency version should be the same as the Android Studio version
-        classpath("com.android.tools.build:gradle:3.5.0")
+        classpath("com.android.tools.build:gradle:4.1.2")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
 
         // For JUnit 5
-        classpath("de.mannodermaus.gradle.plugins:android-junit5:1.4.2.0")
+        classpath("de.mannodermaus.gradle.plugins:android-junit5:1.7.1.1")
     }
 }
 

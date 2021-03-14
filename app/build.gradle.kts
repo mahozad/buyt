@@ -31,7 +31,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    buildToolsVersion = "28.0.3"
     compileSdkVersion(28)
     defaultConfig {
         // specifies default settings that will be shared across all different product flavors
@@ -46,10 +45,11 @@ android {
         // vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
         javaCompileOptions {
-            // Tell Room to export database schema info to keep a history of it
             annotationProcessorOptions {
-                arguments = mapOf("room.schemaLocation" to "$projectDir/schemas")
+                // Tell Room to export database schema info to keep a history of it
+                arguments["room.schemaLocation"] = "$projectDir/schemas"
             }
         }
 
