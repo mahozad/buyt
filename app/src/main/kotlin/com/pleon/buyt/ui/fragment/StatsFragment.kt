@@ -48,9 +48,8 @@ class StatsFragment : BaseFragment() {
         textView.text = formatPrice(averagePurchaseCost)
         textView6.text = formatPrice(maxPurchaseCost)
         textView7.text = formatPrice(minPurchaseCost)
-        textView17.text = storeNameWithMaxPurchaseCount
-        if (weekdayNameResWithMaxPurchases != 0) textView9.setText(weekdayNameResWithMaxPurchases)
-        else textView9.text = "-"
+        textView17.text = storeWithMaxPurchaseCount?.name ?: getString(R.string.no_value)
+        textView9.setText(weekdayNameResWithMaxPurchases ?: R.string.no_value)
     }
 
     private fun showLineChart(dailyCosts: List<DailyCost>) {
@@ -66,7 +65,7 @@ class StatsFragment : BaseFragment() {
             val sliceName = getString(Category.valueOf(categorySum.name).nameRes)
             pieChart.addSlice(Slice(sliceName, categorySum.value, pieSliceColors[index]))
         }
-        val other = categorySums.drop(PIE_MAX_SLICES - 1).sumBy { it.value }
+        val other = categorySums.drop(PIE_MAX_SLICES - 1).sumBy(CategorySum::value)
         if (other > 0) pieChart.addSlice(Slice(getString(R.string.pie_chart_other), other, pieSliceColors[PIE_MAX_SLICES - 1]))
 
         pieChart.startAnim(if (isStartup) 0 else 480)

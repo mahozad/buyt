@@ -14,11 +14,7 @@ class Stats {
     var minPurchaseCost = 0L
     var averagePurchaseCost = 0L
     var weekdayWithMaxPurchases = 0
+    val weekdayNameResWithMaxPurchases: Int?
+        get() = if (numberOfPurchases != 0L) WeekDay.values()[weekdayWithMaxPurchases].nameStringRes else null
 
-    val weekdayNameResWithMaxPurchases: Int
-        get() = if (totalPurchaseCost != 0L) WeekDay.values()[weekdayWithMaxPurchases].nameStringRes
-        else 0
-
-    val storeNameWithMaxPurchaseCount: String
-        get() = if (storeWithMaxPurchaseCount == null) "-" else storeWithMaxPurchaseCount!!.name
 }

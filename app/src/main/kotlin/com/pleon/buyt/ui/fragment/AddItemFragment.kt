@@ -2,12 +2,8 @@ package com.pleon.buyt.ui.fragment
 
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.text.Editable
 import android.util.TypedValue
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.view.View.*
 import android.view.inputmethod.EditorInfo.IME_ACTION_DONE
 import android.widget.ArrayAdapter
@@ -30,10 +26,10 @@ import com.pleon.buyt.model.Category
 import com.pleon.buyt.model.Item
 import com.pleon.buyt.model.Item.Quantity.Unit.*
 import com.pleon.buyt.ui.NumberInputWatcher
-import com.pleon.buyt.ui.TextWatcherAdapter
 import com.pleon.buyt.ui.dialog.DatePickerDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
+import com.pleon.buyt.ui.newAfterTextWatcher
 import com.pleon.buyt.util.animateAlpha
 import com.pleon.buyt.util.animateIcon
 import com.pleon.buyt.util.animateIconInfinitely
@@ -125,32 +121,30 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
     private fun setupListeners() {
         priceEd.addTextChangedListener(NumberInputWatcher(price_layout, priceEd, getString(R.string.input_suffix_price)))
         quantityEd.addTextChangedListener(NumberInputWatcher(quantity_layout, quantityEd))
-        expandHandle.setOnClickListener { expandToFullScreen() }
-        dateEd.setOnClickListener { onDateClicked() }
-        dateEd.setOnFocusChangeListener { _, hasFocus -> onDateGainedFocus(hasFocus) }
-        urgent.setOnCheckedChangeListener { _, isChecked -> onUrgentToggled(isChecked) }
-        bought.setOnCheckedChangeListener { _, isChecked -> onBoughtToggled(isChecked) }
-        quantityEd.setOnFocusChangeListener { _, hasFocus -> onQuantityFocusChanged(hasFocus) }
-        quantityEd.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == IME_ACTION_DONE) onDonePressed()
-            return@setOnEditorActionListener true
-        }
-        scrollView.setOnTouchListener { _, _ ->
-            scrollView.isVerticalScrollBarEnabled = !isScrollLocked
-            return@setOnTouchListener isScrollLocked
-        }
-        name.addTextChangedListener(object : TextWatcherAdapter() {
-            override fun afterTextChanged(s: Editable) = onNameChanged()
-        })
-        quantityEd.addTextChangedListener(object : TextWatcherAdapter() {
-            override fun afterTextChanged(s: Editable) = onQuantityChanged()
-        })
-        description.addTextChangedListener(object : TextWatcherAdapter() {
-            override fun afterTextChanged(s: Editable) = onDescriptionChanged()
-        })
+        dateEd.setOnClickListener(this::onDateClicked)
+        dateEd.setOnFocusChangeListener(this::onDateGainedFocus)
+        scrollView.setOnTouchListener(this::onScrolled)
+        expandHandle.setOnClickListener(this::expandToFullScreen)
+        urgent.setOnCheckedChangeListener(this::onUrgentToggled)
+        bought.setOnCheckedChangeListener(this::onBoughtToggled)
+        quantityEd.setOnFocusChangeListener(this::onQuantityFocusChanged)
+        quantityEd.setOnEditorActionListener(this::onQuantityDone)
+        name.addTextChangedListener(newAfterTextWatcher(this::onNameChanged))
+        quantityEd.addTextChangedListener(newAfterTextWatcher(this::onQuantityChanged))
+        description.addTextChangedListener(newAfterTextWatcher(this::onDescriptionChanged))
     }
 
-    private fun expandToFullScreen() {
+    private fun onScrolled(view: View, motionEvent: MotionEvent): Boolean {
+        scrollView.isVerticalScrollBarEnabled = !isScrollLocked
+        return isScrollLocked
+    }
+
+    private fun onQuantityDone(textView: TextView, actionId: Int, keyEvent: KeyEvent): Boolean {
+        if (actionId == IME_ACTION_DONE) onDonePressed()
+        return true
+    }
+
+    private fun expandToFullScreen(view: View) {
         if (activity is FullScreen) {
             animateAlpha(expandHandle, toAlpha = 0f)
             animateAlpha(description_layout, toAlpha = 1f, startDelay = 200)
@@ -247,7 +241,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
      * DatePickerDialogFragment.show() is passed getChildFragmentManager() can get the parent (this)
      * fragment and set it as the callback.
      */
-    private fun onDateClicked() {
+    private fun onDateClicked(view: View) {
         if (Locale.getDefault().language == "fa") {
             val persianCal = PersianCalendar()
             val datePicker = DatePickerDialog.newInstance(this,
@@ -284,8 +278,8 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
      *
      * @param focused if the view is focused
      */
-    private fun onDateGainedFocus(focused: Boolean) {
-        if (focused) onDateClicked()
+    private fun onDateGainedFocus(view: View, focused: Boolean) {
+        if (focused) onDateClicked(view)
     }
 
     // On result of Persian date picker
@@ -329,30 +323,30 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         dateEd.setText(dateFormat.format(viewModel.purchaseDate))
     }
 
-    private fun onUrgentToggled(isChecked: Boolean) {
+    private fun onUrgentToggled(view: View, isChecked: Boolean) {
         urgent.setButtonDrawable(if (isChecked) R.drawable.avd_urgent_check else R.drawable.avd_urgent_uncheck)
         animateIcon(CompoundButtonCompat.getButtonDrawable(urgent)!!)
     }
 
-    private fun onBoughtToggled(checked: Boolean) {
-        bought.setButtonDrawable(if (checked) R.drawable.avd_expand else R.drawable.avd_collapse)
+    private fun onBoughtToggled(view: View, isChecked: Boolean) {
+        bought.setButtonDrawable(if (isChecked) R.drawable.avd_expand else R.drawable.avd_collapse)
         animateIcon(CompoundButtonCompat.getButtonDrawable(bought)!!)
         if (selectCategoryTxvi != null) { // to fix bug on config change
-            selectCategoryTxvi!!.text = if (checked) getString(R.string.menu_title_select_store) else getString(viewModel.category.nameRes)
-            selectCategoryTxvi!!.setTextColor(getColor(context!!, colorOnSurface))
-            val icon = if (checked) R.drawable.avd_store_error else R.drawable.ic_item_grocery
-            selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(
+            selectCategoryTxvi?.text = if (isChecked) getString(R.string.menu_title_select_store) else getString(viewModel.category.nameRes)
+            selectCategoryTxvi?.setTextColor(getColor(context!!, colorOnSurface))
+            val icon = if (isChecked) R.drawable.avd_store_error else R.drawable.ic_item_grocery
+            selectCategoryTxvi?.setCompoundDrawablesRelativeWithIntrinsicBounds(
                     icon, 0, 0, 0
             )
         }
-        bought_group.visibility = if (checked) VISIBLE else GONE
+        bought_group.visibility = if (isChecked) VISIBLE else GONE
         price_layout.error = null
-        if (!checked) {
+        if (!isChecked) {
             viewModel.store = null
         }
     }
 
-    private fun onQuantityFocusChanged(hasFocus: Boolean) {
+    private fun onQuantityFocusChanged(view: View, hasFocus: Boolean) {
         var color = colorError
         if (hasFocus && quantity_layout.error == null) color = R.color.colorPrimary
         else if (!hasFocus && quantity_layout.error == null) color = colorUnfocused
@@ -382,10 +376,10 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
             if (!isBoughtChecked) {
                 nameCats[itemName]?.let {
                     viewModel.category = it
-                    selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                    selectCategoryTxvi?.setCompoundDrawablesRelativeWithIntrinsicBounds(
                             it.imageRes, 0, 0, 0
                     )
-                    selectCategoryTxvi!!.setText(it.nameRes)
+                    selectCategoryTxvi?.setText(it.nameRes)
                 }
             }
         }
@@ -423,11 +417,11 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         quantityEd.setText("1")
         btnGrp.check(R.id.btn1)
         setColorOfAllUnits(colorUnfocused)
-        selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(
+        selectCategoryTxvi?.setCompoundDrawablesRelativeWithIntrinsicBounds(
                 R.drawable.ic_item_grocery, 0, 0, 0
         )
-        selectCategoryTxvi!!.setTextColor(getColor(context!!, colorOnSurface))
-        selectCategoryTxvi!!.text = getString(Category.GROCERY.nameRes)
+        selectCategoryTxvi?.setTextColor(getColor(context!!, colorOnSurface))
+        selectCategoryTxvi?.text = getString(Category.GROCERY.nameRes)
         viewModel.category = Category.GROCERY
         viewModel.store = null
         description.text?.clear()
@@ -449,11 +443,11 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
             imageRes = category.imageRes
             viewModel.category = category
         }
-        selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(
+        selectCategoryTxvi?.setCompoundDrawablesRelativeWithIntrinsicBounds(
                 imageRes, 0, 0, 0
         )
-        selectCategoryTxvi!!.setTextColor(getColor(context!!, colorOnSurface))
-        selectCategoryTxvi!!.text = name
+        selectCategoryTxvi?.setTextColor(getColor(context!!, colorOnSurface))
+        selectCategoryTxvi?.text = name
     }
 
     private fun validateFields(): Boolean {
@@ -473,8 +467,8 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
             validated = false
         }
         if (isBoughtChecked && viewModel.store == null) {
-            selectCategoryTxvi!!.setTextColor(getColor(context!!, colorError))
-            selectCategoryTxvi!!.setCompoundDrawablesRelativeWithIntrinsicBounds(
+            selectCategoryTxvi?.setTextColor(getColor(context!!, colorError))
+            selectCategoryTxvi?.setCompoundDrawablesRelativeWithIntrinsicBounds(
                     R.drawable.avd_store_error, 0, 0, 0
             )
             animateIcon(selectCategoryTxvi!!.compoundDrawablesRelative[0])

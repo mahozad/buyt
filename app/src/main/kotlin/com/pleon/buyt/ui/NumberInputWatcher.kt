@@ -9,7 +9,7 @@ import com.pleon.buyt.util.removeNonDigitChars
 class NumberInputWatcher(private val textInputLayout: TextInputLayout,
                          private val editText: EditText,
                          private val suffix: String = "")
-    : TextWatcherAdapter() {
+    : TextWatcherAdapter {
 
     override fun afterTextChanged(s: Editable) {
         textInputLayout.error = null // clear error if exists

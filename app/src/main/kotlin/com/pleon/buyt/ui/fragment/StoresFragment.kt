@@ -84,9 +84,9 @@ class StoresFragment : BaseFragment(), ItemTouchHelperListener {
     }
 
     private fun updateSortMenuItemView() {
-        sortMenuItemView.text = getString(R.string.menu_text_sort_prefix, getString(viewModel.getSort().nameRes))
+        sortMenuItemView.text = getString(R.string.menu_text_sort_prefix, getString(viewModel.sort.nameRes))
         sortMenuItemView.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                0, 0, viewModel.getSort().imgRes, 0
+                0, 0, viewModel.sort.imgRes, 0
         )
     }
 

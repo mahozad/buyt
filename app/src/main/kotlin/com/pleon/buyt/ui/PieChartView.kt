@@ -110,7 +110,7 @@ class PieChartView : View {
             temp.drawCircle(mWidth / 2f, mHeight / 2f, radius.toFloat(), mPaint)
         }
 
-        val sum = slices.sumBy { it.weight }.toFloat()
+        val sum = slices.sumBy(Slice::weight).toFloat()
 
         var startRadius = defaultStartAngle.toFloat()
         var sumRadius = 0f

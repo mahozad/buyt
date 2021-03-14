@@ -53,7 +53,7 @@ class SelectDialogFragment : AppCompatDialogFragment(), SelectionListAdapter.Cal
                 .setView(customView).setTitle(getString(arguments!!.getInt("TITLE")))
                 .setPositiveButton(android.R.string.ok) { _, _ ->
                     val selectedIndex = adapter.selectedIndex
-                    callback!!.onSelected(selectedIndex)
+                    callback?.onSelected(selectedIndex)
                 }
                 .setNegativeButton(android.R.string.cancel) { d, which ->
                     // cancel

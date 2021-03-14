@@ -50,7 +50,7 @@ class BuytApplication : Application() {
                 Log.i(TAG, "Failed to setup Iab: $setupResult")
             } else {
                 // Call queryInventoryAsync to find out what is already purchased
-                iabHelper.queryInventoryAsync { result, inventory -> onQueryResult(result, inventory) }
+                iabHelper.queryInventoryAsync(this::onQueryResult)
             }
         }
     }

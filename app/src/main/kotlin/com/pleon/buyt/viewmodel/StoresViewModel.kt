@@ -25,6 +25,7 @@ class StoresViewModel(app: Application, private val repository: StoreRepository)
     }
 
     private val sortLiveData = MutableLiveData(TOTAL_SPENDING)
+    val sort get() = sortLiveData.value ?: TOTAL_SPENDING
 
     val stores: LiveData<List<StoreDetail>> = switchMap(sortLiveData, Function { sort ->
         return@Function repository.getStores(sort)
@@ -35,8 +36,6 @@ class StoresViewModel(app: Application, private val repository: StoreRepository)
     fun toggleSort() {
         sortLiveData.value = Sort.values()[(sortLiveData.value!!.ordinal + 1) % Sort.values().size]
     }
-
-    fun getSort() = sortLiveData.value!!
 
     fun flagStoreForDeletion(store: Store) {
         store.isFlaggedForDeletion = true

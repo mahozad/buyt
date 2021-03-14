@@ -57,11 +57,11 @@ abstract class PurchaseDao {
     protected abstract fun getNumberOfPurchases(period: Int, filter: String): Long
 
     @Query("""
-        SELECT STRFTIME('%w', date, 'unixepoch', 'localtime') AS day, SUM(totalPrice)
+        SELECT STRFTIME('%w', date, 'unixepoch', 'localtime') AS weekday, SUM(totalPrice) AS sum
         FROM Purchase NATURAL JOIN Item
         WHERE $PERIOD_AND_FILTER_CLAUSE
-        GROUP BY day
-        ORDER BY SUM(totalPrice) DESC
+        GROUP BY weekday
+        ORDER BY sum DESC
         LIMIT 1;""")
     protected abstract fun getWeekdayWithMaxPurchaseCount(period: Int, filter: String): Int
 
