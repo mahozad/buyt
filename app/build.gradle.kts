@@ -99,7 +99,7 @@ android {
 //—————————————————————————————————————————————————————————————————————————————————————————————————
 
 dependencies {
-    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+    implementation(fileTree("libs") { include("*.jar") })
 
     /* The AndroidX version of support library "com.android.support:appcompat-v7".
      * Support libraries provide capabilities of newer android versions to older devices and also
