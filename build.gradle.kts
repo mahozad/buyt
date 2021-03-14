@@ -9,6 +9,7 @@ buildscript {
     repositories {
         google()
         jcenter()
+        mavenCentral()
     }
     dependencies {
         // This dependency version should be the same as the Android Studio version
@@ -25,6 +26,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        mavenCentral()
         maven("https://jitpack.io")
     }
 }
