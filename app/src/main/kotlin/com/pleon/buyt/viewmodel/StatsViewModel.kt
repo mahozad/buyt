@@ -32,7 +32,7 @@ class StatsViewModel(private val app: Application, repository: StatsRepository) 
     // Special Case Design Pattern
     object NoFilter : Filter {
         override val criterion = "NoFilter"
-        override val imgRes = R.drawable.ic_filter
+        override val imgRes = R.drawable.ic_filter_off
     }
 
     private val triggerUpdate = MutableLiveData(true)
