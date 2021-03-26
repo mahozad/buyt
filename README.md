@@ -4,6 +4,10 @@ a good android example: https://proandroiddev.com/android-architecture-starring-
 
 # Mention in the about screen that some icons are adapted and inspired by other icons found on web
 
+Android has a settings called *Enable preview [something]* in *Settings* -> *Developer Settings*
+that shows fake full battery and LTE and so on in the notification area which makes it
+more appropriate for app screenshots.
+
 TODO list:
 
 - [x] if the bottomAppBar is hidden (by scrolling) and then you expand an Item, the fab jumps up
