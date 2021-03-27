@@ -16,6 +16,11 @@ TODO list:
 - [x] Add a separator (e.g. comma) in every 3 digits of price and other numeric fields
 - [x] Convert the main screen layout to ConstraintLayout and animate it (it seems possible with the help of guidelines)
 - [x] Add feature to select a date to see its costs
+- [ ] Show extended stats about items (most purchased items, most expensive items and so on) and stores
+- [ ] Add ability to backup all the data to user google drive account
+- [ ] Add ability to export all the user data to xml, json, csv and so on
+- [ ] Add ability to delete all application data (can just insert a shortcut to app settings -> clear data)
+- [ ] Add automatic theme option which adapts to system theme (= day/night theme)
 - [ ] This is an incomplete item
 - [ ] Remove all nullable values and null checks
 - [ ] Localize the app: [poeditor.com]
