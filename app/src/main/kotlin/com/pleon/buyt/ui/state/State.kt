@@ -81,10 +81,10 @@ abstract class State {
     }
 
     protected fun setStoreMenuItemIcon() = with(activity.storeMenuItem.actionView) {
-        val visibility = if (activity.viewModel.foundStores.size == 1) GONE else VISIBLE
-        findViewById<FrameLayout>(R.id.textContainer).visibility = visibility
+        val rippleEffectView = findViewById<FrameLayout>(R.id.rippleEffect)
+        rippleEffectView.visibility = if (activity.viewModel.foundStores.size == 0) GONE else VISIBLE
         findViewById<ImageView>(R.id.icon).setImageResource(activity.viewModel.getStoreIcon())
-        findViewById<TextView>(R.id.text).text = activity.viewModel.getStoreTitle()
+        findViewById<TextView>(R.id.storeName).text = activity.viewModel.getStoreTitle()
         activity.storeMenuItem.isVisible = true
     }
 

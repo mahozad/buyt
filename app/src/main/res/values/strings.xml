@@ -23,7 +23,8 @@
     <string name="snackbar_message_no_item_selected">No item selected</string>
     <string name="snackbar_message_no_store_found">No saved store! Cannot skip.</string>
     <string name="snackbar_message_start_over">Oops! buyt was force killed. Please start over your buying process if possible.</string>
-    <string name="menu_text_new_store_found">New</string>
+    <string name="menu_text_new_store_found">New store</string>
+    <string name="menu_text_multiple_stores_found">%1$s stores around here</string>
     <string name="menu_title_select_store">Select store</string>
     <string name="menu_title_add_store">Add new store</string>
     <string name="input_hint_store_category">Category</string>

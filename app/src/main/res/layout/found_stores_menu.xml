@@ -1,48 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="48dp"
-    android:layout_height="48dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content">
+
+  <FrameLayout android:layout_width="48dp"
+      android:layout_height="48dp"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- separate view to display ripple/color change when menu item is clicked -->
     <FrameLayout
+        android:id="@+id/rippleEffect"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:background="?selectableItemBackgroundBorderless"/>
+        android:background="?selectableItemBackgroundBorderless" />
 
-    <FrameLayout
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_gravity="center">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/icon"
+        app:srcCompat="@drawable/ic_store"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/icon"
-            app:srcCompat="@drawable/ic_store"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center" />
+  </FrameLayout>
 
-        <!-- Both the FrameLayout and TextView have background set so the padding is
-        appropriate for when the text is very short -->
-        <FrameLayout
-            android:id="@+id/textContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|end"
-            android:background="@drawable/shape_store_count"
-            android:minWidth="18dp">
+  <TextView
+      android:id="@+id/storeName"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      tools:text="نانوایی بهار"
+      android:layout_gravity="center" />
 
-            <TextView
-                android:id="@+id/text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top|center_horizontal"
-                android:background="@drawable/shape_store_count"
-                android:paddingHorizontal="1dp"
-                android:textColor="?colorOnSurface"
-                android:textSize="10sp" />
-        </FrameLayout>
-
-    </FrameLayout>
-</FrameLayout>
+</LinearLayout>
