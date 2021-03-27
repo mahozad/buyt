@@ -17,6 +17,7 @@ TODO list:
 - [x] Convert the main screen layout to ConstraintLayout and animate it (it seems possible with the help of guidelines)
 - [x] Add feature to select a date to see its costs
 - [ ] Show extended stats about items (most purchased items, most expensive items and so on) and stores
+- [ ] Reimplement the item suggestion popup
 - [ ] Add ability to backup all the data to user google drive account
 - [ ] Add ability to export all the user data to xml, json, csv and so on
 - [ ] Add ability to delete all application data (can just insert a shortcut to app settings -> clear data)
