@@ -8,6 +8,12 @@ Android has a settings called *Enable preview [something]* in *Settings* -> *Dev
 that shows fake full battery and LTE and so on in the notification area which makes it
 more appropriate for app screenshots.
 
+To fix the paths so they can be morphed the following options are available:
+  - A tool called [VectAlign](https://github.com/bonnyfone/vectalign)
+    which is located in the */icons* directory
+    (see this [SO post](https://stackoverflow.com/a/32386837)).
+  - Good old [Shape Shifter](https://shapeshifter.design/)
+
 TODO list:
 
 - [x] if the bottomAppBar is hidden (by scrolling) and then you expand an Item, the fab jumps up
