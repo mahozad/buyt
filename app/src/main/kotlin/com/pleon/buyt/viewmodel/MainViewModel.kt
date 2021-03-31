@@ -75,8 +75,9 @@ class MainViewModel(private val app: Application, private val repository: MainRe
         shouldCompletePurchase = false // ???
     }
 
-    fun getStoreIcon() = when (foundStores.size) {
-        0 -> R.drawable.ic_store
+    fun getStoreIcon() = when {
+        foundStores.size == 0 -> R.drawable.ic_store
+        isFindingSkipped -> R.drawable.ic_store
         else -> R.drawable.ic_store_add
     }
 
