@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Buyt</string>
     <string name="input_hint_name">Name</string>
     <string name="input_hint_quantity">Quantity</string>
@@ -122,14 +122,15 @@
 
     <string name="menu_text_period">last %1$d days</string>
 
-    <string-array name="pref_theme_names">
+    <string-array name="pref_theme_names" tools:ignore="InconsistentArrays">
         <item>@string/pref_theme_dark</item>
         <item>@string/pref_theme_light</item>
     </string-array>
-    <string-array name="pref_theme_vals">
+    <string-array name="pref_theme_vals" tools:ignore="InconsistentArrays">
         <item>dark</item>
         <item>light</item>
     </string-array>
+    <string name="pref_theme_auto">Auto (match device)</string>
     <string name="pref_theme_dark">Dark</string>
     <string name="pref_theme_light">Light</string>
     <string name="pref_title_theme">Theme</string>

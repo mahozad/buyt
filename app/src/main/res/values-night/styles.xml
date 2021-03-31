@@ -1,0 +1,29 @@
+<resources>
+  <!-- This is a clone of the application dark theme.
+       See this same element in the main styles file for more information. -->
+  <!-- Note that even using an empty style element or with a nonsense content works:
+        <style name="AutoTheme">@styles/DarkTheme</style>
+        But removing the style element completely causes the auto theme to not work anymore.
+        This is probably because Android falls back to the first theme defined the main styles file. -->
+  <style name="AutoTheme">
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorSecondary">@color/colorPrimary</item>
+    <item name="colorSurface">#283028</item>
+
+    <item name="android:fontFamily">@font/vazir_scaled_down</item>
+    <item name="fontFamily">@font/vazir_scaled_down</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
+
+    <item name="rearCardBgColor">#4A5E4A</item>
+    <item name="bottomBarColor">@color/bottomBarDarkBgColor</item>
+    <item name="emptyHintColor">@color/emptyHintDarkColor</item>
+    <item name="unitUnfocusedColor">@color/unitUnfocusedDark</item>
+    <item name="unitBorderUnfocusedColor">@color/unitBorderUnfocusedDark</item>
+    <item name="bottomAppBarStyle">@style/bottomAppBarStyle</item>
+    <item name="floatingActionButtonStyle">@style/fabStyle</item>
+
+    <!-- To use normal parent themes above (without .NoActionBar) -->
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+  </style>
+</resources>

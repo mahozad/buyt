@@ -186,4 +186,5 @@
         <item quantity="one">"%1$s تومان"</item>
         <item quantity="other">"%1$s تومان"</item>
     </plurals>
+  <string name="pref_theme_auto">خودکار (قالب دستگاه)</string>
 </resources>

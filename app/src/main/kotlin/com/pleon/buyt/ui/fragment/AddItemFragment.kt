@@ -1,6 +1,7 @@
 package com.pleon.buyt.ui.fragment
 
 import android.content.res.ColorStateList
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.*
@@ -249,10 +250,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
                     persianCal.persianMonth,
                     persianCal.persianDay
             )
-
-            val theme = prefs.getString(PREF_THEME, PREF_THEME_DARK)
-            datePicker.isThemeDark = (theme == PREF_THEME_DARK) // for changing colors see colors.xml
-
+            setDatePickerTheme(datePicker)
             val selectableDays = arrayOfNulls<PersianCalendar>(10)
             for (i in selectableDays.indices) {
                 val selectableDay = PersianCalendar()
@@ -266,6 +264,20 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         } else {
             DatePickerDialogFragment().show(childFragmentManager, "DATE_PICKER")
         }
+    }
+
+    /**
+     * To change date picker colors see colors.xml file.
+     */
+    private fun setDatePickerTheme(datePicker: DatePickerDialog) {
+        val theme = prefs.getString(PREF_THEME, DEFAULT_THEME_NAME)
+        val uiMode =
+                resources.configuration.uiMode and
+                Configuration.UI_MODE_NIGHT_MASK
+        val isInDarkMode = uiMode != Configuration.UI_MODE_NIGHT_NO
+        datePicker.isThemeDark =
+                (theme == PREF_THEME_DARK) ||
+                (theme == PREF_THEME_AUTO && isInDarkMode)
     }
 
     /**

@@ -45,6 +45,31 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <!-- Application automatic theme. Exact clone of the light theme.
+         The dark version is in values-night/styles with dark colors and applied
+         when the AppCompatDelegate.setDefaultNightMode(...) is set to night or
+         is set to follow the system theme and the system theme is night. -->
+    <style name="AutoTheme" parent="Theme.MaterialComponents.DayNight">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorSecondary">@color/colorPrimary</item>
+        <item name="colorSurface">@android:color/white</item> <!-- required for quantity btns -->
+
+        <item name="android:fontFamily">@font/vazir_scaled_down</item>
+        <item name="fontFamily">@font/vazir_scaled_down</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
+
+        <item name="rearCardBgColor">#BBB</item>
+        <item name="emptyHintColor">#D2D2D2</item>
+        <item name="unitUnfocusedColor">@color/unitUnfocusedLight</item>
+        <item name="unitBorderUnfocusedColor">@color/unitBorderUnfocusedLight</item>
+        <item name="android:windowBackground">@color/materialWindowBgColor</item>
+        <item name="floatingActionButtonStyle">@style/fabStyle</item>
+
+        <!-- To use normal parent themes above (without .NoActionBar) -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <!-- Style for unit (kg, g, ...) toggle buttons -->
     <style name="UnitToggleButton" parent="@android:style/Widget.CompoundButton.RadioButton">
         <item name="android:foreground">?android:attr/selectableItemBackground</item>

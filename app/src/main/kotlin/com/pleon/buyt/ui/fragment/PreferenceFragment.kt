@@ -21,7 +21,12 @@ const val PREF_VIBRATE = "VIBRATE"
 const val PREF_SEARCH_DIST = "DISTANCE"
 const val PREF_TASK_RECREATED = "TASK_RECREATED"
 const val PREF_SEARCH_DIST_DEF = "50"
+const val PREF_THEME_AUTO = "auto"
 const val PREF_THEME_DARK = "dark"
+const val PREF_THEME_LIGHT = "light"
+
+const val DEFAULT_THEME_NAME = PREF_THEME_DARK
+const val DEFAULT_THEME_STYLE_RES = R.style.DarkTheme
 
 class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeListener {
 

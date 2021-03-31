@@ -1,0 +1,15 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <!-- For Android 9 (which supports Battery Saver mode) and
+       Android 10 and newer (which supports dark theme),
+       show the additional "Auto" theme option -->
+  <string-array name="pref_theme_names" tools:ignore="InconsistentArrays">
+    <item>@string/pref_theme_auto</item>
+    <item>@string/pref_theme_dark</item>
+    <item>@string/pref_theme_light</item>
+  </string-array>
+  <string-array name="pref_theme_vals" tools:ignore="InconsistentArrays">
+    <item>auto</item>
+    <item>dark</item>
+    <item>light</item>
+  </string-array>
+</resources>

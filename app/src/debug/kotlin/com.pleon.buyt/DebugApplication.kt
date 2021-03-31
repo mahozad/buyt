@@ -34,8 +34,23 @@ class DebugApplication : Application() {
      * To let android resource framework to fetch and display appropriate string resources based on
      * user’s language preference, we need to override the base Context of the application
      * to have default locale configuration.
+     *
+     * For an example, see the item quantity in the app.
+     *
+     * NOTE: overriding this method caused
+     *  AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM)
+     *  to not work correctly. The workaround is to set the configuration uiMode to undefined.
+     *  See BaseActivity class and https://stackoverflow.com/q/64168632 for more info.
      */
-    override fun attachBaseContext(cxt: Context) = super.attachBaseContext(setLocale(cxt))
+    override fun attachBaseContext(cxt: Context) {
+        val resources = cxt.resources
+        val configuration = Configuration(resources.configuration)
+        // Required for the auto theme (Day/Night theme) to work automatically
+        configuration.uiMode = Configuration.UI_MODE_NIGHT_UNDEFINED
+        val baseContext = cxt.createConfigurationContext(configuration)
+        setLocale(baseContext)
+        super.attachBaseContext(baseContext)
+    }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
