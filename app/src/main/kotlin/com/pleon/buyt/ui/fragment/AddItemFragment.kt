@@ -385,6 +385,8 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         if (itemName.isNotEmpty()) {
             name_layout.error = null // clear error if exists
             setCounterEnabledIfInputLong(name_layout)
+            // For when item name is not empty and a config change happens
+            if (!::nameCats.isInitialized) return
             if (!isBoughtChecked) {
                 nameCats[itemName]?.let {
                     viewModel.category = it
