@@ -125,7 +125,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         dateEd.setOnClickListener(this::onDateClicked)
         dateEd.setOnFocusChangeListener(this::onDateGainedFocus)
         scrollView.setOnTouchListener(this::onScrolled)
-        expandHandle.setOnClickListener(this::expandToFullScreen)
+        expandHandle.setOnTouchListener(this::expandToFullScreen)
         urgent.setOnCheckedChangeListener(this::onUrgentToggled)
         bought.setOnCheckedChangeListener(this::onBoughtToggled)
         quantityEd.setOnFocusChangeListener(this::onQuantityFocusChanged)
@@ -142,10 +142,10 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
 
     private fun onQuantityDone(textView: TextView, actionId: Int, keyEvent: KeyEvent): Boolean {
         if (actionId == IME_ACTION_DONE) onDonePressed()
-        return true
+        return true // consume the event
     }
 
-    private fun expandToFullScreen(view: View) {
+    private fun expandToFullScreen(view: View, event: MotionEvent): Boolean {
         if (activity is FullScreen) {
             animateAlpha(expandHandle, toAlpha = 0f)
             animateAlpha(description_layout, toAlpha = 1f, startDelay = 200)
@@ -154,6 +154,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
             animateAlpha(divider, toAlpha = 1f, startDelay = 400)
             (activity as FullScreen).expandToFullScreen(parentView)
         }
+        return true // consume the event
     }
 
     private fun setupItemNameAutoComplete() {
