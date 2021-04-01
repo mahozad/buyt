@@ -146,6 +146,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
     }
 
     private fun expandToFullScreen(view: View, event: MotionEvent): Boolean {
+        expandHandle.isEnabled = false // So user's subsequent touches has no effect
         if (activity is FullScreen) {
             animateAlpha(expandHandle, toAlpha = 0f)
             animateAlpha(description_layout, toAlpha = 1f, startDelay = 200)
