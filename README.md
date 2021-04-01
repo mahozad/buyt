@@ -22,6 +22,7 @@ TODO list:
 - [x] Add a separator (e.g. comma) in every 3 digits of price and other numeric fields
 - [x] Convert the main screen layout to ConstraintLayout and animate it (it seems possible with the help of guidelines)
 - [x] Add feature to select a date to see its costs
+- [ ] Wrap the text *Already bought* in a button (or a rectangle around it) to indicate it's clickable
 - [ ] For application first run add some placeholder items and explain in the item title how to delete them and so on
 - [ ] Show extended stats about items (most purchased items, most expensive items and so on) and stores
 - [ ] Reimplement the item suggestion popup
