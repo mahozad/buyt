@@ -170,38 +170,50 @@
             app:layout_constraintTop_toBottomOf="@+id/description_layout"
             tools:alpha="1" />
 
-        <!-- Divider -->
+        <!-- Start divider -->
         <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
+            android:id="@+id/dividerStart"
+            android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="14dp"
             android:alpha="0"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintEnd_toEndOf="@id/quantity_layout"
+            android:background="@drawable/divider"
+            app:layout_constraintEnd_toStartOf="@id/bought"
             app:layout_constraintStart_toStartOf="@id/quantity_layout"
             app:layout_constraintTop_toBottomOf="@id/urgent"
             tools:alpha="1" />
 
-        <androidx.appcompat.widget.AppCompatCheckBox
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/bought"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:alpha="0"
-            android:background="?colorSurface"
-            android:button="@drawable/avd_expand"
-            android:buttonTint="?colorOnSurface"
-            android:layoutDirection="rtl"
-            android:paddingStart="2dp"
-            android:paddingEnd="6dp"
-            android:text="@string/checkbox_purchased"
+            tools:alpha="1"
+            app:layout_constraintBottom_toBottomOf="@id/dividerStart"
+            app:layout_constraintEnd_toStartOf="@id/dividerEnd"
+            app:layout_constraintStart_toEndOf="@id/dividerStart"
+            app:layout_constraintTop_toBottomOf="@id/dividerStart"
+            app:icon="@drawable/avd_expand"
+            app:iconGravity="start"
+            app:backgroundTint="?colorSurface"
+            android:checkable="true"
             android:textColor="?colorOnSurface"
-            app:layout_constraintBottom_toBottomOf="@id/divider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider"
+            app:iconTint="?colorOnSurface"
+            android:text="@string/checkbox_purchased" />
+
+        <!-- End divider -->
+        <View
+            android:id="@+id/dividerEnd"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="14dp"
+            android:alpha="0"
+            android:background="@drawable/divider"
+            app:layout_constraintEnd_toEndOf="@id/quantity_layout"
+            app:layout_constraintStart_toEndOf="@id/bought"
+            app:layout_constraintTop_toTopOf="@id/dividerStart"
             tools:alpha="1" />
 
         <!-- To change visibility of multiple views together -->

@@ -13,8 +13,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorRes
-import androidx.core.content.ContextCompat.getColor
-import androidx.core.content.ContextCompat.getColorStateList
+import androidx.core.content.ContextCompat.*
 import androidx.core.widget.CompoundButtonCompat
 import androidx.lifecycle.Observer
 import com.google.android.material.button.MaterialButton
@@ -109,11 +108,11 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
     }
 
     private fun setupBoughtButton() = bought.apply {
-        // To reverse position of its checkbox icon
-        if (Locale.getDefault().language == "fa") layoutDirection = LAYOUT_DIRECTION_LTR
+        // Reverse position of button icon in RTL layouts
+        if (Locale.getDefault().language == "fa") layoutDirection = LAYOUT_DIRECTION_RTL
         if (!isPremium) {
             isEnabled = false
-            buttonTintList = getColorStateList(context, R.color.unit_btn_unfocused_color)
+            iconTint = getColorStateList(context, R.color.unit_btn_unfocused_color)
             setTextColor(getColor(context, R.color.unit_btn_unfocused_color))
             setText(R.string.checkbox_purchased_disabled)
         }
@@ -127,7 +126,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         scrollView.setOnTouchListener(this::onScrolled)
         expandHandle.setOnTouchListener(this::expandToFullScreen)
         urgent.setOnCheckedChangeListener(this::onUrgentToggled)
-        bought.setOnCheckedChangeListener(this::onBoughtToggled)
+        bought.setOnClickListener(this::onBoughtToggled)
         quantityEd.setOnFocusChangeListener(this::onQuantityFocusChanged)
         quantityEd.setOnEditorActionListener(this::onQuantityDone)
         name.addTextChangedListener(newAfterTextWatcher(this::onNameChanged))
@@ -152,7 +151,8 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
             animateAlpha(description_layout, toAlpha = 1f, startDelay = 200)
             animateAlpha(urgent, toAlpha = 1f, startDelay = 300)
             animateAlpha(bought, toAlpha = 1f, startDelay = 400)
-            animateAlpha(divider, toAlpha = 1f, startDelay = 400)
+            animateAlpha(dividerStart, toAlpha = 1f, startDelay = 400)
+            animateAlpha(dividerEnd, toAlpha = 1f, startDelay = 400)
             (activity as FullScreen).expandToFullScreen(parentView)
         }
         return true // consume the event
@@ -342,22 +342,22 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         animateIcon(CompoundButtonCompat.getButtonDrawable(urgent)!!)
     }
 
-    private fun onBoughtToggled(view: View, isChecked: Boolean) {
-        bought.setButtonDrawable(if (isChecked) R.drawable.avd_expand else R.drawable.avd_collapse)
-        animateIcon(CompoundButtonCompat.getButtonDrawable(bought)!!)
+    private fun onBoughtToggled(view: View) {
+        val drawableId = if (isBoughtChecked) R.drawable.avd_expand else R.drawable.avd_collapse
+        val drawable = getDrawable(context!!, drawableId)
+        bought.icon = drawable
+        animateIcon(drawable!!)
         if (selectCategoryTxvi != null) { // to fix bug on config change
-            selectCategoryTxvi?.text = if (isChecked) getString(R.string.menu_title_select_store) else getString(viewModel.category.nameRes)
+            selectCategoryTxvi?.text = getString(if (isBoughtChecked) R.string.menu_title_select_store else viewModel.category.nameRes)
             selectCategoryTxvi?.setTextColor(getColor(context!!, colorOnSurface))
-            val icon = if (isChecked) R.drawable.avd_store_error else R.drawable.ic_item_grocery
+            val icon = if (isBoughtChecked) R.drawable.avd_store_error else R.drawable.ic_item_grocery
             selectCategoryTxvi?.setCompoundDrawablesRelativeWithIntrinsicBounds(
                     icon, 0, 0, 0
             )
         }
-        bought_group.visibility = if (isChecked) VISIBLE else GONE
+        bought_group.visibility = if (isBoughtChecked) VISIBLE else GONE
         price_layout.error = null
-        if (!isChecked) {
-            viewModel.store = null
-        }
+        if (!isBoughtChecked) viewModel.store = null
     }
 
     private fun onQuantityFocusChanged(view: View, hasFocus: Boolean) {
