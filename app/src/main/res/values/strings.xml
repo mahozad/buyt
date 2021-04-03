@@ -218,8 +218,8 @@
     <string name="dialog_title_upgrade_to_premium">Upgrade to premium</string>
     <string name="dialog_title_congratulate_premium">Congratulations!</string>
     <string name="dialog_message_congratulate_premium">You successfully upgraded to the premium version of Buyt. Now you can enjoy all features of the app.</string>
-    <string name="dialog_message_upgrade_to_premium">This feature is not available in free version of the app. You can upgrade to premium version if you like.</string>
-    <string name="dialog_message_free_limit_reached">Free version of the app supports only <big>5</big> purchases per week. You can upgrade to premium version if you like.</string>
+    <string name="dialog_message_upgrade_to_premium">This feature is not available in free version of the app. You can upgrade to premium version if you\'d like.</string>
+    <string name="dialog_message_free_limit_reached">Free version of the app supports only <big>5</big> purchases per week. You can upgrade to premium version if you\'d like.</string>
     <string name="stores_empty_hint">No store added!</string>
     <string name="snackbar_message_list_empty">Shopping list is empty</string>
     <string name="no_value" translatable="false">-</string>
