@@ -14,14 +14,14 @@ import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat.re
 /**
  * See this answer [https://stackoverflow.com/a/49431260/8583692] for why we are doing this!
  */
-fun animateIconInfinitely(icon: Drawable) {
+fun animateIconInfinitely(icon: Drawable, startDelay: Long = 0, repeatDelay: Long = 0) {
     registerAnimationCallback(icon, object : AnimationCallback() {
         private val handler = Handler(Looper.getMainLooper())
         override fun onAnimationEnd(icon: Drawable) {
-            handler.post { animateIcon(icon) }
+            handler.post { animateIcon(icon, repeatDelay) }
         }
     })
-    animateIcon(icon)
+    animateIcon(icon, startDelay)
 }
 
 fun animateIcon(icon: Drawable, startDelay: Long = 0) {
