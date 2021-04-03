@@ -10,12 +10,14 @@
         android:layout_height="0dp"
         android:layout_marginTop="32dp"
         android:layout_marginBottom="32dp"
+        android:maxWidth="256dp"
         android:adjustViewBounds="true"
+        android:tint="?colorOnPrimarySurface"
         app:layout_constraintBottom_toTopOf="@id/text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@raw/shot3" />
+        app:srcCompat="@drawable/avd_intro_3" />
 
     <TextView
         android:id="@+id/text"
@@ -26,8 +28,8 @@
         android:paddingStart="32dp"
         android:paddingEnd="32dp"
         android:text="@string/intro_description_3"
-        android:textColor="#fff"
-        android:textSize="16sp"
+        android:textColor="?colorOnPrimarySurface"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/img"
         app:layout_constraintStart_toStartOf="@id/img" />

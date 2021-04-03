@@ -1,16 +1,18 @@
 package com.pleon.buyt.ui.adapter
 
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.pleon.buyt.R
+import com.pleon.buyt.ui.fragment.IntroFragment1
+import com.pleon.buyt.ui.fragment.IntroFragment2
+import com.pleon.buyt.ui.fragment.IntroFragment3
 
 class IntroPageAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
 
     private val fragments = arrayOf(
-            Fragment(R.layout.fragment_intro_1),
-            Fragment(R.layout.fragment_intro_2),
-            Fragment(R.layout.fragment_intro_3)
+            // Could have used Fragment(R.layout.fragment_intro_1) instead
+            IntroFragment1(),
+            IntroFragment2(),
+            IntroFragment3()
     )
 
     override fun getItemCount() = fragments.size
