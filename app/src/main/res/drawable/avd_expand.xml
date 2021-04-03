@@ -1,31 +1,72 @@
+<!-- NOTE: Rotating the icon is little bit more beautiful than just animating the path data
+      as the tip of the wings do a circular shift instead of a plain vertical shift -->
 <animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt">
-    <aapt:attr name="android:drawable">
-        <vector
-            android:name="vector"
-            android:width="24dp"
-            android:height="24dp"
-            android:tint="?colorOnSurface"
-            android:viewportWidth="24"
-            android:viewportHeight="24">
-            <path
-                android:name="path"
-                android:pathData="M 7 10 L 12 15 L 17 10"
-                android:strokeWidth="2"
-                android:strokeColor="#000"
-                android:strokeLineJoin="round"
-                android:strokeLineCap="round" />
-        </vector>
+  <aapt:attr name="android:drawable">
+    <vector
+        android:name="vector"
+        android:width="24dp"
+        android:height="24dp"
+        android:tint="?colorOnSurface"
+        android:viewportWidth="24"
+        android:viewportHeight="24">
+      <group android:name="group_container">
+        <group
+            android:name="group_left"
+            android:pivotX="12"
+            android:pivotY="15">
+          <path
+              android:pathData="M 7 10 L 12 15"
+              android:strokeColor="#000"
+              android:strokeWidth="2"
+              android:strokeLineCap="round"
+              android:strokeLineJoin="round" />
+        </group>
+        <group
+            android:name="group_right"
+            android:pivotX="12"
+            android:pivotY="15">
+          <path
+              android:pathData="M 12 15 L 17 10"
+              android:strokeColor="#000"
+              android:strokeWidth="2"
+              android:strokeLineCap="round"
+              android:strokeLineJoin="round" />
+        </group>
+      </group>
+    </vector>
+  </aapt:attr>
+  <target android:name="group_left">
+    <aapt:attr name="android:animation">
+      <objectAnimator
+          android:propertyName="rotation"
+          android:duration="300"
+          android:valueFrom="0"
+          android:valueTo="-90"
+          android:valueType="floatType"
+          android:interpolator="@android:interpolator/fast_out_slow_in" />
     </aapt:attr>
-    <target android:name="path">
-        <aapt:attr name="android:animation">
-            <objectAnimator
-                android:duration="300"
-                android:interpolator="@android:interpolator/fast_out_slow_in"
-                android:propertyName="pathData"
-                android:valueFrom="M 7 10 L 12 15 L 17 10"
-                android:valueTo="M 7 15 L 12 10 L 17 15"
-                android:valueType="pathType" />
-        </aapt:attr>
-    </target>
+  </target>
+  <target android:name="group_right">
+    <aapt:attr name="android:animation">
+      <objectAnimator
+          android:propertyName="rotation"
+          android:duration="300"
+          android:valueFrom="0"
+          android:valueTo="90"
+          android:valueType="floatType"
+          android:interpolator="@android:interpolator/fast_out_slow_in" />
+    </aapt:attr>
+  </target>
+  <target android:name="group_container">
+    <aapt:attr name="android:animation">
+      <objectAnimator
+          android:propertyName="translateY"
+          android:duration="300"
+          android:valueFrom="0"
+          android:valueTo="-5"
+          android:valueType="floatType"
+          android:interpolator="@android:interpolator/fast_out_slow_in" />
+    </aapt:attr>
+  </target>
 </animated-vector>
