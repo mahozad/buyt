@@ -20,6 +20,7 @@ import org.jetbrains.anko.dip
 import org.jetbrains.anko.startActivity
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
+import java.util.*
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -88,7 +89,9 @@ class IntroActivity : BaseActivity() {
     }
 
     private fun setupParallaxEffect() = viewPager.setPageTransformer { page, position ->
-        if (abs(position) <= 1) page.img.translationX = -position * page.width / 2
+        val adjustedPosition = if (Locale.getDefault().language == "fa") -position else position
+        val translateX = adjustedPosition * page.width / 2
+        if (abs(position) <= 1) page.img.translationX = translateX
     }
 
     private fun updatePageAndStatusBarColor(position: Int, offset: Float) {
