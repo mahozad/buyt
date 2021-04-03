@@ -22,3 +22,7 @@
 
 # Mapbox:
 #-keep class com.mapbox.android.core.location.** { *; }
+
+# Keep IntroFragment classes because they are instantiated
+#  using reflection; see the IntroPageAdapter class.
+-keep class com.pleon.buyt.ui.fragment.*
