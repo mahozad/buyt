@@ -7,11 +7,13 @@ import com.pleon.buyt.R
 
 class IntroPageAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
 
-    override fun getItemCount() = 3
+    private val fragments = arrayOf(
+            Fragment(R.layout.fragment_intro_1),
+            Fragment(R.layout.fragment_intro_2),
+            Fragment(R.layout.fragment_intro_3)
+    )
 
-    override fun createFragment(position: Int) = when (position) {
-        0 -> Fragment(R.layout.fragment_intro_1)
-        1 -> Fragment(R.layout.fragment_intro_2)
-        else -> Fragment(R.layout.fragment_intro_3)
-    }
+    override fun getItemCount() = fragments.size
+
+    override fun createFragment(position: Int) = fragments[position]
 }
