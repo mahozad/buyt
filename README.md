@@ -22,6 +22,10 @@ TODO list:
 - [x] Add a separator (e.g. comma) in every 3 digits of price and other numeric fields
 - [x] Convert the main screen layout to ConstraintLayout and animate it (it seems possible with the help of guidelines)
 - [x] Add feature to select a date to see its costs
+- [ ] Add new categories (icons are already available in */icons/material-icons/*)
+- [ ] Use vector illustrations and animated vectors instead of tutorial screenshots and empty hints
+- [ ] Write tests for the application
+- [ ] Rename the package name to ir.mahozad (?)
 - [ ] Wrap the text *Already bought* in a button (or a rectangle around it) to indicate it's clickable
 - [ ] When user adds a new item, somehow indicate that the item was added 
 - [ ] Update the string "کالای ... حذف شد" to "... حذف شد" 
