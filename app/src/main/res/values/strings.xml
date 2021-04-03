@@ -16,8 +16,8 @@
     <string name="dialog_action_go_to_settings">Go to Settings</string>
     <string name="dialog_action_skip">Skip finding</string>
     <string name="dialog_action_exit">Exit</string>
-    <string name="snackbar_message_item_deleted">Item \"%1$s\" deleted</string>
-    <string name="snackbar_message_store_deleted">Store \"%1$s\" deleted</string>
+    <string name="snackbar_message_item_deleted">Item \"%1$s\" was deleted</string>
+    <string name="snackbar_message_store_deleted">Store \"%1$s\" was deleted</string>
     <string name="snackbar_action_undo">UNDO</string>
     <string name="snackbar_message_cart_empty">Shopping list is empty</string>
     <string name="snackbar_message_no_item_selected">No item selected</string>
