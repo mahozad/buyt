@@ -1,9 +1,20 @@
 ﻿┌───────────────────────────┐
+├ versionName = 1.4.0       │
+├ versionCode = 9           │
+│ ──────────────────────────┘
+├ Redesign icons
+├ Add automatic (Day/Night) theme
+├ Redesign the "Already Bought" button
+├ Reimplement the menu item for found store(s)
+├ Update library dependencies
+├ Fix an app crash when item name was not empty and a config change happened
+├ Heavily refactor and improve the code
+├───────────────────────────┐
 ├ versionName = 1.3.2       │
 ├ versionCode = 8           │
 │ ──────────────────────────┘
 ├ Fix animations when deleting or dragging items/stores
-┌───────────────────────────┐
+├───────────────────────────┐
 ├ versionName = 1.3.1       │
 ├ versionCode = 7           │
 │ ──────────────────────────┘
@@ -13,7 +24,7 @@
 ├ Fix the bug with skipping finding when location was off
 ├ Add new item categories
 ├ Add minor improvements to layouts and animations
-┌───────────────────────────┐
+├───────────────────────────┐
 ├ versionName = 1.3.0       │
 ├ versionCode = 6           │
 │ ──────────────────────────┘
