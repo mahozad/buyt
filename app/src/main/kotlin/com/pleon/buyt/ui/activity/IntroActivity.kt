@@ -11,7 +11,7 @@ import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.animation.ArgbEvaluatorCompat
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.adapter.IntroPageAdapter
-import com.pleon.buyt.ui.fragment.PREF_NEWBIE
+import com.pleon.buyt.ui.fragment.PREF_FIRST_TIME_RUN
 import com.pleon.buyt.util.animateIcon
 import kotlinx.android.synthetic.main.activity_intro.*
 import kotlinx.android.synthetic.main.fragment_intro_1.view.*
@@ -71,7 +71,7 @@ class IntroActivity : BaseActivity() {
     private fun isLastPage() = viewPager.currentItem == adapter.itemCount - 1
 
     private fun finishIntro() {
-        prefs.edit().putBoolean(PREF_NEWBIE, false).apply()
+        prefs.edit().putBoolean(PREF_FIRST_TIME_RUN, false).apply()
         intent.extras?.getBoolean(FLAG_START_MAIN)?.let { startActivity<MainActivity>() }
         finish()
     }

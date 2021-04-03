@@ -11,7 +11,7 @@ import com.pleon.buyt.model.Coordinates
 import com.pleon.buyt.model.Item
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.repository.MainRepository
-import com.pleon.buyt.ui.fragment.PREF_SEARCH_DIST
+import com.pleon.buyt.ui.fragment.PREF_SEARCH_DISTANCE
 import com.pleon.buyt.ui.fragment.PREF_SEARCH_DIST_DEF
 import com.pleon.buyt.ui.state.IdleState
 import com.pleon.buyt.ui.state.State
@@ -46,7 +46,7 @@ class MainViewModel(private val app: Application, private val repository: MainRe
     val purchaseCountInPeriod get() = repository.getPurchaseCountInPeriod(7)
 
     fun findNearStores(origin: Coordinates): LiveData<List<Store>> {
-        val searchDistInMeters = prefs.getString(PREF_SEARCH_DIST, PREF_SEARCH_DIST_DEF)!!.toInt()
+        val searchDistInMeters = prefs.getString(PREF_SEARCH_DISTANCE, PREF_SEARCH_DIST_DEF)!!.toInt()
         val searchDist = cos(searchDistInMeters / EARTH_RADIUS)
         return repository.findNearStores(origin, searchDist)
     }

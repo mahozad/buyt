@@ -5,7 +5,7 @@ import android.view.MenuItem
 import android.widget.TextView
 import androidx.preference.PreferenceManager
 import com.pleon.buyt.R
-import com.pleon.buyt.ui.fragment.PREF_NEWBIE
+import com.pleon.buyt.ui.fragment.PREF_FIRST_TIME_RUN
 import com.pleon.buyt.util.animateIcon
 
 class SettingsActivity : BaseActivity() {
@@ -39,6 +39,6 @@ class SettingsActivity : BaseActivity() {
     private fun resetPreferences() {
         prefs.edit().clear().apply()
         PreferenceManager.setDefaultValues(this, R.xml.preferences, true)
-        prefs.edit().putBoolean(PREF_NEWBIE, false).apply() // We don't want tutorial again!
+        prefs.edit().putBoolean(PREF_FIRST_TIME_RUN, false).apply() // We don't want tutorial again!
     }
 }
