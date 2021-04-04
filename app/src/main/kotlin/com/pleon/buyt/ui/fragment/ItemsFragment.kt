@@ -15,10 +15,7 @@ import com.pleon.buyt.ui.ItemSpacingDecoration
 import com.pleon.buyt.ui.TouchHelperCallback
 import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener
 import com.pleon.buyt.ui.adapter.ItemsAdapter
-import com.pleon.buyt.util.animateAlpha
-import com.pleon.buyt.util.animateIcon
-import com.pleon.buyt.util.showSnackbar
-import com.pleon.buyt.util.showUndoSnackbar
+import com.pleon.buyt.util.*
 import com.pleon.buyt.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.fragment_item_list.*
 import kotlinx.android.synthetic.main.snackbar_container.*
@@ -52,7 +49,7 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
             listener?.onItemListChanged(items.isEmpty())
         })
 
-        animateIcon(emptyHint.drawable)
+        animateIconInfinitely(emptyHint.drawable, startDelay = 3000, repeatDelay = 2500)
 
         val touchHelper = ItemTouchHelper(touchHelperCallback)
         touchHelper.attachToRecyclerView(recyclerView)
