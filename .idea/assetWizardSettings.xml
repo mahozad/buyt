@@ -204,8 +204,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_store_one" />
-                            <entry key="sourceFile" value="C:\Users\Mahdi\Downloads\store-black-24dp - Copy (2) - Copy.svg" />
+                            <entry key="outputName" value="ic_item_stationary" />
+                            <entry key="sourceFile" value="D:\Android\Buyt\style-guide\icons\custom\stationary - Copy.svg" />
                           </map>
                         </option>
                       </PersistentState>
