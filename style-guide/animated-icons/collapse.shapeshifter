@@ -1,0 +1,106 @@
+{
+  "version": 1,
+  "layers": {
+    "vectorLayer": {
+      "id": "16",
+      "name": "vector",
+      "type": "vector",
+      "width": 24,
+      "height": 24,
+      "children": [
+        {
+          "id": "14",
+          "name": "group_1",
+          "type": "group",
+          "pivotX": 12,
+          "pivotY": 10,
+          "children": [
+            {
+              "id": "3",
+              "name": "path_1",
+              "type": "path",
+              "pathData": "M 7 15 L 12 10",
+              "strokeColor": "#000",
+              "strokeWidth": 2,
+              "strokeLinecap": "round",
+              "strokeLinejoin": "round"
+            }
+          ]
+        },
+        {
+          "id": "1475",
+          "name": "group_2",
+          "type": "group",
+          "pivotX": 12,
+          "pivotY": 10,
+          "children": [
+            {
+              "id": "1476",
+              "name": "path_2",
+              "type": "path",
+              "pathData": "M 12 10 L 17 15",
+              "strokeColor": "#000000",
+              "strokeWidth": 2,
+              "strokeLinecap": "round",
+              "strokeLinejoin": "round"
+            }
+          ]
+        }
+      ]
+    },
+    "hiddenLayerIds": []
+  },
+  "timeline": {
+    "animation": {
+      "id": "2",
+      "name": "anim",
+      "duration": 300,
+      "blocks": [
+        {
+          "id": "1474",
+          "layerId": "14",
+          "propertyName": "rotation",
+          "startTime": 0,
+          "endTime": 300,
+          "interpolator": "FAST_OUT_SLOW_IN",
+          "type": "number",
+          "fromValue": 0,
+          "toValue": 90
+        },
+        {
+          "id": "1500",
+          "layerId": "1475",
+          "propertyName": "rotation",
+          "startTime": 0,
+          "endTime": 300,
+          "interpolator": "FAST_OUT_SLOW_IN",
+          "type": "number",
+          "fromValue": 0,
+          "toValue": -90
+        },
+        {
+          "id": "1501",
+          "layerId": "14",
+          "propertyName": "translateY",
+          "startTime": 0,
+          "endTime": 300,
+          "interpolator": "FAST_OUT_SLOW_IN",
+          "type": "number",
+          "fromValue": 0,
+          "toValue": 5
+        },
+        {
+          "id": "1502",
+          "layerId": "1475",
+          "propertyName": "translateY",
+          "startTime": 0,
+          "endTime": 300,
+          "interpolator": "FAST_OUT_SLOW_IN",
+          "type": "number",
+          "fromValue": 0,
+          "toValue": 5
+        }
+      ]
+    }
+  }
+}

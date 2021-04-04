@@ -12,3 +12,6 @@ strokes should have width of 2px (1px for negative space in some cases allowed)
 Make icons face forward. So, don’t tilt, rotate, or make icons appear dimensional.
 
 Don’t be overly literal. Avoid complex icons.
+
+Use <g> element (maybe it is similar to <group> element) to group <paths> in the logo.
+Also, if shape shifter doesn't recognize some paths, wrap each path in a <g> element.

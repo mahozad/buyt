@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "layers": {
+    "vectorLayer": {
+      "id": "207",
+      "name": "vector",
+      "type": "vector",
+      "width": 24,
+      "height": 24,
+      "children": [
+        {
+          "id": "229",
+          "name": "group_3",
+          "type": "group",
+          "children": [
+            {
+              "id": "224",
+              "name": "group_2",
+              "type": "group",
+              "pivotX": 12,
+              "pivotY": 12,
+              "children": [
+                {
+                  "id": "210",
+                  "name": "path_4",
+                  "type": "path",
+                  "pathData": "M 11 3.18 L 11 20.82 C 11 21.46 10.41 21.94 9.79 21.8 C 5.32 20.8 2 16.79 2 12 C 2 7.21 5.32 3.2 9.79 2.2 C 10.41 2.06 11 2.54 11 3.18 Z",
+                  "fillColor": "#000000"
+                }
+              ]
+            },
+            {
+              "id": "221",
+              "name": "group_1",
+              "type": "group",
+              "pivotX": 12,
+              "pivotY": 12,
+              "children": [
+                {
+                  "id": "163",
+                  "name": "path_3",
+                  "type": "path",
+                  "pathData": "M 13.03 14.01 L 13.03 20.82 C 13.03 21.46 13.62 21.94 14.25 21.8 C 18.01 20.95 20.96 17.98 21.81 14.22 C 21.95 13.6 21.46 13 20.83 13 L 14.04 13 C 13.48 13.01 13.03 13.46 13.03 14.01 Z",
+                  "fillColor": "#000000",
+                  "strokeWidth": 1
+                }
+              ]
+            },
+            {
+              "id": "220",
+              "name": "group",
+              "type": "group",
+              "pivotX": 12,
+              "pivotY": 12,
+              "children": [
+                {
+                  "id": "185",
+                  "name": "path_2",
+                  "type": "path",
+                  "pathData": "M 13.03 3.18 L 13.03 9.99 C 13.03 10.54 13.48 10.99 14.03 10.99 L 20.82 10.99 C 21.46 10.99 21.94 10.4 21.8 9.77 C 20.95 6.01 18 3.05 14.25 2.2 C 13.62 2.06 13.03 2.54 13.03 3.18 Z",
+                  "fillColor": "#000000",
+                  "strokeWidth": 1
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "hiddenLayerIds": []
+  },
+  "timeline": {
+    "animation": {
+      "id": "209",
+      "name": "anim",
+      "duration": 3000,
+      "blocks": [
+        {
+          "id": "222",
+          "layerId": "220",
+          "propertyName": "rotation",
+          "startTime": 0,
+          "endTime": 500,
+          "interpolator": "FAST_OUT_SLOW_IN",
+          "type": "number",
+          "fromValue": 0,
+          "toValue": -90
+        },
+        {
+          "id": "223",
+          "layerId": "221",
+          "propertyName": "rotation",
+          "startTime": 500,
+          "endTime": 1000,
+          "interpolator": "FAST_OUT_SLOW_IN",
+          "type": "number",
+          "fromValue": 0,
+          "toValue": 90
+        },
+        {
+          "id": "225",
+          "layerId": "224",
+          "propertyName": "rotation",
+          "startTime": 1000,
+          "endTime": 1500,
+          "interpolator": "FAST_OUT_SLOW_IN",
+          "type": "number",
+          "fromValue": 0,
+          "toValue": 180
+        },
+        {
+          "id": "226",
+          "layerId": "220",
+          "propertyName": "rotation",
+          "startTime": 1800,
+          "endTime": 2300,
+          "interpolator": "FAST_OUT_SLOW_IN",
+          "type": "number",
+          "fromValue": -90,
+          "toValue": 0
+        },
+        {
+          "id": "227",
+          "layerId": "221",
+          "propertyName": "rotation",
+          "startTime": 1800,
+          "endTime": 2300,
+          "interpolator": "FAST_OUT_SLOW_IN",
+          "type": "number",
+          "fromValue": 90,
+          "toValue": 0
+        },
+        {
+          "id": "228",
+          "layerId": "224",
+          "propertyName": "rotation",
+          "startTime": 1800,
+          "endTime": 2300,
+          "interpolator": "FAST_OUT_SLOW_IN",
+          "type": "number",
+          "fromValue": 180,
+          "toValue": 360
+        }
+      ]
+    }
+  }
+}

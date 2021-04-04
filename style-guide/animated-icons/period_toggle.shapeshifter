@@ -1,0 +1,135 @@
+{
+  "version": 1,
+  "layers": {
+    "vectorLayer": {
+      "id": "117",
+      "name": "vector",
+      "type": "vector",
+      "width": 24,
+      "height": 24,
+      "children": [
+        {
+          "id": "88",
+          "name": "path_1",
+          "type": "path",
+          "pathData": "M 12 3 C 9.614 3 7.323 3.949 5.636 5.636 C 3.949 7.323 3 9.614 3 12 C 3 14.386 3.949 16.677 5.636 18.364 C 7.323 20.051 9.614 21 12 21 C 14.386 21 16.677 20.051 18.364 18.364 C 20.051 16.677 21 14.386 21 12 C 21 9.614 20.051 7.323 18.364 5.636 C 16.677 3.949 14.386 3 12 3 Z",
+          "strokeColor": "#000000",
+          "strokeWidth": 2
+        },
+        {
+          "id": "3542",
+          "name": "sector_1",
+          "type": "path",
+          "pathData": "M 12 6.5 C 13.211 6.5 14.388 6.9 15.348 7.637 C 16.309 8.373 16.999 9.407 17.313 10.576 L 12 12 Z",
+          "fillColor": "#000",
+          "strokeWidth": 1
+        },
+        {
+          "id": "3560",
+          "name": "group_2",
+          "type": "group",
+          "pivotX": 12,
+          "pivotY": 12,
+          "children": [
+            {
+              "id": "3516",
+              "name": "sector_2",
+              "type": "path",
+              "pathData": "M 17.313 10.576 C 17.647 11.825 17.531 13.153 16.985 14.324 C 16.438 15.496 15.496 16.438 14.324 16.985 L 12 12 Z",
+              "fillColor": "#000",
+              "strokeWidth": 1
+            }
+          ]
+        },
+        {
+          "id": "3557",
+          "name": "group_1",
+          "type": "group",
+          "pivotX": 12,
+          "pivotY": 12,
+          "children": [
+            {
+              "id": "3490",
+              "name": "sector_3",
+              "type": "path",
+              "pathData": "M 14.324 16.985 C 13.302 17.462 12.156 17.612 11.045 17.416 C 9.934 17.22 8.909 16.687 8.111 15.889 L 12 12 Z",
+              "fillColor": "#000",
+              "strokeWidth": 1
+            }
+          ]
+        },
+        {
+          "id": "3555",
+          "name": "group",
+          "type": "group",
+          "pivotX": 12,
+          "pivotY": 12,
+          "children": [
+            {
+              "id": "3224",
+              "name": "sector_4",
+              "type": "path",
+              "pathData": "M 8.111 15.889 C 7.255 15.033 6.705 13.918 6.547 12.718 C 6.389 11.518 6.632 10.298 7.237 9.25 L 12 12 Z",
+              "fillColor": "#000",
+              "strokeWidth": 1
+            }
+          ]
+        }
+      ]
+    },
+    "hiddenLayerIds": []
+  },
+  "timeline": {
+    "animation": {
+      "id": "119",
+      "name": "anim",
+      "duration": 300,
+      "blocks": [
+        {
+          "id": "3556",
+          "layerId": "3555",
+          "propertyName": "rotation",
+          "startTime": 0,
+          "endTime": 100,
+          "interpolator": "LINEAR",
+          "type": "number",
+          "fromValue": 0,
+          "toValue": -75
+        },
+        {
+          "id": "3558",
+          "layerId": "3557",
+          "propertyName": "rotation",
+          "startTime": 100,
+          "endTime": 300,
+          "interpolator": "LINEAR",
+          "type": "number",
+          "fromValue": 0,
+          "toValue": -150
+        },
+        {
+          "id": "3559",
+          "layerId": "3555",
+          "propertyName": "rotation",
+          "startTime": 100,
+          "endTime": 200,
+          "interpolator": "FAST_OUT_SLOW_IN",
+          "type": "number",
+          "fromValue": -75,
+          "toValue": -225
+        },
+        {
+          "id": "3561",
+          "layerId": "3560",
+          "propertyName": "rotation",
+          "startTime": 200,
+          "endTime": 300,
+          "interpolator": "LINEAR",
+          "type": "number",
+          "fromValue": 0,
+          "toValue": -75
+        }
+      ]
+    }
+  }
+}
