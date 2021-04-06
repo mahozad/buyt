@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#56ab2f</color>
-    <color name="colorPrimaryDark">#1d7b00</color>
-    <color name="colorAccent">#89dd5f</color>
+    <!-- Previously #56ab2f -->
+    <color name="colorPrimary">#70ae28</color>
+    <color name="colorPrimaryDark">#3e7e00</color>
+    <color name="colorAccent">#a2e05a</color>
 
     <!-- Colors for persian date picker (if you want to switch to dark theme, call
          picker.setThemeDark(); to change color of buttons see styles.xml). -->
@@ -12,7 +13,15 @@
     <!-- <color name="mdtp_button_color">#fff</color>--><!-- button text color -->
     <!-- Other mdtp_... colors -->
 
-    <color name="ic_launcher_background">#fff</color>
+    <!-- This color is the 700 shade of the colorPrimary -->
+    <color name="splashScreenBgColor">#5b9a1e</color>
+
+    <!-- Alternate colors: #4A4A4A, #E1E2E0, #3C3F41, #E3E4E2 -->
+    <color name="ic_launcher_background">#FFF</color>
+
+    <color name="black50">#80000000</color>
+    <color name="white50">#80ffffff</color>
+
     <color name="materialWindowBgColor">#EFEFEF</color>
 
     <color name="pieChartDarkBgColor">#FF323A33</color>
@@ -55,9 +64,9 @@
     </array>
 
     <array name="introPageColors">
-        <item>#8E24AA</item>
-        <item>#3949AB</item>
-        <item>#00897B</item>
+        <item>#e58e39</item>
+        <item>#3193d6</item>
+        <item>#d63194</item>
     </array>
 
 </resources>

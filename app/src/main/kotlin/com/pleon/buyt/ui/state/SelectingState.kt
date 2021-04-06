@@ -17,7 +17,7 @@ import java.util.*
 object SelectingState : State() {
 
     override fun onBackClicked() = with(activity) {
-        super.shiftToIdleState(fabResId = R.drawable.avd_done_buyt)
+        super.shiftToIdleState(fabResId = R.drawable.avd_done_find)
         itemsFragment.toggleItemsCheckbox(false)
         itemsFragment.clearSelectedItems()
         itemsFragment.sortItemsByOrder()

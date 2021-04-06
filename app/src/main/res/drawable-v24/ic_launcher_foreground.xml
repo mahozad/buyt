@@ -1,51 +1,39 @@
-<?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt"
-    android:width="100dp"
-    android:height="100dp"
-    android:viewportWidth="1000"
-    android:viewportHeight="1000">
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+  <group
+      android:scaleX="2.97"
+      android:scaleY="2.97"
+      android:translateX="19"
+      android:translateY="18">
     <path
-        android:pathData="m 554.90381,232.50086 -259.80761,150 v 300 l 259.80761,150 m 0,-300 -259.80761,-150"
-        android:strokeWidth="60"
-        android:strokeLineCap="round"
-        android:strokeLineJoin="round">
-        <aapt:attr name="android:strokeColor">
-            <gradient
-                android:endX="41.183307"
-                android:endY="26.232318"
-                android:startX="52.400195"
-                android:startY="26.232318"
-                android:type="linear">
-                <item
-                    android:color="#317726"
-                    android:offset="0" />
-                <item
-                    android:color="@color/colorPrimary"
-                    android:offset="1" />
-            </gradient>
+        android:pathData="m11.939,10a4,4 0,0 0,-3.939 4,4 4,0 0,0 0,0.061v5.939l5.533,-2.305a4,4 0,0 0,2.467 -3.695,4 4,0 0,0 -4,-4 4,4 0,0 0,-0.061 0zM12,12.5a1.5,1.5 0,0 1,1.5 1.5,1.5 1.5,0 0,1 -1.5,1.5 1.5,1.5 0,0 1,-1.5 -1.5,1.5 1.5,0 0,1 1.5,-1.5z"
+        android:fillColor="#56ab2f" />
+    <group>
+      <clip-path android:pathData="m11.939,10a4,4 0,0 0,-3.939 4,4 4,0 0,0 0,0.061v5.939l5.533,-2.305a4,4 0,0 0,2.467 -3.695,4 4,0 0,0 -4,-4 4,4 0,0 0,-0.061 0zM12,12.5a1.5,1.5 0,0 1,1.5 1.5,1.5 1.5,0 0,1 -1.5,1.5 1.5,1.5 0,0 1,-1.5 -1.5,1.5 1.5,0 0,1 1.5,-1.5z" />
+      <path android:pathData="m8,12v2.67l5.535,-2.32c1.448,-0.6 2.465,-2.02 2.465,-3.6905z">
+        <aapt:attr name="android:fillColor">
+          <gradient
+              android:startY="13.144"
+              android:startX="11.641"
+              android:endY="12.574"
+              android:endX="11.402"
+              android:type="linear">
+            <item
+                android:offset="0"
+                android:color="#00000000" />
+            <item
+                android:offset="1"
+                android:color="#4C000000" />
+          </gradient>
         </aapt:attr>
-    </path>
+      </path>
+    </group>
     <path
-        android:pathData="M554.90381 232.50087a150 150 0 0 1 150 150 150 150 0 0 1 -150 150m0 -0.00003a150 150 0 0 1 150 150 150 150 0 0 1 -150 150"
-        android:strokeWidth="60"
-        android:strokeColor="@color/colorPrimary"
-        android:strokeLineCap="round"
-        android:strokeLineJoin="round"
-        android:strokeMiterLimit="4" />
-    <path
-        android:fillColor="@color/colorPrimary"
-        android:pathData="M555.80693 803.0577c-59.03204 13.79456 -98.39157 5.01505 -140.7311 -16.99452l124.81136 72.35241c6.60814 3.81521 6.60814 3.52839 16.1135 3.52839z"
-        android:strokeWidth="1"
-        android:strokeColor="@color/colorPrimary" />
-    <path
-        android:fillColor="@color/colorPrimary"
-        android:pathData="M555.80856 503.05773c-59.03204 13.79456 -98.39157 5.01505 -140.7311 -16.99452l124.81136 72.35241c6.60651 3.81427 6.60651 3.52839 16.1135 3.52839z"
-        android:strokeWidth="1"
-        android:strokeColor="@color/colorPrimary" />
-    <path
-        android:fillColor="@color/colorPrimary"
-        android:pathData="M555.80693 261.94401c-59.03204 -13.79456 -98.39157 -5.01505 -140.7311 16.99452l124.81136 -72.35241c6.60814 -3.81521 6.60814 -3.52839 16.1135 -3.52839z"
-        android:strokeWidth="1"
-        android:strokeColor="@color/colorPrimary" />
+        android:pathData="m11.939,3.99c-2.184,0 -3.94,1.82 -3.939,4v6.01l5.535,-2.32c1.448,-0.6 2.465,-2.02 2.465,-3.69 0,-2.21 -1.791,-4 -4,-4zM11.999,6.49a1.5,1.5 0,0 1,1.5 1.5,1.5 1.5,0 0,1 -1.5,1.5 1.5,1.5 0,0 1,-1.5 -1.5,1.5 1.5,0 0,1 1.5,-1.5z"
+        android:fillColor="#70ae28" />
+  </group>
 </vector>

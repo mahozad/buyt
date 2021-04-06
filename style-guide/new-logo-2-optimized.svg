@@ -1,0 +1,17 @@
+<svg version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <filter id="filter" x="0" y="0" color-interpolation-filters="sRGB">
+      <feFlood flood-color="rgb(0,0,0)" flood-opacity=".33" result="flood" />
+      <feComposite in="flood" in2="SourceGraphic" operator="in" result="composite1" />
+      <feGaussianBlur in="composite1" result="blur" stdDeviation="0.2" />
+      <feOffset dx="0" dy="0.3" result="offset" />
+      <feComposite in="SourceGraphic" in2="offset" result="composite2" />
+    </filter>
+    <clipPath id="clip">
+      <use xlink:href="#pin" />
+    </clipPath>
+  </defs>
+  <path id="pin" fill="#56ab2f" d="m11.939 10a4 4 0 0 0-3.939 4 4 4 0 0 0 0 0.061v5.939l5.533-2.305a4 4 0 0 0 2.467-3.695 4 4 0 0 0-4-4 4 4 0 0 0-0.061 0zm0.061 2.5a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5 1.5 1.5 0 0 1-1.5-1.5 1.5 1.5 0 0 1 1.5-1.5z" />
+  <path clip-path="url(#clip)" fill="#56ab2f" filter="url(#filter)" d="m11.94 9.99c-2.184 0-3.941 1.82-3.94 4.01l5.535-2.321c0.404-0.167 0.769-0.401 1.092-0.683-0.704-0.619-1.616-1.006-2.627-1.006z" />
+  <path fill="#70ae28" d="m11.939 3.99c-2.184 0-3.94 1.82-3.939 4v6.01l5.535-2.32c1.448-0.6 2.465-2.02 2.465-3.69 0-2.21-1.791-4-4-4zm0.06 2.5a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5 1.5 1.5 0 0 1-1.5-1.5 1.5 1.5 0 0 1 1.5-1.5z" />
+</svg>

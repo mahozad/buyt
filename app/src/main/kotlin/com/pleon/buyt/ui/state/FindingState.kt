@@ -23,7 +23,7 @@ object FindingState : State() {
     override fun onReorderSkipClicked() = super.skipFinding()
 
     override fun onBackClicked() {
-        super.shiftToIdleState(fabResId = R.drawable.avd_buyt_reverse)
+        super.shiftToIdleState(fabResId = R.drawable.avd_find_reverse)
         activity.stopService(Intent(activity, GpsService::class.java))
     }
 
@@ -82,7 +82,7 @@ object FindingState : State() {
     override fun onSaveInstance(outState: Bundle) {}
 
     override fun onRestoreInstance(savedState: Bundle) = with(activity) {
-        fab.setImageResource(R.drawable.avd_finding)
+        fab.setImageResource(R.drawable.avd_find)
         animateIcon(fab.drawable)
     }
 

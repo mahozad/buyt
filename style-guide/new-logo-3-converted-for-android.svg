@@ -1,0 +1,14 @@
+<svg version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="linearGradient901" x1="11.641" x2="11.402" y1="13.144" y2="12.574" gradientUnits="userSpaceOnUse">
+      <stop stop-opacity="0" offset="0"/>
+      <stop stop-opacity=".3" offset="1"/>
+    </linearGradient>
+    <clipPath id="clipPath905">
+      <path d="m11.939 10a4 4 0 0 0-3.939 4 4 4 0 0 0 0 0.061v5.939l5.533-2.305a4 4 0 0 0 2.467-3.695 4 4 0 0 0-4-4 4 4 0 0 0-0.061 0zm0.061 2.5a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5 1.5 1.5 0 0 1-1.5-1.5 1.5 1.5 0 0 1 1.5-1.5z" fill="#56ab2f"/>
+    </clipPath>
+  </defs>
+  <path id="pin" d="m11.939 10a4 4 0 0 0-3.939 4 4 4 0 0 0 0 0.061v5.939l5.533-2.305a4 4 0 0 0 2.467-3.695 4 4 0 0 0-4-4 4 4 0 0 0-0.061 0zm0.061 2.5a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5 1.5 1.5 0 0 1-1.5-1.5 1.5 1.5 0 0 1 1.5-1.5z" fill="#56ab2f"/>
+  <path d="m8 12v2.67l5.535-2.32c1.448-0.6 2.465-2.02 2.465-3.6905z" clip-path="url(#clipPath905)" fill="url(#linearGradient901)"/>
+  <path d="m11.939 3.99c-2.184 0-3.94 1.82-3.939 4v6.01l5.535-2.32c1.448-0.6 2.465-2.02 2.465-3.69 0-2.21-1.791-4-4-4zm0.06 2.5a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5 1.5 1.5 0 0 1-1.5-1.5 1.5 1.5 0 0 1 1.5-1.5z" fill="#70ae28"/>
+</svg>

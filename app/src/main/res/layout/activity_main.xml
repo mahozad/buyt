@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_anchor="@id/bottom_bar"
-            app:srcCompat="@drawable/avd_buyt" />
+            app:srcCompat="@drawable/avd_find" />
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottom_bar"

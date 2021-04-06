@@ -76,7 +76,7 @@ object IdleState : State(), KoinComponent {
     private fun shiftToFindingState() = with(activity) {
         viewModel.state = FindingState
 
-        fab.setImageResource(R.drawable.avd_buyt).apply { animateIcon(fab.drawable) }
+        fab.setImageResource(R.drawable.avd_find).apply { animateIcon(fab.drawable) }
         bottom_bar.setNavigationIcon(R.drawable.avd_nav_cancel)
         animateIcon(bottom_bar.navigationIcon!!)
         reorderMenuItem.setIcon(R.drawable.avd_reorder_skip).setTitle(R.string.menu_hint_skip_finding)

@@ -18,7 +18,7 @@ object AddItemState : State() {
     }
 
     override fun onBackClicked() {
-        super.shiftToIdleState(fabResId = R.drawable.avd_done_buyt)
+        super.shiftToIdleState(fabResId = R.drawable.avd_done_find)
         closeAddItemPopup()
         hideKeyboard()
     }
