@@ -10,7 +10,7 @@
         android:id="@+id/parentView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?colorSurface"
+        android:background="@drawable/add_item_fragment_background"
         android:paddingBottom="300dp"
         tools:context=".ui.fragment.AddItemFragment">
 
@@ -197,7 +197,6 @@
             app:layout_constraintTop_toBottomOf="@id/dividerStart"
             app:icon="@drawable/avd_expand"
             app:iconGravity="start"
-            app:backgroundTint="?colorSurface"
             android:checkable="true"
             android:textColor="?colorOnSurface"
             app:iconTint="?colorOnSurface"
