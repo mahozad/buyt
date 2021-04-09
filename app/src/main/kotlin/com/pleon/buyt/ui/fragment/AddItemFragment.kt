@@ -3,7 +3,6 @@ package com.pleon.buyt.ui.fragment
 import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.*
 import android.view.View.*
 import android.view.inputmethod.EditorInfo.IME_ACTION_DONE
@@ -11,7 +10,6 @@ import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.TextView
-import androidx.annotation.AttrRes
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat.*
 import androidx.core.widget.CompoundButtonCompat
@@ -30,10 +28,7 @@ import com.pleon.buyt.ui.dialog.DatePickerDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
 import com.pleon.buyt.ui.newAfterTextWatcher
-import com.pleon.buyt.util.animateAlpha
-import com.pleon.buyt.util.animateIcon
-import com.pleon.buyt.util.animateIconInfinitely
-import com.pleon.buyt.util.toNumber
+import com.pleon.buyt.util.*
 import com.pleon.buyt.viewmodel.AddItemViewModel
 import ir.huri.jcal.JalaliCalendar
 import kotlinx.android.synthetic.main.fragment_add_item.*
@@ -87,11 +82,11 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
      */
     override fun onViewCreated(view: View, savedState: Bundle?) {
         unitBtns = arrayOf(btn1, btn2, btn3)
-        colorError = resolveThemeAttribute(R.attr.colorError)
-        colorSurface = resolveThemeAttribute(R.attr.colorSurface)
-        colorOnSurface = resolveThemeAttribute(R.attr.colorOnSurface)
-        colorUnfocused = resolveThemeAttribute(R.attr.unitUnfocusedColor)
-        colorUnfocusedBorder = resolveThemeAttribute(R.attr.unitBorderUnfocusedColor)
+        colorError = context.resolveThemeColorRes(R.attr.colorError)
+        colorSurface = context.resolveThemeColorRes(R.attr.colorSurface)
+        colorOnSurface = context.resolveThemeColorRes(R.attr.colorOnSurface)
+        colorUnfocused = context.resolveThemeColorRes(R.attr.unitUnfocusedColor)
+        colorUnfocusedBorder = context.resolveThemeColorRes(R.attr.unitBorderUnfocusedColor)
         setHasOptionsMenu(true) // for onCreateOptionsMenu() to be called
         setColorOfAllUnits(colorUnfocused) // because sometimes the color is not right
         setupItemNameAutoComplete()
@@ -99,12 +94,6 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         setupListeners()
         scrollView.isVerticalScrollBarEnabled = false
         animateIconInfinitely(expandHandle.drawable)
-    }
-
-    private fun resolveThemeAttribute(@AttrRes attr: Int): Int {
-        val typedValue = TypedValue()
-        context?.theme?.resolveAttribute(attr, typedValue, true)
-        return typedValue.resourceId
     }
 
     private fun setupBoughtButton() = bought.apply {
