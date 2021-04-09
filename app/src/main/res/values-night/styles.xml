@@ -11,6 +11,7 @@
     <item name="colorSecondary">@color/colorPrimary</item>
     <item name="colorSurface">#283028</item>
 
+    <item name="dateHeaderOverlayColor">@color/elevationOverlay6dp</item>
     <item name="android:fontFamily">@font/vazir_scaled_down</item>
     <item name="fontFamily">@font/vazir_scaled_down</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
 

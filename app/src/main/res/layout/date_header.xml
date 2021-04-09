@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Wrap the text view in FrameLayout to be able to center it horizontally -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <!-- NOTE: elevation did not work for the first date header no matter
+          what I did! (both in layouts and in code) -->
     <TextView
         android:id="@+id/headerText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginTop="10dp"
-        android:background="@drawable/shape_date_empty_hint"
-        android:backgroundTint="@color/date_header_background_color"
-        android:paddingStart="16dp"
-        android:paddingTop="4dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="4dp"
+        android:background="@drawable/shape_date_header"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="8dp"
         android:textStyle="bold"
         tools:text="چهارشنبه ۲۶ تیر ۱۳۹۸" />
 

@@ -3,6 +3,7 @@
     <declare-styleable name="TextInputEditTextWithSuffix">
         <attr name="suffix" format="string|reference" />
     </declare-styleable>
+    <attr name="dateHeaderOverlayColor" format="reference|color" />
     <attr name="rearCardBgColor" format="reference|color" />
     <attr name="bottomBarColor" format="reference|color" />
     <attr name="emptyHintColor" format="reference|color" />

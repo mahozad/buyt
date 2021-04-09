@@ -1,0 +1,14 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+  <item>
+    <shape android:shape="rectangle">
+      <solid android:color="@color/color_date_header_background" />
+      <corners android:radius="50dp" />
+    </shape>
+  </item>
+  <item>
+    <shape android:shape="rectangle">
+      <solid android:color="?dateHeaderOverlayColor" />
+      <corners android:radius="50dp" />
+    </shape>
+  </item>
+</layer-list>

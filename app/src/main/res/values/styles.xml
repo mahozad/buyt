@@ -10,6 +10,7 @@
         <item name="android:fontFamily">@font/vazir_scaled_down</item>
         <item name="fontFamily">@font/vazir_scaled_down</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
 
+        <item name="dateHeaderOverlayColor">@color/elevationOverlay6dp</item>
         <item name="rearCardBgColor">#4A5E4A</item>
         <item name="bottomBarColor">@color/bottomBarDarkBgColor</item>
         <item name="emptyHintColor">@color/emptyHintDarkColor</item>
@@ -33,6 +34,7 @@
         <item name="android:fontFamily">@font/vazir_scaled_down</item>
         <item name="fontFamily">@font/vazir_scaled_down</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
 
+        <item name="dateHeaderOverlayColor">#1C000000</item>
         <item name="rearCardBgColor">#BBB</item>
         <item name="emptyHintColor">#D2D2D2</item>
         <item name="unitUnfocusedColor">@color/unitUnfocusedLight</item>
@@ -58,6 +60,7 @@
         <item name="android:fontFamily">@font/vazir_scaled_down</item>
         <item name="fontFamily">@font/vazir_scaled_down</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
 
+        <item name="dateHeaderOverlayColor">#1C000000</item>
         <item name="rearCardBgColor">#BBB</item>
         <item name="emptyHintColor">#D2D2D2</item>
         <item name="unitUnfocusedColor">@color/unitUnfocusedLight</item>
