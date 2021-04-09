@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:alpha="0"
-        android:background="@drawable/shape_date_empty_hint"
+        android:background="@drawable/shape_rounded_rectangle"
         android:backgroundTint="?emptyHintColor"
         android:paddingStart="18dp"
         android:paddingTop="8dp"
