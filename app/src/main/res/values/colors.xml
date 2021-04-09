@@ -40,6 +40,21 @@
     <color name="unitBorderUnfocusedDark">#7f7f7f</color>
     <color name="unitBorderUnfocusedLight">#a0a0a0</color>
 
+    <color name="lineChartLineColor">@color/colorPrimaryDark</color>
+
+    <!-- The overlays to simulate elevation for dark theme
+          surfaces according to material design guidelines -->
+    <color name="elevationOverlay0dp">#00FFFFFF</color>
+    <color name="elevationOverlay1dp">#0DFFFFFF</color>
+    <color name="elevationOverlay2dp">#12FFFFFF</color>
+    <color name="elevationOverlay3dp">#14FFFFFF</color>
+    <color name="elevationOverlay4dp">#17FFFFFF</color>
+    <color name="elevationOverlay6dp">#1CFFFFFF</color>
+    <color name="elevationOverlay8dp">#1FFFFFFF</color>
+    <color name="elevationOverlay12dp">#24FFFFFF</color>
+    <color name="elevationOverlay16dp">#26FFFFFF</color>
+    <color name="elevationOverlay24dp">#29FFFFFF</color>
+
     <array name="lineChartGradient">
         <item>#4D259600</item>
         <item>#33259600</item>

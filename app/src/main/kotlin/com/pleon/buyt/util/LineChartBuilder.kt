@@ -10,7 +10,7 @@ import com.pleon.buyt.R
 import java.text.DecimalFormat
 
 fun buildLineChart(cxt: Context, chartView: LineChartView, data: List<DataSet>,
-                   hasDots: Boolean = true, dotsRadius: Float = 3f, thickness: Float = 3f,
+                   hasDots: Boolean = true, dotsRadius: Float = 8f, thickness: Float = 4f,
                    isSmooth: Boolean = false, isDashed: Boolean = false,
                    gridRows: Int = 3, gridCols: Int = 0): LineChartView {
 
@@ -26,13 +26,21 @@ fun buildLineChart(cxt: Context, chartView: LineChartView, data: List<DataSet>,
     val fillColors = cxt.resources.getIntArray(R.array.lineChartGradient)
     val gridPaint = Paint().apply { color = getColor(cxt, R.color.chartGridColor) }
 
-    dataSet.setColor(getColor(cxt, if (isEmpty) R.color.chartEmptyColor else R.color.colorPrimaryDark))
+    dataSet.setColor(getColor(cxt, if (isEmpty) R.color.chartEmptyColor else R.color.lineChartLineColor))
             .setSmooth(isSmooth)
             .setThickness(thickness)
             .setGradientFill(fillColors, floatArrayOf(0.0f, 0.2f, 0.5f, 1.0f))
 
     if (hasDots) {
-        dataSet.setDotsColor(getColor(cxt, if (isEmpty) R.color.chartEmptyColor else R.color.colorPrimary))
+        dataSet.setDotsStrokeColor(getColor(cxt,
+                if (isEmpty) R.color.chartEmptyColor
+                else R.color.colorPrimary)
+        )
+        dataSet.setDotsColor(
+                if (isEmpty) getColor(cxt, R.color.chartEmptyColor)
+                else cxt.resolveThemeColorVal(R.attr.colorSurface)
+        )
+        dataSet.setDotsStrokeThickness(thickness)
         dataSet.setDotsRadius(dotsRadius)
     }
 
