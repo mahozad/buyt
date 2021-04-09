@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewAnimationUtils.createCircularReveal
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +14,7 @@ import com.pleon.buyt.R
 import com.pleon.buyt.util.animateAlpha
 import com.pleon.buyt.util.animateIcon
 import kotlinx.android.synthetic.main.item_list_row.view.*
+import org.jetbrains.anko.dimen
 import org.jetbrains.anko.dip
 import kotlin.math.abs
 import kotlin.math.pow
@@ -39,6 +41,9 @@ class TouchHelperCallback(cxt: Context, private var listener: ItemTouchHelperLis
 
     private var dragModeEnabled = false
     private val maxSwipeDistInPx = cxt.dip(MAX_SWIPE_DIST).toFloat()
+    private val normalElevation = cxt.dimen(R.dimen.item_normal_elevation)
+    private val swipeElevation = cxt.dimen(R.dimen.item_swipe_elevation)
+    private val dragElevation = cxt.dimen(R.dimen.item_drag_elevation)
 
     // If you want to just disable long press drag-n-drop, override isLongPressDragEnabled()
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: ViewHolder): Int {
@@ -78,6 +83,11 @@ class TouchHelperCallback(cxt: Context, private var listener: ItemTouchHelperLis
 
         // Limit the swipe distance. abs() and sign() are to support both LTR and RTL configs.
         val newDX = if (abs(dX) < maxSwipeDistInPx) dX else dX.sign * maxSwipeDistInPx
+
+        if (isCurrentlyActive && actionState == ACTION_STATE_SWIPE)
+            ViewCompat.setElevation(view, swipeElevation.toFloat())
+        else
+            ViewCompat.setElevation(view, normalElevation.toFloat())
 
         // Animate delete circular reveal
         if (abs(newDX) == maxSwipeDistInPx && !viewHolder.delAnimating) {

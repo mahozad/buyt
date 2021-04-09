@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!-- Container to wrap foreground and background (for swiping to delete) -->
+<!-- NoTE: Set bottom padding and clipToPadding to prevent the clipping of the shadow of the cards -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardContainer"
+    android:clipToPadding="false"
+    android:paddingBottom="@dimen/item_swipe_elevation"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <!-- Background -->
     <!-- Set the "app:cardElevation" to "0dp" on this so when swiping the foreground, the card remains
      in back. Also by removing the elevation, it will be similar to examples in material.io -->
-    <!--Note: "app:cardUseCompatPadding" property is used because it is used in the foreground card.
-    see Note 2 of foreground for description -->
+    <!-- NOTE 1: Set the margin to the swipe elevation of foreground to prevent the card from
+          overlapping the foreground card -->
+    <!-- Note 2: "app:cardUseCompatPadding" property is used because it is used in the foreground card.
+          See note 2 of foreground for description -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardBackground"
         android:layout_width="0dp"
@@ -21,6 +26,7 @@
         app:cardCornerRadius="5dp"
         app:cardElevation="0dp"
         app:cardUseCompatPadding="true"
+        android:layout_margin="@dimen/item_swipe_elevation"
         app:layout_constraintBottom_toBottomOf="@id/cardForeground"
         app:layout_constraintEnd_toEndOf="@id/cardForeground"
         app:layout_constraintStart_toStartOf="@id/cardForeground"
@@ -56,17 +62,19 @@
     <!-- Foreground -->
     <!-- Note 1: that padding for the last item has been set in the recyclerView layout -->
     <!-- Note 2: for the bottom shadow of card to show (and not clipped by parent) set the
-    "app:cardUseCompatPadding" property to "true". This produces a little margin around the card -->
+          "app:cardUseCompatPadding" property to "true". This produces a little margin around the card.
+          In addition, set the bottom padding and clipToPadding of the wrapper to appropriate values. -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardForeground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardUseCompatPadding="true"
+        app:cardElevation="@dimen/item_normal_elevation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:rippleColor="@android:color/transparent"
-        tools:layout_marginBottom="4dp"
+        tools:layout_marginBottom="0dp"
         tools:layout_marginEnd="4dp"
         tools:layout_marginStart="4dp">
 
