@@ -63,11 +63,11 @@
     </array>
 
     <array name="pieChartColors">
-        <item>#ffC1B435</item>
-        <item>#ff2DA579</item>
-        <item>#ff2D71A5</item>
-        <item>#ffB53145</item>
-        <item>#ff909090</item>
+        <item>#e58e39</item>
+        <item>#3193d6</item>
+        <item>#d63194</item>
+        <item>#2DA579</item>
+        <item>#909090</item>
     </array>
 
     <array name="pieChartColorsAlt">
