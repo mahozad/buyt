@@ -5,7 +5,6 @@
     </declare-styleable>
     <attr name="dateHeaderOverlayColor" format="reference|color" />
     <attr name="rearCardBgColor" format="reference|color" />
-    <attr name="bottomBarColor" format="reference|color" />
     <attr name="emptyHintColor" format="reference|color" />
     <attr name="unitBorderUnfocusedColor" format="reference" />
     <attr name="unitUnfocusedColor" format="reference" />

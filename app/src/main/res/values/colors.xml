@@ -13,9 +13,6 @@
     <!-- <color name="mdtp_button_color">#fff</color>--><!-- button text color -->
     <!-- Other mdtp_... colors -->
 
-    <!-- This color is the 700 shade of the colorPrimary -->
-    <color name="splashScreenBgColor">#5b9a1e</color>
-
     <!-- Alternate colors: #4A4A4A, #E1E2E0, #3C3F41, #E3E4E2 -->
     <color name="ic_launcher_background">#FFF</color>
 
@@ -23,24 +20,17 @@
     <color name="white50">#80ffffff</color>
 
     <color name="materialWindowBgColor">#EFEFEF</color>
-
-    <color name="pieChartDarkBgColor">#FF323A33</color>
-    <color name="pieChartLightBgColor">#FFE9FFEA</color>
-    <color name="chartEmptyColor">#54888888</color>
+    <!-- This color is the 700 shade of the colorPrimary -->
+    <color name="splashScreenBgColor">#5b9a1e</color>
+    <color name="lineChartLineColor">@color/colorPrimaryDark</color>
+    <color name="chartEmptyColor">#AA888888</color>
     <color name="chartGridColor">#33888888</color>
-
-    <color name="bottomBarDarkBgColor">#222822</color>
-    <color name="bottomBarLightBgColor">#CaE7Ca</color>
-
-    <color name="emptyHintDarkColor">#3A443A</color>
-    <color name="emptyHintLightColor">#B8DFB8</color>
-
+    <color name="emptyHintDarkColor">#3A3A3A</color>
+    <color name="emptyHintLightColor">#B8B8B8</color>
     <color name="unitUnfocusedDark">#806F6F6F</color>
     <color name="unitUnfocusedLight">#80afafaf</color>
     <color name="unitBorderUnfocusedDark">#7f7f7f</color>
     <color name="unitBorderUnfocusedLight">#a0a0a0</color>
-
-    <color name="lineChartLineColor">@color/colorPrimaryDark</color>
 
     <!-- The overlays to simulate elevation for dark theme
           surfaces according to material design guidelines -->
@@ -56,10 +46,10 @@
     <color name="elevationOverlay24dp">#29FFFFFF</color>
 
     <array name="lineChartGradient">
-        <item>#4D259600</item>
-        <item>#33259600</item>
-        <item>#1A259600</item>
-        <item>#01259600</item>
+        <item>#4D70AE28</item>
+        <item>#3370AE28</item>
+        <item>#1A70AE28</item>
+        <item>#0170AE28</item>
     </array>
 
     <array name="pieChartColors">

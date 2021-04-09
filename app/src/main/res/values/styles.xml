@@ -1,18 +1,19 @@
 <resources>
 
     <!-- Dark and base application theme -->
+    <!-- Note: Be careful to update the dark theme in values-night/styles file as well -->
     <style name="DarkTheme" parent="Theme.MaterialComponents">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorSecondary">@color/colorPrimary</item>
-        <item name="colorSurface">#283028</item>
+        <!-- Reassign the material colorSurface to fix color of quantity btns -->
+        <item name="colorSurface">#181818</item>
 
         <item name="android:fontFamily">@font/vazir_scaled_down</item>
         <item name="fontFamily">@font/vazir_scaled_down</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
 
         <item name="dateHeaderOverlayColor">@color/elevationOverlay6dp</item>
-        <item name="rearCardBgColor">#4A5E4A</item>
-        <item name="bottomBarColor">@color/bottomBarDarkBgColor</item>
+        <item name="rearCardBgColor">#4A4C4A</item>
         <item name="emptyHintColor">@color/emptyHintDarkColor</item>
         <item name="unitUnfocusedColor">@color/unitUnfocusedDark</item>
         <item name="unitBorderUnfocusedColor">@color/unitBorderUnfocusedDark</item>
@@ -25,17 +26,19 @@
     </style>
 
     <!-- Light application theme -->
+    <!-- Note: Be careful to update the auto theme below as well -->
     <style name="LightTheme" parent="Theme.MaterialComponents.Light">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorSecondary">@color/colorPrimary</item>
-        <item name="colorSurface">@android:color/white</item> <!-- required for quantity btns -->
+        <!-- Reassign the material colorSurface to fix color of quantity btns -->
+        <item name="colorSurface">@android:color/white</item>
 
         <item name="android:fontFamily">@font/vazir_scaled_down</item>
         <item name="fontFamily">@font/vazir_scaled_down</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
 
         <item name="dateHeaderOverlayColor">#1C000000</item>
-        <item name="rearCardBgColor">#BBB</item>
+        <item name="rearCardBgColor">#CCC</item>
         <item name="emptyHintColor">#D2D2D2</item>
         <item name="unitUnfocusedColor">@color/unitUnfocusedLight</item>
         <item name="unitBorderUnfocusedColor">@color/unitBorderUnfocusedLight</item>
@@ -55,13 +58,14 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorSecondary">@color/colorPrimary</item>
-        <item name="colorSurface">@android:color/white</item> <!-- required for quantity btns -->
+        <!-- Reassign the material colorSurface to fix color of quantity btns -->
+        <item name="colorSurface">@android:color/white</item>
 
         <item name="android:fontFamily">@font/vazir_scaled_down</item>
         <item name="fontFamily">@font/vazir_scaled_down</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
 
         <item name="dateHeaderOverlayColor">#1C000000</item>
-        <item name="rearCardBgColor">#BBB</item>
+        <item name="rearCardBgColor">#CCC</item>
         <item name="emptyHintColor">#D2D2D2</item>
         <item name="unitUnfocusedColor">@color/unitUnfocusedLight</item>
         <item name="unitBorderUnfocusedColor">@color/unitBorderUnfocusedLight</item>
@@ -101,8 +105,11 @@
     </style>
 
     <style name="bottomAppBarStyle" parent="Widget.MaterialComponents.BottomAppBar">
-        <item name="backgroundTint">?bottomBarColor</item>
+        <item name="elevation">6dp</item>
+        <item name="backgroundTint">?colorSurface</item>
         <!--<item name="backgroundTint">#232923</item>-->
+        <!--<item name="backgroundTint">#222822</item>-->
+        <!--<item name="backgroundTint">#CaE7Ca</item>-->
     </style>
 
     <!-- Set persian date picker button color -->

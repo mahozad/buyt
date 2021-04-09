@@ -9,14 +9,14 @@
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     <item name="colorSecondary">@color/colorPrimary</item>
-    <item name="colorSurface">#283028</item>
+    <!-- Reassign the material colorSurface to fix color of quantity btns -->
+    <item name="colorSurface">#181818</item>
 
-    <item name="dateHeaderOverlayColor">@color/elevationOverlay6dp</item>
     <item name="android:fontFamily">@font/vazir_scaled_down</item>
     <item name="fontFamily">@font/vazir_scaled_down</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
 
-    <item name="rearCardBgColor">#4A5E4A</item>
-    <item name="bottomBarColor">@color/bottomBarDarkBgColor</item>
+    <item name="dateHeaderOverlayColor">@color/elevationOverlay6dp</item>
+    <item name="rearCardBgColor">#4A4C4A</item>
     <item name="emptyHintColor">@color/emptyHintDarkColor</item>
     <item name="unitUnfocusedColor">@color/unitUnfocusedDark</item>
     <item name="unitBorderUnfocusedColor">@color/unitBorderUnfocusedDark</item>
