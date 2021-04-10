@@ -35,7 +35,7 @@
         app:layout_constraintVertical_chainStyle="packed"
         app:srcCompat="@drawable/avd_logo"
         tools:ignore="ContentDescription"
-        tools:srcCompat="@drawable/vd_buyt" />
+        tools:srcCompat="@drawable/ic_logo" />
 
     <TextView
         android:id="@+id/nameVersion"

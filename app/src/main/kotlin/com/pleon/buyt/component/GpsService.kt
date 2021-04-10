@@ -69,7 +69,9 @@ class GpsService : Service(), LocationListener {
 
     private fun createFindingNotification(): Notification? {
         return NotificationCompat.Builder(this, "Main")
-                .setSmallIcon(R.drawable.ald_buyt_notification)
+                .setSmallIcon(R.drawable.ic_logo_notification) // Could also use animation-list drawable
+                .setColor(getColor(this, R.color.colorPrimary)) // Set icon and progress bar color
+                // .setColorized(true) // Set background color
                 .setOngoing(true)
                 .setLights(getColor(this, R.color.colorPrimary), 500, 600)
                 .setProgress(0, 0, true)
@@ -113,7 +115,8 @@ class GpsService : Service(), LocationListener {
 
     private fun createDoneNotification(): Notification? {
         return NotificationCompat.Builder(this, "Main")
-                .setSmallIcon(R.drawable.vd_buyt_notif_20)
+                .setSmallIcon(R.drawable.ic_logo_notification)
+                .setColor(getColor(this, R.color.colorPrimary))
                 .setContentTitle(getString(R.string.notif_title_store_found))
                 .setContentText(getString(R.string.notif_content_store_found))
                 .setContentIntent(pendingIntent)
