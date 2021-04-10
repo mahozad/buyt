@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.activity.FLAG_START_UPGRADE
-import com.pleon.buyt.ui.activity.HelpActivity
+import com.pleon.buyt.ui.activity.AboutActivity
 import org.jetbrains.anko.startActivity
 
 class UpgradePromptDialogFragment : AppCompatDialogFragment() {
@@ -49,5 +49,5 @@ class UpgradePromptDialogFragment : AppCompatDialogFragment() {
         return dialog
     }
 
-    private fun openUpgradeScreen() = context!!.startActivity<HelpActivity>(FLAG_START_UPGRADE to true)
+    private fun openUpgradeScreen() = context!!.startActivity<AboutActivity>(FLAG_START_UPGRADE to true)
 }

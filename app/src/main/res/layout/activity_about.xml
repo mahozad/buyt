@@ -5,7 +5,7 @@
     android:id="@+id/parentView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.HelpActivity">
+    tools:context=".ui.activity.AboutActivity">
 
     <com.scwang.wave.MultiWaveHeader
         android:id="@+id/waveHeader"
@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             app:navigationIcon="@drawable/ic_close"
-            tools:menu="@menu/menu_bottom_help" />
+            tools:menu="@menu/menu_bottom_about" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

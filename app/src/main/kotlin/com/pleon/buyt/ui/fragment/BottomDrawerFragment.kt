@@ -9,7 +9,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import com.pleon.buyt.R
-import com.pleon.buyt.ui.activity.HelpActivity
+import com.pleon.buyt.ui.activity.AboutActivity
 import com.pleon.buyt.ui.activity.SettingsActivity
 import com.pleon.buyt.ui.activity.StatsActivity
 import com.pleon.buyt.ui.activity.StoresActivity
@@ -29,7 +29,7 @@ class BottomDrawerFragment : BottomSheetDialogFragment(), OnNavigationItemSelect
             R.id.stats -> context!!.startActivity<StatsActivity>()
             R.id.stores -> context!!.startActivity<StoresActivity>()
             R.id.settings -> context!!.startActivity<SettingsActivity>()
-            R.id.help -> context!!.startActivity<HelpActivity>()
+            R.id.help -> context!!.startActivity<AboutActivity>()
         }
         return true
     }

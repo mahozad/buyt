@@ -9,7 +9,6 @@ import androidx.core.graphics.ColorUtils
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.fragment.PREF_FIRST_TIME_RUN
 import com.pleon.buyt.util.animateIcon
-import kotlinx.android.synthetic.main.activity_help.logo
 import kotlinx.android.synthetic.main.activity_splash.*
 
 class SplashActivity : BaseActivity() {

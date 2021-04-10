@@ -23,7 +23,7 @@
         <activity
             android:name=".ui.activity.IntroActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.activity.HelpActivity" />
+        <activity android:name=".ui.activity.AboutActivity" />
         <activity android:name=".ui.activity.StoresActivity" />
         <activity
             android:name=".ui.activity.SettingsActivity"

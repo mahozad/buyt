@@ -380,8 +380,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="aaaaalaki" />
-                            <entry key="sourceFile" value="C:\Users\Mahdi\Desktop\drawing.svg" />
+                            <entry key="outputName" value="ic_about" />
+                            <entry key="sourceFile" value="C:\Users\Mahdi\Downloads\info_black_24dp.svg" />
                           </map>
                         </option>
                       </PersistentState>

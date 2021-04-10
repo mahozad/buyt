@@ -107,7 +107,7 @@
     <string name="nav_stats">آمار و اطلاعات</string>
     <string name="nav_stores">مغازه‌ها</string>
     <string name="nav_settings">تنظیمات</string>
-    <string name="nav_help">راهنمایی</string>
+    <string name="nav_about">درباره</string>
     <string name="no_filter">بدون فیلتر</string>
     <string name="dialog_title_select_filter">انتخاب فیلتر</string>
     <string name="dialog_title_select_store">انتخاب مغازه</string>

@@ -20,7 +20,7 @@ import com.pleon.buyt.ui.dialog.UpgradeSuccessDialogFragment
 import com.pleon.buyt.util.animateAlpha
 import com.pleon.buyt.util.animateIcon
 import com.pleon.buyt.util.localizeDigits
-import kotlinx.android.synthetic.main.activity_help.*
+import kotlinx.android.synthetic.main.activity_about.*
 import org.jetbrains.anko.startActivity
 import org.koin.android.ext.android.inject
 import org.mindrot.jbcrypt.BCrypt
@@ -33,12 +33,12 @@ private const val TRANSLATION_PAGE_URL = "https://pleonco.oneskyapp.com/collabor
 private const val PAYLOAD = "payload-string"
 private const val RC_REQUEST: Int = 62026 // (arbitrary) request code for the purchase flow
 
-class HelpActivity : BaseActivity() {
+class AboutActivity : BaseActivity() {
 
     private val iabHelper by inject<IabHelper>()
     private val subscriptionRepository by inject<SubscriptionRepository>()
 
-    override fun layout() = R.layout.activity_help
+    override fun layout() = R.layout.activity_about
 
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
@@ -74,7 +74,7 @@ class HelpActivity : BaseActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_bottom_help, menu)
+        menuInflater.inflate(R.menu.menu_bottom_about, menu)
         return true
     }
 
