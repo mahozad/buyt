@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="chart_bar_spacing">20dp</dimen>
-    <dimen name="quantity_margin">5dp</dimen>
     <dimen name="unit_btn_height">64dp</dimen>
-    <dimen name="intro_btn_margin_bottom">84dp</dimen>
 </resources>

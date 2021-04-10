@@ -4,9 +4,8 @@
     <dimen name="item_normal_elevation">1dp</dimen>
     <dimen name="item_swipe_elevation">3dp</dimen>
     <dimen name="item_drag_elevation">4dp</dimen>
+    <dimen name="intro_btn_margin_bottom">84dp</dimen>
     <dimen name="design_fab_size_mini" tools:override="true">48dp</dimen>
-    <dimen name="chart_bar_spacing">16dp</dimen>
-    <dimen name="quantity_margin">5dp</dimen>
     <dimen name="unit_btn_height">62.5dp</dimen>
     <dimen name="wave_header_height">120dp</dimen>
     <dimen name="frag_container_height">263dp</dimen>
