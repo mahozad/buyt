@@ -13,6 +13,14 @@ To fix the paths so they can be morphed the following options are available:
     which is located in the */icons* directory
     (see this [SO post](https://stackoverflow.com/a/32386837)).
   - Good old [Shape Shifter](https://shapeshifter.design/)
+  
+To scale a font down/up do [this](https://www.fonttutorials.com/how-to-scale-glyphs/):
+  1. Download [FontForge](https://github.com/fontforge/fontforge)
+  2. Open the font in FontForge
+  3. Select all the glyphs by pressing CTRL + A
+  4. Select *Elements* -> *Transformations* -> *Transform*
+  5. Select *Scale Uniformly...* from the drop down
+  6. After scaling, generate the font in desired format
 
 TODO list:
 
