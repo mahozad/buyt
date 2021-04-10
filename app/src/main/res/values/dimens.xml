@@ -9,4 +9,5 @@
     <dimen name="unit_btn_height">62.5dp</dimen>
     <dimen name="wave_header_height">120dp</dimen>
     <dimen name="frag_container_height">263dp</dimen>
+    <dimen name="about_logo_size">128dp</dimen>
 </resources>

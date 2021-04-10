@@ -2,27 +2,26 @@
   "version": 1,
   "layers": {
     "vectorLayer": {
-      "id": "208",
+      "id": "282",
       "name": "vector",
       "type": "vector",
       "width": 24,
       "height": 24,
       "children": [
         {
-          "id": "219",
+          "id": "283",
           "name": "group_2",
           "type": "group",
           "children": [
             {
-              "id": "213",
+              "id": "284",
               "name": "group_1",
               "type": "group",
-              "rotation": -30,
               "pivotX": 12,
               "pivotY": 12,
               "children": [
                 {
-                  "id": "111",
+                  "id": "285",
                   "name": "path",
                   "type": "path",
                   "pathData": "M 11.939 10 C 10.889 10.016 9.887 10.445 9.15 11.193 C 8.413 11.941 8 12.95 8 14 C 8 14.02 8 14.041 8 14.061 L 8 20 L 13.533 17.695 C 14.263 17.392 14.888 16.879 15.327 16.222 C 15.766 15.564 16 14.791 16 14 C 16 12.94 15.578 11.921 14.828 11.172 C 14.079 10.422 13.06 10 12 10 C 11.98 10 11.959 10 11.939 10 Z M 12 12.5 C 12.398 12.5 12.779 12.658 13.061 12.939 C 13.342 13.221 13.5 13.602 13.5 14 C 13.5 14.398 13.342 14.779 13.061 15.061 C 12.779 15.342 12.398 15.5 12 15.5 C 11.602 15.5 11.221 15.342 10.939 15.061 C 10.658 14.779 10.5 14.398 10.5 14 C 10.5 13.602 10.658 13.221 10.939 12.939 C 11.221 12.658 11.602 12.5 12 12.5 Z",
@@ -32,37 +31,36 @@
               ]
             },
             {
-              "id": "157",
+              "id": "286",
               "name": "wrapper",
               "type": "group",
               "children": [
                 {
-                  "id": "156",
+                  "id": "287",
                   "name": "clippath905",
                   "type": "mask",
                   "pathData": "M 11.939 10 C 10.889 10.016 9.887 10.445 9.15 11.193 C 8.413 11.941 8 12.95 8 14 C 8 14.02 8 14.041 8 14.061 L 8 20 L 13.533 17.695 C 14.263 17.392 14.888 16.879 15.327 16.222 C 15.766 15.564 16 14.791 16 14 C 16 12.94 15.578 11.921 14.828 11.172 C 14.079 10.422 13.06 10 12 10 C 11.98 10 11.959 10 11.939 10 Z M 12 12.5 C 12.398 12.5 12.779 12.658 13.061 12.939 C 13.342 13.221 13.5 13.602 13.5 14 C 13.5 14.398 13.342 14.779 13.061 15.061 C 12.779 15.342 12.398 15.5 12 15.5 C 11.602 15.5 11.221 15.342 10.939 15.061 C 10.658 14.779 10.5 14.398 10.5 14 C 10.5 13.602 10.658 13.221 10.939 12.939 C 11.221 12.658 11.602 12.5 12 12.5 Z"
                 },
                 {
-                  "id": "127",
+                  "id": "288",
                   "name": "path_1",
                   "type": "path",
                   "pathData": "M 8 12 L 8 14.67 L 13.535 12.35 C 14.983 11.75 16 10.33 16 8.659 Z",
                   "fillColor": "#000000",
-                  "fillAlpha": 0,
+                  "fillAlpha": 0.25,
                   "strokeWidth": 1
                 }
               ]
             },
             {
-              "id": "211",
+              "id": "289",
               "name": "group",
               "type": "group",
-              "rotation": -30,
               "pivotX": 12,
               "pivotY": 12,
               "children": [
                 {
-                  "id": "206",
+                  "id": "290",
                   "name": "path_2",
                   "type": "path",
                   "pathData": "M 11.939 3.99 C 9.755 3.99 7.999 5.81 8 7.99 L 8 14 L 13.535 11.68 C 14.983 11.08 16 9.66 16 7.99 C 16 5.78 14.209 3.99 12 3.99 Z M 11.999 6.49 C 12.262 6.49 12.521 6.559 12.749 6.691 C 12.977 6.823 13.166 7.012 13.298 7.24 C 13.43 7.468 13.499 7.727 13.499 7.99 C 13.499 8.253 13.43 8.512 13.298 8.74 C 13.166 8.968 12.977 9.157 12.749 9.289 C 12.521 9.421 12.262 9.49 11.999 9.49 C 11.601 9.49 11.22 9.332 10.938 9.051 C 10.657 8.769 10.499 8.388 10.499 7.99 C 10.499 7.592 10.657 7.211 10.938 6.929 C 11.22 6.648 11.601 6.49 11.999 6.49 Z",
@@ -79,85 +77,162 @@
   },
   "timeline": {
     "animation": {
-      "id": "210",
+      "id": "291",
       "name": "anim",
-      "duration": 1500,
+      "duration": 2300,
       "blocks": [
         {
-          "id": "212",
-          "layerId": "211",
+          "id": "292",
+          "layerId": "289",
           "propertyName": "rotation",
           "startTime": 0,
           "endTime": 900,
-          "interpolator": "FAST_OUT_SLOW_IN",
+          "interpolator": "ACCELERATE_DECELERATE",
           "type": "number",
-          "fromValue": -33.7,
-          "toValue": 0
+          "fromValue": 0,
+          "toValue": -33.7
         },
         {
-          "id": "214",
-          "layerId": "213",
+          "id": "293",
+          "layerId": "284",
           "propertyName": "rotation",
           "startTime": 0,
           "endTime": 900,
-          "interpolator": "FAST_OUT_SLOW_IN",
+          "interpolator": "ACCELERATE_DECELERATE",
           "type": "number",
-          "fromValue": -33.7,
-          "toValue": 0
+          "fromValue": 0,
+          "toValue": -33.7
         },
         {
-          "id": "215",
-          "layerId": "211",
+          "id": "294",
+          "layerId": "289",
           "propertyName": "translateX",
+          "startTime": 200,
+          "endTime": 900,
+          "interpolator": "ACCELERATE_DECELERATE",
+          "type": "number",
+          "fromValue": 0,
+          "toValue": 2.2
+        },
+        {
+          "id": "295",
+          "layerId": "284",
+          "propertyName": "translateY",
+          "startTime": 200,
+          "endTime": 900,
+          "interpolator": "ACCELERATE_DECELERATE",
+          "type": "number",
+          "fromValue": 0,
+          "toValue": -5
+        },
+        {
+          "id": "296",
+          "layerId": "284",
+          "propertyName": "translateX",
+          "startTime": 200,
+          "endTime": 900,
+          "interpolator": "ACCELERATE_DECELERATE",
+          "type": "number",
+          "fromValue": 0,
+          "toValue": -1.1
+        },
+        {
+          "id": "297",
+          "layerId": "288",
+          "propertyName": "fillAlpha",
           "startTime": 0,
           "endTime": 500,
+          "interpolator": "FAST_OUT_SLOW_IN",
+          "type": "number",
+          "fromValue": 0.25,
+          "toValue": 0
+        },
+        {
+          "id": "298",
+          "layerId": "283",
+          "propertyName": "translateY",
+          "startTime": 0,
+          "endTime": 900,
+          "interpolator": "ACCELERATE_DECELERATE",
+          "type": "number",
+          "fromValue": 0,
+          "toValue": 2
+        },
+        {
+          "id": "309",
+          "layerId": "283",
+          "propertyName": "translateY",
+          "startTime": 900,
+          "endTime": 1800,
           "interpolator": "FAST_OUT_SLOW_IN",
           "type": "number",
           "fromValue": 2,
           "toValue": 0
         },
         {
-          "id": "216",
-          "layerId": "213",
+          "id": "310",
+          "layerId": "284",
+          "propertyName": "rotation",
+          "startTime": 900,
+          "endTime": 1800,
+          "interpolator": "FAST_OUT_SLOW_IN",
+          "type": "number",
+          "fromValue": -33.7,
+          "toValue": 0
+        },
+        {
+          "id": "312",
+          "layerId": "284",
           "propertyName": "translateY",
-          "startTime": 0,
-          "endTime": 700,
+          "startTime": 900,
+          "endTime": 1600,
           "interpolator": "FAST_OUT_SLOW_IN",
           "type": "number",
           "fromValue": -5,
           "toValue": 0
         },
         {
-          "id": "217",
-          "layerId": "213",
+          "id": "313",
+          "layerId": "284",
           "propertyName": "translateX",
-          "startTime": 0,
-          "endTime": 700,
+          "startTime": 900,
+          "endTime": 1600,
           "interpolator": "FAST_OUT_SLOW_IN",
           "type": "number",
-          "fromValue": -1.3,
+          "fromValue": -1.1,
           "toValue": 0
         },
         {
-          "id": "218",
-          "layerId": "127",
+          "id": "314",
+          "layerId": "288",
           "propertyName": "fillAlpha",
-          "startTime": 500,
-          "endTime": 1000,
+          "startTime": 1160,
+          "endTime": 1800,
           "interpolator": "FAST_OUT_SLOW_IN",
           "type": "number",
           "fromValue": 0,
           "toValue": 0.25
         },
         {
-          "id": "220",
-          "layerId": "219",
-          "propertyName": "translateY",
-          "startTime": 0,
-          "endTime": 900,
+          "id": "315",
+          "layerId": "289",
+          "propertyName": "rotation",
+          "startTime": 900,
+          "endTime": 1800,
           "interpolator": "FAST_OUT_SLOW_IN",
           "type": "number",
-          "fromValue": 2,
+          "fromValue": -33.7,
+          "toValue": 0
+        },
+        {
+          "id": "316",
+          "layerId": "289",
+          "propertyName": "translateX",
+          "startTime": 900,
+          "endTime": 1600,
+          "interpolator": "FAST_OUT_SLOW_IN",
+          "type": "number",
+          "fromValue": 2.2,
           "toValue": 0
         }
       ]

@@ -46,14 +46,21 @@ class AboutActivity : BaseActivity() {
         nameVersion.text = getString(R.string.appNameVersion, localizeDigits(BuildConfig.VERSION_NAME))
         logo.setOnClickListener { animateIcon(logo.drawable) }
         upgradePremiumBtn.setOnClickListener { upgradeToPremium() }
-        animateBrandAndUpgradeButton()
         intent.extras?.getBoolean(FLAG_START_UPGRADE)?.let { upgradeToPremium() }
     }
 
+    override fun onStart() {
+        super.onStart()
+        animateBrandAndUpgradeButton()
+    }
+
     private fun animateBrandAndUpgradeButton() {
-        animateIcon(logo.drawable, startDelay = 300)
+        animateAlpha(logo, toAlpha = 1f, duration = 300, startDelay = 300)
         animateAlpha(nameVersion, toAlpha = 1f, duration = 300, startDelay = 500)
-        if (!isPremium) animateAlpha(upgradePremiumBtn, toAlpha = 1f, duration = 300, startDelay = 1000)
+        if (!isPremium) {
+            upgradePremiumBtn.visibility = android.view.View.VISIBLE
+            animateAlpha(upgradePremiumBtn, toAlpha = 1f, duration = 300, startDelay = 1000)
+        }
     }
 
     private fun upgradeToPremium() = try {

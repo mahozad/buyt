@@ -2,4 +2,5 @@
 <resources>
     <integer name="layout_columns">2</integer>
     <dimen name="wave_header_height">40dp</dimen>
+    <dimen name="about_logo_size">118dp</dimen>
 </resources>
