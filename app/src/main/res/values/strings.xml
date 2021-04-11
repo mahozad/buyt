@@ -211,8 +211,8 @@
     <string name="menu_hint_translate_app">Help translate the app</string>
     <string name="menu_hint_show_tutorial">Show tutorial</string>
     <string name="intro_description_1">Add your items to the shopping list. By typing a few characters, Buyt will suggest related items and their corresponding category.</string>
-    <string name="intro_description_2">Inside or near the store like in your car, press the search button to find the store and complete your purchase. You can skip the finding step if the store is already saved.</string>
-    <string name="intro_description_3">Statistics, charts, and purchase details are available with the ability to change the period and to set filter on them.</string>
+    <string name="intro_description_2">Inside or near the store like in your car, tap the search button to find the store and complete your purchase. You can skip this step if the store is already saved.</string>
+    <string name="intro_description_3">Statistics, charts, and purchase details are available with the ability to change the period and to set filter on them. A 30-day chart is also available for stores.</string>
     <string name="purchase_empty_hint">No purchase!</string>
     <string name="dialog_title_billing_error">Cannot initiate purchase</string>
     <string name="btn_text_upgrade_to_premium">Upgrade to premium</string>
