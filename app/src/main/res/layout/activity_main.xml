@@ -30,16 +30,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- If you want the fragment to have rounded corners
-          replace this element with a MaterialCardView
-          and make the card background color transparent
-          and set its app:cardElevation to 0dp -->
     <!-- For fragment rounded corners and elevation see the
           background attribute on the root element of the fragment layout -->
+    <!-- Set the height to the final height so the fragment will be visible on config change -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragContainer"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/frag_container_height"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
