@@ -25,6 +25,7 @@ import com.pleon.buyt.model.Item
 import com.pleon.buyt.model.Item.Quantity.Unit.*
 import com.pleon.buyt.ui.NumberInputWatcher
 import com.pleon.buyt.ui.dialog.DatePickerDialogFragment
+import com.pleon.buyt.ui.dialog.MessageDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
 import com.pleon.buyt.ui.newAfterTextWatcher
@@ -192,9 +193,16 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
             val selectionList = ArrayList<SelectDialogRow>() // dialog requires ArrayList
             val dialogTitle: Int
             if (isBoughtChecked) {
-                for (store in viewModel.storeList)
-                    selectionList.add(SelectDialogRow(store.name, store.category.storeImageRes))
                 dialogTitle = R.string.dialog_title_select_store
+                if (viewModel.storeList.isEmpty()) {
+                    MessageDialogFragment
+                            .newInstance(dialogTitle, R.string.dialog_message_no_store_available)
+                            .show(activity!!.supportFragmentManager, "SELECT_DIALOG_EMPTY")
+                    return true
+                } else {
+                    for (store in viewModel.storeList)
+                        selectionList.add(SelectDialogRow(store.name, store.category.storeImageRes))
+                }
             } else {
                 for (category in Category.values())
                     selectionList.add(SelectDialogRow(getString(category.nameRes), category.imageRes))
