@@ -13,7 +13,7 @@
     <string name="dialog_title_select_filter">Select filter</string>
     <string name="dialog_title_exit">Exit the app?</string>
     <string name="dialog_message_exit">The buying process will be aborted if you exit the app.</string>
-    <string name="dialog_message_no_store_available">There is no saved store. You should do one or more purchases from at least one store (green button in main screen) so it can be chosen for future purchases.</string>
+    <string name="dialog_message_no_store_available">There is no saved store. You should do one or more purchases from at least one store (with find button in main screen) so it can be chosen for future purchases.</string>
     <string name="dialog_action_go_to_settings">Go to Settings</string>
     <string name="dialog_action_skip">Skip finding</string>
     <string name="dialog_action_exit">Exit</string>

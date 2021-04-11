@@ -72,7 +72,7 @@
     <string name="dialog_title_exit">خروج از برنامه؟</string>
     <string name="dialog_title_create_store">ایجاد مغازه جدید</string>
     <string name="dialog_message_exit">در صورت خروج از برنامه، فرایند خرید متوقف خواهد شد.</string>
-    <string name="dialog_message_no_store_available">مغازه‌ای از قبل ذخیره نشده است. مغازه‌ی مورد نظر بعد از ذخیره (از طریق دکمه‌ی سبز در صفحه‌ی اصلی) در اینجا نمایش داده خواهد شد.</string>
+    <string name="dialog_message_no_store_available">مغازه‌ای از قبل ذخیره نشده است. مغازه‌ی مورد نظر بعد از ذخیره (از طریق دکمه‌ی جستجو در صفحه‌ی اصلی) در اینجا نمایش داده خواهد شد.</string>
     <string name="snackbar_message_no_store_found">مغازه‌ای از قبل ذخیره نشده است!</string>
     <string name="menu_text_new_store_found">مغازه جدید</string>
     <string name="menu_text_multiple_stores_found">%1$s مغازه در این محدوده</string>
