@@ -11,20 +11,23 @@
         android:id="@+id/itemName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@+id/itemQuantity"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@sample/itemNames" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.55" />
 
     <TextView
         android:id="@+id/itemQuantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBaseline_toBaselineOf="@id/itemName"
-        app:layout_constraintEnd_toStartOf="@+id/itemTotalPrice"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/itemName"
+        app:layout_constraintStart_toEndOf="@+id/guideline"
         tools:text="@sample/quantities" />
 
     <TextView
@@ -33,8 +36,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintBaseline_toBaselineOf="@id/itemName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/itemQuantity"
         tools:text="@sample/prices" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
