@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat.*
 import androidx.core.widget.CompoundButtonCompat
 import androidx.lifecycle.Observer
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
@@ -25,7 +26,6 @@ import com.pleon.buyt.model.Item
 import com.pleon.buyt.model.Item.Quantity.Unit.*
 import com.pleon.buyt.ui.NumberInputWatcher
 import com.pleon.buyt.ui.dialog.DatePickerDialogFragment
-import com.pleon.buyt.ui.dialog.MessageDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment
 import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
 import com.pleon.buyt.ui.newAfterTextWatcher
@@ -195,9 +195,12 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
             if (isBoughtChecked) {
                 dialogTitle = R.string.dialog_title_select_store
                 if (viewModel.storeList.isEmpty()) {
-                    MessageDialogFragment
-                            .newInstance(dialogTitle, R.string.dialog_message_no_store_available)
-                            .show(activity!!.supportFragmentManager, "SELECT_DIALOG_EMPTY")
+                    MaterialAlertDialogBuilder(context!!, R.style.JustifiedTextDialogStyle)
+                            .setTitle(dialogTitle)
+                            .setIcon(R.drawable.ic_about)
+                            .setMessage(R.string.dialog_message_no_store_available)
+                            .setPositiveButton(android.R.string.ok) { _, _ -> /* Dismiss */ }
+                            .show()
                     return true
                 } else {
                     for (store in viewModel.storeList)

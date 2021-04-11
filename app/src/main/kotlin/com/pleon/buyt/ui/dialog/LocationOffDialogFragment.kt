@@ -50,7 +50,7 @@ class LocationOffDialogFragment : AppCompatDialogFragment() {
      * @return
      */
     override fun onCreateDialog(savedState: Bundle?): Dialog {
-        val dialog = MaterialAlertDialogBuilder(context!!)
+        val dialog = MaterialAlertDialogBuilder(context!!, R.style.JustifiedTextDialogStyle)
                 .setIcon(R.drawable.ic_location_off)
                 .setPositiveButton(R.string.dialog_action_go_to_settings) { _, _ -> onPositiveButtonClick() }
                 .setNegativeButton(R.string.dialog_action_skip) { _, _ -> callback!!.onEnableLocationDenied() }

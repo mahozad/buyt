@@ -8,6 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.pleon.buyt.R
 import com.pleon.buyt.ui.adapter.SelectionListAdapter
 import java.io.Serializable
@@ -49,15 +50,16 @@ class SelectDialogFragment : AppCompatDialogFragment(), SelectionListAdapter.Cal
         // remove RecyclerView blinking animation
         (storeRecyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
-        dialog = AlertDialog.Builder(activity!!)
-                .setView(customView).setTitle(getString(arguments!!.getInt("TITLE")))
+        // To decrease height of the dialog, decrease height of the recyclerview in the custom view
+        dialog = MaterialAlertDialogBuilder(activity!!, R.style.JustifiedTextDialogStyle)
+                .setView(customView)
+                .setTitle(getString(arguments!!.getInt("TITLE")))
                 .setPositiveButton(android.R.string.ok) { _, _ ->
                     val selectedIndex = adapter.selectedIndex
                     callback?.onSelected(selectedIndex)
                 }
-                .setNegativeButton(android.R.string.cancel) { d, which ->
-                    // cancel
-                }.create()
+                .setNegativeButton(android.R.string.cancel) { _, _ -> /* Dismiss */ }
+                .create()
 
         dialog.setCanceledOnTouchOutside(false)
         // Disable OK button by default (the button can be get only after the dialog is shown)

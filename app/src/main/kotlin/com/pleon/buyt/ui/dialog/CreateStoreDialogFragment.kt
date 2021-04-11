@@ -12,6 +12,7 @@ import android.widget.Spinner
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.lifecycle.Observer
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.pleon.buyt.R
 import com.pleon.buyt.model.Category
@@ -75,8 +76,9 @@ class CreateStoreDialogFragment : AppCompatDialogFragment() {
         val adapter = CatsSpinnerAdapter(context!!)
         spinner.adapter = adapter
 
-        dialog = AlertDialog.Builder(activity!!)
-                .setView(customView).setTitle(R.string.dialog_title_create_store)
+        dialog = MaterialAlertDialogBuilder(activity!!, R.style.JustifiedTextDialogStyle)
+                .setView(customView)
+                .setTitle(R.string.dialog_title_create_store)
                 .setPositiveButton(android.R.string.ok, null)
                 .setNegativeButton(android.R.string.cancel, null)
                 .create()

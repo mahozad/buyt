@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Dark and base application theme -->
     <!-- Note: Be careful to update the dark theme in values-night/styles file as well -->
@@ -92,8 +92,10 @@
     </style>
 
     <!-- TODO: Update background color of persian date picker as well -->
-    <style name="customDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
-        <item name="android:background">?colorSurface</item>
+
+    <style name="JustifiedTextDialogStyle" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <!-- Justify the text for android O and higher -->
+        <item name="android:justificationMode" tools:targetApi="o">inter_word</item>
     </style>
 
     <style name="fabStyle" parent="Widget.MaterialComponents.FloatingActionButton">
