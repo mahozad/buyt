@@ -10,17 +10,20 @@ import com.pleon.buyt.model.Purchase
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.viewmodel.StoresViewModel.Sort
 import com.pleon.buyt.viewmodel.StoresViewModel.Sort.*
+import com.pleon.buyt.viewmodel.StoresViewModel.SortDirection
+import com.pleon.buyt.viewmodel.StoresViewModel.SortDirection.DESCENDING
 
 @Dao
 abstract class StoreDao {
 
-    fun getAll(sort: Sort): LiveData<List<StoreDetail>> {
+    fun getAll(sort: Sort, sortDirection: SortDirection): LiveData<List<StoreDetail>> {
         val sqlSortColumn = when (sort) {
             TOTAL_SPENDING -> "totalSpending"
             PURCHASE_COUNT -> "purchaseCount"
             STORE_CATEGORY -> "category"
             STORE_NAME -> "name"
         }
+        val sqlSortDirection = if (sortDirection == DESCENDING) "DESC" else "ASC"
         val query = SimpleSQLiteQuery("""
             SELECT Store.*, SUM(cost) AS totalSpending, COUNT(purchaseId) AS purchaseCount
             FROM Store LEFT JOIN (SELECT SUM(totalPrice) AS cost, purchaseId, Purchase.storeId
@@ -28,7 +31,7 @@ abstract class StoreDao {
             ON Store.storeId = ip.storeId
             WHERE Store.isFlaggedForDeletion = 0
             GROUP BY Store.storeId
-            ORDER BY $sqlSortColumn DESC""")
+            ORDER BY $sqlSortColumn $sqlSortDirection""")
         return getStoreDetails(query)
     }
 

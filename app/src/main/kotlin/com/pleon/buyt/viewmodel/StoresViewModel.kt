@@ -10,12 +10,17 @@ import com.pleon.buyt.R
 import com.pleon.buyt.database.dto.StoreDetail
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.repository.StoreRepository
+import com.pleon.buyt.viewmodel.StoresViewModel.Sort.STORE_NAME
 import com.pleon.buyt.viewmodel.StoresViewModel.Sort.TOTAL_SPENDING
+import com.pleon.buyt.viewmodel.StoresViewModel.SortDirection.ASCENDING
+import com.pleon.buyt.viewmodel.StoresViewModel.SortDirection.DESCENDING
 
 private const val STORE_STATS_PERIOD = 30
 
 class StoresViewModel(app: Application, private val repository: StoreRepository)
     : AndroidViewModel(app) {
+
+    enum class SortDirection { ASCENDING, DESCENDING }
 
     enum class Sort(val nameRes: Int, val imgRes: Int) {
         TOTAL_SPENDING(R.string.menu_text_sort_totalSpending, R.drawable.ic_price),
@@ -28,7 +33,9 @@ class StoresViewModel(app: Application, private val repository: StoreRepository)
     val sort get() = sortLiveData.value ?: TOTAL_SPENDING
 
     val stores: LiveData<List<StoreDetail>> = switchMap(sortLiveData, Function { sort ->
-        return@Function repository.getStores(sort)
+        // For name sort ascending; for others sort descending
+        val sortDirection = if (sort == STORE_NAME) ASCENDING else DESCENDING
+        return@Function repository.getStores(sort, sortDirection)
     })
 
     fun getStoreStats(store: Store) = repository.getStoreStats(store, STORE_STATS_PERIOD)
