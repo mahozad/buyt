@@ -97,6 +97,14 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         animateIconInfinitely(expandHandle.drawable)
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Fix the bug with the fragment when the device was in landscape mode and
+        // one of bottom inputs like price was focused and a config change happened
+        scrollView.post { scrollView.scrollTo(0, 0) }
+        name.requestFocus()
+    }
+
     private fun setupBoughtButton() = bought.apply {
         // Reverse position of button icon in RTL layouts
         if (Locale.getDefault().language == "fa") layoutDirection = LAYOUT_DIRECTION_RTL
