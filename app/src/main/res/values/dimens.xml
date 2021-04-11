@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <integer name="layout_columns">1</integer>
     <dimen name="item_normal_elevation">1dp</dimen>
-    <dimen name="item_swipe_elevation">3dp</dimen>
+    <dimen name="item_swipe_elevation">2dp</dimen>
     <dimen name="item_drag_elevation">4dp</dimen>
     <dimen name="intro_btn_margin_bottom">84dp</dimen>
     <dimen name="design_fab_size_mini" tools:override="true">48dp</dimen>
