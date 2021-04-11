@@ -81,9 +81,10 @@ class MainViewModel(private val app: Application, private val repository: MainRe
         else -> R.drawable.ic_store_add
     }
 
-    fun getStoreTitle(): String = when (foundStores.size) {
-        0 -> app.getString(R.string.menu_text_new_store_found)
-        1 -> foundStores.first().name
+    fun getStoreTitle(): String = when {
+        foundStores.size == 0 -> app.getString(R.string.menu_text_new_store_found)
+        foundStores.size == 1 -> foundStores.first().name
+        isFindingSkipped -> app.getString(R.string.menu_text_multiple_stores_saved, formatNumber(foundStores.size))
         else -> app.getString(R.string.menu_text_multiple_stores_found, formatNumber(foundStores.size))
     }
 }
