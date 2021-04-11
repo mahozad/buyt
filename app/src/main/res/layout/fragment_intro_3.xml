@@ -28,6 +28,7 @@
         android:paddingStart="32dp"
         android:paddingEnd="32dp"
         android:text="@string/intro_description_3"
+        android:justificationMode="inter_word"
         android:textColor="?colorOnPrimarySurface"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
