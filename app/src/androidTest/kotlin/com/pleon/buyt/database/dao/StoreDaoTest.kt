@@ -29,7 +29,7 @@ class StoreDaoTest {
     fun insertOneStore() {
         storeDao.insert(Store(Coordinates(10.0, 20.0), "A Store", Category.DRUG))
 
-        val stores = storeDao.getAll(StoresViewModel.Sort.STORE_NAME)
+        val stores = storeDao.getAll(StoresViewModel.Sort.STORE_NAME, StoresViewModel.SortDirection.ASCENDING)
         assertEquals("A Store", stores)
     }
 

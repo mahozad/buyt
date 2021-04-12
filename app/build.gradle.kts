@@ -32,6 +32,16 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     compileSdkVersion(28)
+
+    testOptions {
+        // For Robolectric unit tests to be able to access resources
+        unitTests.isIncludeAndroidResources = true
+        // NOTE: Espresso suggests to disable all animations on the device
+        //  (can also be disabled manually in *Settings* 🡲 *Developer Settings*)
+        //  but this resulted in the tests to not complete and keep running forever.
+        // animationsDisabled = true
+    }
+
     defaultConfig {
         // specifies default settings that will be shared across all different product flavors
         applicationId = "com.pleon.buyt"
@@ -70,6 +80,9 @@ android {
          * languages using the resConfig property. Any resources for languages not specified are removed. */
         resConfigs("en", "fa")
     }
+
+    // Specifically, required for ActivityScenarioExtension in instrumentation tests
+    kotlinOptions { jvmTarget = "1.8" }
 
     // JUnit 5 will bundle in files with identical paths; exclude them
     packagingOptions { exclude("META-INF/LICENSE*") }
@@ -144,22 +157,28 @@ dependencies {
     debugImplementation("com.amitshekhar.android:debug-db:1.0.6")
 
     // Dependencies for local unit tests (JUnit 5 framework)
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.5.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.5.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.5.0")
-    testImplementation("org.assertj:assertj-core:3.14.0")
-    testImplementation("org.mockito:mockito-core:3.0.0")
-    testImplementation("org.mockito:mockito-junit-jupiter:3.0.0")
-    testImplementation("org.hamcrest:hamcrest-library:2.1")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
+    testImplementation("androidx.test:core-ktx:1.3.0")
+    testImplementation("androidx.test.ext:junit-ktx:1.1.2")
+    testImplementation("org.robolectric:robolectric:4.5.1")
+    testImplementation("org.assertj:assertj-core:3.19.0")
+    testImplementation("io.mockk:mockk:1.11.0")
+    testImplementation("org.hamcrest:hamcrest-library:2.2")
+    testImplementation("com.google.truth:truth:1.1.2")
+    testImplementation("com.google.truth.extensions:truth-java8-extension:1.1.2")
     // Dependencies for instrumented tests
-    androidTestImplementation("org.assertj:assertj-core:3.14.0")
-    androidTestImplementation("androidx.test.ext:junit:1.1.2-alpha02")
-    androidTestImplementation("androidx.test:runner:1.3.0-alpha02")
-    androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.5.0")
-    androidTestImplementation("org.mockito:mockito-android:3.0.0")
-    androidTestImplementation("org.mockito:mockito-junit-jupiter:3.0.0")
-    androidTestImplementation("androidx.room:room-testing:2.2.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
-    androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.0.0")
-    androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.0.0")
+    androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.7.1")
+    androidTestImplementation("androidx.test.ext:junit-ktx:1.1.2")
+    androidTestImplementation("androidx.test:runner:1.3.0")
+    androidTestImplementation("androidx.room:room-testing:2.2.6")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
+    androidTestImplementation("androidx.test.espresso:espresso-intents:3.3.0")
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.3.0")
+    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
+    androidTestImplementation("org.assertj:assertj-core:3.19.0")
+    androidTestImplementation("io.mockk:mockk-android:1.11.0")
+    androidTestImplementation("org.mockito:mockito-android:3.9.0")
+    androidTestImplementation("org.mockito:mockito-junit-jupiter:3.9.0")
+    androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.2.2")
+    androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.2.2")
 }

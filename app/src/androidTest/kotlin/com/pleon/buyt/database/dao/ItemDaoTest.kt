@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.lifecycle.Observer
 import androidx.room.Room
 import androidx.test.platform.app.InstrumentationRegistry
+import com.pleon.buyt.InstantExecutorExtension
+import com.pleon.buyt.blockingObserve
 import com.pleon.buyt.database.AppDatabase
-import com.pleon.buyt.database.InstantExecutorExtension
-import com.pleon.buyt.database.blockingObserve
 import com.pleon.buyt.database.dto.ItemNameCat
 import com.pleon.buyt.model.Category.FRUIT
 import com.pleon.buyt.model.Category.GROCERY
