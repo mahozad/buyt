@@ -126,7 +126,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         urgent.setOnCheckedChangeListener(this::onUrgentToggled)
         bought.setOnClickListener(this::onBoughtToggled)
         quantityEd.setOnFocusChangeListener(this::onQuantityFocusChanged)
-        quantityEd.setOnEditorActionListener(this::onQuantityDone)
+        quantityEd.setOnEditorActionListener { _, actionId, _ -> onQuantityDone(actionId) }
         name.addTextChangedListener(newAfterTextWatcher(this::onNameChanged))
         quantityEd.addTextChangedListener(newAfterTextWatcher(this::onQuantityChanged))
         description.addTextChangedListener(newAfterTextWatcher(this::onDescriptionChanged))
@@ -137,7 +137,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         return isScrollLocked
     }
 
-    private fun onQuantityDone(textView: TextView, actionId: Int, keyEvent: KeyEvent): Boolean {
+    private fun onQuantityDone(actionId: Int): Boolean {
         if (actionId == IME_ACTION_DONE) onDonePressed()
         return true // consume the event
     }
