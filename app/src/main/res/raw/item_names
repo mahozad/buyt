@@ -6,18 +6,23 @@
 نان فانتزی:BREAD
 نان محلی:BREAD
 نان قندی:BREAD
+نان تست:BREAD
+نان جو:BREAD
+نان خشک:BREAD
+نان ساندویچی:BREAD
 شیر:DAIRY
 شیر فله‌ای:DAIRY
 شیر بطری:DAIRY
 شیر پاکتی:DAIRY
-شیرکاکائو:DAIRY
-شیرموز:DAIRY
+شیر کاکائو:DAIRY
+شیر موز:DAIRY
 دوغ:DAIRY
 کشک:DAIRY
 پنیر:DAIRY
 پنیر پاستوریزه:DAIRY
 پنیر خامه‌ای:DAIRY
 پنیر گچی:DAIRY
+آب پنیر:DAIRY
 کره:DAIRY
 کره حیوانی:DAIRY
 کره گیاهی:DAIRY
@@ -36,16 +41,18 @@
 ترنج:FRUIT
 به:FRUIT
 آلو:FRUIT
-لیو شیرین:FRUIT
+لیمو شیرین:FRUIT
 لیمو ترش:FRUIT
 آلوچه:FRUIT
 آلبالو:FRUIT
 گیلاس:FRUIT
 انار:FRUIT
+ازگیل:FRUIT
 کیوی:FRUIT
 زردآلو:FRUIT
 گلابی:FRUIT
-خیارسبز:FRUIT
+خیار:FRUIT
+خیار سبز:FRUIT
 گوجه فرنگی:FRUIT
 توت:FRUIT
 توت فرنگی:FRUIT
@@ -62,18 +69,23 @@
 خربزه:FRUIT
 زغال اخته:FRUIT
 قارچ:FRUIT
-نخود فرنگی:FRUIT
+نخود سبز:FRUIT
 کاهو:FRUIT
 فلفل دلمه‌ای:FRUIT
 بادمجان:FRUIT
+بامیه:FRUIT
+تربچه:FRUIT
 ریواس:FRUIT
 کدو:FRUIT
 کلم:FRUIT
+گل کلم:FRUIT
 کلم بروکلی:FRUIT
 زنجبیل:FRUIT
 کرفس:FRUIT
 انجیر:FRUIT
 انگور:FRUIT
+غوره:FRUIT
+دستنبو:FRUIT
 گریپ فروت:FRUIT
 بلال:FRUIT
 ذرت:FRUIT
@@ -88,25 +100,46 @@
 رطب:FRUIT
 نارگیل:FRUIT
 آناناس:FRUIT
+آووکادو:FRUIT
 موز:FRUIT
-سبزی:FRUIT
 هویج:FRUIT
 انبه:FRUIT
 باقلا:FRUIT
+لوبیا سبز:FRUIT
+سبزی:FRUIT
 سبزی خوردن:FRUIT
 سبزی آشی:FRUIT
 سبزی خورشتی:FRUIT
 سبزی کوکویی:FRUIT
+دمنوش:HERBAL_TEA
+گلاب:HERBAL_TEA
+عرق:HERBAL_TEA
+عرق بید:HERBAL_TEA
+عرق بیدمشک:HERBAL_TEA
+عرق نعنا:HERBAL_TEA
+عرق کاسنی:HERBAL_TEA
+عرق شاتره:HERBAL_TEA
+عرق خار شتر:HERBAL_TEA
+عرق بابونه:HERBAL_TEA
+عرق بهار نارنج:HERBAL_TEA
+عرق خارخاسک:HERBAL_TEA
+آب معدنی:GROCERY
+آب گازدار:GROCERY
 نوشابه:GROCERY
 نوشابه خانواده:GROCERY
 نوشابه کولا:GROCERY
 نوشابه پرتقالی:GROCERY
+نوشابه انرژی زا:GROCERY
+ماءالشعیر:GROCERY
+دلستر:GROCERY
+آب جو:GROCERY
 پاستا:GROCERY
 ماکارونی:GROCERY
 اسپاگتی:GROCERY
 لازانیا:GROCERY
 نودل:GROCERY
 اسنک:GROCERY
+پودر نارگیل:GROCERY
 کشمش:GROCERY
 آجیل:GROCERY
 برگه هلو:GROCERY
@@ -115,8 +148,11 @@
 برگه سیب:GROCERY
 پسته:GROCERY
 مغز پسته:GROCERY
+خلال پسته:GROCERY
 فندق:GROCERY
 بادام:GROCERY
+بادام هندی:GROCERY
+بادام زمینی:GROCERY
 مغز بادام:GROCERY
 خلال بادام:GROCERY
 گردو:GROCERY
@@ -131,7 +167,9 @@
 ماش:GROCERY
 لوبیا قرمز:GROCERY
 لوبیا چیتی:GROCERY
+لوبیا چشم بلبلی:GROCERY
 نخود:GROCERY
+نخودچی:GROCERY
 لپه:GROCERY
 سویا:GROCERY
 پودر سوخاری:GROCERY
@@ -144,39 +182,48 @@
 دارچین:GROCERY
 گندم:GROCERY
 جو:GROCERY
+زرشک:GROCERY
 رشته آشی:GROCERY
 رشته سوپی:GROCERY
 تخم مرغ:GROCERY
+سفیده تخم مرغ:GROCERY
 تخم بلدرچین:GROCERY
 تن ماهی:GROCERY
-حلواارده:GROCERY
-حلواشکری:GROCERY
+حلوا ارده:GROCERY
+حلوا شکری:GROCERY
 ارده:GROCERY
-دمنوش:GROCERY
-ماءالشعیر:GROCERY
-دلستر:GROCERY
 کلوچه:GROCERY
+کیک:GROCERY
 آدامس:GROCERY
 آرد:GROCERY
 شربت:GROCERY
 زیتون:GROCERY
 برنج:GROCERY
+برنج ایرانی:GROCERY
+برنج هندی:GROCERY
 پنیر پیتزا:GROCERY
 روغن سرخ کردنی:GROCERY
 روغن مایع:GROCERY
 روغن زیتون:GROCERY
-کنجد:GROCERY
 روغن کنجد:GROCERY
 روغن ذرت:GROCERY
+روغن جامد:GROCERY
+روغن حیوانی:GROCERY
+کنجد:GROCERY
 پفک:GROCERY
 چیپس:GROCERY
 چیپس خلالی:GROCERY
-کیک:GROCERY
+پاپ کورن:GROCERY
+پف فیل:GROCERY
+پاستیل:GROCERY
 بیسکویت:GROCERY
 ویفر:GROCERY
 شکلات:GROCERY
 شکلات تلخ:GROCERY
+پودر شکلات:GROCERY
+هات چاکلت:GROCERY
 لواشک:GROCERY
+آلبالو خشک:GROCERY
 سوسیس:GROCERY
 کالباس:GROCERY
 کوکتل:GROCERY
@@ -184,10 +231,15 @@
 کنسرو خوراک:GROCERY
 کمپوت:GROCERY
 آبمیوه:GROCERY
+نکتار:GROCERY
 قند:GROCERY
 قند حبه:GROCERY
+قند شکسته:GROCERY
 شکر:GROCERY
+شکر قهوه‌ای:GROCERY
 نبات:GROCERY
+نبات شاخه:GROCERY
+نبات کاسه:GROCERY
 نبات زعفرانی:GROCERY
 سس گوجه فرنگی:GROCERY
 سس کچاپ:GROCERY
@@ -195,6 +247,7 @@
 سس مایونز:GROCERY
 سس تند:GROCERY
 سس فرانسوی:GROCERY
+سس خردل:GROCERY
 رب گوجه فرنگی:GROCERY
 رب انار:GROCERY
 مربا:GROCERY
@@ -205,7 +258,8 @@
 مربا انجیر:GROCERY
 مربا به:GROCERY
 عسل:GROCERY
-خیارشور:GROCERY
+خیار شور:GROCERY
+شور:GROCERY
 ترشی:GROCERY
 ترشی مخلوط:GROCERY
 ترشی لیته:GROCERY
@@ -218,7 +272,11 @@
 سرکه سیب:GROCERY
 سرکه انار:GROCERY
 چای:GROCERY
+چای کیسه‌ای:GROCERY
+چای سبز:GROCERY
 قهوه:GROCERY
+پودر قهوه:GROCERY
+دانه قهوه:GROCERY
 مایع ظرفشویی:GROCERY
 مابع ماشین لباسشویی:GROCERY
 پودر ماشین لباسشویی:GROCERY
@@ -228,9 +286,33 @@
 ران مرغ:CHICKEN
 سینه مرغ:CHICKEN
 بال مرغ:CHICKEN
+بازو مرغ:CHICKEN
+فیله مرغ:CHICKEN
+شنیتسل مرغ:CHICKEN
+جوجه:CHICKEN
+گوشت کبک:CHICKEN
+گوشت کبوتر:CHICKEN
 گوشت بلدرچین:CHICKEN
 گوشت بوقلمون:CHICKEN
+گوشت شتر مرغ:MEAT
+گوشت گوسفند:MEAT
+گوشت گاو:MEAT
+گوشت شتر:MEAT
+ران:MEAT
+جگر:MEAT
+شکمبه:MEAT
+سیرابی:MEAT
+راسته:MEAT
+ماهیچه:MEAT
+چرخ کرده:MEAT
 ماهی:FISH
+ماهی شیر:FISH
+ماهی سفید:FISH
+ماهی قزل آلا:FISH
+ماهی تیلاپیا:FISH
+ماهی شوریده:FISH
+ماهی حلوا:FISH
+فیله ماهی:FISH
 میگو:FISH
 کتاب:STATIONARY
 خودکار:STATIONARY
@@ -246,14 +328,20 @@
 فالوده:ICE_CREAM
 بستنی:ICE_CREAM
 شیرینی:PASTRY
+شیرینی ستنی:PASTRY
+شیرینی دانمارکی:PASTRY
+نان خامه‌ای:PASTRY
 سوهان:PASTRY
 گز:PASTRY
 پولکی:PASTRY
 قطاب:PASTRY
 باقلوا:PASTRY
 پشمک:PASTRY
+آبنبات:PASTRY
+نقل:PASTRY
 حاجی بادام:PASTRY
-خمیر دندان:PASTRY
+کیک (دسر):PASTRY
+خمیر دندان:DRUG
 نخ دندان:DRUG
 خلال دندان:DRUG
 مسواک:DRUG
@@ -263,7 +351,7 @@
 کرم مرطوب کننده:DRUG
 ژل موی سر:DRUG
 شامپو:DRUG
-شامپو ضدشوره:DRUG
+شامپو ضد شوره:DRUG
 شامپو بدن:DRUG
 ماسک مو:DRUG
 نرم کننده مو:DRUG
