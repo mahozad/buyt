@@ -17,6 +17,7 @@ class DateHeaderDecoration(recyclerView: RecyclerView, private val listener: Has
         // On Sticky Header Click
         recyclerView.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
             override fun onInterceptTouchEvent(recyclerView: RecyclerView, motionEvent: MotionEvent): Boolean {
+                @Suppress("RedundantIf")
                 return if (motionEvent.y <= stickyHeaderHeight) {
                     // Handle the clicks on the header here ...
                     true

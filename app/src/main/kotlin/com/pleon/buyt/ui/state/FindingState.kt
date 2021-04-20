@@ -4,7 +4,6 @@ import android.content.Intent
 import android.location.Location
 import android.os.Bundle
 import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING
-import androidx.lifecycle.Observer
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_END
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.pleon.buyt.R
@@ -31,7 +30,7 @@ object FindingState : State() {
         viewModel.location = location
         if (prefs.getBoolean(PREF_VIBRATE, true)) vibrate(this, 200, 255)
         val here = Coordinates(viewModel.location!!)
-        viewModel.findNearStores(here).observe(this, Observer { onStoresFound(it) })
+        viewModel.findNearStores(here).observe(this) { onStoresFound(it) }
     }
 
     private fun shiftToSelectingState() = with(activity) {

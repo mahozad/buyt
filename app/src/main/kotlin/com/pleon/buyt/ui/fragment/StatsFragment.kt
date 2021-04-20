@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.core.content.res.ResourcesCompat.getFont
-import androidx.lifecycle.Observer
 import com.db.chart.animation.Animation
 import com.pleon.buyt.R
 import com.pleon.buyt.database.dto.CategorySum
@@ -30,13 +29,13 @@ class StatsFragment : BaseFragment() {
     override fun layout() = R.layout.fragment_stats
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
-        viewModel.stats.observe(viewLifecycleOwner, Observer { stats ->
+        viewModel.stats.observe(viewLifecycleOwner) { stats ->
             showStats(stats)
             isStartup = false
-        })
+        }
 
         pieSliceColors = resources.getIntArray(R.array.pieChartColors)
-        lineChart.setTypeface(getFont(context!!, R.font.vazir_scaled_down)!!)
+        lineChart.setTypeface(getFont(requireContext(), R.font.vazir_scaled_down)!!)
     }
 
     private fun showStats(stats: Stats) = with(stats) {
@@ -54,7 +53,7 @@ class StatsFragment : BaseFragment() {
 
     private fun showLineChart(dailyCosts: List<DailyCost>) {
         val shouldShowDots = dailyCosts.size <= 30
-        val lineChart = buildLineChart(context!!, lineChart, dailyCosts, shouldShowDots)
+        val lineChart = buildLineChart(requireContext(), lineChart, dailyCosts, shouldShowDots)
         if (isStartup) lineChart.show() else lineChart.show(Animation(500))
     }
 

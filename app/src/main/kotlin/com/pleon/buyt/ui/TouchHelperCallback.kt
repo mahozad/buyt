@@ -64,13 +64,13 @@ class TouchHelperCallback(cxt: Context, private var listener: ItemTouchHelperLis
     override fun onSelectedChanged(viewHolder: ViewHolder?, actionState: Int) {
         if (viewHolder == null) return
         val view = (viewHolder as BaseViewHolder).itemView.cardBackground
-        ItemTouchHelper.Callback.getDefaultUIUtil().onSelected(view)
+        getDefaultUIUtil().onSelected(view)
     }
 
     override fun clearView(recyclerView: RecyclerView, viewHolder: ViewHolder) {
         val view = (viewHolder as BaseViewHolder).itemView.cardForeground
         view.isDragged = false // enabled in onDragHandleTouch() method of the view holder
-        ItemTouchHelper.Callback.getDefaultUIUtil().clearView(view)
+        getDefaultUIUtil().clearView(view)
     }
 
     // If you want to reduce or increase the speed of swipe, multiply dX by the desired factor
@@ -100,7 +100,7 @@ class TouchHelperCallback(cxt: Context, private var listener: ItemTouchHelperLis
             hideCircularReveal(viewHolder, viewHolder.itemView.circular_reveal)
         }
 
-        ItemTouchHelper.Callback.getDefaultUIUtil().onDraw(c, recyclerView, view, newDX, dY, actionState, isCurrentlyActive)
+        getDefaultUIUtil().onDraw(c, recyclerView, view, newDX, dY, actionState, isCurrentlyActive)
     }
 
     private fun showCircularReveal(viewHolder: BaseViewHolder, view: View) {

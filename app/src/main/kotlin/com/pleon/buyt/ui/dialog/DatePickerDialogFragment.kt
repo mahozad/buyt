@@ -31,6 +31,6 @@ class DatePickerDialogFragment : AppCompatDialogFragment() {
         val day = cal.get(Calendar.DAY_OF_MONTH)
 
         // Create a new instance of DatePickerDialog and return it
-        return DatePickerDialog(context!!, callback, year, month, day)
+        return DatePickerDialog(requireContext(), callback, year, month, day)
     }
 }

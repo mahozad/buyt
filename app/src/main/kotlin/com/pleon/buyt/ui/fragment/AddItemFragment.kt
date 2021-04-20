@@ -13,7 +13,6 @@ import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat.*
 import androidx.core.widget.CompoundButtonCompat
-import androidx.lifecycle.Observer
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
@@ -157,12 +156,12 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
     }
 
     private fun setupItemNameAutoComplete() {
-        viewModel.itemNameCats.observe(viewLifecycleOwner, Observer { nameCats ->
+        viewModel.itemNameCats.observe(viewLifecycleOwner) { nameCats ->
             this.nameCats = nameCats
-            val adapter = ArrayAdapter(context!!,
+            val adapter = ArrayAdapter(requireContext(),
                     android.R.layout.simple_dropdown_item_1line, nameCats.keys.toList())
             name.setAdapter(adapter)
-        })
+        }
     }
 
     /**
@@ -203,7 +202,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
             if (isBoughtChecked) {
                 dialogTitle = R.string.dialog_title_select_store
                 if (viewModel.storeList.isEmpty()) {
-                    MaterialAlertDialogBuilder(context!!, R.style.JustifiedTextDialogStyle)
+                    MaterialAlertDialogBuilder(requireContext(), R.style.JustifiedTextDialogStyle)
                             .setTitle(dialogTitle)
                             .setIcon(R.drawable.ic_about)
                             .setMessage(R.string.dialog_message_no_store_available)
@@ -220,7 +219,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
                 dialogTitle = R.string.dialog_title_select_cat
             }
             val selectDialog = SelectDialogFragment.newInstance(this, dialogTitle, selectionList)
-            selectDialog.show(activity!!.supportFragmentManager, "SELECT_DIALOG")
+            selectDialog.show(requireActivity().supportFragmentManager, "SELECT_DIALOG")
         }
         return true
     }
@@ -270,7 +269,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
             datePicker.selectableDays = selectableDays
 
             datePicker.retainInstance = true
-            datePicker.show(activity!!.fragmentManager, "DATE_PICKER")
+            datePicker.show(requireActivity().fragmentManager, "DATE_PICKER")
         } else {
             DatePickerDialogFragment().show(childFragmentManager, "DATE_PICKER")
         }
@@ -352,12 +351,12 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
 
     private fun onBoughtToggled(view: View) {
         val drawableId = if (isBoughtChecked) R.drawable.avd_expand else R.drawable.avd_collapse
-        val drawable = getDrawable(context!!, drawableId)
+        val drawable = getDrawable(requireContext(), drawableId)
         bought.icon = drawable
         animateIcon(drawable!!)
         if (selectCategoryTxvi != null) { // to fix bug on config change
             selectCategoryTxvi?.text = getString(if (isBoughtChecked) R.string.menu_title_select_store else viewModel.category.nameRes)
-            selectCategoryTxvi?.setTextColor(getColor(context!!, colorOnSurface))
+            selectCategoryTxvi?.setTextColor(getColor(requireContext(), colorOnSurface))
             val icon = if (isBoughtChecked) R.drawable.avd_store_error else R.drawable.ic_item_grocery
             selectCategoryTxvi?.setCompoundDrawablesRelativeWithIntrinsicBounds(
                     icon, 0, 0, 0
@@ -385,7 +384,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
                     intArrayOf(android.R.attr.state_checked), // checked
                     intArrayOf(android.R.attr.state_checked * -1) // unchecked
             )
-            val colors = intArrayOf(getColor(context!!, color), colorSurface)
+            val colors = intArrayOf(getColor(requireContext(), color), colorSurface)
             btn.backgroundTintList = ColorStateList(states, colors)
         }
     }
@@ -444,7 +443,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         selectCategoryTxvi?.setCompoundDrawablesRelativeWithIntrinsicBounds(
                 R.drawable.ic_item_grocery, 0, 0, 0
         )
-        selectCategoryTxvi?.setTextColor(getColor(context!!, colorOnSurface))
+        selectCategoryTxvi?.setTextColor(getColor(requireContext(), colorOnSurface))
         selectCategoryTxvi?.text = getString(Category.GROCERY.nameRes)
         viewModel.category = Category.GROCERY
         viewModel.store = null
@@ -458,7 +457,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         val name: String
         val imageRes: Int
         if (isBoughtChecked) {
-            viewModel.store = viewModel.storeList!![index]
+            viewModel.store = viewModel.storeList[index]
             name = viewModel.store!!.name
             imageRes = viewModel.store!!.category.storeImageRes
         } else {
@@ -470,7 +469,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         selectCategoryTxvi?.setCompoundDrawablesRelativeWithIntrinsicBounds(
                 imageRes, 0, 0, 0
         )
-        selectCategoryTxvi?.setTextColor(getColor(context!!, colorOnSurface))
+        selectCategoryTxvi?.setTextColor(getColor(requireContext(), colorOnSurface))
         selectCategoryTxvi?.text = name
     }
 
@@ -491,7 +490,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
             validated = false
         }
         if (isBoughtChecked && viewModel.store == null) {
-            selectCategoryTxvi?.setTextColor(getColor(context!!, colorError))
+            selectCategoryTxvi?.setTextColor(getColor(requireContext(), colorError))
             selectCategoryTxvi?.setCompoundDrawablesRelativeWithIntrinsicBounds(
                     R.drawable.avd_store_error, 0, 0, 0
             )

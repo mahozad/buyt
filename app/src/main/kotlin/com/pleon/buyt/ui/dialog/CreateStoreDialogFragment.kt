@@ -11,7 +11,6 @@ import android.widget.EditText
 import android.widget.Spinner
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
-import androidx.lifecycle.Observer
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.pleon.buyt.R
@@ -52,9 +51,9 @@ class CreateStoreDialogFragment : AppCompatDialogFragment() {
      * @return
      */
     override fun onCreateDialog(savedState: Bundle?): Dialog {
-        val customView = activity!!.layoutInflater.inflate(R.layout.create_store_dialog, null)
+        val customView = requireActivity().layoutInflater.inflate(R.layout.create_store_dialog, null)
 
-        location = arguments!!.getParcelable("LOCATION")!!
+        location = requireArguments().getParcelable("LOCATION")!!
 
         spinner = customView.findViewById(R.id.catSpinner)
         name = customView.findViewById(R.id.name)
@@ -73,10 +72,10 @@ class CreateStoreDialogFragment : AppCompatDialogFragment() {
             return@setOnTouchListener false
         }
 
-        val adapter = CatsSpinnerAdapter(context!!)
+        val adapter = CatsSpinnerAdapter(requireContext())
         spinner.adapter = adapter
 
-        dialog = MaterialAlertDialogBuilder(activity!!, R.style.JustifiedTextDialogStyle)
+        dialog = MaterialAlertDialogBuilder(requireActivity(), R.style.JustifiedTextDialogStyle)
                 .setView(customView)
                 .setTitle(R.string.dialog_title_create_store)
                 .setPositiveButton(android.R.string.ok, null)
@@ -96,10 +95,10 @@ class CreateStoreDialogFragment : AppCompatDialogFragment() {
             val name = name.text.toString()
             val store = Store(Coordinates(location), name, spinner.selectedItem as Category)
             // FIXME: "this" is used as the owner because "lifeCycleOwner" threw exception
-            viewModel.addStore(store).observe(this, Observer {
-                createStoreListener!!.onStoreCreated(store)
+            viewModel.addStore(store).observe(this) {
+                createStoreListener?.onStoreCreated(store)
                 dismiss()
-            })
+            }
         }
     }
 

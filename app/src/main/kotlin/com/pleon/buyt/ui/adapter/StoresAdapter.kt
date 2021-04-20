@@ -46,7 +46,7 @@ class StoresAdapter(private val frag: Fragment, private val viewModel: StoresVie
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoreHolder {
         val itemView = LayoutInflater.from(parent.context)
                 .inflate(R.layout.store_list_row, parent, false)
-        itemView.lineChart.setTypeface(getFont(frag.context!!, R.font.vazir_scaled_down)!!)
+        itemView.lineChart.setTypeface(getFont(frag.requireContext(), R.font.vazir_scaled_down)!!)
         return StoreHolder(itemView)
     }
 
@@ -79,7 +79,7 @@ class StoresAdapter(private val frag: Fragment, private val viewModel: StoresVie
                     viewModel.getStoreStats(getStore(adapterPosition)).observeForever { dailyCosts ->
                         if (frag.context == null) return@observeForever // To prevent bug on relaunch
                         // Do NOT use animation in the show(); Causes bug
-                        buildLineChart(frag.context!!, itemView.lineChart, dailyCosts).show()
+                        buildLineChart(frag.requireContext(), itemView.lineChart, dailyCosts).show()
                     }
                     notifyDataSetChanged() // To collapse other extended cards
                 }

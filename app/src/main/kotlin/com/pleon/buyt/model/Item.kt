@@ -5,20 +5,24 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.pleon.buyt.R
+import java.util.*
 
 /**
  * [isFlaggedForDeletion] was added to fix the bug that happened when two items were deleted
  * in row (which caused the first item to appear again)
  */
 @Entity
-class Item(val name: String, @Embedded val quantity: Quantity, var category: Category,
-           val isUrgent: Boolean, var isBought: Boolean) {
+class Item(val name: String,
+           @Embedded val quantity: Quantity,
+           var category: Category,
+           val isUrgent: Boolean,
+           var isBought: Boolean) {
 
     data class Quantity(val value: Long, val unit: Unit) {
 
         enum class Unit(val nameRes: Int) { UNIT(R.string.qty_unit), KILOGRAM(R.string.qty_kilogram), GRAM(R.string.qty_gram) }
 
-        override fun toString() = "$value ${unit.toString().toLowerCase()}"
+        override fun toString() = "$value ${unit.toString().toLowerCase(Locale.US)}"
     }
 
     @PrimaryKey(autoGenerate = true)

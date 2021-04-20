@@ -6,7 +6,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -46,10 +45,10 @@ class StoresFragment : BaseFragment(), ItemTouchHelperListener {
     override fun onViewCreated(view: View, savedState: Bundle?) {
         setHasOptionsMenu(true) // for onCreateOptionsMenu() to be called
 
-        viewModel.stores.observe(viewLifecycleOwner, Observer { stores ->
+        viewModel.stores.observe(viewLifecycleOwner) { stores ->
             adapter.submitList(stores)
             animateAlpha(emptyHint, if (stores.isEmpty()) 1f else 0f)
-        })
+        }
 
         recyclerView.adapter = adapter
         val columns = resources.getInteger(R.integer.layout_columns)
@@ -77,7 +76,7 @@ class StoresFragment : BaseFragment(), ItemTouchHelperListener {
                 updateSortMenuItemView()
             } else {
                 UpgradePromptDialogFragment.newInstance(getText(R.string.dialog_message_upgrade_to_premium))
-                        .show(activity!!.supportFragmentManager, "UPGRADE_DIALOG")
+                        .show(requireActivity().supportFragmentManager, "UPGRADE_DIALOG")
             }
         }
         return true

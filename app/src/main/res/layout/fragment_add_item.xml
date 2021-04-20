@@ -23,7 +23,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/avd_drag_expand"
-            android:tint="@color/expand_icon_color"
+            app:tint="@color/expand_icon_color"
             tools:ignore="ContentDescription" />
 
         <com.google.android.material.textfield.TextInputLayout

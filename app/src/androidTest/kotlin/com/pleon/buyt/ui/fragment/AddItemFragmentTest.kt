@@ -5,6 +5,7 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.espresso.matcher.ViewMatchers.Visibility.VISIBLE
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
@@ -193,4 +194,18 @@ class AddItemFragmentTest {
         onView(withId(R.id.quantity_layout))
                 .check(matches(withTextInputLayoutError(R.string.input_error_quantity)))
     }
+
+    @Test fun clickingOnDateInputShouldOpenDatePickerDialog() {
+        onView(withId(R.id.expandHandle)).perform(click())
+        onView(withId(R.id.bought))
+                .perform(scrollTo())
+                .perform(click())
+        onView(withId(R.id.dateEd))
+                .perform(scrollTo())
+                .perform(click())
+        onView(withText(android.R.string.cancel))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+    }
+
 }

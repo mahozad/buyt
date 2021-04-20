@@ -25,11 +25,12 @@ class BottomDrawerFragment : BottomSheetDialogFragment(), OnNavigationItemSelect
     }
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
+        val context = requireContext()
         when (menuItem.itemId) {
-            R.id.stats -> context!!.startActivity<StatsActivity>()
-            R.id.stores -> context!!.startActivity<StoresActivity>()
-            R.id.settings -> context!!.startActivity<SettingsActivity>()
-            R.id.help -> context!!.startActivity<AboutActivity>()
+            R.id.stats -> context.startActivity<StatsActivity>()
+            R.id.stores -> context.startActivity<StoresActivity>()
+            R.id.settings -> context.startActivity<SettingsActivity>()
+            R.id.help -> context.startActivity<AboutActivity>()
         }
         return true
     }

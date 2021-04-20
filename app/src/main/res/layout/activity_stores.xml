@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".ui.activity.StoresActivity">
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/storesFragment"
-        class="com.pleon.buyt.ui.fragment.StoresFragment"
+        android:name="com.pleon.buyt.ui.fragment.StoresFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="20dp"

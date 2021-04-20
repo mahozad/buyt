@@ -3,7 +3,6 @@ package com.pleon.buyt.ui.fragment
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -43,11 +42,11 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
         // In fragments use getViewLifecycleOwner() as owner argument
-        viewModel.items.observe(viewLifecycleOwner, Observer { items ->
+        viewModel.items.observe(viewLifecycleOwner) { items ->
             adapter.submitList(items)
             animateAlpha(emptyHint, if (items.isEmpty()) 1f else 0f)
             listener?.onItemListChanged(items.isEmpty())
-        })
+        }
 
         animateIconInfinitely(emptyHint.drawable, startDelay = 3000, repeatDelay = 2500)
 
@@ -124,22 +123,22 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
     }
 
     fun sortItemsByCategory(category: Category) {
-        val list = adapter.currentList.sortedWith(Comparator { item1, item2 ->
-            when {
-                item1.category == item2.category -> 0
-                item1.category == category -> -1
+        val list = adapter.currentList.sortedWith { item1, item2 ->
+            when (item1.category) {
+                item2.category -> 0
+                category -> -1
                 else -> +1
             }
-        })
+        }
         adapter.submitList(list)
         recyclerView.smoothScrollToPosition( 0)
     }
 
     fun sortItemsByOrder() {
-        val list = adapter.currentList.sortedWith(Comparator { item1, item2 ->
+        val list = adapter.currentList.sortedWith { item1, item2 ->
             if (item1.isUrgent != item2.isUrgent) if (item1.isUrgent) -1 else +1
             else item1.position - item2.position
-        })
+        }
         adapter.submitList(list)
         recyclerView.smoothScrollToPosition( 0)
     }

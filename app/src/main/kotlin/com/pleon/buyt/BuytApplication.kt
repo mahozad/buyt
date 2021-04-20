@@ -20,6 +20,7 @@ var isPremium = false
 const val SKU_PREMIUM = "full_features" // SKU of premium upgrade (defined in Bazaar)
 private const val TAG = "BuytApplication"
 
+@Suppress("unused")
 class BuytApplication : Application() {
 
     private val iabHelper by inject<IabHelper>()

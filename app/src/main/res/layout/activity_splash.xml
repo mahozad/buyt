@@ -11,10 +11,10 @@
         android:id="@+id/ripple"
         android:scaleType="centerCrop"
         android:alpha="0.1"
-        android:tint="@android:color/black"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srcCompat="@drawable/avd_ripple" />
+        app:srcCompat="@drawable/avd_ripple"
+        app:tint="@android:color/black" />
 
     <ImageView
         android:id="@+id/logo"

@@ -62,7 +62,6 @@ class StatsViewModel(private val app: Application, repository: StatsRepository) 
     }
 
     fun setFilter(index: Int) {
-        assert(index >= 0)
         filter = getFilterByIndex(index)
         triggerUpdate()
     }

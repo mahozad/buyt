@@ -87,7 +87,7 @@ class GpsService : Service(), LocationListener {
     /**
      * This method must be overridden; if you don't want to allow binding, return null.
      */
-    override fun onBind(arg: Intent) = null
+    override fun onBind(arg: Intent): Nothing? = null
 
     @SuppressLint("MissingPermission")
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {

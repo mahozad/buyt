@@ -50,7 +50,7 @@ class LocationOffDialogFragment : AppCompatDialogFragment() {
      * @return
      */
     override fun onCreateDialog(savedState: Bundle?): Dialog {
-        val dialog = MaterialAlertDialogBuilder(context!!, R.style.JustifiedTextDialogStyle)
+        val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.JustifiedTextDialogStyle)
                 .setIcon(R.drawable.ic_location_off)
                 .setPositiveButton(R.string.dialog_action_go_to_settings) { _, _ -> onPositiveButtonClick() }
                 .setNegativeButton(R.string.dialog_action_skip) { _, _ -> callback!!.onEnableLocationDenied() }
@@ -69,7 +69,7 @@ class LocationOffDialogFragment : AppCompatDialogFragment() {
     private fun onPositiveButtonClick() {
         if (getRationalType() == LOCATION_PERMISSION_DENIED) {
             val intent = Intent(ACTION_APPLICATION_DETAILS_SETTINGS)
-            val uri = Uri.fromParts("package", activity!!.packageName, null)
+            val uri = Uri.fromParts("package", requireActivity().packageName, null)
             intent.data = uri
             startActivity(intent)
         } else {
@@ -77,7 +77,7 @@ class LocationOffDialogFragment : AppCompatDialogFragment() {
         }
     }
 
-    private fun getRationalType() = arguments!!.getSerializable("RATIONAL") as RationalType
+    private fun getRationalType() = requireArguments().getSerializable("RATIONAL") as RationalType
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

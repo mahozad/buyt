@@ -3,9 +3,6 @@ package com.pleon.buyt.ui.adapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.pleon.buyt.ui.fragment.IntroFragment1
-import com.pleon.buyt.ui.fragment.IntroFragment2
-import com.pleon.buyt.ui.fragment.IntroFragment3
 
 class IntroPageAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
 

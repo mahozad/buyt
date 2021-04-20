@@ -2,7 +2,6 @@ package com.pleon.buyt.ui.fragment
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pleon.buyt.R
@@ -26,10 +25,10 @@ class StatDetailsFragment : BaseFragment() {
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(DateHeaderDecoration(recyclerView, adapter))
         recyclerView.addOnScrollListener(recyclerViewScrollListener())
-        viewModel.purchaseDetails.observe(viewLifecycleOwner, Observer { purchaseDetails ->
+        viewModel.purchaseDetails.observe(viewLifecycleOwner) { purchaseDetails ->
             adapter.items = purchaseDetails
             animateAlpha(emptyHint, if (purchaseDetails.isEmpty()) 1f else 0f, duration = 0)
-        })
+        }
     }
 
     // For date headers to be shown correctly and smoothly, this listener is required

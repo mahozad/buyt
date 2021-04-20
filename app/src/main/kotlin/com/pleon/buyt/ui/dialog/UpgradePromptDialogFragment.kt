@@ -36,18 +36,18 @@ class UpgradePromptDialogFragment : AppCompatDialogFragment() {
      * @return
      */
     override fun onCreateDialog(savedState: Bundle?): Dialog {
-        val dialog = MaterialAlertDialogBuilder(context!!, R.style.JustifiedTextDialogStyle)
+        val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.JustifiedTextDialogStyle)
                 .setIcon(R.drawable.ic_premium)
                 .setPositiveButton(R.string.dialog_action_upgrade_to_premium) { _, _ -> openUpgradeScreen() }
                 .setNegativeButton(android.R.string.cancel) { _, _ -> /* Dismiss */ }
                 .create()
 
         dialog.setTitle(R.string.dialog_title_upgrade_to_premium)
-        dialog.setMessage(arguments!!.getCharSequence("MESSAGE"))
+        dialog.setMessage(requireArguments().getCharSequence("MESSAGE"))
         dialog.setCancelable(false) // Prevent dialog from getting dismissed on back key pressed
         dialog.setCanceledOnTouchOutside(false)
         return dialog
     }
 
-    private fun openUpgradeScreen() = context!!.startActivity<AboutActivity>(FLAG_START_UPGRADE to true)
+    private fun openUpgradeScreen() = requireContext().startActivity<AboutActivity>(FLAG_START_UPGRADE to true)
 }

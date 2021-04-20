@@ -10,7 +10,6 @@ import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.lifecycle.Observer
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
 import com.pleon.buyt.R
 import com.pleon.buyt.model.Store
@@ -59,7 +58,7 @@ abstract class State {
     fun skipFinding() = with(activity) {
         viewModel.shouldAnimateNavIcon = true
         viewModel.isFindingSkipped = true
-        viewModel.allStores.observe(this, Observer { FindingState.onStoresFound(it) })
+        viewModel.allStores.observe(this) { FindingState.onStoresFound(it) }
     }
 
     protected fun shiftToIdleState(fabResId: Int) = with(activity) {

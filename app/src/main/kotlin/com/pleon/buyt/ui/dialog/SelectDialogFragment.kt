@@ -39,11 +39,11 @@ class SelectDialogFragment : AppCompatDialogFragment(), SelectionListAdapter.Cal
      * @return
      */
     override fun onCreateDialog(savedState: Bundle?): Dialog {
-        val inflater = activity!!.layoutInflater
+        val inflater = requireActivity().layoutInflater
         val customView = inflater.inflate(R.layout.fragment_selection_list, null)
 
         val adapter = SelectionListAdapter(this)
-        adapter.setList(arguments!!.getSerializable("LIST") as List<SelectDialogRow>)
+        adapter.setList(requireArguments().getSerializable("LIST") as List<SelectDialogRow>)
 
         val storeRecyclerView = customView.findViewById<RecyclerView>(R.id.storeList)
         storeRecyclerView.adapter = adapter
@@ -51,9 +51,9 @@ class SelectDialogFragment : AppCompatDialogFragment(), SelectionListAdapter.Cal
         (storeRecyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
         // To decrease height of the dialog, decrease height of the recyclerview in the custom view
-        dialog = MaterialAlertDialogBuilder(activity!!, R.style.JustifiedTextDialogStyle)
+        dialog = MaterialAlertDialogBuilder(requireActivity(), R.style.JustifiedTextDialogStyle)
                 .setView(customView)
-                .setTitle(getString(arguments!!.getInt("TITLE")))
+                .setTitle(getString(requireArguments().getInt("TITLE")))
                 .setPositiveButton(android.R.string.ok) { _, _ ->
                     val selectedIndex = adapter.selectedIndex
                     callback?.onSelected(selectedIndex)

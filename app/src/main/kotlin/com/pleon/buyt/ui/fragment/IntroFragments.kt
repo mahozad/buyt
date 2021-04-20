@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.pleon.buyt.ui.fragment
 
 import android.os.Bundle

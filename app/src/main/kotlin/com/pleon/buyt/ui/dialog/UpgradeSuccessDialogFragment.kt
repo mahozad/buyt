@@ -23,7 +23,7 @@ class UpgradeSuccessDialogFragment : AppCompatDialogFragment() {
      * @return
      */
     override fun onCreateDialog(savedState: Bundle?): Dialog {
-        val dialog = MaterialAlertDialogBuilder(context!!, R.style.JustifiedTextDialogStyle)
+        val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.JustifiedTextDialogStyle)
                 .setIcon(R.drawable.ic_premium)
                 .setPositiveButton(android.R.string.ok) { _, _ -> /* Dismiss */ }
                 .create()

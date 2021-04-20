@@ -11,7 +11,6 @@ import android.view.View
 import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
 import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener
-import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
@@ -90,7 +89,7 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
 
         activity = this
         broadcastMgr.registerReceiver(locationReceiver, IntentFilter(ACTION_LOCATION_EVENT))
-        locationReceiver.getLocation().observe(this, Observer { viewModel.state.onLocationFound(it) })
+        locationReceiver.getLocation().observe(this) { viewModel.state.onLocationFound(it) }
         itemsFragment = supportFragmentManager.findFragmentById(R.id.itemsFragment) as ItemsFragment
 
         scrim.setOnClickListener { if (scrim.alpha == 1f) onBackPressed() }

@@ -12,12 +12,12 @@
         android:layout_marginBottom="32dp"
         android:maxWidth="280dp"
         android:adjustViewBounds="true"
-        android:tint="?colorOnPrimarySurface"
         app:layout_constraintBottom_toTopOf="@id/text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/avd_intro_2" />
+        app:srcCompat="@drawable/avd_intro_2"
+        app:tint="?colorOnPrimarySurface" />
 
     <TextView
         android:id="@+id/text"
