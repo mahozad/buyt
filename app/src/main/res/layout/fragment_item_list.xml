@@ -8,6 +8,7 @@
 
     <!-- "paddingBottom" is for the last item (also set "clipToPadding" to "false" so children are not clipped) -->
     <!-- To remove scroll glow when at the end of the list, set "android:overScrollMode" to "never" -->
+    <!-- NOTE: Set clipChildren to false so the item is not clipped when swiping to left or right -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
@@ -18,6 +19,7 @@
         android:paddingTop="6dp"
         android:paddingEnd="6dp"
         android:paddingBottom="42dp"
+        android:clipChildren="false"
         tools:context=".ui.fragment.ItemsFragment"
         tools:itemCount="6"
         tools:listitem="@layout/item_list_row"
