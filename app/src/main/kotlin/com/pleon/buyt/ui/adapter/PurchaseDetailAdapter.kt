@@ -71,9 +71,7 @@ class PurchaseDetailAdapter(private val app: Application) : Adapter<ViewHolder>(
 
     inner class PurchaseHolder(view: View) : BaseViewHolder(view) {
         fun bindItem(purchaseDetail: PurchaseDetail) {
-            itemView.storeName.text =
-                    if (purchaseDetail.store.isEmpty()) app.getString(R.string.hint_store_not_available) // store is deleted by user
-                    else purchaseDetail.store.first().name
+            itemView.storeName.text = purchaseDetail.store?.name ?: app.getString(R.string.hint_store_not_available) // store is deleted by user
             itemView.itemDetails.adapter = ItemDetailAdapter(app).apply {
                 items = purchaseDetail.item
             }
