@@ -114,12 +114,13 @@
         <!--<item name="backgroundTint">#CaE7Ca</item>-->
     </style>
 
-    <!-- Modify persian date picker button style -->
-    <style name="mdtp_ActionButton.Text" parent="Widget.AppCompat.Button.Borderless">
-        <item name="backgroundTint">@android:color/transparent</item>
-        <item name="android:textColor">@color/colorPrimary</item>
+    <!-- Update persian date picker button style to look like material buttons;
+         extending from TextButton is enough -->
+    <style name="mdtp_ActionButton.Text" parent="Widget.MaterialComponents.Button.TextButton">
+        <!-- <item name="backgroundTint">@android:color/transparent</item> -->
+        <!-- <item name="android:textColor">@color/colorPrimary</item> -->
         <!-- Or ?colorControlHighlight -->
-        <item name="rippleColor">@color/date_picker_btn_ripple_color</item>
+        <!-- <item name="rippleColor">@color/date_picker_btn_ripple_color</item> -->
     </style>
 
     <style name="unitButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
