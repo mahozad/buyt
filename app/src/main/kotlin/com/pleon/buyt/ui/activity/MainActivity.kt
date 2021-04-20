@@ -57,10 +57,6 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
     /* FIXME: While store creation dialog is shown, if a config change occurs and then the store
      *  is created, the behaviour is buggy */
 
-    /* FIXME: There is a bug with toggle bought item: tap add item menu icon; tap on name field
-    *   to open the keyboard; tap on toggle full screen; tap on back to close the keyboard;
-    *   tap on bought toggle: it doesn't work */
-
     val viewModel: MainViewModel by viewModel()
     private val broadcastMgr: LocalBroadcastManager by inject()
     private val locationReceiver: LocationReceiver by inject()
