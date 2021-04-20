@@ -1,10 +1,11 @@
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 /* The buildscript node is used to indicate the repositories and dependencies that are used
  by Gradle itself–not for your application */
 buildscript {
     var kotlinVersion: String by extra
-    kotlinVersion = "1.3.50"
+    kotlinVersion = "1.4.32"
 
     repositories {
         google()
