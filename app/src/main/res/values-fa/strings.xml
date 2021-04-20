@@ -38,12 +38,13 @@
     <string name="item_cat_fast_food">فست فود</string>
     <string name="item_cat_ice_cream">آبمیوه بستنی</string>
     <string name="item_cat_pastry">شیرینی</string>
+    <string name="item_cat_herbal_tea">عرق و دمنوش</string>
     <string name="item_cat_tools">ابزار</string>
     <string name="item_cat_drug">دارو</string>
     <string name="item_cat_flower">گل</string>
     <string name="item_cat_stationary">لوازم‌التحریر</string>
-    <string name="item_cat_other">سایر</string>
     <string name="item_cat_book">کتاب</string>
+    <string name="item_cat_other">سایر</string>
 
     <string name="store_cat_grocery_store">سوپر مارکت</string>
     <string name="store_cat_bakery">نانوایی</string>
@@ -56,6 +57,7 @@
     <string name="store_cat_hardware_store">ابزار فروشی</string>
     <string name="store_cat_icecream_shop">آبمیوه بستنی</string>
     <string name="store_cat_confectionery">شیرینی فروشی</string>
+    <string name="store_cat_herbal_tea_shop">عرقیجات</string>
     <string name="store_cat_drugstore">داروخانه</string>
     <string name="store_cat_flower_shop">گل فروشی</string>
     <string name="store_cat_stationary_store">لوازم‌التحریر</string>

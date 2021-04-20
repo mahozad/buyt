@@ -5,8 +5,10 @@ import com.pleon.buyt.viewmodel.StatsViewModel.Filter
 
 /* TODO: store the enum as a separate table in the database.
  *  See [https://softwareengineering.stackexchange.com/a/305153/311271] */
-enum class Category(val nameRes: Int, val imageRes: Int,
-                    val storeNameRes: Int, val storeImageRes: Int) : Filter {
+enum class Category(val nameRes: Int,
+                    val imageRes: Int,
+                    val storeNameRes: Int,
+                    val storeImageRes: Int) : Filter {
 
     GROCERY(R.string.item_cat_grocery, R.drawable.ic_item_grocery, R.string.store_cat_grocery_store, R.drawable.ic_item_grocery),
     BREAD(R.string.item_cat_bread, R.drawable.ic_item_bread, R.string.store_cat_bakery, R.drawable.ic_item_bread),
@@ -20,6 +22,7 @@ enum class Category(val nameRes: Int, val imageRes: Int,
     PASTRY(R.string.item_cat_pastry, R.drawable.ic_item_pastry, R.string.store_cat_confectionery, R.drawable.ic_item_pastry),
     DRUG(R.string.item_cat_drug, R.drawable.ic_item_drug, R.string.store_cat_drugstore, R.drawable.ic_item_drug),
     BOOKSHOP(R.string.item_cat_book, R.drawable.ic_item_book, R.string.store_cat_book_shop, R.drawable.ic_item_book),
+    HERBAL_TEA(R.string.item_cat_herbal_tea, R.drawable.ic_item_leaf, R.string.store_cat_herbal_tea_shop, R.drawable.ic_item_leaf),
     TOOLS(R.string.item_cat_tools, R.drawable.ic_item_tool, R.string.store_cat_hardware_store, R.drawable.ic_item_tool),
     FLOWER(R.string.item_cat_flower, R.drawable.ic_item_flower, R.string.store_cat_flower_shop, R.drawable.ic_item_flower),
     STATIONARY(R.string.item_cat_stationary, R.drawable.ic_item_stationary, R.string.store_cat_stationary_store, R.drawable.ic_item_stationary),
