@@ -30,7 +30,10 @@ class AddItemViewModel(app: Application, val repository: AddItemRepository) : An
         fun cat(catName: String) = Category.valueOf(catName)
         InputStreamReader(app.resources.openRawResource(R.raw.item_names))
                 .readLines()
-                .associateBy({ it.substringBefore(':') }, { cat(it.substringAfter(':')) })
+                .associateBy(
+                        { it.substringBefore(':') },
+                        { cat(it.substringAfter(':')) }
+                )
     }
 
     private fun mergeNameCats(dbNameCats: Array<ItemNameCat>): Map<String, Category> {
