@@ -240,10 +240,6 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         return Item.Quantity(quantity, unit)
     }
 
-    /* FIXME: If date picker dialog is shown (at least once) and a configuration change happens
-     *  (e.g. screen rotation), then the date picker is shown. This problem seems to have nothing
-     *  to do with the following two methods calling each other. */
-
     /**
      * DatePickerDialog.show() for persian calendar is passed getActivity().getFragmentManager()
      * because it requires android.app.FragmentManager instead of androidx version.

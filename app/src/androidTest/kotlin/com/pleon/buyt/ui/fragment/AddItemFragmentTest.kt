@@ -215,4 +215,26 @@ class AddItemFragmentTest {
         onView(withId(R.id.btn2))
                 .check(matches(isChecked()))
     }
+
+    /**
+     * FIXME: If date picker dialog is shown (at least once)
+     *  and a config change happens (e.g. screen rotation),
+     *  then the date picker is shown.
+     */
+    @Test fun dismissedPersianDatePickerShouldNotBeOpenedOnConfigChange() {
+        onView(withId(R.id.expandHandle)).perform(click())
+        onView(withId(R.id.bought))
+                .perform(scrollTo())
+                .perform(click())
+        onView(withId(R.id.dateEd))
+                .perform(scrollTo())
+                .perform(click())
+        onView(withText(android.R.string.cancel))
+                .perform(click())
+        device.setOrientationLeft()
+        onView(withText(android.R.string.cancel))
+                .inRoot(isDialog())
+                .check(matches(not(isDisplayed())))
+        device.setOrientationNatural()
+    }
 }
