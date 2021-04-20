@@ -6,6 +6,29 @@ plugins {
     id("de.mannodermaus.android-junit5")
 }
 
+val appId = "com.pleon.buyt"
+val minSDKVersion = 21
+val compileAndTargetSDKVersion = 30
+val versionNumber = 9
+val versionString = "1.4.0" // alpha -> beta -> rc -> final
+val dependencyVersion = mapOf(
+        "appcompat"    to "1.2.0",
+        "material"     to "1.3.0",
+        "lifecycle"    to "2.3.1",
+        "constraint"   to "2.0.4",
+        "fragment"     to "1.3.2",
+        "coordinator"  to "1.1.0",
+        "recyclerview" to "1.2.0",
+        "preference"   to "1.1.1",
+        "viewpager"    to "1.0.0",
+        "koin"         to "2.2.2",
+        "room"         to "2.2.6",
+        "persiandate"  to "1.2.1",
+        "jalalical"    to "1.3.3",
+        "stetho"       to "1.6.0",
+        "debug-db"     to "1.0.6"
+)
+
 android {
 
     signingConfigs {
@@ -25,13 +48,13 @@ android {
     }
 
     // for sliding tutorial
-    dataBinding { isEnabled = true }
+    buildFeatures.dataBinding = true
 
+    compileSdkVersion(compileAndTargetSDKVersion)
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    compileSdkVersion(28)
 
     testOptions {
         // For Robolectric unit tests to be able to access resources
@@ -44,11 +67,12 @@ android {
 
     defaultConfig {
         // specifies default settings that will be shared across all different product flavors
-        applicationId = "com.pleon.buyt"
-        minSdkVersion(21)
-        targetSdkVersion(28)
-        versionCode = 9 // don't forget this
-        versionName = "1.4.0" // alpha -> beta -> rc -> final
+
+        applicationId = appId
+        minSdkVersion(minSDKVersion)
+        targetSdkVersion(compileAndTargetSDKVersion)
+        versionCode = versionNumber
+        versionName = versionString
 
         /* This flag prevents the Android Gradle Plugin from generating PNG versions of
          * vector assets if minSdkVersion is < 21 */
@@ -120,41 +144,43 @@ dependencies {
      * you don't have to add ONE big library (and include unwanted libs) and make your apk huge.
      * The following library for example adds support for ActionBar, AppCompatActivity and
      * some other for devices down to api v7. */
-    implementation("androidx.appcompat:appcompat:1.1.0")
+    implementation(group = "androidx.appcompat", name = "appcompat", version = dependencyVersion["appcompat"])
     /* The AndroidX version of "com.android.support:design"
      * Another support library that adds support for material components such as NavigationDrawer,
      * SnackBar, FAB and Tab for older android versions. */
-    implementation("com.google.android.material:material:1.2.0-alpha01")
-    // ViewModel and LiveData
-    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0-rc02")
-    implementation("androidx.lifecycle:lifecycle-common-java8:2.2.0-rc02")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.0-beta3")
-    implementation("androidx.coordinatorlayout:coordinatorlayout:1.1.0-rc01")
-    implementation("androidx.recyclerview:recyclerview:1.1.0-rc01")
-    implementation("androidx.preference:preference:1.1.0")
-    implementation("androidx.viewpager2:viewpager2:1.0.0-rc01")
-    implementation("org.koin:koin-androidx-viewmodel:2.0.1")
-    implementation("androidx.room:room-runtime:2.2.1")
-    kapt("androidx.room:room-compiler:2.2.1")
+    implementation(group = "com.google.android.material", name = "material", version = dependencyVersion["material"])
+    implementation(group = "androidx.constraintlayout", name = "constraintlayout", version = dependencyVersion["constraint"])
+    implementation(group = "androidx.coordinatorlayout", name = "coordinatorlayout", version = dependencyVersion["coordinator"])
+    implementation(group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version = dependencyVersion["lifecycle"])
+    implementation(group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version = dependencyVersion["lifecycle"])
+    implementation(group = "androidx.lifecycle", name = "lifecycle-common-java8", version = dependencyVersion["lifecycle"])
+    implementation(group = "androidx.lifecycle", name = "lifecycle-process", version = dependencyVersion["lifecycle"])
+    implementation(group = "androidx.fragment", name = "fragment-ktx", version = dependencyVersion["fragment"])
+    implementation(group = "androidx.recyclerview", name = "recyclerview", version = dependencyVersion["recyclerview"])
+    implementation(group = "androidx.preference", name = "preference-ktx", version = dependencyVersion["preference"])
+    implementation(group = "androidx.viewpager2", name = "viewpager2", version = dependencyVersion["viewpager"])
+    implementation(group = "org.koin", name = "koin-androidx-viewmodel", version = dependencyVersion["koin"])
+    implementation(group = "androidx.room", name = "room-runtime", version = dependencyVersion["room"])
+    kapt("androidx.room", name = "room-compiler", version = dependencyVersion["room"])
 
     /* If you're targeting JDK 8, you can use extended versions of the Kotlin standard library
      * which contain additional extension functions for APIs added in new JDK versions.
      * So instead of "kotlin-stdlib", use "kotlin-stdlib-jdk8": */
-    implementation(embeddedKotlin("stdlib-jdk8"))
+    implementation(kotlin("stdlib-jdk8"))
 
-    implementation("com.mohamadamin:persianmaterialdatetimepicker:1.2.1")
+    implementation(group = "com.mohamadamin", name = "persianmaterialdatetimepicker", version = dependencyVersion["persiandate"])
+    implementation(group = "ir.huri", name = "JalaliCalendar", version = dependencyVersion["jalalical"])
     implementation("com.diogobernardino:williamchart:2.5.0")
-    implementation("ir.huri:JalaliCalendar:1.3.3")
-    implementation("com.scwang.wave:MultiWaveHeader:1.0.0-alpha-1")
+    implementation("com.scwang.wave:MultiWaveHeader:1.0.0")
     implementation("org.mindrot:jbcrypt:0.4")
     // For using doAsync{} and other features
     implementation("org.jetbrains.anko:anko-commons:0.10.8")
 
     // For inspecting the database and network in Chrome. In Iran, use VPN due to sanctions.
-    debugImplementation("com.facebook.stetho:stetho:1.5.1")
-    debugImplementation("com.facebook.stetho:stetho-js-rhino:1.5.1")
+    debugImplementation(group = "com.facebook.stetho", name = "stetho", version = dependencyVersion["stetho"])
+    debugImplementation(group = "com.facebook.stetho", name = "stetho-js-rhino", version = dependencyVersion["stetho"])
     // Another library for debugging android databases and shared preferences
-    debugImplementation("com.amitshekhar.android:debug-db:1.0.6")
+    debugImplementation(group = "com.amitshekhar.android", name = "debug-db", version = dependencyVersion["debug-db"])
 
     // Dependencies for local unit tests (JUnit 5 framework)
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")

@@ -19,9 +19,11 @@ import com.pleon.buyt.ui.fragment.BottomDrawerFragment
 import com.pleon.buyt.util.animateIcon
 import com.pleon.buyt.viewmodel.FREE_BUY_LIMIT
 import kotlinx.android.synthetic.main.activity_main.*
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import org.koin.core.component.KoinApiExtension
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
+@KoinApiExtension
 object IdleState : State(), KoinComponent {
 
     private val locationMgr: LocationManager by inject()

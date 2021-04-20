@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
 import android.util.Log
+import androidx.lifecycle.ProcessLifecycleOwner
 import com.pleon.buyt.billing.IabHelper
 import com.pleon.buyt.billing.IabResult
 import com.pleon.buyt.billing.Inventory
@@ -22,7 +23,7 @@ private const val TAG = "BuytApplication"
 class BuytApplication : Application() {
 
     private val iabHelper by inject<IabHelper>()
-    private val subscriptionRepository by inject<SubscriptionRepository>()
+    private val repository by inject<SubscriptionRepository>()
 
     override fun onCreate() {
         super.onCreate()
@@ -32,7 +33,9 @@ class BuytApplication : Application() {
             androidContext(this@BuytApplication)
         }
         // For more info about saving purchase status locally see [https://stackoverflow.com/q/14231859]
-        subscriptionRepository.getSubscriptionToken().observeForever { checkSubscription(it) }
+        repository
+                .getSubscriptionToken()
+                .observe(ProcessLifecycleOwner.get(), this::checkSubscription)
     }
 
     private fun checkSubscription(token: String?) {
