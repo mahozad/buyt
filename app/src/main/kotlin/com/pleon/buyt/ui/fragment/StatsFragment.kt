@@ -15,6 +15,7 @@ import com.pleon.buyt.util.buildLineChart
 import com.pleon.buyt.util.formatNumber
 import com.pleon.buyt.util.formatPrice
 import com.pleon.buyt.viewmodel.StatsViewModel
+import com.pleon.buyt.viewmodel.StatsViewModel.Period
 import kotlinx.android.synthetic.main.fragment_stats.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -52,8 +53,13 @@ class StatsFragment : BaseFragment() {
     }
 
     private fun showLineChart(dailyCosts: List<DailyCost>) {
-        val shouldShowDots = dailyCosts.size <= 30
-        val lineChart = buildLineChart(requireContext(), lineChart, dailyCosts, shouldShowDots)
+        val dotRadius = when {
+            dailyCosts.size > Period.EXTENDED.length -> 1f
+            dailyCosts.size > Period.MEDIUM.length -> 4f
+            dailyCosts.size > Period.NARROW.length -> 6f
+            else -> 8f
+        }
+        val lineChart = buildLineChart(requireContext(), lineChart, dailyCosts, dotsRadius = dotRadius)
         if (isStartup) lineChart.show() else lineChart.show(Animation(500))
     }
 

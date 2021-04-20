@@ -79,7 +79,8 @@ class StoresAdapter(private val frag: Fragment, private val viewModel: StoresVie
                     viewModel.getStoreStats(getStore(adapterPosition)).observeForever { dailyCosts ->
                         if (frag.context == null) return@observeForever // To prevent bug on relaunch
                         // Do NOT use animation in the show(); Causes bug
-                        buildLineChart(frag.requireContext(), itemView.lineChart, dailyCosts).show()
+                        buildLineChart(frag.requireContext(), itemView.lineChart, dailyCosts, dotsRadius = 4f)
+                                .show()
                     }
                     notifyDataSetChanged() // To collapse other extended cards
                 }

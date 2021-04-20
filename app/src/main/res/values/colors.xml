@@ -46,9 +46,9 @@
     <color name="elevationOverlay24dp">#29FFFFFF</color>
 
     <array name="lineChartGradient">
-        <item>#4D70AE28</item>
-        <item>#3370AE28</item>
-        <item>#1A70AE28</item>
+        <item>#2670AE28</item>
+        <item>#1F70AE28</item>
+        <item>#1470AE28</item>
         <item>#0170AE28</item>
     </array>
 

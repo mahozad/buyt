@@ -9,10 +9,16 @@ import com.db.chart.view.LineChartView
 import com.pleon.buyt.R
 import java.text.DecimalFormat
 
-fun buildLineChart(cxt: Context, chartView: LineChartView, data: List<DataSet>,
-                   hasDots: Boolean = true, dotsRadius: Float = 8f, thickness: Float = 4f,
-                   isSmooth: Boolean = false, isDashed: Boolean = false,
-                   gridRows: Int = 3, gridCols: Int = 0): LineChartView {
+fun buildLineChart(cxt: Context,
+                   chartView: LineChartView,
+                   data: List<DataSet>,
+                   hasDots: Boolean = true,
+                   dotsRadius: Float = 8f,
+                   thickness: Float = 4f,
+                   isSmooth: Boolean = false,
+                   isDashed: Boolean = false,
+                   gridRows: Int = 3,
+                   gridCols: Int = 0): LineChartView {
 
     chartView.reset()
 
