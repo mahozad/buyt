@@ -93,6 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center|end"
             app:checkedButton="@id/btn1"
+            app:selectionRequired="true"
             app:layout_constraintTop_toTopOf="@id/quantity_layout"
             app:layout_constraintEnd_toEndOf="@id/quantity_layout"
             app:singleSelection="true">

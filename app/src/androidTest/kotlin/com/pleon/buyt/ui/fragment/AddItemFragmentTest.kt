@@ -208,4 +208,11 @@ class AddItemFragmentTest {
                 .check(matches(isDisplayed()))
     }
 
+    @Test fun touchingTheSameUnitButtonTwiceShouldNotDeselectIt() {
+        onView(withId(R.id.btn2))
+                .perform(click())
+                .perform(click())
+        onView(withId(R.id.btn2))
+                .check(matches(isChecked()))
+    }
 }
