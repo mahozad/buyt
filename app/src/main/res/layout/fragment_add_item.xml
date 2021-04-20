@@ -41,11 +41,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
                 android:id="@+id/name"
                 style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:dropDownHeight="182dp"
                 android:drawablePadding="8dp"
                 android:imeOptions="flagNoFullscreen|actionNext"
                 android:inputType="text"
@@ -55,7 +56,7 @@
 
                 <requestFocus />
 
-            </androidx.appcompat.widget.AppCompatAutoCompleteTextView>
+            </com.google.android.material.textfield.MaterialAutoCompleteTextView>
 
         </com.google.android.material.textfield.TextInputLayout>
 
