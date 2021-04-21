@@ -7,8 +7,8 @@
         android:title="@string/menu_hint_show_tutorial"
         app:showAsAction="always" />
     <item
-        android:id="@+id/action_translate"
-        android:icon="@drawable/ic_translate"
-        android:title="@string/menu_hint_translate_app"
+        android:id="@+id/action_view_app_info"
+        android:icon="@drawable/ic_help"
+        android:title="@string/menu_hint_app_info"
         app:showAsAction="always" />
 </menu>

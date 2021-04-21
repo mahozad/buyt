@@ -211,7 +211,20 @@
     <string name="menu_text_reset_settings">Reset settings</string>
     <string name="appNameVersion">Buyt v%1$s</string>
     <string name="menu_hint_translate_app">Help translate the app</string>
+    <string name="menu_hint_app_info">App details and misc</string>
     <string name="menu_hint_show_tutorial">Show tutorial</string>
+    <string name="dialog_app_info_title_icons">The icons</string>
+    <string name="dialog_app_info_desc_icons">Most of the icons used in the Buyt are from Material Design icons. The rest are created by the developer and may have been inspired by icons available on the Web. Almost all of the animated icons are the work of the developer.</string>
+    <string name="dialog_app_info_title_font">The font</string>
+    <string name="dialog_app_info_desc_font">Buyt uses <i>Vazir</i> for Persian and <i>Roboto</i> for latin text. Vazir has been scaled down a little to better match the latin text.</string>
+    <string name="dialog_app_info_title_developer">Developer Web pages</string>
+    <string name="dialog_app_info_desc_developer" translatable="false">
+        https://mahozad.ir\nhttps://github.com/mahozad\nhttps://cafebazaar.ir/developer/pleon
+    </string>
+    <string name="dialog_app_info_title_name">Buyt</string>
+    <string name="dialog_app_info_desc_name">Name of the application is a portmanteau word blending <i>Buy</i> and <i>It</i> together to make <i>Buyt</i>.</string>
+    <string name="dialog_app_info_title_logo">The logo</string>
+    <string name="dialog_app_info_desc_logo">In addition to showing the letter <i>B</i> for <i>Buyt</i>, it is composed of two pin shapes that are traditionally used to denote location.</string>
     <string name="intro_description_1">Add your items to the shopping list. By typing a few characters, Buyt will suggest related items and their corresponding category.</string>
     <string name="intro_description_2">Inside or near the store like in your car, tap the search button to find the store and complete your purchase. You can skip this step if the store is already saved.</string>
     <string name="intro_description_3">Statistics, charts, and purchase details are available with the ability to change the period and to set filter on them. A 30-day chart is also available for stores.</string>

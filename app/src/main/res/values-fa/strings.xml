@@ -167,7 +167,17 @@
     <string name="menu_text_reset_settings">بازنشانی تنظیمات</string>
     <string name="appNameVersion">بایت نسخه %1$s</string>
     <string name="menu_hint_translate_app">مشارکت در ترجمه برنامه</string>
+    <string name="menu_hint_app_info">زیر و بم بایت</string>
     <string name="menu_hint_show_tutorial">نمایش آموزش برنامه</string>
+    <string name="dialog_app_info_title_icons">آیکون‌ها</string>
+    <string name="dialog_app_info_desc_icons">بیشتر آیکون‌های به کار گرفته شده در این برنامه آیکون‌های Material Design بوده و مابقی، ساخته‌ی توسعه‌دهنده و یا الهام گرفته شده از آیکون‌های موجود در وب هستند. تقریبا تمام آیکون‌های متحرک توسط توسته‌دهنده ساخته شده‌اند.</string>
+    <string name="dialog_app_info_title_font">فلم</string>
+    <string name="dialog_app_info_desc_font">بایت از قلم وزیر برای نوشته‌های فارسی و از قلم روبوتو برای نوشته‌های لاتین استفاده می‌کند.</string>
+    <string name="dialog_app_info_title_developer">صفحات توسعه‌دهنده</string>
+    <string name="dialog_app_info_title_name">بایت</string>
+    <string name="dialog_app_info_desc_name"><i>بایت</i> آمیزه‌ی دو کلمه‌ی انگلیسی <i>Buy</i> و <i>It</i> (معادل <i>بخرش</i>) است که با نویسه‌های لاتین به صورت <i>Buyt</i> نوشته می‌شود.</string>
+    <string name="dialog_app_info_title_logo">لوگو</string>
+    <string name="dialog_app_info_desc_logo">علاوه بر این که نویسه‌ی <i>B</i>، حرف اول واژه‌ی <i>Buyt</i>، در لوگو نمایش داده شده است، دو شکل سنجاق که معمولا برای نشان دادن مکان به کار می‌رود لوگو را به وجود آورده‌اند.</string>
     <string name="intro_description_1">اقلام مورد نیاز خود را به لیست خرید اضافه کنید. با درج چند حرف، بایت به شما کالاهای مربوط را پیشنهاد داده و دسته‌بندی نیز می‌تواند به صورت خودکار تعیین شود.</string>
     <string name="intro_description_2">داخل یا در نزدیکی مغازه مثل داخل اتومبیل دکمه‌ی جستجو را زده تا مغازه پیدا شود سپس خرید خود را کامل نمایید. اگر مغازه از قبل ذخیره شده است می‌توانید جستجو را رد کنید.</string>
     <string name="intro_description_3">نمودار، آمار و ریز خریدهای شما در دوره‌های زمانی مختلف و با قابلیت اعمال فیلتر قابل مشاهده‌اند. مجموع خرید و نمودار ۳۰ روزه هر مغازه نیز در دسترس است.</string>

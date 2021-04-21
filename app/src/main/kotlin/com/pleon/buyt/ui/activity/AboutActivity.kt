@@ -1,11 +1,10 @@
 package com.pleon.buyt.ui.activity
 
 import android.content.Intent
-import android.content.Intent.ACTION_VIEW
-import android.net.Uri.parse
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.pleon.buyt.BuildConfig
 import com.pleon.buyt.R
 import com.pleon.buyt.SKU_PREMIUM
@@ -26,7 +25,6 @@ import org.koin.android.ext.android.inject
 import org.mindrot.jbcrypt.BCrypt
 
 const val FLAG_START_UPGRADE = "com.pleon.buyt.flag.START_UPGRADE"
-private const val TRANSLATION_PAGE_URL = "https://pleonco.oneskyapp.com/collaboration/project?id=158739"
 // TODO: for security, generate your payload here for verification.
 //  Since this is a SAMPLE, we just use a random string, but on a production app
 //  you should carefully generate this.
@@ -95,7 +93,12 @@ class AboutActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_translate -> startActivity(Intent(ACTION_VIEW, parse(TRANSLATION_PAGE_URL)))
+            R.id.action_view_app_info -> MaterialAlertDialogBuilder(this)
+                    .setView(R.layout.dialog_app_info)
+                    .setPositiveButton(android.R.string.ok) { _, _ -> /* Dismiss */ }
+                    .setCancelable(false)
+                    .create()
+                    .show()
             R.id.action_show_tutorial -> startActivity<IntroActivity>()
             android.R.id.home -> finish()
         }

@@ -19,6 +19,8 @@
     <color name="black50">#80000000</color>
     <color name="white50">#80ffffff</color>
 
+    <color name="linkColor">#3193d6</color>
+
     <color name="materialWindowBgColor">#EFEFEF</color>
     <!-- This color is the 700 shade of the colorPrimary -->
     <color name="splashScreenBgColor">#5b9a1e</color>
