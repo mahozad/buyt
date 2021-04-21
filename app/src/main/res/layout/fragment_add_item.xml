@@ -43,7 +43,7 @@
 
             <com.google.android.material.textfield.MaterialAutoCompleteTextView
                 android:id="@+id/name"
-                style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox.Dense"
+                style="@style/Widget.MaterialComponents.AutoCompleteTextView.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:dropDownHeight="182dp"
@@ -94,10 +94,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center|end"
             app:checkedButton="@id/btn1"
+            app:singleSelection="true"
             app:selectionRequired="true"
             app:layout_constraintTop_toTopOf="@id/quantity_layout"
-            app:layout_constraintEnd_toEndOf="@id/quantity_layout"
-            app:singleSelection="true">
+            app:layout_constraintEnd_toEndOf="@id/quantity_layout">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn1"
