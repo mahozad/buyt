@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="unit_btn_height">64dp</dimen>
     <dimen name="about_logo_size">164dp</dimen>
 </resources>

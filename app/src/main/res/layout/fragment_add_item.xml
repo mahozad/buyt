@@ -99,11 +99,20 @@
             app:layout_constraintTop_toTopOf="@id/quantity_layout"
             app:layout_constraintEnd_toEndOf="@id/quantity_layout">
 
+            <!-- As stated in
+                  https://github.com/material-components/material-components-android/blob/15daf58d53a4a363af32fd427304f495bb57331c/lib/java/com/google/android/material/textfield/res/values/styles.xml#L176
+                  and
+                  https://github.com/material-components/material-components-android/blob/15daf58d53a4a363af32fd427304f495bb57331c/lib/java/com/google/android/material/textfield/res/values/styles.xml#L198
+                  the height of the dense text input layout is 54dp (accounting for line height and so on)
+                  so it adds top and bottom padding to match that spec
+                  ALso see https://github.com/material-components/material-components-android/blob/15daf58d53a4a363af32fd427304f495bb57331c/lib/java/com/google/android/material/textfield/TextInputEditText.java#L183 -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn1"
                 style="@style/unitButton"
                 android:layout_width="60dp"
-                android:layout_height="@dimen/unit_btn_height"
+                android:layout_height="wrap_content"
+                android:paddingTop="15dp"
+                android:paddingBottom="13.5dp"
                 android:layout_alignParentBottom="true"
                 android:text="@string/qty_unit"
                 android:textAllCaps="false"
@@ -113,7 +122,9 @@
                 android:id="@+id/btn2"
                 style="@style/unitButton"
                 android:layout_width="60dp"
-                android:layout_height="@dimen/unit_btn_height"
+                android:layout_height="wrap_content"
+                android:paddingTop="15dp"
+                android:paddingBottom="13.5dp"
                 android:layout_alignParentBottom="true"
                 android:text="@string/qty_kilogram"
                 android:textAllCaps="false"
@@ -123,7 +134,9 @@
                 android:id="@+id/btn3"
                 style="@style/unitButton"
                 android:layout_width="60dp"
-                android:layout_height="@dimen/unit_btn_height"
+                android:layout_height="wrap_content"
+                android:paddingTop="15dp"
+                android:paddingBottom="13.5dp"
                 android:layout_alignParentBottom="true"
                 android:text="@string/qty_gram"
                 android:textAllCaps="false"
