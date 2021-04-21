@@ -46,7 +46,7 @@ class SelectionListAdapter(private val callback: Callback) : Adapter<StoreHolder
         } // else: case of data not being ready yet; set a placeholder or something
     }
 
-    override fun getItemCount() = if (list == null) 0 else list!!.size
+    override fun getItemCount() = list?.size ?: 0
 
     fun setList(list: List<SelectDialogRow>) {
         this.list = list

@@ -79,7 +79,7 @@ class PieChartView : View {
             }
             postInvalidate()
         }
-        animator!!.start()
+        animator?.start()
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldWid: Int, oldHei: Int) {
