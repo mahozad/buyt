@@ -125,7 +125,8 @@
 
     <style name="unitButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="strokeColor">@color/unit_btn_unfocused_color</item>
-        <!--<item name="strokeWidth">@dimen/mtrl_btn_stroke_size</item>-->
+        <!-- <item name="strokeColor">@color/mtrl_textinput_default_box_stroke_color</item> -->
+        <!-- <item name="strokeWidth">@dimen/mtrl_btn_stroke_size</item> -->
     </style>
 
 </resources>

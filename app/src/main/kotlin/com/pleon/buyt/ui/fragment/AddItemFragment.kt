@@ -32,6 +32,7 @@ import com.pleon.buyt.util.*
 import com.pleon.buyt.viewmodel.AddItemViewModel
 import ir.huri.jcal.JalaliCalendar
 import kotlinx.android.synthetic.main.fragment_add_item.*
+import org.jetbrains.anko.dip
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -89,11 +90,38 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         colorUnfocusedBorder = context.resolveThemeColorRes(R.attr.unitBorderUnfocusedColor)
         setHasOptionsMenu(true) // for onCreateOptionsMenu() to be called
         setColorOfAllUnits(colorUnfocused) // because sometimes the color is not right
+        setHeightOfAllUnits()
         setupItemNameAutoComplete()
         setupBoughtButton()
         setupListeners()
         scrollView.isVerticalScrollBarEnabled = false
         animateIconInfinitely(expandHandle.drawable)
+    }
+
+    /**
+     * As said [here](https://github.com/material-components/material-components-android/blob/15daf58d53a4a363af32fd427304f495bb57331c/lib/java/com/google/android/material/textfield/res/values/styles.xml#L176)
+     * and also [here](https://github.com/material-components/material-components-android/blob/15daf58d53a4a363af32fd427304f495bb57331c/lib/java/com/google/android/material/textfield/res/values/styles.xml#L198)
+     * the height of the dense text input layout is 54dp (accounting for line height etc.) therefore
+     * it adds top and bottom padding to [text field][com.google.android.material.textfield.TextInputEditText]
+     * to match material design specs.
+     * Also see [the java class](ALso see https://github.com/material-components/material-components-android/blob/15daf58d53a4a363af32fd427304f495bb57331c/lib/java/com/google/android/material/textfield/TextInputEditText.java#L183)
+     * for more details about text field height.
+     *
+     * We could also have specified sizes in the layout file which was almost identical and as good
+     * as the sizes we are setting here. Checkout the previous commit before this comment was added
+     * to see the xml layout approach.
+     */
+    private fun setHeightOfAllUnits() {
+        quantityEd.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED)
+        // To fix quantityEd::measure causing the direction to be always LTR (why?)
+        val isRtl = resources.getBoolean(R.bool.isRtl)
+        if (isRtl) quantityEd.textDirection = TEXT_DIRECTION_RTL
+        val correction = requireContext().dip(11.2f)
+        for (button in unitBtns) {
+            val params = button.layoutParams
+            params.height = quantityEd.measuredHeight + correction
+            button.layoutParams = params
+        }
     }
 
     override fun onResume() {
