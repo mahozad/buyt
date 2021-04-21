@@ -32,21 +32,20 @@ TODO list:
 - [x] Convert the main screen layout to ConstraintLayout and animate it (it seems possible with the help of guidelines)
 - [x] Add feature to select a date to see its costs
 - [ ] Add new categories (icons are already available in */icons/material-icons/*)
-- [ ] Use vector illustrations and animated vectors instead of tutorial screenshots and empty hints
-- [ ] Write tests for the application
+- [x] Use vector illustrations and animated vectors instead of tutorial screenshots and empty hints
+- [x] Write tests for the application
 - [ ] Rename the package name to ir.mahozad (?)
-- [ ] Wrap the text *Already bought* in a button (or a rectangle around it) to indicate it's clickable
+- [x] Wrap the text *Already bought* in a button (or a rectangle around it) to indicate it's clickable
 - [ ] When user adds a new item, somehow indicate that the item was added 
-- [ ] Update the string "کالای ... حذف شد" to "... حذف شد" 
-- [ ] In already bought section show a prompt in the store dialog when there is no store
+- [x] Update the string "کالای ... حذف شد" to "... حذف شد" 
+- [x] In already bought section show a prompt in the store dialog when there is no store
 - [ ] For application first run add some placeholder items and explain in the item title how to delete them and so on
 - [ ] Show extended stats about items (most purchased items, most expensive items and so on) and stores
 - [ ] Reimplement the item suggestion popup
 - [ ] Add ability to backup all the data to user google drive account
 - [ ] Add ability to export all the user data to xml, json, csv and so on
 - [ ] Add ability to delete all application data (can just insert a shortcut to app settings -> clear data)
-- [ ] Add automatic theme option which adapts to system theme (= day/night theme)
-- [ ] This is an incomplete item
+- [x] Add automatic theme option which adapts to system theme (= day/night theme)
 - [ ] Remove all nullable values and null checks
 - [ ] Localize the app: [poeditor.com]
 - [ ] Add an option so when a new item is added the fragment pop up be dismissed immediately
@@ -61,12 +60,11 @@ TODO list:
 - [ ] Show a small progress bar of how much has been spent if user has set a limit on spends
 - [ ] Use downloadable fonts instead of integrating the font in the app to reduce the app size
 - [ ] New version of MaterialCardView will include a setCheckedIcon. check it out
-- [ ] Show a prompt (or an emoji or whatever) when there is no items in the home screen
+- [x] Show a prompt (or an emoji or whatever) when there is no items in the home screen
 - [ ] Use kotlin coroutines see[https://medium.com/androiddevelopers/room-coroutines-422b786dc4c5]
 - [ ] For testing app components see [https://developer.android.com/jetpack/docs/guide#test-components]
 - [ ] Enable the user to disable location rationale dialog and always enter stores manually
 - [ ] What is Spherical Law of Cosines? (for locations)
-- [ ] Add the functionality to export and import all app data
 - [ ] Try to first provide an MVP (minimally viable product) version of the app
 - [ ] Make viewing stores on map a premium feature
 - [ ] Add ability to remove all app data
@@ -76,10 +74,9 @@ TODO list:
       see [https://developer.android.com/guide/topics/ui/layout/recyclerview#select]
 - [ ] For the item list to only one item be expanded see https://stackoverflow.com/q/27203817/8583692
 - [ ] I can request the necessary permissions in the end of the app tutorial
-- [ ] Redesign the logo in 24 by 24 grid in inkscape to make it crisp (like standard icons)
+- [x] Redesign the logo in 24 by 24 grid in inkscape to make it crisp (like standard icons)
 - [ ] Add widgets for the app see[https://developer.android.com/guide/topics/appwidgets/overview]
 - [ ] Make icons animation durations consistent
-- [ ] Convert the logo to path (with "path -> stroke to path" option) and then recreate the logo
 - [ ] Add option in settings to set the default item quantity in add new item activity (1 seems good)
 - [ ] Reimplement item unit switch button with this approach: https://stackoverflow.com/a/48640424/8583692
 - [ ] Add a functionality to merge another device data to a device (e.g. can merge all family spending data to father's phone)
