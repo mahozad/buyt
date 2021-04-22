@@ -3,16 +3,21 @@ package com.pleon.buyt.database.dao
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import com.pleon.buyt.InstantExecutorExtension
+import com.pleon.buyt.blockingObserve
 import com.pleon.buyt.database.AppDatabase
 import com.pleon.buyt.model.Category
 import com.pleon.buyt.model.Coordinates
 import com.pleon.buyt.model.Store
-import com.pleon.buyt.viewmodel.StoresViewModel
+import com.pleon.buyt.viewmodel.StoresViewModel.Sort
+import com.pleon.buyt.viewmodel.StoresViewModel.SortDirection
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 
+@ExtendWith(InstantExecutorExtension::class)
 class StoreDaoTest {
 
     private lateinit var database: AppDatabase
@@ -27,10 +32,15 @@ class StoreDaoTest {
 
     @Test
     fun insertOneStore() {
-        storeDao.insert(Store(Coordinates(10.0, 20.0), "A Store", Category.DRUG))
+        val name = "A Store"
+        storeDao.insert(Store(Coordinates(10.0, 20.0), name, Category.DRUG))
 
-        val stores = storeDao.getAll(StoresViewModel.Sort.STORE_NAME, StoresViewModel.SortDirection.ASCENDING)
-        assertEquals("A Store", stores)
+        val list = storeDao
+                .getAll(Sort.STORE_NAME, SortDirection.ASCENDING)
+                .blockingObserve()
+
+        assertThat(list.size).isEqualTo(1)
+        assertThat(list.first().store.name).isEqualTo(name)
     }
 
     @AfterEach
