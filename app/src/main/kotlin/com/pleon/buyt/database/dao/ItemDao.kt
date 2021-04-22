@@ -49,9 +49,6 @@ abstract class ItemDao {
     @Delete
     protected abstract fun deleteItem(item: Item)
 
-    @Query("DELETE FROM Item")
-    abstract fun deleteAll()
-
     @Query("""UPDATE Item SET position = position - 1 WHERE position > :itemPosition""")
     protected abstract fun updateOtherPositions(itemPosition: Int)
 }

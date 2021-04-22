@@ -12,6 +12,7 @@ import androidx.test.espresso.matcher.ViewMatchers.Visibility.VISIBLE
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.uiautomator.UiDevice
 import com.pleon.buyt.R
+import com.pleon.buyt.database.AppDatabase
 import com.pleon.buyt.database.dao.ItemDao
 import com.pleon.buyt.database.dao.StoreDao
 import com.pleon.buyt.model.Category
@@ -23,8 +24,9 @@ import com.pleon.buyt.withTextInputLayoutHint
 import de.mannodermaus.junit5.ActivityScenarioExtension
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers.*
-import org.junit.jupiter.api.*
-import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
 import org.koin.java.KoinJavaComponent.inject
 
@@ -37,28 +39,19 @@ const val SAMPLE_PRICE = "123"
  *  in the tests to not complete and keep running forever.
  */
 @Tag("UI")
-@TestInstance(PER_CLASS)
 class AddItemFragmentTest {
 
     @JvmField
     @RegisterExtension
     val scenarioExtension = ActivityScenarioExtension.launch<MainActivity>()
     lateinit var device: UiDevice
+    private val database by inject(AppDatabase::class.java)
     private val storeDao by inject(StoreDao::class.java)
     private val itemDao by inject(ItemDao::class.java)
 
-    @BeforeAll
-    fun initialize() {
-        // Remove all app databases to start tests with no previous data;
-        //  could also have used Android Orchestrator which is probably slower
-        val context = getInstrumentation().targetContext
-        val databases = context.databaseList()
-        for (database in databases)
-            context.deleteDatabase(database)
-    }
-
     @BeforeEach
     fun setUp(scenario: ActivityScenario<MainActivity>) {
+        database.clearAllTables()
         device = UiDevice.getInstance(getInstrumentation())
         scenario.moveToState(RESUMED)
         // Open the fragment
@@ -91,7 +84,6 @@ class AddItemFragmentTest {
     }
 
     @Test fun fillingInNameAndPressingAddButtonShouldAddTheItem() {
-        itemDao.deleteAll() // Required
         val initialItemCount = itemDao.getCount()
         onView(withId(R.id.name)).perform(typeText(SAMPLE_ITEM_NAME))
         Espresso.closeSoftKeyboard() // Required
