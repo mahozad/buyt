@@ -19,6 +19,8 @@ class AddItemViewModel(app: Application, val repository: AddItemRepository) : An
         repository.getAllStores().observeForever { storeList = it }
     }
 
+    val defaultQuantity = 1L
+    val defaultInitialItemCategory = GROCERY
     lateinit var storeList: List<Store>
     var category = GROCERY
     var purchaseDate = Date()
@@ -40,8 +42,16 @@ class AddItemViewModel(app: Application, val repository: AddItemRepository) : An
         return defaultNameCats + dbNameCats.associateBy({ it.name }, { it.category })
     }
 
-    fun addItem(item: Item, isPurchased: Boolean) {
-        if (isPurchased) repository.addPurchasedItem(item, store!!, purchaseDate)
-        else repository.addItem(item)
+    fun addItem(item: Item, isBought: Boolean) {
+        if (isBought)
+            repository.addPurchasedItem(item, store!!, purchaseDate)
+        else
+            repository.addItem(item)
+    }
+
+    fun resetValues() {
+        purchaseDate = Date()
+        category = defaultInitialItemCategory
+        store = null
     }
 }

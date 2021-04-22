@@ -34,7 +34,6 @@ import ir.huri.jcal.JalaliCalendar
 import kotlinx.android.synthetic.main.fragment_add_item.*
 import org.jetbrains.anko.dip
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.text.SimpleDateFormat
 import java.util.*
 import java.util.Calendar.DAY_OF_YEAR
 
@@ -57,7 +56,9 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
     @ColorRes private var colorUnfocused = 0
     @ColorRes private var colorUnfocusedBorder = 0
     private val viewModel by viewModel<AddItemViewModel>()
-    private val isBoughtChecked get() = bought.isChecked
+    private val isUrgent get() = urgent.isChecked
+    private val isBought get() = bought.isChecked
+    private val defaultUnitButtonId = R.id.btn1
     private var selectCategoryTxvi: TextView? = null
     private lateinit var unitBtns: Array<MaterialButton>
     private lateinit var nameCats: Map<String, Category>
@@ -186,8 +187,10 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
     private fun setupItemNameAutoComplete() {
         viewModel.itemNameCats.observe(viewLifecycleOwner) { nameCats ->
             this.nameCats = nameCats
-            val adapter = ArrayAdapter(requireContext(),
-                    android.R.layout.simple_dropdown_item_1line, nameCats.keys.toList())
+            val adapter = ArrayAdapter(
+                    requireContext(),
+                    android.R.layout.simple_dropdown_item_1line,
+                    nameCats.keys.toList())
             name.setAdapter(adapter)
         }
     }
@@ -227,7 +230,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         if (item.itemId == R.id.action_item_category) {
             val selectionList = ArrayList<SelectDialogRow>() // dialog requires ArrayList
             val dialogTitle: Int
-            if (isBoughtChecked) {
+            if (isBought) {
                 dialogTitle = R.string.dialog_title_select_store
                 if (viewModel.storeList.isEmpty()) {
                     MaterialAlertDialogBuilder(requireContext(), R.style.JustifiedTextDialogStyle)
@@ -253,13 +256,13 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
     }
 
     private fun price(): Long = try {
-        priceEd.text!!.toNumber()
+        priceEd.text?.toNumber() ?: 0
     } catch (e: NumberFormatException) {
         0
     }
 
     private fun quantity(): Item.Quantity {
-        val quantity = quantityEd.text!!.toNumber()
+        val quantity = quantityEd.text?.toNumber() ?: viewModel.defaultQuantity
         val unit = when (btnGrp.checkedButtonId) {
             R.id.btn1 -> UNIT
             R.id.btn2 -> KILOGRAM
@@ -346,15 +349,10 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
     override fun onDateSet(view: DatePickerDialog, year: Int, month: Int, day: Int) {
         // PersianCalendar cal = new PersianCalendar();
         // cal.set(year, month, day);
-
         val jalaliCalendar = JalaliCalendar(year, month + 1, day)
         viewModel.purchaseDate = jalaliCalendar.toGregorian().time
-
-        val date = String.format(resources.configuration.locale,
-                "%s %d %s %d", jalaliCalendar.dayOfWeekString, jalaliCalendar.day,
-                jalaliCalendar.monthString, jalaliCalendar.year)
-
-        dateEd.setText(date)
+        val formattedDate = formatDate(viewModel.purchaseDate)
+        dateEd.setText(formattedDate)
     }
 
     // On result of Gregorian date picker
@@ -362,10 +360,8 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         val cal = Calendar.getInstance()
         cal.set(year, month, dayOfMonth)
         viewModel.purchaseDate = cal.time
-
-        val format = "MM/dd/yyyy"
-        val dateFormat = SimpleDateFormat(format, Locale.US)
-        dateEd.setText(dateFormat.format(viewModel.purchaseDate))
+        val formattedDate = formatDate(viewModel.purchaseDate)
+        dateEd.setText(formattedDate)
     }
 
     private fun onUrgentToggled(view: View, isChecked: Boolean) {
@@ -374,21 +370,21 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
     }
 
     private fun onBoughtToggled(view: View) {
-        val drawableId = if (isBoughtChecked) R.drawable.avd_expand else R.drawable.avd_collapse
+        val drawableId = if (isBought) R.drawable.avd_expand else R.drawable.avd_collapse
         val drawable = getDrawable(requireContext(), drawableId)
         bought.icon = drawable
         animateIcon(drawable!!)
         if (selectCategoryTxvi != null) { // to fix bug on config change
-            selectCategoryTxvi?.text = getString(if (isBoughtChecked) R.string.menu_title_select_store else viewModel.category.nameRes)
+            selectCategoryTxvi?.text = getString(if (isBought) R.string.menu_title_select_store else viewModel.category.nameRes)
             selectCategoryTxvi?.setTextColor(getColor(requireContext(), colorOnSurface))
-            val icon = if (isBoughtChecked) R.drawable.avd_store_error else R.drawable.ic_item_grocery
+            val icon = if (isBought) R.drawable.avd_store_error else viewModel.defaultInitialItemCategory.imageRes
             selectCategoryTxvi?.setCompoundDrawablesRelativeWithIntrinsicBounds(
                     icon, 0, 0, 0
             )
         }
-        bought_group.visibility = if (isBoughtChecked) VISIBLE else GONE
+        bought_group.visibility = if (isBought) VISIBLE else GONE
         price_layout.error = null
-        if (!isBoughtChecked) viewModel.store = null
+        if (!isBought) viewModel.store = null
     }
 
     private fun onQuantityFocusChanged(view: View, hasFocus: Boolean) {
@@ -420,7 +416,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
             setCounterEnabledIfInputLong(name_layout)
             // For when item name is not empty and a config change happens
             if (!::nameCats.isInitialized) return
-            if (!isBoughtChecked) {
+            if (!isBought) {
                 nameCats[itemName]?.let {
                     viewModel.category = it
                     selectCategoryTxvi?.setCompoundDrawablesRelativeWithIntrinsicBounds(
@@ -449,10 +445,11 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
     fun onDonePressed() {
         if (validateFields()) {
             val itemName = name.text.toString()
-            val item = Item(itemName, quantity(), viewModel.category, urgent.isChecked, bought.isChecked)
+            val item = Item(itemName, quantity(), viewModel.category, isUrgent, isBought)
             if (!isEmpty(description)) item.description = description.text.toString()
-            if (isBoughtChecked && !isEmpty(priceEd)) item.totalPrice = price()
-            viewModel.addItem(item, isBoughtChecked)
+            if (isBought) item.totalPrice = price()
+            viewModel.addItem(item, isBought)
+            viewModel.resetValues()
             resetFields()
         }
     }
@@ -461,26 +458,36 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         name.text.clear()
         name_layout.isCounterEnabled = false
         name.requestFocus()
-        quantityEd.setText("1")
-        btnGrp.check(R.id.btn1)
+        quantityEd.setText(getString(R.string.input_def_quantity))
+        btnGrp.check(defaultUnitButtonId)
         setColorOfAllUnits(colorUnfocused)
-        selectCategoryTxvi?.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                R.drawable.ic_item_grocery, 0, 0, 0
-        )
-        selectCategoryTxvi?.setTextColor(getColor(requireContext(), colorOnSurface))
-        selectCategoryTxvi?.text = getString(Category.GROCERY.nameRes)
-        viewModel.category = Category.GROCERY
-        viewModel.store = null
         description.text?.clear()
-        priceEd.text?.clear()
+        if (isUrgent) { // Animate only if was checked
+            urgent.setButtonDrawable(R.drawable.avd_urgent_uncheck)
+            animateIcon(CompoundButtonCompat.getButtonDrawable(urgent)!!)
+        }
+        if (isBought) { // Animate only if was expanded
+            with(getDrawable(requireContext(), R.drawable.avd_collapse)) {
+                bought.icon = this
+                animateIcon(this!!)
+            }
+        }
         urgent.isChecked = false
         bought.isChecked = false
+        bought_group.visibility = GONE
+        priceEd.text?.clear()
+        dateEd.setText(getString(R.string.input_def_purchase_date))
+        selectCategoryTxvi?.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                viewModel.defaultInitialItemCategory.imageRes, 0, 0, 0
+        )
+        selectCategoryTxvi?.text = getString(viewModel.defaultInitialItemCategory.nameRes)
+        selectCategoryTxvi?.setTextColor(getColor(requireContext(), colorOnSurface))
     }
 
     override fun onSelected(index: Int) {
         val name: String
         val imageRes: Int
-        if (isBoughtChecked) {
+        if (isBought) {
             viewModel.store = viewModel.storeList[index]
             name = viewModel.store!!.name
             imageRes = viewModel.store!!.category.storeImageRes
@@ -513,7 +520,7 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
             price_layout.error = getString(R.string.input_error_price)
             validated = false
         }
-        if (isBoughtChecked && viewModel.store == null) {
+        if (isBought && viewModel.store == null) {
             selectCategoryTxvi?.setTextColor(getColor(requireContext(), colorError))
             selectCategoryTxvi?.setCompoundDrawablesRelativeWithIntrinsicBounds(
                     R.drawable.avd_store_error, 0, 0, 0

@@ -2,6 +2,7 @@ package com.pleon.buyt.ui.fragment
 
 import androidx.lifecycle.Lifecycle.State.RESUMED
 import androidx.test.core.app.ActivityScenario
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -11,17 +12,22 @@ import androidx.test.espresso.matcher.ViewMatchers.Visibility.VISIBLE
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.uiautomator.UiDevice
 import com.pleon.buyt.R
+import com.pleon.buyt.database.dao.StoreDao
+import com.pleon.buyt.model.Category
+import com.pleon.buyt.model.Coordinates
+import com.pleon.buyt.model.Store
 import com.pleon.buyt.ui.activity.MainActivity
 import com.pleon.buyt.withTextInputLayoutError
 import com.pleon.buyt.withTextInputLayoutHint
 import de.mannodermaus.junit5.ActivityScenarioExtension
 import org.hamcrest.CoreMatchers.*
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Tag
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.*
+import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
 import org.junit.jupiter.api.extension.RegisterExtension
+import org.koin.java.KoinJavaComponent.inject
 
 const val SAMPLE_ITEM_NAME = "item"
+const val SAMPLE_PRICE = "123"
 
 /**
  * Note: Espresso suggests to turn off all three types of device animations
@@ -29,12 +35,24 @@ const val SAMPLE_ITEM_NAME = "item"
  *  in the tests to not complete and keep running forever.
  */
 @Tag("UI")
+@TestInstance(PER_CLASS)
 class AddItemFragmentTest {
 
     @JvmField
     @RegisterExtension
     val scenarioExtension = ActivityScenarioExtension.launch<MainActivity>()
-    private lateinit var device: UiDevice
+    lateinit var device: UiDevice
+    private val storeDao by inject(StoreDao::class.java)
+
+    @BeforeAll
+    fun initialize() {
+        // Remove all app databases to start tests with no previous data;
+        //  could also have used Android Orchestrator which is probably slower
+        val context = getInstrumentation().targetContext
+        val databases = context.databaseList()
+        for (database in databases)
+            context.deleteDatabase(database)
+    }
 
     @BeforeEach
     fun setUp(scenario: ActivityScenario<MainActivity>) {
@@ -236,5 +254,50 @@ class AddItemFragmentTest {
                 .inRoot(isDialog())
                 .check(matches(not(isDisplayed())))
         device.setOrientationNatural()
+    }
+
+    @Test fun addingABoughtItemShouldResetTheLayoutAndHideTheBoughtGroup() {
+        // Make sure there is at least one store available to choose in the dialog
+        val storeName = "Test Store"
+        val store = Store(Coordinates(1.0, 2.0), storeName, Category.DRUG)
+        storeDao.insert(store)
+        Espresso.pressBack() // To ensure store dialog is updated
+        onView(withId(R.id.action_add)).perform(click())
+
+        onView(withId(R.id.name))
+                .perform(typeText(SAMPLE_ITEM_NAME))
+                .perform(closeSoftKeyboard())
+        onView(withId(R.id.expandHandle)).perform(click())
+        onView(withId(R.id.bought))
+                .perform(scrollTo())
+                .perform(click())
+        onView(withId(R.id.priceEd))
+                .perform(typeText(SAMPLE_PRICE))
+                .perform(closeSoftKeyboard())
+        onView(withText(R.string.menu_title_select_store))
+                .perform(click())
+        onView(withChild(withText(storeName)))
+                .perform(click())
+        onView(withText(android.R.string.ok))
+                .perform(click())
+        onView(withId(R.id.fab))
+                .perform(click())
+
+        onView(withId(R.id.name))
+                .check(matches(withText("")))
+        onView(withId(R.id.quantityEd))
+                .check(matches(not(withText(""))))
+        onView(withId(R.id.description))
+                .check(matches(withText("")))
+        onView(withId(R.id.dateEd))
+                .check(matches(withText(R.string.input_def_purchase_date)))
+        onView(withId(R.id.bought))
+                .check(matches(isNotChecked()))
+        onView(withId(R.id.bought_group))
+                .check(matches(either(not(isDisplayed())).or(withAlpha(0f))))
+        onView(allOf(withId(R.id.price_layout), withTextInputLayoutHint(R.string.input_hint_price)))
+                .check(matches(either(not(isDisplayed())).or(withAlpha(0f))))
+        onView(withId(R.id.date_layout))
+                .check(matches(either(not(isDisplayed())).or(withAlpha(0f))))
     }
 }
