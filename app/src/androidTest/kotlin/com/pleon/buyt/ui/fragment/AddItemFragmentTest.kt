@@ -12,6 +12,7 @@ import androidx.test.espresso.matcher.ViewMatchers.Visibility.VISIBLE
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.uiautomator.UiDevice
 import com.pleon.buyt.R
+import com.pleon.buyt.database.dao.ItemDao
 import com.pleon.buyt.database.dao.StoreDao
 import com.pleon.buyt.model.Category
 import com.pleon.buyt.model.Coordinates
@@ -20,6 +21,7 @@ import com.pleon.buyt.ui.activity.MainActivity
 import com.pleon.buyt.withTextInputLayoutError
 import com.pleon.buyt.withTextInputLayoutHint
 import de.mannodermaus.junit5.ActivityScenarioExtension
+import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers.*
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
@@ -43,6 +45,7 @@ class AddItemFragmentTest {
     val scenarioExtension = ActivityScenarioExtension.launch<MainActivity>()
     lateinit var device: UiDevice
     private val storeDao by inject(StoreDao::class.java)
+    private val itemDao by inject(ItemDao::class.java)
 
     @BeforeAll
     fun initialize() {
@@ -85,6 +88,16 @@ class AddItemFragmentTest {
                 .check(matches(not(hasFocus())))
         onView(withId(R.id.quantityEd))
                 .check(matches(hasFocus()))
+    }
+
+    @Test fun fillingInNameAndPressingAddButtonShouldAddTheItem() {
+        itemDao.deleteAll() // Required
+        val initialItemCount = itemDao.getCount()
+        onView(withId(R.id.name)).perform(typeText(SAMPLE_ITEM_NAME))
+        Espresso.closeSoftKeyboard() // Required
+        onView(withId(R.id.fab)).perform(click())
+        val newItemCount = itemDao.getCount()
+        assertThat(newItemCount).isGreaterThan(initialItemCount)
     }
 
     @Test fun quantityInputActionShouldNotThrowException() {
