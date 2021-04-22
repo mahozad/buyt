@@ -59,6 +59,11 @@ android {
     testOptions {
         // For Robolectric unit tests to be able to access resources
         unitTests.isIncludeAndroidResources = true
+
+        // To use Android orchestrator for cleaning up tests;
+        //  see testInstrumentationRunnerArgument in defaultConfig block
+        // execution = "ANDROIDX_TEST_ORCHESTRATOR"
+
         // NOTE: Espresso suggests to disable all animations on the device
         //  (can also be disabled manually in *Settings* 🡲 *Developer Settings*)
         //  but this resulted in the tests to not complete and keep running forever.
@@ -78,8 +83,6 @@ android {
          * vector assets if minSdkVersion is < 21 */
         // vectorDrawables.useSupportLibrary = true
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
         javaCompileOptions {
             annotationProcessorOptions {
                 // Tell Room to export database schema info to keep a history of it
@@ -92,6 +95,10 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         // Connect JUnit 5 to the runner
         testInstrumentationRunnerArgument("runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder")
+        // For cleaning up after every test;
+        //  requires androidTestUtil("androidx.test:orchestrator:1.3.0");
+        //  see testOptions block for required settings
+        // testInstrumentationRunnerArgument("clearPackageData", "true")
 
         /* The Gradle resource shrinker removes only resources that are not referenced by your app code,
          * which means it will not remove alternative resources for different device configurations.
