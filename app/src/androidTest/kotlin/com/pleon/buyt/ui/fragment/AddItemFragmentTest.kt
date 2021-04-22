@@ -194,6 +194,21 @@ class AddItemFragmentTest {
         device.setOrientationNatural()
     }
 
+    @Test fun afterClosingFullScreenFragmentNewFragmentShouldNotBeFullScreen() {
+        onView(withId(R.id.expandHandle)).perform(click())
+        Espresso.pressBack()
+        onView(withId(R.id.action_add)).perform(click())
+        onView(withId(R.id.description_layout))
+                .check(matches(either(not(isDisplayed()))
+                        .or(withAlpha(0f))))
+        onView(withId(R.id.urgent))
+                .check(matches(either(not(isDisplayed()))
+                        .or(withAlpha(0f))))
+        onView(withId(R.id.bought_group))
+                .check(matches(either(not(isDisplayed()))
+                        .or(withAlpha(0f))))
+    }
+
     @Test fun displayedMiddleViewsShouldBeDisplayedOnConfigChange() {
         onView(withId(R.id.expandHandle)).perform(click())
         onView(withId(R.id.bought))
