@@ -211,11 +211,11 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
             fragmentRootView.setPadding(0, 0, 0, dip(88))
         }
 
-        val anim = ValueAnimator.ofInt(fragContainer.measuredHeight, parentView.measuredHeight)
-        anim.setDuration(300).addUpdateListener { valueAnimator ->
-            fragContainer.layoutParams.height = valueAnimator.animatedValue as Int
+        val animator = ValueAnimator.ofInt(fragContainer.measuredHeight, parentView.measuredHeight)
+        animator.setDuration(300).addUpdateListener {
+            fragContainer.layoutParams.height = it.animatedValue as Int
             fragContainer.layoutParams = fragContainer.layoutParams
         }
-        anim.start()
+        animator.start()
     }
 }
