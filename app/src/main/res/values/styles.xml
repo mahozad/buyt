@@ -115,7 +115,7 @@
     </style>
 
     <!-- Update persian date picker button style to look like material buttons;
-         extending from TextButton is enough -->
+         just extending from a material style like TextButton is enough -->
     <style name="mdtp_ActionButton.Text" parent="Widget.MaterialComponents.Button.TextButton">
         <!-- <item name="backgroundTint">@android:color/transparent</item> -->
         <!-- <item name="android:textColor">@color/colorPrimary</item> -->
