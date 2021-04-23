@@ -5,8 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <!-- NOTE: elevation did not work for the first date header no matter
-          what I did! (both in layouts and in code) -->
+    <!-- NOTE: elevation did not work for the current date header
+          (the rolling header) no matter what I did! Be aware that
+          the previous header is made invisible in StateDetailsFragment.
+         Note (An unrelated caution): that for the elevation to work the
+          background color should be colorSurface or similar.
+          See https://medium.com/androiddevelopers/dark-theme-with-mdc-4c6fc357d956
+          For how to set elevation for a custom view -->
     <TextView
         android:id="@+id/headerText"
         android:layout_width="wrap_content"
