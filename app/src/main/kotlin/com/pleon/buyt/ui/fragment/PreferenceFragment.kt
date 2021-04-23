@@ -60,7 +60,6 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
     override fun onCreatePreferences(savedState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
         getDefaultSharedPreferences(context).registerOnSharedPreferenceChangeListener(this)
-
         preferenceScreen.findPreference<ListPreference>(PREF_THEME)?.apply {
             isEnabled = isPremium
             setTitle(if (isPremium) R.string.pref_title_theme else R.string.pref_title_theme_disabled)
@@ -69,6 +68,10 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
             isEnabled = isPremium
             setTitle(if (isPremium) R.string.pref_title_lang else R.string.pref_title_lang_disabled)
         }
+        setupExportPreference()
+    }
+
+    private fun setupExportPreference() {
         findPreference<Preference>(PREF_EXPORT)?.setOnPreferenceClickListener {
             MaterialAlertDialogBuilder(requireContext())
                     .setTitle(R.string.dialog_title_select_export_format)
