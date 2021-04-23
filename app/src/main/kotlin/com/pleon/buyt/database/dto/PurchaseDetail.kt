@@ -14,6 +14,7 @@ class PurchaseDetail {
     @Relation(entityColumn = "purchaseId", parentColumn = "purchaseId")
     lateinit var item: List<Item>
 
+    // The store may be null because user might have deleted it
     @Relation(entityColumn = "storeId", parentColumn = "storeId")
     var store: Store? = null
 }
