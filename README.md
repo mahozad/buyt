@@ -1,6 +1,10 @@
 [![Crowdin](https://badges.crowdin.net/buyt/localized.svg)](https://crowdin.com/project/buyt)
 ![Buyt logo](/style-guide/new-logo-2-optimized.svg)
 
+## The name
+
+See https://en.wikipedia.org/wiki/Portmanteau
+
 a good android example: https://proandroiddev.com/android-architecture-starring-kotlin-coroutines-jetpack-mvvm-room-paging-retrofit-and-dagger-7749b2bae5f7
 
 # Mention in the about screen that some icons are adapted and inspired by other icons found on web
