@@ -1,21 +1,34 @@
 package com.pleon.buyt.ui.fragment
 
 import android.app.Activity
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.*
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Bundle
+import android.provider.DocumentsContract
 import androidx.core.app.TaskStackBuilder
 import androidx.preference.ListPreference
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.pleon.buyt.R
+import com.pleon.buyt.database.dao.PurchaseDao
 import com.pleon.buyt.isPremium
 import com.pleon.buyt.ui.activity.MainActivity
+import com.pleon.buyt.util.PurchaseDetailsCSVSerializer
+import com.pleon.buyt.util.PurchaseDetailsHTMLSerializer
+import com.pleon.buyt.util.PurchaseDetailsXMLSerializer
+import kotlinx.android.synthetic.main.export_data_widget_layout.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
+import org.koin.android.ext.android.inject
+import java.io.*
+import java.net.URI
+import java.util.*
 
 const val PREF_LANG = "LANG"
 const val PREF_THEME = "THEME"
+const val PREF_EXPORT = "EXPORT"
 const val PREF_VIBRATE = "VIBRATE"
 const val PREF_SEARCH_DIST_DEF = "50"
 const val PREF_SEARCH_DISTANCE = "DISTANCE"
@@ -27,6 +40,7 @@ const val PREF_THEME_LIGHT = "light"
 
 const val DEFAULT_THEME_NAME = PREF_THEME_DARK
 const val DEFAULT_THEME_STYLE_RES = R.style.DarkTheme
+private const val DEFAULT_EXPORT_FILE_NAME = "buyt-purchase-data"
 
 class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeListener {
 
@@ -34,18 +48,85 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
      * Use this field wherever a context is needed to prevent exceptions.
      */
     private lateinit var activity: Activity
+    private val serializers = listOf(PurchaseDetailsHTMLSerializer(), PurchaseDetailsXMLSerializer(), PurchaseDetailsCSVSerializer())
+    private val defaultSerializer = 0
+    private var serializer = serializers[defaultSerializer]
+    private val purchaseDao: PurchaseDao by inject()
+    private val createFileRequestCode = 1
+    private val contentResolver: ContentResolver by lazy {
+        requireActivity().applicationContext.contentResolver
+    }
 
     override fun onCreatePreferences(savedState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
         getDefaultSharedPreferences(context).registerOnSharedPreferenceChangeListener(this)
 
-        preferenceScreen.findPreference<ListPreference>(PREF_THEME)!!.apply {
+        preferenceScreen.findPreference<ListPreference>(PREF_THEME)?.apply {
             isEnabled = isPremium
             setTitle(if (isPremium) R.string.pref_title_theme else R.string.pref_title_theme_disabled)
         }
-        preferenceScreen.findPreference<ListPreference>(PREF_LANG)!!.apply {
+        preferenceScreen.findPreference<ListPreference>(PREF_LANG)?.apply {
             isEnabled = isPremium
             setTitle(if (isPremium) R.string.pref_title_lang else R.string.pref_title_lang_disabled)
+        }
+        findPreference<Preference>(PREF_EXPORT)?.setOnPreferenceClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(R.string.dialog_title_select_export_format)
+                    .setNegativeButton(android.R.string.cancel) { _, _ -> /* Dismiss */ }
+                    .setPositiveButton(R.string.btn_text_select_export_location) { _, _ ->
+                        showSystemFileSelection()
+                        serializer = serializers[defaultSerializer] // Reset for next times
+                    }
+                    .setSingleChoiceItems(R.array.pref_export_names, defaultSerializer) { _, i ->
+                        serializer = serializers[i]
+                    }
+                    .create()
+                    .show()
+            return@setOnPreferenceClickListener true
+        }
+    }
+
+    private fun showSystemFileSelection() {
+        val pickerInitialUri = URI("/")
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = serializer.mimeType
+            val fileName = "$DEFAULT_EXPORT_FILE_NAME.${serializer.fileExtension}"
+            putExtra(Intent.EXTRA_TITLE, fileName)
+            // Optionally, specify a URI for the directory that should be opened in
+            // the system file picker before your app creates the document.
+            putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri)
+        }
+        startActivityForResult(intent, createFileRequestCode)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
+        super.onActivityResult(requestCode, resultCode, resultData)
+        if (requestCode == createFileRequestCode && resultCode == Activity.RESULT_OK) {
+            // The result data contains a URI for the document or directory that the user selected.
+            progress_bar.isIndeterminate = true
+            progress_bar.show()
+            resultData?.data?.also { uri ->
+                // NOTE: Do NOT utilize kotlin Closable::use method because we are
+                //  doing our work in another thread (doAsync{}) and so when we want
+                //  to get the file descriptor in there the Closable::use method
+                //  might have finished running and therefor closed the descriptor.
+                doAsync {
+                    val parcelDescriptor = contentResolver.openFileDescriptor(uri, "w")
+                    val purchaseDetails = purchaseDao.getAllPurchaseDetails()
+                    val writer = FileWriter(parcelDescriptor!!.fileDescriptor).buffered()
+                    serializer.setUpdateListener { progress, fragment ->
+                        writer.write(fragment)
+                        uiThread { progress_bar?.setProgressCompat(progress, true) }
+                    }
+                    serializer.setFinishListener {
+                        writer.close()
+                        parcelDescriptor.close() // Should be closed here in the async thread
+                        uiThread { progress_bar.hide() }
+                    }
+                    serializer.serialize(purchaseDetails)
+                }
+            }
         }
     }
 

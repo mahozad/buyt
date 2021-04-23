@@ -138,6 +138,12 @@ abstract class PurchaseDao {
         ORDER BY date DESC""")
     abstract fun getPurchaseDetails(period: Int, filter: String): LiveData<List<PurchaseDetail>>
 
+    @Query("""
+        SELECT * FROM Purchase NATURAL JOIN Item
+        GROUP BY purchaseId
+        ORDER BY date DESC""")
+    abstract fun getAllPurchaseDetails(): List<PurchaseDetail>
+
     @Transaction
     open fun getPurchaseCountInPeriod(period: Int): Int {
         return getCountInPeriod(period - 1) // The queries return one extra day so do period-1

@@ -119,6 +119,7 @@
     <string name="dialog_title_select_search_dist">انتخاب شعاع جستجو</string>
     <string name="dialog_title_select_theme">انتخاب پوسته</string>
     <string name="dialog_title_select_lang">انتخاب زبان</string>
+    <string name="dialog_title_select_export_format">انتخاب فرمت</string>
     <string name="currency_format">##,### ت</string>
     <string name="pref_theme_dark">تیره</string>
     <string name="pref_theme_light">روشن</string>
@@ -129,6 +130,8 @@
     <string name="pref_title_lang_disabled">زبان (فقط در نسخه کامل)</string>
     <string name="pref_title_vibrate">لرزش دستگاه هنگام پیدا شدن مغازه</string>
     <string name="pref_title_search_radius">شعاع جستجوی مغازه</string>
+    <string name="pref_title_export">ایجاد خروجی از تمام خریدها</string>
+    <string name="btn_text_select_export_location">انتخاب مکان ذخیره‌سازی…</string>
     <string name="pref_search_dist_1">۵۰ متر</string>
     <string name="pref_search_dist_2">۱۰۰ متر</string>
     <string name="pref_search_dist_3">۲۰۰ متر</string>
@@ -200,5 +203,5 @@
         <item quantity="one">"%1$s تومان"</item>
         <item quantity="other">"%1$s تومان"</item>
     </plurals>
-  <string name="pref_theme_auto">خودکار (پوسته دستگاه)</string>
+    <string name="pref_theme_auto">خودکار (پوسته دستگاه)</string>
 </resources>

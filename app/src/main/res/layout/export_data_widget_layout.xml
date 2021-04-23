@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.progressindicator.CircularProgressIndicator
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/progress_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:visibility="invisible"
+    android:max="100"
+    app:indicatorColor="@color/colorPrimary"
+    app:indicatorSize="32dp"
+    app:showAnimationBehavior="outward"
+    app:hideAnimationBehavior="inward" />

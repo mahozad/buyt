@@ -11,6 +11,7 @@
     <string name="dialog_title_location_permission">Location denied</string>
     <string name="dialog_title_location_off">Location off</string>
     <string name="dialog_title_select_filter">Select filter</string>
+    <string name="dialog_title_select_export_format">Select format</string>
     <string name="dialog_title_exit">Exit the app?</string>
     <string name="dialog_message_exit">The buying process will be aborted if you exit the app.</string>
     <string name="dialog_message_no_store_available">There is no saved store. You should do one or more purchases from at least one store (with find button in main screen) so it can be chosen for future purchases.</string>
@@ -160,19 +161,28 @@
     <string name="pref_title_lang_disabled">Language (premium version only)</string>
     <string name="dialog_title_select_lang">Select language</string>
 
-    <string-array name="pref_search_dist_vals">
-        <item>50</item>
-        <item>100</item>
-        <item>200</item>
-    </string-array>
     <string-array name="pref_search_dist_names">
         <item>@string/pref_search_dist_1</item>
         <item>@string/pref_search_dist_2</item>
         <item>@string/pref_search_dist_3</item>
     </string-array>
+    <string-array name="pref_search_dist_vals">
+        <item>50</item>
+        <item>100</item>
+        <item>200</item>
+    </string-array>
     <string name="pref_search_dist_1">50 meters</string>
     <string name="pref_search_dist_2">100 meters</string>
     <string name="pref_search_dist_3">200 meters</string>
+
+    <string-array name="pref_export_names">
+        <item>@string/pref_export_html</item>
+        <item>@string/pref_export_xml</item>
+        <item>@string/pref_export_csv</item>
+    </string-array>
+    <string name="pref_export_html" translatable="false">HTML</string>
+    <string name="pref_export_xml" translatable="false">XML</string>
+    <string name="pref_export_csv" translatable="false">CSV</string>
 
     <string name="item_quantity" translatable="false">%d %s</string>
     <string name="tutorial_add_item">Here you can add your items to buy</string>
@@ -240,6 +250,8 @@
     <string name="stores_empty_hint">No store added!</string>
     <string name="snackbar_message_list_empty">Shopping list is empty</string>
     <string name="no_value" translatable="false">-</string>
+    <string name="pref_title_export">Export all purchase data</string>
+    <string name="btn_text_select_export_location">Select save location…</string>
     <plurals name="store_detail_purchase_count">
         <!-- For zero android will use plural form like 0 books -->
         <item quantity="one">%1$d purchase</item>

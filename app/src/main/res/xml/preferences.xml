@@ -3,54 +3,57 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <SwitchPreference
+        android:key="VIBRATE"
         android:defaultValue="true"
         android:icon="@drawable/ic_vibration"
-        android:key="VIBRATE"
         android:title="@string/pref_title_vibrate" />
 
     <ListPreference
-        android:defaultValue="50"
+        android:key="DISTANCE"
+        android:title="@string/pref_title_search_radius"
         android:dialogTitle="@string/dialog_title_select_search_dist"
+        android:defaultValue="50"
         android:entries="@array/pref_search_dist_names"
         android:entryValues="@array/pref_search_dist_vals"
         android:icon="@drawable/ic_distance"
-        android:key="DISTANCE"
-        android:title="@string/pref_title_search_radius"
         app:useSimpleSummaryProvider="true" />
 
     <!--<PreferenceCategory />-->
 
     <ListPreference
-        android:defaultValue="dark"
+        android:key="THEME"
         android:dialogTitle="@string/dialog_title_select_theme"
+        android:defaultValue="dark"
         android:entries="@array/pref_theme_names"
         android:entryValues="@array/pref_theme_vals"
         android:icon="@drawable/ic_theme"
-        android:key="THEME"
         app:useSimpleSummaryProvider="true" />
 
     <ListPreference
-        android:defaultValue="auto"
+        android:key="LANG"
         android:dialogTitle="@string/dialog_title_select_lang"
+        android:defaultValue="auto"
         android:entries="@array/pref_lang_names"
         android:entryValues="@array/pref_lang_vals"
         android:icon="@drawable/ic_language"
-        android:key="LANG"
         app:useSimpleSummaryProvider="true" />
 
-    <!--<Preference-->
+    <Preference
+        app:key="EXPORT"
+        app:title="@string/pref_title_export"
+        app:icon="@drawable/ic_export"
+        app:widgetLayout="@layout/export_data_widget_layout"
+        android:negativeButtonText="@null" />
+
+        <!--<Preference-->
         <!--android:icon="@drawable/ic_import"-->
         <!--android:title="Import app data" />-->
 
-    <!--<Preference-->
-        <!--android:icon="@drawable/ic_export"-->
-        <!--android:title="Export app data" />-->
-
-    <!--<SwitchPreference-->
+        <!--<SwitchPreference-->
         <!--android:icon="@drawable/ic_lock"-->
         <!--android:key="passwordChBx"-->
         <!--android:title="فعال سازی رمز عبور" />-->
-    <!--<EditTextPreference-->
+        <!--<EditTextPreference-->
         <!--android:defaultValue="def value!"-->
         <!--android:dependency="passwordChBx"-->
         <!--android:hint="salam"-->
