@@ -144,7 +144,7 @@
     <string name="state_total_spent_money">مجموع مبلغ خرج شده:</string>
     <string name="state_max_purchase_cost">بیشترین هزینه خرید:</string>
     <string name="state_min_purchase_cost">کمترین هزینه خرید:</string>
-    <string name="state_weekday_with_most_purchases">روز هفته با بیشترین خرید:</string>
+    <string name="state_weekday_with_most_purchases">روز هفته با بیشترین تعداد خرید:</string>
     <string name="state_average_purchase_cost">میانگین هزینه خرید:</string>
     <string name="state_most_purchased_category">بیشترین دسته‌بندی خرید شده:</string>
     <string name="state_store_with_most_purchases">مغازه با بیشترین تعداد خرید:</string>
