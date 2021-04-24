@@ -183,6 +183,8 @@
     <string name="pref_export_html" translatable="false">HTML</string>
     <string name="pref_export_xml" translatable="false">XML</string>
     <string name="pref_export_csv" translatable="false">CSV</string>
+    <string name="pref_title_export">Export all purchase data</string>
+    <string name="pref_title_export_disabled">(premium version only)</string>
 
     <string name="item_quantity" translatable="false">%d %s</string>
     <string name="tutorial_add_item">Here you can add your items to buy</string>
@@ -250,7 +252,6 @@
     <string name="stores_empty_hint">No store added!</string>
     <string name="snackbar_message_list_empty">Shopping list is empty</string>
     <string name="no_value" translatable="false">-</string>
-    <string name="pref_title_export">Export all purchase data</string>
     <string name="btn_text_select_export_location">Select save location…</string>
     <plurals name="store_detail_purchase_count">
         <!-- For zero android will use plural form like 0 books -->

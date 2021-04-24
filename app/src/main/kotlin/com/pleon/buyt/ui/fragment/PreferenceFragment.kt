@@ -60,33 +60,50 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
     override fun onCreatePreferences(savedState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
         getDefaultSharedPreferences(context).registerOnSharedPreferenceChangeListener(this)
-        preferenceScreen.findPreference<ListPreference>(PREF_THEME)?.apply {
-            isEnabled = isPremium
-            setTitle(if (isPremium) R.string.pref_title_theme else R.string.pref_title_theme_disabled)
-        }
-        preferenceScreen.findPreference<ListPreference>(PREF_LANG)?.apply {
-            isEnabled = isPremium
-            setTitle(if (isPremium) R.string.pref_title_lang else R.string.pref_title_lang_disabled)
-        }
+        setupThemePreference()
+        setupLanguagePreference()
         setupExportPreference()
     }
 
+    private fun setupThemePreference() {
+        findPreference<ListPreference>(PREF_THEME)?.apply {
+            isEnabled = isPremium
+            setTitle(if (isPremium) R.string.pref_title_theme else R.string.pref_title_theme_disabled)
+        }
+    }
+
+    private fun setupLanguagePreference() {
+        findPreference<ListPreference>(PREF_LANG)?.apply {
+            isEnabled = isPremium
+            setTitle(if (isPremium) R.string.pref_title_lang else R.string.pref_title_lang_disabled)
+        }
+    }
+
     private fun setupExportPreference() {
-        findPreference<Preference>(PREF_EXPORT)?.setOnPreferenceClickListener {
-            MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(R.string.dialog_title_select_export_format)
-                    .setNegativeButton(android.R.string.cancel) { _, _ -> /* Dismiss */ }
-                    .setPositiveButton(R.string.btn_text_select_export_location) { _, _ ->
-                        showSystemFileSelection()
-                        serializer = serializers[defaultSerializer] // Reset for next times
-                    }
-                    .setSingleChoiceItems(R.array.pref_export_names, defaultSerializer) { _, i ->
-                        serializer = serializers[i]
-                    }
-                    .create()
-                    .show()
+        val exportPreference = findPreference<Preference>(PREF_EXPORT)
+        exportPreference?.apply {
+            isEnabled = isPremium
+            if (!isPremium) setSummary(R.string.pref_title_export_disabled)
+        }
+        exportPreference?.setOnPreferenceClickListener {
+            showExportPreferenceDialog()
             return@setOnPreferenceClickListener true
         }
+    }
+
+    private fun showExportPreferenceDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.dialog_title_select_export_format)
+                .setNegativeButton(android.R.string.cancel) { _, _ -> /* Dismiss */ }
+                .setPositiveButton(R.string.btn_text_select_export_location) { _, _ ->
+                    showSystemFileSelection()
+                    serializer = serializers[defaultSerializer] // Reset for next times
+                }
+                .setSingleChoiceItems(R.array.pref_export_names, defaultSerializer) { _, i ->
+                    serializer = serializers[i]
+                }
+                .create()
+                .show()
     }
 
     private fun showSystemFileSelection() {
