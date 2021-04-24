@@ -86,6 +86,7 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
             if (!isPremium) setSummary(R.string.pref_title_export_disabled)
         }
         exportPreference?.setOnPreferenceClickListener {
+            serializer = serializers[defaultSerializer] // Reset the serializer
             showExportPreferenceDialog()
             return@setOnPreferenceClickListener true
         }
@@ -97,7 +98,6 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
                 .setNegativeButton(android.R.string.cancel) { _, _ -> /* Dismiss */ }
                 .setPositiveButton(R.string.btn_text_select_export_location) { _, _ ->
                     showSystemFileSelection()
-                    serializer = serializers[defaultSerializer] // Reset for next times
                 }
                 .setSingleChoiceItems(R.array.pref_export_names, defaultSerializer) { _, i ->
                     serializer = serializers[i]
@@ -124,7 +124,9 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
         super.onActivityResult(requestCode, resultCode, resultData)
         if (requestCode == createFileRequestCode && resultCode == Activity.RESULT_OK) {
             // The result data contains a URI for the document or directory that the user selected.
-            progress_bar.isIndeterminate = true
+
+            // This caused an exception in Android 5.1 and also was not necessary
+            // progress_bar.isIndeterminate = true
             progress_bar.show()
             resultData?.data?.also { uri ->
                 // NOTE: Do NOT utilize kotlin Closable::use method because we are
