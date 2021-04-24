@@ -6,10 +6,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import com.pleon.buyt.database.converter.DateConverter
-import com.pleon.buyt.database.dto.CategorySum
-import com.pleon.buyt.database.dto.DailyCost
-import com.pleon.buyt.database.dto.PurchaseDetail
-import com.pleon.buyt.database.dto.Stats
+import com.pleon.buyt.database.dto.*
 import com.pleon.buyt.model.Category
 import com.pleon.buyt.model.Purchase
 import com.pleon.buyt.model.Store
@@ -46,6 +43,7 @@ abstract class PurchaseDao {
         stats.weekdayWithMaxPurchases = getWeekdayWithMaxPurchaseCount(realPeriod, filter.criterion)
         stats.storeWithMaxPurchaseCount = getStoreWithMaxPurchaseCount(realPeriod, filter.criterion)
         stats.mostPurchasedCategories = getMostPurchasedCategories(realPeriod, filter.criterion)
+        stats.mostPurchasedItem = getMostPurchasedItems(realPeriod, filter.criterion)
 
         return stats
     }
@@ -72,6 +70,15 @@ abstract class PurchaseDao {
         ORDER BY COUNT(purchase.storeId) DESC
         LIMIT 1;""")
     protected abstract fun getStoreWithMaxPurchaseCount(period: Int, filter: String): Store
+
+    @Query("""
+        SELECT Item.name, COUNT(Item.name) AS purchaseCount 
+        FROM Item NATURAL JOIN Purchase
+        WHERE $PERIOD_AND_FILTER_CLAUSE
+        GROUP BY Item.name
+        ORDER BY purchaseCount DESC
+        LIMIT 1;""")
+    protected abstract fun getMostPurchasedItems(period: Int, filter: String): MostPurchasedItemDto
 
     @Query("""
         SELECT MAX(cost) FROM (SELECT SUM(totalPrice) AS cost

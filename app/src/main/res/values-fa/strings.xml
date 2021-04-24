@@ -149,6 +149,7 @@
     <string name="state_most_purchased_category">بیشترین دسته‌بندی خرید شده:</string>
     <string name="state_store_with_most_purchases">مغازه با بیشترین تعداد خرید:</string>
     <string name="state_number_of_purchases">تعداد خریدهای انجام شده:</string>
+    <string name="state_most_purchased_item" >پرخریدترین کالا:</string>
     <string name="notif_title_finding_store">در حال جستجوی مغازه</string>
     <string name="notif_channel_desc">کانال اصلی</string>
     <string name="notif_title_store_found">مغازه پیدا شد</string>
@@ -203,6 +204,10 @@
     <plurals name="price_with_suffix">
         <item quantity="one">"%1$s تومان"</item>
         <item quantity="other">"%1$s تومان"</item>
+    </plurals>
+    <plurals name="item_purchase_count">
+        <item quantity="one">"%1$s خرید"</item>
+        <item quantity="other">"%1$s خرید"</item>
     </plurals>
     <string name="pref_theme_auto">خودکار (پوسته دستگاه)</string>
 </resources>

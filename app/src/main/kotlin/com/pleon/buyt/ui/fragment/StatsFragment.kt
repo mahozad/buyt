@@ -2,6 +2,8 @@ package com.pleon.buyt.ui.fragment
 
 import android.os.Bundle
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import androidx.annotation.ColorInt
 import androidx.core.content.res.ResourcesCompat.getFont
 import com.db.chart.animation.Animation
@@ -50,6 +52,11 @@ class StatsFragment : BaseFragment() {
         textView7.text = formatPrice(minPurchaseCost)
         textView17.text = storeWithMaxPurchaseCount?.name ?: getString(R.string.no_value)
         textView9.setText(weekdayNameResWithMaxPurchases ?: R.string.no_value)
+        textView20.text = mostPurchasedItem?.name ?: getString(R.string.no_value)
+        textView21.visibility = if (mostPurchasedItem == null) INVISIBLE else VISIBLE
+        textView21.text = resources.getQuantityString(R.plurals.item_purchase_count,
+                mostPurchasedItem?.purchaseCount ?: 0,
+                formatNumber(mostPurchasedItem?.purchaseCount ?: 0))
     }
 
     private fun showLineChart(dailyCosts: List<DailyCost>) {

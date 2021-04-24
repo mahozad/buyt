@@ -200,6 +200,7 @@
     <string name="state_most_purchased_category">Most purchased category:</string>
     <string name="state_store_with_most_purchases">Store with most purchases:</string>
     <string name="state_number_of_purchases">Number of purchases:</string>
+    <string name="state_most_purchased_item" >Most purchased item:</string>
     <string name="notif_title_finding_store">Finding the store…</string>
     <string name="notif_channel_desc">Main Channel</string>
     <string name="notif_title_store_found">Store found</string>
@@ -262,5 +263,10 @@
         <!-- For zero android will use plural form like 0 books -->
         <item quantity="one">"%1$s dollar"</item>
         <item quantity="other">"%1$s dollars"</item>
+    </plurals>
+    <plurals name="item_purchase_count">
+        <!-- For zero android will use plural form like 0 books -->
+        <item quantity="one">"%1$s purchase"</item>
+        <item quantity="other">"%1$s purchases"</item>
     </plurals>
 </resources>
