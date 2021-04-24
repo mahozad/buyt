@@ -36,8 +36,8 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="D:\Project\Buyt\app\src\main\base_hi_res_512.png" />
-                                                <entry key="opacityPercent" value="80" />
+                                                <entry key="imagePath" value="D:\Android\Buyt\style-guide\new-logo-2-optimized.svg" />
+                                                <entry key="opacityPercent" value="60" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -70,9 +70,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="D:\Project\Buyt\app\src\main\base_hi_res_512.png" />
+                                      <entry key="imageAsset" value="D:\Android\Buyt\style-guide\new-logo-2-optimized.svg" />
                                       <entry key="outputName" value="ic_buyt" />
-                                      <entry key="theme" value="HOLO_DARK" />
                                       <entry key="themeColor" value="ffffff" />
                                     </map>
                                   </option>
@@ -84,6 +83,17 @@
                                 <PersistentState>
                                   <option name="children">
                                     <map>
+                                      <entry key="backgroundImage">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="imagePath" value="D:\Android\Buyt\style-guide\background.svg" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
                                       <entry key="foregroundClipArt">
                                         <value>
                                           <PersistentState>
@@ -102,8 +112,8 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="D:\Android\Buyt\style-guide\new-logo-optimized-for-android.svg" />
-                                                <entry key="scalingPercent" value="66" />
+                                                <entry key="imagePath" value="D:\Android\Buyt\style-guide\new-logo-4-hidden-parts-removed.svg" />
+                                                <entry key="scalingPercent" value="70" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -136,7 +146,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
-                                      <entry key="backgroundColor" value="e3e4e2" />
+                                      <entry key="backgroundColor" value="ffffff" />
+                                      <entry key="previewDensity" value="HIGH" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -230,7 +241,8 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="D:\Project\Buyt\app\src\main\base_hi_res_512.png" />
+                                                <entry key="imagePath" value="D:\Android\Buyt\style-guide\new-logo-3-converted-for-android.svg" />
+                                                <entry key="paddingPercent" value="-10" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -263,7 +275,7 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="D:\Project\Buyt\app\src\main\base_hi_res_512.png" />
+                                      <entry key="imageAsset" value="D:\Android\Buyt\style-guide\new-logo-3-converted-for-android.svg" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -339,6 +351,11 @@
                                           </PersistentState>
                                         </value>
                                       </entry>
+                                    </map>
+                                  </option>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="previewDensity" value="HIGH" />
                                     </map>
                                   </option>
                                 </PersistentState>

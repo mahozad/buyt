@@ -5,6 +5,12 @@
 
 See https://en.wikipedia.org/wiki/Portmanteau
 
+## The logo
+source: new-logo-hidden-parts-removed.svg
+foreground
+	trim: no
+	resize: 70%
+
 a good android example: https://proandroiddev.com/android-architecture-starring-kotlin-coroutines-jetpack-mvvm-room-paging-retrofit-and-dagger-7749b2bae5f7
 
 # Mention in the about screen that some icons are adapted and inspired by other icons found on web
