@@ -46,7 +46,7 @@ class StoresAdapter(private val frag: Fragment, private val viewModel: StoresVie
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoreHolder {
         val itemView = LayoutInflater.from(parent.context)
                 .inflate(R.layout.store_list_row, parent, false)
-        itemView.lineChart.setTypeface(getFont(frag.requireContext(), R.font.vazir_scaled_down)!!)
+        itemView.lineChart.setTypeface(getFont(frag.requireContext(), R.font.vazir_wol_v_26_0_2_scaled_uniformly_to_94_percent)!!)
         return StoreHolder(itemView)
     }
 

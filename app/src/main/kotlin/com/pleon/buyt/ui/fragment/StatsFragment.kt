@@ -36,7 +36,7 @@ class StatsFragment : BaseFragment() {
         }
 
         pieSliceColors = resources.getIntArray(R.array.pieChartColors)
-        lineChart.setTypeface(getFont(requireContext(), R.font.vazir_scaled_down)!!)
+        lineChart.setTypeface(getFont(requireContext(), R.font.vazir_wol_v_26_0_2_scaled_uniformly_to_94_percent)!!)
     }
 
     private fun showStats(stats: Stats) = with(stats) {

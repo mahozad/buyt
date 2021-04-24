@@ -51,11 +51,11 @@ class PieChartView : View {
     private val tempPoint = Point()
 
     constructor(cxt: Context) : super(cxt) {
-        mPaint.typeface = ResourcesCompat.getFont(cxt, R.font.vazir_scaled_down)
+        mPaint.typeface = ResourcesCompat.getFont(cxt, R.font.vazir_wol_v_26_0_2_scaled_uniformly_to_94_percent)
     }
 
     constructor(cxt: Context, attrs: AttributeSet?) : super(cxt, attrs) {
-        mPaint.typeface = ResourcesCompat.getFont(cxt, R.font.vazir_scaled_down)
+        mPaint.typeface = ResourcesCompat.getFont(cxt, R.font.vazir_wol_v_26_0_2_scaled_uniformly_to_94_percent)
     }
 
     fun startAnim(duration: Long) {

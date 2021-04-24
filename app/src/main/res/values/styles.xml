@@ -9,8 +9,8 @@
         <!-- Reassign the material colorSurface to fix color of quantity btns -->
         <item name="colorSurface">#181818</item>
 
-        <item name="android:fontFamily">@font/vazir_scaled_down</item>
-        <item name="fontFamily">@font/vazir_scaled_down</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
+        <item name="android:fontFamily">@font/vazir_wol_v_26_0_2_scaled_uniformly_to_94_percent</item>
+        <item name="fontFamily">@font/vazir_wol_v_26_0_2_scaled_uniformly_to_94_percent</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
 
         <item name="dateHeaderOverlayColor">@color/elevationOverlay6dp</item>
         <item name="rearCardBgColor">#4A4C4A</item>
@@ -34,8 +34,8 @@
         <!-- Reassign the material colorSurface to fix color of quantity btns -->
         <item name="colorSurface">@android:color/white</item>
 
-        <item name="android:fontFamily">@font/vazir_scaled_down</item>
-        <item name="fontFamily">@font/vazir_scaled_down</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
+        <item name="android:fontFamily">@font/vazir_wol_v_26_0_2_scaled_uniformly_to_94_percent</item>
+        <item name="fontFamily">@font/vazir_wol_v_26_0_2_scaled_uniformly_to_94_percent</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
 
         <item name="dateHeaderOverlayColor">#1C000000</item>
         <item name="rearCardBgColor">#CCC</item>
@@ -61,8 +61,8 @@
         <!-- Reassign the material colorSurface to fix color of quantity btns -->
         <item name="colorSurface">@android:color/white</item>
 
-        <item name="android:fontFamily">@font/vazir_scaled_down</item>
-        <item name="fontFamily">@font/vazir_scaled_down</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
+        <item name="android:fontFamily">@font/vazir_wol_v_26_0_2_scaled_uniformly_to_94_percent</item>
+        <item name="fontFamily">@font/vazir_wol_v_26_0_2_scaled_uniformly_to_94_percent</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
 
         <item name="dateHeaderOverlayColor">#1C000000</item>
         <item name="rearCardBgColor">#CCC</item>
