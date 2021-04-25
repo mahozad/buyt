@@ -35,6 +35,7 @@ To scale a font down/up do [this](https://www.fonttutorials.com/how-to-scale-gly
 
 TODO list:
 
+- [x] Add an option to settings to toggle the line chart y axis between regular and logarithmic values
 - [x] if the bottomAppBar is hidden (by scrolling) and then you expand an Item, the fab jumps up
       The bug seems to have nothing to do with the expanding animation and persists even without that animation
 - [x] Add a button (custom view) at the end of SelectionListAdapter to create a new Store
@@ -50,10 +51,10 @@ TODO list:
 - [x] Update the string "کالای ... حذف شد" to "... حذف شد" 
 - [x] In already bought section show a prompt in the store dialog when there is no store
 - [ ] For application first run add some placeholder items and explain in the item title how to delete them and so on
-- [ ] Show extended stats about items (most purchased items, most expensive items and so on) and stores
-- [ ] Reimplement the item suggestion popup
+- [x] Show extended stats about items (most purchased items, most expensive items and so on) and stores
+- [x] Reimplement the item suggestion popup
 - [ ] Add ability to backup all the data to user google drive account
-- [ ] Add ability to export all the user data to xml, json, csv and so on
+- [x] Add ability to export all the user data to xml, json, csv and so on
 - [ ] Add ability to delete all application data (can just insert a shortcut to app settings -> clear data)
 - [x] Add automatic theme option which adapts to system theme (= day/night theme)
 - [ ] Remove all nullable values and null checks
@@ -76,8 +77,7 @@ TODO list:
 - [ ] Enable the user to disable location rationale dialog and always enter stores manually
 - [ ] What is Spherical Law of Cosines? (for locations)
 - [ ] Try to first provide an MVP (minimally viable product) version of the app
-- [ ] Make viewing stores on map a premium feature
-- [ ] Add ability to remove all app data
+- [ ] Add a button to store cards which opens the store location in a map application
 - [ ] Add android.support.annotation to the app
 - [ ] For every new version of the app display a what's new page on first app open
 - [ ] Use list-item selection in recycler view;
