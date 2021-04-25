@@ -14,10 +14,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.pleon.buyt.R
 import com.pleon.buyt.database.dao.PurchaseDao
 import com.pleon.buyt.isPremium
+import com.pleon.buyt.serializer.PurchaseDetailsCSVSerializer
+import com.pleon.buyt.serializer.PurchaseDetailsHTMLSerializer
+import com.pleon.buyt.serializer.PurchaseDetailsXMLSerializer
 import com.pleon.buyt.ui.activity.MainActivity
-import com.pleon.buyt.util.PurchaseDetailsCSVSerializer
-import com.pleon.buyt.util.PurchaseDetailsHTMLSerializer
-import com.pleon.buyt.util.PurchaseDetailsXMLSerializer
 import kotlinx.android.synthetic.main.export_data_widget_layout.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
@@ -42,6 +42,7 @@ const val DEFAULT_THEME_NAME = PREF_THEME_DARK
 const val DEFAULT_THEME_STYLE_RES = R.style.DarkTheme
 private const val DEFAULT_EXPORT_FILE_NAME = "buyt-purchase-data"
 
+@Suppress("unused")
 class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeListener {
 
     /**
