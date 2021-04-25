@@ -110,14 +110,14 @@ class PieChartView : View {
             temp.drawCircle(mWidth / 2f, mHeight / 2f, radius.toFloat(), mPaint)
         }
 
-        val sum = slices.sumBy(Slice::weight).toFloat()
+        val sum = slices.sumOf(Slice::weight).toFloat()
 
         var startRadius = defaultStartAngle.toFloat()
         var sumRadius = 0f
         leftTypeList.clear()
         rightTypeList.clear()
         for ((index, slice) in slices.withIndex()) {
-            slice.radius = slice.weight / sum * 360f
+            slice.radius = slice.weight.toFloat() / sum * 360f
             val al = 2.0 * PI * ((startRadius + 90) / 360.0)
             tempPoint.set((mWidth / 2 + radius * sin(al)).toInt(), (mHeight / 2 - radius * cos(al)).toInt())
 
@@ -268,7 +268,7 @@ class PieChartView : View {
         this.textPadding = textPadding
     }
 
-    class Slice(var type: String, var weight: Int, var color: Int) {
+    class Slice(var type: String, var weight: Double, var color: Int) {
         var radius: Float = 0f
         val percent: String get() = formatPercent(radius / 360f)
     }

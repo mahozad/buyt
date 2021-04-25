@@ -4,10 +4,14 @@ import android.content.Context
 import android.graphics.Paint
 import androidx.core.content.ContextCompat.getColor
 import com.db.chart.model.LineSet
+import com.db.chart.renderer.AxisRenderer.LabelPosition.INSIDE
 import com.db.chart.renderer.AxisRenderer.LabelPosition.NONE
 import com.db.chart.view.LineChartView
 import com.pleon.buyt.R
+import com.pleon.buyt.ui.fragment.PREF_LOG_SCALE
+import org.jetbrains.anko.defaultSharedPreferences
 import java.text.DecimalFormat
+import kotlin.math.log10
 
 fun buildLineChart(cxt: Context,
                    chartView: LineChartView,
@@ -21,11 +25,13 @@ fun buildLineChart(cxt: Context,
                    gridCols: Int = 0): LineChartView {
 
     chartView.reset()
+    val isLogScale = cxt.defaultSharedPreferences.getBoolean(PREF_LOG_SCALE, false)
 
     val dataSet = LineSet()
     var isEmpty = true
     for (datum in data) {
-        dataSet.addPoint(datum.getLabel(), datum.getValue())
+        val value = if (isLogScale) log10(datum.getValue() + 1) else datum.getValue()
+        dataSet.addPoint(datum.getLabel(), value)
         if (datum.getValue() > 0) isEmpty = false
     }
 
@@ -55,6 +61,7 @@ fun buildLineChart(cxt: Context,
     chartView.setLabelsFormat(DecimalFormat(cxt.getString(R.string.currency_format)))
             .setGrid(gridRows, gridCols, gridPaint)
             .setXLabels(NONE)
+            .setYLabels(if (isLogScale) NONE else INSIDE)
             .addData(dataSet)
 
     return chartView

@@ -141,6 +141,7 @@
     <string name="pref_title_theme">Theme</string>
     <string name="pref_title_theme_disabled">Theme (premium version only)</string>
     <string name="pref_title_vibrate">Vibrate when store found</string>
+    <string name="pref_title_log_scale">Show charts in logarithmic scale</string>
     <string name="pref_title_search_radius">Stores search distance</string>
     <string name="dialog_title_select_theme">Select theme</string>
 

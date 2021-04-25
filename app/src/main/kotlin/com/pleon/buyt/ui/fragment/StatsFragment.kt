@@ -1,6 +1,7 @@
 package com.pleon.buyt.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
@@ -19,7 +20,9 @@ import com.pleon.buyt.util.formatPrice
 import com.pleon.buyt.viewmodel.StatsViewModel
 import com.pleon.buyt.viewmodel.StatsViewModel.Period
 import kotlinx.android.synthetic.main.fragment_stats.*
+import org.jetbrains.anko.defaultSharedPreferences
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import kotlin.math.log10
 
 private const val PIE_MAX_SLICES = 5
 
@@ -67,12 +70,15 @@ class StatsFragment : BaseFragment() {
 
     private fun showPieChart(categorySums: List<CategorySum>) {
         pieChart.clearData()
+        val isLogScale = requireContext().defaultSharedPreferences.getBoolean(PREF_LOG_SCALE, false)
         categorySums.take(PIE_MAX_SLICES - 1).forEachIndexed { index, categorySum ->
+            val value = if (isLogScale) log10(categorySum.value + 1.0) else categorySum.value.toDouble()
             val sliceName = getString(Category.valueOf(categorySum.name).nameRes)
-            pieChart.addSlice(Slice(sliceName, categorySum.value, pieSliceColors[index]))
+            pieChart.addSlice(Slice(sliceName, value, pieSliceColors[index]))
         }
-        val other = categorySums.drop(PIE_MAX_SLICES - 1).sumBy(CategorySum::value)
-        if (other > 0) pieChart.addSlice(Slice(getString(R.string.pie_chart_other), other, pieSliceColors[PIE_MAX_SLICES - 1]))
+        val other = categorySums.drop(PIE_MAX_SLICES - 1).sumOf(CategorySum::value)
+        val value = if (isLogScale) log10(other.toDouble()) else other.toDouble()
+        if (other > 0) pieChart.addSlice(Slice(getString(R.string.pie_chart_other), value, pieSliceColors[PIE_MAX_SLICES - 1]))
         pieChart.startAnim(480)
     }
 }
