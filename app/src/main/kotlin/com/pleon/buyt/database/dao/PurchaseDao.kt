@@ -61,6 +61,15 @@ abstract class PurchaseDao {
         GROUP BY weekday
         ORDER BY sum DESC
         LIMIT 1;""")
+    protected abstract fun getWeekdayWithMaxPurchaseValue(period: Int, filter: String): Int
+
+    @Query("""
+        SELECT STRFTIME('%w', date, 'unixepoch', 'localtime') AS weekday, count(purchaseId) AS purchaseCount
+        FROM Purchase NATURAL JOIN Item
+        WHERE $PERIOD_AND_FILTER_CLAUSE
+        GROUP BY weekday
+        ORDER BY purchaseCount DESC
+        LIMIT 1;""")
     protected abstract fun getWeekdayWithMaxPurchaseCount(period: Int, filter: String): Int
 
     @Query("""
