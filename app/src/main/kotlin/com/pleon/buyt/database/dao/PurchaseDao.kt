@@ -45,7 +45,7 @@ abstract class PurchaseDao {
         stats.weekdayWithMaxPurchaseCount = getWeekdayWithMaxPurchaseCount(adjustedPeriod, filter.criterion)
         stats.storeWithMaxPurchaseCount = getStoreWithMaxPurchaseCount(adjustedPeriod, filter.criterion)
         stats.mostPurchasedCategories = getMostPurchasedCategories(adjustedPeriod, filter.criterion)
-        stats.mostPurchasedItem = getMostPurchasedItems(adjustedPeriod, filter.criterion)
+        stats.mostPurchasedItem = getMostPurchasedItem(adjustedPeriod, filter.criterion)
 
         return stats
     }
@@ -90,7 +90,7 @@ abstract class PurchaseDao {
         GROUP BY Item.name
         ORDER BY purchaseCount DESC
         LIMIT 1;""")
-    protected abstract fun getMostPurchasedItems(period: Int, filter: String): MostPurchasedItemDto
+    protected abstract fun getMostPurchasedItem(period: Int, filter: String): MostPurchasedItemDto
 
     @Query("""
         SELECT MAX(cost) FROM (SELECT SUM(totalPrice) AS cost
