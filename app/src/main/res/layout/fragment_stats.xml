@@ -288,6 +288,15 @@
                     app:layout_constraintStart_toEndOf="@id/barrier2"
                     tools:text="TextView" />
 
+                <TextView
+                    android:id="@+id/textView23"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/textView8"
+                    app:layout_constraintStart_toEndOf="@id/barrier2"
+                    tools:text="TextView" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>
