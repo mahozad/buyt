@@ -30,19 +30,22 @@ abstract class PurchaseDao {
      */
     @Transaction
     open fun getStats(period: Int, filter: Filter): Stats {
-        val realPeriod = period - 1 // The queries return one extra day so subtract 1
+        val adjustedPeriod = period - 1 // The queries return one extra day so subtract 1
         val stats = Stats()
 
-        stats.dailyCosts = getDailyCosts(realPeriod, filter.criterion)
-        stats.numberOfPurchases = getNumberOfPurchases(realPeriod, filter.criterion)
-        stats.totalPurchaseCost = getTotalPurchaseCost(realPeriod, filter.criterion)
-        stats.maxPurchaseCost = getMaxPurchaseCost(realPeriod, filter.criterion)
-        stats.minPurchaseCost = getMinPurchaseCost(realPeriod, filter.criterion)
-        stats.averagePurchaseCost = getAveragePurchaseCost(realPeriod, filter.criterion)
-        stats.weekdayWithMaxPurchases = getWeekdayWithMaxPurchaseCount(realPeriod, filter.criterion)
-        stats.storeWithMaxPurchaseCount = getStoreWithMaxPurchaseCount(realPeriod, filter.criterion)
-        stats.mostPurchasedCategories = getMostPurchasedCategories(realPeriod, filter.criterion)
-        stats.mostPurchasedItem = getMostPurchasedItems(realPeriod, filter.criterion)
+        // NOTE: Use the Item::Category everywhere you should filter on Category
+        //  because it is the single source of truth that we consider as Category
+
+        stats.dailyCosts = getDailyCosts(adjustedPeriod, filter.criterion)
+        stats.numberOfPurchases = getNumberOfPurchases(adjustedPeriod, filter.criterion)
+        stats.totalPurchaseCost = getTotalPurchaseCost(adjustedPeriod, filter.criterion)
+        stats.maxPurchaseCost = getMaxPurchaseCost(adjustedPeriod, filter.criterion)
+        stats.minPurchaseCost = getMinPurchaseCost(adjustedPeriod, filter.criterion)
+        stats.averagePurchaseCost = getAveragePurchaseCost(adjustedPeriod, filter.criterion)
+        stats.weekdayWithMaxPurchases = getWeekdayWithMaxPurchaseCount(adjustedPeriod, filter.criterion)
+        stats.storeWithMaxPurchaseCount = getStoreWithMaxPurchaseCount(adjustedPeriod, filter.criterion)
+        stats.mostPurchasedCategories = getMostPurchasedCategories(adjustedPeriod, filter.criterion)
+        stats.mostPurchasedItem = getMostPurchasedItems(adjustedPeriod, filter.criterion)
 
         return stats
     }
