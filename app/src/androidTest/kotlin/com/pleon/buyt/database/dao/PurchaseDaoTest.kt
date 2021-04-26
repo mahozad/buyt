@@ -165,7 +165,8 @@ class PurchaseDaoTest {
 
         val stats = purchaseDao.getStats(period = 7, NoFilter)
 
-        Assertions.assertThat(stats.weekdayWithMaxPurchaseCount).isEqualTo(dateWithMaxPurchaseCount.day)
+        Assertions.assertThat(stats.weekdayWithMaxPurchaseCount?.weekday).isEqualTo(dateWithMaxPurchaseCount.day)
+        Assertions.assertThat(stats.weekdayWithMaxPurchaseCount?.purchaseCount).isEqualTo(2)
     }
 
 
