@@ -137,7 +137,7 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
                 //  might have finished running and therefor closed the descriptor.
                 doAsync {
                     val parcelDescriptor = contentResolver.openFileDescriptor(uri, "w")
-                    val purchaseDetails = purchaseDao.getAllPurchaseDetails()
+                    val purchaseDetails = purchaseDao.getAllPurchaseDetailsSynchronous()
                     val writer = FileWriter(parcelDescriptor!!.fileDescriptor).buffered()
                     serializer.setUpdateListener { progress, fragment ->
                         writer.write(fragment)

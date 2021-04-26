@@ -151,21 +151,24 @@ abstract class PurchaseDao {
     protected abstract fun getMostPurchasedCategories(period: Int, filter: String): List<CategorySum>
 
     @Query("""
-        SELECT * FROM Purchase NATURAL JOIN Item
+        SELECT *
+        FROM Purchase NATURAL JOIN Item
         WHERE $PERIOD_AND_FILTER_CLAUSE
         GROUP BY purchaseId
         ORDER BY date DESC""")
     abstract fun getPurchaseDetails(period: Int, filter: String): LiveData<List<PurchaseDetail>>
 
     @Query("""
-        SELECT * FROM Purchase NATURAL JOIN Item
+        SELECT *
+        FROM Purchase NATURAL JOIN Item
         GROUP BY purchaseId
         ORDER BY date DESC""")
-    abstract fun getAllPurchaseDetails(): List<PurchaseDetail>
+    abstract fun getAllPurchaseDetailsSynchronous(): List<PurchaseDetail>
 
     @Transaction
     open fun getPurchaseCountInPeriod(period: Int): Int {
-        return getCountInPeriod(period - 1) // The queries return one extra day so do period-1
+        val adjustedPeriod = period - 1 // The queries return one extra day so subtract 1
+        return getCountInPeriod(adjustedPeriod)
     }
 
     @Query("""SELECT Count(*) FROM Purchase WHERE $PERIOD_CLAUSE""")

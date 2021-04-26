@@ -169,7 +169,6 @@ class PurchaseDaoTest {
         Assertions.assertThat(stats.weekdayWithMaxPurchaseCount?.purchaseCount).isEqualTo(2)
     }
 
-
     @AfterEach
     fun tearDown() {
         database.close()
