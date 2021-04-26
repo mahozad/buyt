@@ -24,7 +24,7 @@
     <color name="materialWindowBgColor">#EFEFEF</color>
     <!-- This color is the 700 shade of the colorPrimary -->
     <color name="splashScreenBgColor">#5b9a1e</color>
-    <color name="lineChartLineColor">@color/colorPrimaryDark</color>
+    <color name="lineChartLineColor">@color/colorPrimary</color>
     <color name="chartEmptyColor">#AA888888</color>
     <color name="chartGridColor">#33888888</color>
     <color name="emptyHintDarkColor">#3A3A3A</color>
