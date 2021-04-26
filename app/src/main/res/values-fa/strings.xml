@@ -209,7 +209,7 @@
         <item quantity="one">"%1$s تومان"</item>
         <item quantity="other">"%1$s تومان"</item>
     </plurals>
-    <plurals name="item_purchase_count">
+    <plurals name="purchase_count">
         <item quantity="one">"%1$s خرید"</item>
         <item quantity="other">"%1$s خرید"</item>
     </plurals>

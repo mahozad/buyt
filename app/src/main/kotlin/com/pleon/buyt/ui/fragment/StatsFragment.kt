@@ -52,7 +52,7 @@ class StatsFragment : BaseFragment() {
         textView9.setText(weekdayNameResWithMaxPurchases ?: R.string.no_value)
         textView20.text = mostPurchasedItem?.name ?: getString(R.string.no_value)
         textView21.visibility = if (mostPurchasedItem == null) INVISIBLE else VISIBLE
-        textView21.text = resources.getQuantityString(R.plurals.item_purchase_count,
+        textView21.text = resources.getQuantityString(R.plurals.purchase_count,
                 mostPurchasedItem?.purchaseCount ?: 0,
                 formatNumber(mostPurchasedItem?.purchaseCount ?: 0))
     }

@@ -267,7 +267,7 @@
         <item quantity="one">"%1$s dollar"</item>
         <item quantity="other">"%1$s dollars"</item>
     </plurals>
-    <plurals name="item_purchase_count">
+    <plurals name="purchase_count">
         <!-- For zero android will use plural form like 0 books -->
         <item quantity="one">"%1$s purchase"</item>
         <item quantity="other">"%1$s purchases"</item>
