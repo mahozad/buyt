@@ -28,12 +28,16 @@ private const val PIE_MAX_SLICES = 5
 class StatsFragment : BaseFragment() {
 
     @ColorInt private lateinit var pieSliceColors: IntArray
+    @Volatile private var isStartup = true // Required due to LiveData called twice on startup
     private val viewModel by sharedViewModel<StatsViewModel>()
 
     override fun layout() = R.layout.fragment_stats
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
-        viewModel.stats.observe(viewLifecycleOwner, this::showStats)
+        viewModel.stats.observe(viewLifecycleOwner) { stats ->
+            showStats(stats)
+            isStartup = false
+        }
         pieSliceColors = resources.getIntArray(R.array.pieChartColors)
         lineChart.setTypeface(getFont(requireContext(), R.font.vazir_wol_v_26_0_2_scaled_uniformly_to_94_percent)!!)
     }
@@ -71,8 +75,8 @@ class StatsFragment : BaseFragment() {
             dailyCosts.size > Period.NARROW.length -> 6f
             else -> 8f
         }
-        buildLineChart(requireContext(), lineChart, dailyCosts, dotsRadius = dotRadius)
-                .show(Animation(500))
+        val lineChart = buildLineChart(requireContext(), lineChart, dailyCosts, dotsRadius = dotRadius)
+        if (isStartup) lineChart.show() else lineChart.show(Animation(500))
     }
 
     private fun showPieChart(categorySums: List<CategorySum>) {
@@ -86,6 +90,6 @@ class StatsFragment : BaseFragment() {
         val other = categorySums.drop(PIE_MAX_SLICES - 1).sumOf(CategorySum::value)
         val value = if (isLogScale) log10(other.toDouble()) else other.toDouble()
         if (other > 0) pieChart.addSlice(Slice(getString(R.string.pie_chart_other), value, pieSliceColors[PIE_MAX_SLICES - 1]))
-        pieChart.startAnim(480)
+        pieChart.startAnim(if (isStartup) 0 else 480)
     }
 }
