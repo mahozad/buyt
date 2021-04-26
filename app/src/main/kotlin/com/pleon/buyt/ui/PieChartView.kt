@@ -12,11 +12,9 @@ import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.res.ResourcesCompat
 import com.pleon.buyt.R
 import com.pleon.buyt.util.formatPercent
+import org.jetbrains.anko.dip
 import org.jetbrains.anko.sp
 import kotlin.math.*
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffXfermode
-import android.graphics.Bitmap
 
 /**
  * Adopted from [https://github.com/luweibin3118/PieChartView]
@@ -168,7 +166,7 @@ class PieChartView : View {
             mPath.lineTo(centerPoint.x.toFloat(), centerPoint.y.toFloat())
             mPath.lineTo(endPoint.x.toFloat(), endPoint.y.toFloat())
             resetPaint()
-            mPaint.strokeWidth = 2f
+            mPaint.strokeWidth = dip(1.85f).toFloat()
             mPaint.color = slice.color
             mPaint.style = Paint.Style.STROKE
             mPathMeasure.setPath(mPath, false)
@@ -183,7 +181,7 @@ class PieChartView : View {
                 mPaint.textAlign = Paint.Align.CENTER
                 mPaint.alpha = textAlpha
                 canvas.drawText(slice.type, (centerPoint.x + (endPoint.x - centerPoint.x) / 2).toFloat(),
-                        (centerPoint.y - textPadding).toFloat(), mPaint)
+                        centerPoint.y - (textPadding * 2.4f), mPaint)
                 mPaint.textSize = itemTextSize * 0.85f
                 canvas.drawText(slice.percent, (centerPoint.x + (endPoint.x - centerPoint.x) / 2).toFloat(),
                         centerPoint.y + (itemTextSize + textPadding) * 0.8f, mPaint)
@@ -206,7 +204,7 @@ class PieChartView : View {
             mPath.lineTo(centerPoint.x.toFloat(), centerPoint.y.toFloat())
             mPath.lineTo(endPoint.x.toFloat(), endPoint.y.toFloat())
             resetPaint()
-            mPaint.strokeWidth = 2f
+            mPaint.strokeWidth = dip(1.85f).toFloat()
             mPaint.color = slice.color
             mPaint.isAntiAlias = true
             mPaint.isDither = true
@@ -223,7 +221,7 @@ class PieChartView : View {
                 mPaint.textAlign = Paint.Align.CENTER
                 mPaint.alpha = textAlpha
                 canvas.drawText(slice.type, (centerPoint.x + (endPoint.x - centerPoint.x) / 2).toFloat(),
-                        (centerPoint.y - textPadding).toFloat(), mPaint)
+                        centerPoint.y - (textPadding * 2.4f), mPaint)
                 mPaint.textSize = itemTextSize * 0.85f
                 canvas.drawText(slice.percent, (centerPoint.x + (endPoint.x - centerPoint.x) / 2).toFloat(),
                         centerPoint.y + (itemTextSize + textPadding) * 0.8f, mPaint)
