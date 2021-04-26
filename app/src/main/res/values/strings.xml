@@ -242,7 +242,7 @@
     <string name="dialog_app_info_desc_logo">In addition to showing the letter <i>B</i> for <i>Buyt</i>, it is composed of two pin shapes that are traditionally used to denote location.</string>
     <string name="intro_description_1">Add your items to the shopping list. By typing a few characters, Buyt will suggest related items and their corresponding category.</string>
     <string name="intro_description_2">Inside or near the store like in your car, tap the search button to find the store and complete your purchase. You can skip this step if the store is already saved.</string>
-    <string name="intro_description_3">Statistics, charts, and purchase details are available with the ability to change the period and to set filter on them. A 30-day chart is also available for stores.</string>
+    <string name="intro_description_3">Statistics, charts, and purchase details are available with the ability to change the period and to set filter on them. All the purchases can be exported too.</string>
     <string name="purchase_empty_hint">No purchase!</string>
     <string name="dialog_title_billing_error">Cannot initiate purchase</string>
     <string name="btn_text_upgrade_to_premium">Upgrade to premium</string>
