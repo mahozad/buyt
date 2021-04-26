@@ -9,7 +9,6 @@ import com.pleon.buyt.database.converter.DateConverter
 import com.pleon.buyt.database.dto.*
 import com.pleon.buyt.model.Category
 import com.pleon.buyt.model.Purchase
-import com.pleon.buyt.model.Store
 import com.pleon.buyt.viewmodel.StatsViewModel.Filter
 import java.text.DateFormat
 import java.util.*
@@ -73,13 +72,13 @@ abstract class PurchaseDao {
     protected abstract fun getWeekdayWithMaxPurchaseCount(period: Int, filter: String): Int
 
     @Query("""
-        SELECT Store.*
-        FROM Purchase NATURAL JOIN Store JOIN Item ON Purchase.purchaseId=Item.purchaseId
+        SELECT Store.name, COUNT(DISTINCT Purchase.purchaseId) AS purchaseCount
+        FROM Purchase NATURAL JOIN Store JOIN Item ON Item.purchaseId = Purchase.purchaseId
         WHERE $PERIOD_CLAUSE AND (:filter = 'NoFilter' OR Item.category = :filter)
-        GROUP BY Purchase.storeId
-        ORDER BY COUNT(purchase.storeId) DESC
+        GROUP BY storeId
+        ORDER BY purchaseCount DESC
         LIMIT 1;""")
-    protected abstract fun getStoreWithMaxPurchaseCount(period: Int, filter: String): Store
+    protected abstract fun getStoreWithMaxPurchaseCount(period: Int, filter: String): StoreWithMostPurchaseCountDto
 
     @Query("""
         SELECT Item.name, COUNT(Item.name) AS purchaseCount 

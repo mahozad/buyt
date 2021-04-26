@@ -1,7 +1,6 @@
 package com.pleon.buyt.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
@@ -49,6 +48,10 @@ class StatsFragment : BaseFragment() {
         textView6.text = formatPrice(maxPurchaseCost)
         textView7.text = formatPrice(minPurchaseCost)
         textView17.text = storeWithMaxPurchaseCount?.name ?: getString(R.string.no_value)
+        textView22.visibility = if (storeWithMaxPurchaseCount == null) INVISIBLE else VISIBLE
+        textView22.text = resources.getQuantityString(R.plurals.purchase_count,
+                storeWithMaxPurchaseCount?.purchaseCount ?: 0,
+                formatNumber(storeWithMaxPurchaseCount?.purchaseCount ?: 0))
         textView9.setText(weekdayNameResWithMaxPurchases ?: R.string.no_value)
         textView20.text = mostPurchasedItem?.name ?: getString(R.string.no_value)
         textView21.visibility = if (mostPurchasedItem == null) INVISIBLE else VISIBLE

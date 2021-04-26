@@ -8,7 +8,7 @@ class Stats {
     lateinit var dailyCosts: List<DailyCost>
     lateinit var mostPurchasedCategories: List<CategorySum>
     var mostPurchasedItem: MostPurchasedItemDto? = null
-    var storeWithMaxPurchaseCount: Store? = null
+    var storeWithMaxPurchaseCount: StoreWithMostPurchaseCountDto? = null
     var numberOfPurchases = 0L
     var totalPurchaseCost = 0L
     var maxPurchaseCost = 0L
