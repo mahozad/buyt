@@ -37,12 +37,12 @@ abstract class PurchaseDao {
         //  because it is the single source of truth that we consider as Category
 
         stats.dailyCosts = getDailyCosts(adjustedPeriod, filter.criterion)
-        stats.numberOfPurchases = getNumberOfPurchases(adjustedPeriod, filter.criterion)
+        stats.totalPurchaseCount = getTotalPurchaseCount(adjustedPeriod, filter.criterion)
         stats.totalPurchaseCost = getTotalPurchaseCost(adjustedPeriod, filter.criterion)
         stats.maxPurchaseCost = getMaxPurchaseCost(adjustedPeriod, filter.criterion)
         stats.minPurchaseCost = getMinPurchaseCost(adjustedPeriod, filter.criterion)
         stats.averagePurchaseCost = getAveragePurchaseCost(adjustedPeriod, filter.criterion)
-        stats.weekdayWithMaxPurchases = getWeekdayWithMaxPurchaseCount(adjustedPeriod, filter.criterion)
+        stats.weekdayWithMaxPurchaseCount = getWeekdayWithMaxPurchaseCount(adjustedPeriod, filter.criterion)
         stats.storeWithMaxPurchaseCount = getStoreWithMaxPurchaseCount(adjustedPeriod, filter.criterion)
         stats.mostPurchasedCategories = getMostPurchasedCategories(adjustedPeriod, filter.criterion)
         stats.mostPurchasedItem = getMostPurchasedItems(adjustedPeriod, filter.criterion)
@@ -54,7 +54,7 @@ abstract class PurchaseDao {
     protected abstract fun getTotalPurchaseCost(period: Int, filter: String): Long
 
     @Query("""SELECT COUNT(DISTINCT purchaseId) FROM Purchase NATURAL JOIN Item WHERE $PERIOD_AND_FILTER_CLAUSE""")
-    protected abstract fun getNumberOfPurchases(period: Int, filter: String): Long
+    protected abstract fun getTotalPurchaseCount(period: Int, filter: String): Long
 
     @Query("""
         SELECT STRFTIME('%w', date, 'unixepoch', 'localtime') AS weekday, SUM(totalPrice) AS sum
@@ -63,14 +63,14 @@ abstract class PurchaseDao {
         GROUP BY weekday
         ORDER BY sum DESC
         LIMIT 1;""")
-    protected abstract fun getWeekdayWithMaxPurchaseValue(period: Int, filter: String): Int
+    protected abstract fun getWeekdayWithMaxPurchaseCost(period: Int, filter: String): Int
 
     @Query("""
         SELECT STRFTIME('%w', date, 'unixepoch', 'localtime') AS weekday
         FROM Purchase NATURAL JOIN Item
         WHERE $PERIOD_AND_FILTER_CLAUSE
         GROUP BY weekday
-        ORDER BY count(purchaseId) DESC
+        ORDER BY COUNT(DISTINCT purchaseId) DESC
         LIMIT 1;""")
     protected abstract fun getWeekdayWithMaxPurchaseCount(period: Int, filter: String): Int
 

@@ -77,8 +77,7 @@ class PurchaseDaoTest {
         val item4 = Item("item4", Item.Quantity(1, UNIT), GROCERY, false, isBought = true)
 
         val store1 = Store(Coordinates(1.0, 2.0), "store", GROCERY)
-        val store1Id = storeDao.insert(store1)
-        store1.storeId = store1Id
+        val store1Id = storeDao.insert(store1).also { store1.storeId = it }
 
         val purchase1 = Purchase(Date()).apply { storeId = store1Id }
         val purchase2 = Purchase(Date()).apply { storeId = store1Id }
@@ -112,8 +111,7 @@ class PurchaseDaoTest {
         val item4 = Item("item4", Item.Quantity(1, UNIT), GROCERY, false, isBought = true)
 
         val store1 = Store(Coordinates(1.0, 2.0), "store", MEAT)
-        val store1Id = storeDao.insert(store1)
-        store1.storeId = store1Id
+        val store1Id = storeDao.insert(store1).also { store1.storeId = it }
 
         val purchase1 = Purchase(Date()).apply { storeId = store1Id }
         val purchase2 = Purchase(Date()).apply { storeId = store1Id }
@@ -134,6 +132,40 @@ class PurchaseDaoTest {
         val stats = purchaseDao.getStats(period = 7, GROCERY)
 
         Assertions.assertThat(stats.storeWithMaxPurchaseCount?.purchaseCount).isEqualTo(2)
+    }
+
+    @Test fun shouldReturnCorrectWeekdayWithMaxPurchaseCount() {
+        val item1 = Item("item1", Item.Quantity(1, UNIT), GROCERY, false, isBought = false)
+        val item2 = Item("item2", Item.Quantity(1, UNIT), GROCERY, false, isBought = false)
+        val item3 = Item("item3", Item.Quantity(1, UNIT), GROCERY, false, isBought = false)
+        val item4 = Item("item4", Item.Quantity(1, UNIT), GROCERY, false, isBought = true)
+        val item5 = Item("item5", Item.Quantity(1, UNIT), GROCERY, false, isBought = true)
+
+        val store1 = Store(Coordinates(1.0, 2.0), "store", GROCERY)
+        val store1Id = storeDao.insert(store1).also { store1.storeId = it }
+
+        val dateWithMaxPurchaseCount = Date.from(Instant.now().minus(2, ChronoUnit.DAYS))
+        val purchase1 = Purchase(Date()).apply { storeId = store1Id }
+        val purchase2 = Purchase(dateWithMaxPurchaseCount).apply { storeId = store1Id }
+        val purchase3 = Purchase(dateWithMaxPurchaseCount).apply { storeId = store1Id }
+        val purchase1Id = purchaseDao.insert(purchase1)
+        val purchase2Id = purchaseDao.insert(purchase2)
+        val purchase3Id = purchaseDao.insert(purchase3)
+
+        item1.purchaseId = purchase1Id
+        item2.purchaseId = purchase1Id
+        item3.purchaseId = purchase1Id
+        item4.purchaseId = purchase2Id
+        item5.purchaseId = purchase3Id
+        itemDao.insert(item1)
+        itemDao.insert(item2)
+        itemDao.insert(item3)
+        itemDao.insert(item4)
+        itemDao.insert(item5)
+
+        val stats = purchaseDao.getStats(period = 7, NoFilter)
+
+        Assertions.assertThat(stats.weekdayWithMaxPurchaseCount).isEqualTo(dateWithMaxPurchaseCount.day)
     }
 
 

@@ -1,7 +1,6 @@
 package com.pleon.buyt.database.dto
 
 import com.pleon.buyt.database.dto.DailyCost.WeekDay
-import com.pleon.buyt.model.Store
 
 class Stats {
 
@@ -9,13 +8,13 @@ class Stats {
     lateinit var mostPurchasedCategories: List<CategorySum>
     var mostPurchasedItem: MostPurchasedItemDto? = null
     var storeWithMaxPurchaseCount: StoreWithMostPurchaseCountDto? = null
-    var numberOfPurchases = 0L
+    var totalPurchaseCount = 0L
     var totalPurchaseCost = 0L
     var maxPurchaseCost = 0L
     var minPurchaseCost = 0L
     var averagePurchaseCost = 0L
-    var weekdayWithMaxPurchases = 0
-    val weekdayNameResWithMaxPurchases: Int?
-        get() = if (numberOfPurchases != 0L) WeekDay.values()[weekdayWithMaxPurchases].nameStringRes else null
+    var weekdayWithMaxPurchaseCount = 0
+    val weekdayNameResWithMaxPurchaseCount: Int?
+        get() = if (totalPurchaseCount != 0L) WeekDay.values()[weekdayWithMaxPurchaseCount].nameStringRes else null
 
 }

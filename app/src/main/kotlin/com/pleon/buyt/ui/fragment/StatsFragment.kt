@@ -42,7 +42,7 @@ class StatsFragment : BaseFragment() {
         showLineChart(dailyCosts)
         showPieChart(mostPurchasedCategories)
 
-        textView18.text = formatNumber(numberOfPurchases)
+        textView18.text = formatNumber(totalPurchaseCount)
         textView3.text = formatPrice(totalPurchaseCost)
         textView.text = formatPrice(averagePurchaseCost)
         textView6.text = formatPrice(maxPurchaseCost)
@@ -52,7 +52,7 @@ class StatsFragment : BaseFragment() {
         textView22.text = resources.getQuantityString(R.plurals.purchase_count,
                 storeWithMaxPurchaseCount?.purchaseCount ?: 0,
                 formatNumber(storeWithMaxPurchaseCount?.purchaseCount ?: 0))
-        textView9.setText(weekdayNameResWithMaxPurchases ?: R.string.no_value)
+        textView9.setText(weekdayNameResWithMaxPurchaseCount ?: R.string.no_value)
         textView20.text = mostPurchasedItem?.name ?: getString(R.string.no_value)
         textView21.visibility = if (mostPurchasedItem == null) INVISIBLE else VISIBLE
         textView21.text = resources.getQuantityString(R.plurals.purchase_count,
