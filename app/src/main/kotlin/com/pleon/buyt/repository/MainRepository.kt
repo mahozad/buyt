@@ -49,7 +49,7 @@ class MainRepository(private val itemDao: ItemDao,
 
     fun getAllStores(): LiveData<List<Store>> {
         doAsync {
-            val stores = storeDao.getAllSync()
+            val stores = storeDao.getAllSynchronous()
             uiThread { allStores.value = stores }
         }
         return allStores
