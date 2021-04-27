@@ -167,7 +167,7 @@ dependencies {
     implementation(group = "androidx.recyclerview", name = "recyclerview", version = dependencyVersion["recyclerview"])
     implementation(group = "androidx.preference", name = "preference-ktx", version = dependencyVersion["preference"])
     implementation(group = "androidx.viewpager2", name = "viewpager2", version = dependencyVersion["viewpager"])
-    implementation(group = "org.koin", name = "koin-androidx-viewmodel", version = dependencyVersion["koin"])
+    implementation(group = "io.insert-koin", name = "koin-androidx-viewmodel", version = dependencyVersion["koin"])
     implementation(group = "androidx.room", name = "room-runtime", version = dependencyVersion["room"])
     kapt("androidx.room", name = "room-compiler", version = dependencyVersion["room"])
 
