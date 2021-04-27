@@ -262,7 +262,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:barrierDirection="end"
-                    app:constraint_referenced_ids="textView9,textView17,textView20,textView7,textView6,textView,textView3,textView18"
+                    app:constraint_referenced_ids="textView9,textView17,textView20"
                     app:layout_constraintEnd_toEndOf="parent" />
 
                 <TextView
@@ -270,6 +270,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:alpha="0.82"
                     app:layout_constraintBaseline_toBaselineOf="@+id/textView20"
                     app:layout_constraintStart_toEndOf="@id/barrier2"
                     tools:text="TextView" />
@@ -279,6 +280,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:alpha="0.82"
                     app:layout_constraintBaseline_toBaselineOf="@+id/textView17"
                     app:layout_constraintStart_toEndOf="@id/barrier2"
                     tools:text="TextView" />
@@ -288,6 +290,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:alpha="0.82"
                     app:layout_constraintBaseline_toBaselineOf="@+id/textView8"
                     app:layout_constraintStart_toEndOf="@id/barrier2"
                     tools:text="TextView" />
