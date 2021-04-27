@@ -33,11 +33,6 @@ import org.koin.java.KoinJavaComponent.inject
 const val SAMPLE_ITEM_NAME = "item"
 const val SAMPLE_PRICE = "123"
 
-/**
- * Note: Espresso suggests to turn off all three types of device animations
- *  in *Settings* 🡲 *Developer Settings* but this resulted
- *  in the tests to not complete and keep running forever.
- */
 @Tag("UI")
 class AddItemFragmentTest {
 

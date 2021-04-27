@@ -16,6 +16,12 @@ import org.junit.jupiter.api.extension.RegisterExtension
  * Espresso is aware that it needs to wait with assertions and view interactions
  * until an activity is launched and displayed on the screen.
  *
+ * Note: Espresso suggests to turn off all three types of device animations
+ *  in *Settings* 🡲 *Developer Settings* but this resulted
+ *  in the tests to not complete and keep running forever.
+ *
+ * You can also create tests graphically from Run -> Record Espresso Test
+ *
  * Sometimes your UI test passes ten times, then breaks on the eleventh attempt
  * for some mysterious reason. It’s called flakiness.
  * The most popular reason for flakiness is the instability of the UI
