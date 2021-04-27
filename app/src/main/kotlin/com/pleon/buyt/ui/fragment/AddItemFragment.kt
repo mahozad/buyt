@@ -1,5 +1,6 @@
 package com.pleon.buyt.ui.fragment
 
+import android.animation.ValueAnimator
 import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.os.Bundle
@@ -45,7 +46,8 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
         SelectDialogFragment.Callback, android.app.DatePickerDialog.OnDateSetListener {
 
     interface FullScreen {
-        fun expandToFullScreen(fragmentRootView: View)
+        val rootViewHeight: Int
+        val fragmentContainerView: View
     }
 
     var isScrollLocked = true
@@ -179,9 +181,23 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
             animateAlpha(bought, toAlpha = 1f, startDelay = 400)
             animateAlpha(dividerStart, toAlpha = 1f, startDelay = 400)
             animateAlpha(dividerEnd, toAlpha = 1f, startDelay = 400)
-            (activity as FullScreen).expandToFullScreen(parentView)
+            expandHeight(activity as FullScreen)
         }
         return true // consume the event
+    }
+
+    /**
+     * Note the android:fillViewport="true" on the scroll view
+     */
+    private fun expandHeight(activity: FullScreen) {
+        isScrollLocked = false
+        val containerView = activity.fragmentContainerView
+        val animator = ValueAnimator.ofInt(containerView.measuredHeight, activity.rootViewHeight)
+        animator.setDuration(300).addUpdateListener {
+            containerView.layoutParams.height = it.animatedValue as Int
+            containerView.layoutParams = containerView.layoutParams
+        }
+        animator.start()
     }
 
     private fun setupItemNameAutoComplete() {

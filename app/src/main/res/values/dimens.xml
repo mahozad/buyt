@@ -7,6 +7,6 @@
     <dimen name="intro_btn_margin_bottom">84dp</dimen>
     <dimen name="design_fab_size_mini" tools:override="true">48dp</dimen>
     <dimen name="wave_header_height">120dp</dimen>
-    <dimen name="frag_container_height">263dp</dimen>
+    <dimen name="frag_container_height">268dp</dimen>
     <dimen name="about_logo_size">128dp</dimen>
 </resources>

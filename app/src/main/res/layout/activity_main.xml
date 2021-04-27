@@ -39,7 +39,8 @@
         android:layout_height="@dimen/frag_container_height"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:background="?colorSurface" />
 
     <include layout="@layout/snackbar_container" />
 

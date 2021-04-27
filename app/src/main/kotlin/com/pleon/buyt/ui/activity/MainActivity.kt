@@ -1,6 +1,5 @@
 package com.pleon.buyt.ui.activity
 
-import android.animation.ValueAnimator
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager.PERMISSION_GRANTED
@@ -37,7 +36,6 @@ import com.pleon.buyt.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.snackbar_container.*
 import org.jetbrains.anko.dimen
-import org.jetbrains.anko.dip
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -57,6 +55,8 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
     /* FIXME: While store creation dialog is shown, if a config change occurs and then the store
      *  is created, the behaviour is buggy */
 
+    override val rootViewHeight get() = parentView.measuredHeight
+    override val fragmentContainerView: View get() = fragContainer
     val viewModel: MainViewModel by viewModel()
     private val broadcastMgr: LocalBroadcastManager by inject()
     private val locationReceiver: LocationReceiver by inject()
@@ -204,18 +204,4 @@ class MainActivity : BaseActivity(), SelectDialogFragment.Callback, FullScreen,
 
     // On store selected from store selection dialog
     override fun onSelected(index: Int) = viewModel.state.onStoreSelected(index)
-
-    override fun expandToFullScreen(fragmentRootView: View) {
-        if (parentView.measuredHeight < dip(600)) {
-            (supportFragmentManager.findFragmentById(R.id.fragContainer) as AddItemFragment).isScrollLocked = false
-            fragmentRootView.setPadding(0, 0, 0, dip(88))
-        }
-
-        val animator = ValueAnimator.ofInt(fragContainer.measuredHeight, parentView.measuredHeight)
-        animator.setDuration(300).addUpdateListener {
-            fragContainer.layoutParams.height = it.animatedValue as Int
-            fragContainer.layoutParams = fragContainer.layoutParams
-        }
-        animator.start()
-    }
 }
