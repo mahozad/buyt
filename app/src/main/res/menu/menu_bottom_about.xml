@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_show_tutorial"
-        android:icon="@drawable/ic_lightbulb"
+        android:icon="@drawable/ic_help"
         android:title="@string/menu_hint_show_tutorial"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_view_app_info"
-        android:icon="@drawable/ic_help"
+        android:icon="@drawable/ic_lightbulb"
         android:title="@string/menu_hint_app_info"
         app:showAsAction="always" />
 </menu>
