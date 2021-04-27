@@ -13,7 +13,8 @@ import com.pleon.buyt.viewmodel.StatsViewModel.Filter
 import java.text.DateFormat
 import java.util.*
 
-private const val PERIOD_CLAUSE = " date >= STRFTIME('%s', 'now', 'localtime', 'start of day', -:period || ' days') "
+// NOTE that BETWEEN is inclusive in both ends
+private const val PERIOD_CLAUSE = " date BETWEEN STRFTIME('%s', 'now', 'localtime', 'start of day', -:period || ' days') AND STRFTIME('%s', 'now', 'localtime') "
 private const val FILTER_CLAUSE = " (:filter = 'NoFilter' OR category = :filter) "
 private const val PERIOD_AND_FILTER_CLAUSE = "$PERIOD_CLAUSE AND $FILTER_CLAUSE"
 

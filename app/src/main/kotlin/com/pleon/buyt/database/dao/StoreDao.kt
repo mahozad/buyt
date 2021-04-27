@@ -53,7 +53,7 @@ abstract class StoreDao {
         FROM AllDates LEFT JOIN (SELECT DATE(date, 'unixepoch', 'localtime') AS date, totalPrice
                                  FROM Purchase LEFT JOIN Store ON Store.storeId = Purchase.storeId
                                                LEFT JOIN Item ON Purchase.purchaseId = Item.purchaseId
-                                 WHERE Store.storeId = :storeId AND date >= STRFTIME('%s', 'now', 'localtime', 'start of day', -:period || ' days')) AS DailyCosts
+                                 WHERE Store.storeId = :storeId AND date BETWEEN STRFTIME('%s', 'now', 'localtime', 'start of day', -:period || ' days') AND STRFTIME('%s', 'now', 'localtime')) AS DailyCosts
         ON AllDates.date = DailyCosts.date
         GROUP BY AllDates.date""")
     abstract fun getStoreStats(storeId: Long, period: Int): List<DailyCost>
