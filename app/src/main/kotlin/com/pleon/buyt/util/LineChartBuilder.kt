@@ -2,6 +2,7 @@ package com.pleon.buyt.util
 
 import android.content.Context
 import android.graphics.Paint
+import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat.getColor
 import com.db.chart.model.LineSet
 import com.db.chart.renderer.AxisRenderer.LabelPosition.INSIDE
@@ -29,10 +30,29 @@ fun buildLineChart(cxt: Context,
 
     val dataSet = LineSet()
     var isEmpty = true
-    for (datum in data) {
-        val value = if (isLogScale) log10(datum.getValue() + 1) else datum.getValue()
-        dataSet.addPoint(datum.getLabel(), value)
-        if (datum.getValue() > 0) isEmpty = false
+
+    val maxValue = data.maxOf { it.getValue() }
+    val adjustedData = data.map {
+        val label = it.getLabel()
+        val value = when {
+            maxValue < 1_000 -> it.getValue()
+            maxValue < 1_000_000 -> it.getValue() / 1_000
+            maxValue < 1_000_000_000 -> it.getValue() / 1_000_000
+            else -> it.getValue() / 1_000_000_000
+        }
+        return@map Pair(label, value)
+    }
+    @StringRes val formatStringRes = when {
+        maxValue < 1_000 -> R.string.currency_format_ones
+        maxValue < 1_000_000 -> R.string.currency_format_thousands
+        else -> R.string.currency_format_millions_and_billions
+    }
+    val formatter = DecimalFormat(cxt.getString(formatStringRes))
+
+    for (datum in adjustedData) {
+        val value = if (isLogScale) log10(datum.second + 1) else datum.second
+        dataSet.addPoint(datum.first, value)
+        if (datum.second > 0) isEmpty = false
     }
 
     val fillColors = cxt.resources.getIntArray(R.array.lineChartGradient)
@@ -58,7 +78,7 @@ fun buildLineChart(cxt: Context,
 
     if (isDashed) dataSet.setDashed(floatArrayOf(0f, 2.5f, 4.9f, 10f, 15f))
 
-    chartView.setLabelsFormat(DecimalFormat(cxt.getString(R.string.currency_format)))
+    chartView.setLabelsFormat(formatter)
             .setGrid(gridRows, gridCols, gridPaint)
             .setXLabels(NONE)
             .setYLabels(if (isLogScale) NONE else INSIDE)

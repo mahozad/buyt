@@ -120,7 +120,9 @@
     <string name="dialog_title_select_theme">انتخاب پوسته</string>
     <string name="dialog_title_select_lang">انتخاب زبان</string>
     <string name="dialog_title_select_export_format">انتخاب فرمت</string>
-    <string name="currency_format">##,### ت</string>
+    <string name="currency_format_ones">###.# ت</string>
+    <string name="currency_format_thousands">###.# هـ\'.\'ت</string>
+    <string name="currency_format_millions_and_billions">###.# مـ\'.\'ت</string>
     <string name="pref_theme_auto">خودکار (پوسته دستگاه)</string>
     <string name="pref_theme_dark">تیره</string>
     <string name="pref_theme_light">روشن</string>
