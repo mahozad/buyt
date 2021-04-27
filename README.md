@@ -55,7 +55,7 @@ TODO list:
 - [x] Reimplement the item suggestion popup
 - [ ] Add ability to backup all the data to user google drive account
 - [x] Add ability to export all the user data to xml, json, csv and so on
-- [ ] Add ability to delete all application data (can just insert a shortcut to app settings -> clear data)
+- [ ] Add ability to delete all application data (can just insert a shortcut to app settings -> clear data)(https://stackoverflow.com/q/6134103)
 - [x] Add automatic theme option which adapts to system theme (= day/night theme)
 - [ ] Remove all nullable values and null checks
 - [ ] Localize the app: [poeditor.com]
