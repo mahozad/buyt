@@ -3,71 +3,40 @@ package com.pleon.buyt
 import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
-import android.util.Log
-import androidx.lifecycle.ProcessLifecycleOwner
-import com.pleon.buyt.billing.IabHelper
-import com.pleon.buyt.billing.IabResult
-import com.pleon.buyt.billing.Inventory
 import com.pleon.buyt.di.*
-import com.pleon.buyt.repository.SubscriptionRepository
 import com.pleon.buyt.util.setLocale
-import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
-import org.mindrot.jbcrypt.BCrypt
 
 var isPremium = false
 const val SKU_PREMIUM = "full_features" // SKU of premium upgrade (defined in Bazaar)
-private const val TAG = "BuytApplication"
 
 @Suppress("unused")
 class BuytApplication : Application() {
 
-    private val iabHelper by inject<IabHelper>()
-    private val repository by inject<SubscriptionRepository>()
-
     override fun onCreate() {
         super.onCreate()
-        startKoin {
-            modules(listOf(uiModule, appModule, serviceModule,
-                    databaseModule, viewModelModule, repositoryModule))
-            androidContext(this@BuytApplication)
-        }
-        // For more info about saving purchase status locally see [https://stackoverflow.com/q/14231859]
-        repository
-                .getSubscriptionToken()
-                .observe(ProcessLifecycleOwner.get(), this::checkSubscription)
+        val koinApplication = setupKoin()
+        val configuration = ApplicationConfiguration()
+        configuration.setupKoinLogger(koinApplication)
+        configuration.setupStetho(context = this)
+        configuration.setPremiumStatus()
+        configuration.setupSubscription()
     }
 
-    private fun checkSubscription(token: String?) {
-        isPremium = token != null && BCrypt.checkpw("PREMIUM", token)
-        if (!isPremium) try {
-            setupIabHelper()
-        } catch (e: Exception) {
-            Log.i(TAG, "Exception occurred in Iab setup: $e")
-        }
+    private fun setupKoin() = startKoin {
+        modules(listOf(
+                uiModule,
+                appModule,
+                serviceModule,
+                databaseModule,
+                viewModelModule,
+                repositoryModule))
+        androidContext(this@BuytApplication)
     }
 
-    private fun setupIabHelper() {
-        iabHelper.startSetup { setupResult ->
-            if (setupResult.isFailure) {
-                Log.i(TAG, "Failed to setup Iab: $setupResult")
-            } else {
-                // Call queryInventoryAsync to find out what is already purchased
-                iabHelper.queryInventoryAsync(this::onQueryResult)
-            }
-        }
-    }
-
-    private fun onQueryResult(result: IabResult, inventory: Inventory?) {
-        if (inventory == null || result.isFailure) {
-            Log.i(TAG, "Failed to query inventory: $result")
-        } else {
-            isPremium = inventory.hasPurchase(SKU_PREMIUM)
-        }
-    }
-
-    fun disposeIabHelper() = iabHelper.dispose()
+    // To uncomment, inject the IabHelper in class
+    // fun disposeIabHelper() = iabHelper.dispose()
 
     /**
      * This is for android N and higher.
