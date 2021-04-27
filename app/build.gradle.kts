@@ -11,7 +11,7 @@ val minSDKVersion = 21
 val compileAndTargetSDKVersion = 30
 val versionNumber = 9
 val versionString = "1.4.0" // alpha -> beta -> rc -> final
-val dependencyVersion = mapOf(
+val versionOf = mapOf(
         "appcompat"    to "1.2.0",
         "material"     to "1.3.0",
         "lifecycle"    to "2.3.1",
@@ -152,32 +152,32 @@ dependencies {
      * you don't have to add ONE big library (and include unwanted libs) and make your apk huge.
      * The following library for example adds support for ActionBar, AppCompatActivity and
      * some other for devices down to api v7. */
-    implementation(group = "androidx.appcompat", name = "appcompat", version = dependencyVersion["appcompat"])
+    implementation(group = "androidx.appcompat", name = "appcompat", version = versionOf["appcompat"])
     /* The AndroidX version of "com.android.support:design"
      * Another support library that adds support for material components such as NavigationDrawer,
      * SnackBar, FAB and Tab for older android versions. */
-    implementation(group = "com.google.android.material", name = "material", version = dependencyVersion["material"])
-    implementation(group = "androidx.constraintlayout", name = "constraintlayout", version = dependencyVersion["constraint"])
-    implementation(group = "androidx.coordinatorlayout", name = "coordinatorlayout", version = dependencyVersion["coordinator"])
-    implementation(group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version = dependencyVersion["lifecycle"])
-    implementation(group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version = dependencyVersion["lifecycle"])
-    implementation(group = "androidx.lifecycle", name = "lifecycle-common-java8", version = dependencyVersion["lifecycle"])
-    implementation(group = "androidx.lifecycle", name = "lifecycle-process", version = dependencyVersion["lifecycle"])
-    implementation(group = "androidx.fragment", name = "fragment-ktx", version = dependencyVersion["fragment"])
-    implementation(group = "androidx.recyclerview", name = "recyclerview", version = dependencyVersion["recyclerview"])
-    implementation(group = "androidx.preference", name = "preference-ktx", version = dependencyVersion["preference"])
-    implementation(group = "androidx.viewpager2", name = "viewpager2", version = dependencyVersion["viewpager"])
-    implementation(group = "io.insert-koin", name = "koin-androidx-viewmodel", version = dependencyVersion["koin"])
-    implementation(group = "androidx.room", name = "room-runtime", version = dependencyVersion["room"])
-    kapt("androidx.room", name = "room-compiler", version = dependencyVersion["room"])
+    implementation("com.google.android.material:material:${versionOf["material"]}")
+    implementation("androidx.constraintlayout:constraintlayout:${versionOf["constraint"]}")
+    implementation("androidx.coordinatorlayout:coordinatorlayout:${versionOf["coordinator"]}")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${versionOf["lifecycle"]}")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:${versionOf["lifecycle"]}")
+    implementation("androidx.lifecycle:lifecycle-common-java8:${versionOf["lifecycle"]}")
+    implementation("androidx.lifecycle:lifecycle-process:${versionOf["lifecycle"]}")
+    implementation("androidx.fragment:fragment-ktx:${versionOf["fragment"]}")
+    implementation("androidx.recyclerview:recyclerview:${versionOf["recyclerview"]}")
+    implementation("androidx.preference:preference-ktx:${versionOf["preference"]}")
+    implementation("androidx.viewpager2:viewpager2:${versionOf["viewpager"]}")
+    implementation("io.insert-koin:koin-androidx-viewmodel:${versionOf["koin"]}")
+    implementation("androidx.room:room-runtime:${versionOf["room"]}")
+    kapt("androidx.room:room-compiler:${versionOf["room"]}")
 
     /* If you're targeting JDK 8, you can use extended versions of the Kotlin standard library
      * which contain additional extension functions for APIs added in new JDK versions.
      * So instead of "kotlin-stdlib", use "kotlin-stdlib-jdk8": */
     implementation(kotlin("stdlib-jdk8"))
 
-    implementation(group = "com.mohamadamin", name = "persianmaterialdatetimepicker", version = dependencyVersion["persiandate"])
-    implementation(group = "ir.huri", name = "JalaliCalendar", version = dependencyVersion["jalalical"])
+    implementation("com.mohamadamin:persianmaterialdatetimepicker:${versionOf["persiandate"]}")
+    implementation("ir.huri:JalaliCalendar:${versionOf["jalalical"]}")
     implementation("com.diogobernardino:williamchart:2.5.0")
     implementation("com.scwang.wave:MultiWaveHeader:1.0.0")
     implementation("org.mindrot:jbcrypt:0.4")
@@ -185,10 +185,10 @@ dependencies {
     implementation("org.jetbrains.anko:anko-commons:0.10.8")
 
     // For inspecting the database and network in Chrome. In Iran, use VPN due to sanctions.
-    debugImplementation(group = "com.facebook.stetho", name = "stetho", version = dependencyVersion["stetho"])
-    debugImplementation(group = "com.facebook.stetho", name = "stetho-js-rhino", version = dependencyVersion["stetho"])
+    debugImplementation("com.facebook.stetho:stetho:${versionOf["stetho"]}")
+    debugImplementation("com.facebook.stetho:stetho-js-rhino:${versionOf["stetho"]}")
     // Another library for debugging android databases and shared preferences
-    debugImplementation(group = "com.amitshekhar.android", name = "debug-db", version = dependencyVersion["debug-db"])
+    debugImplementation("com.amitshekhar.android:debug-db:${versionOf["debug-db"]}")
 
     // Dependencies for local unit tests (JUnit 5 framework)
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
@@ -204,7 +204,7 @@ dependencies {
     androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.7.1")
     androidTestImplementation("androidx.test.ext:junit-ktx:1.1.2")
     androidTestImplementation("androidx.test:runner:1.3.0")
-    androidTestImplementation("androidx.room:room-testing:2.2.6")
+    androidTestImplementation("androidx.room:room-testing:${versionOf["room"]}")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.3.0")
     androidTestImplementation("androidx.test.espresso:espresso-contrib:3.3.0")
