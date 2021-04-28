@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="512"
+   height="512"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.0.2 (e86c870879, 2021-01-15, custom)"
+   sodipodi:docname="new-logo-9-promotion.svg">
+  <defs
+     id="defs2">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient1031">
+      <stop
+         style="stop-color:#70ae28;stop-opacity:1"
+         offset="0"
+         id="stop1027" />
+      <stop
+         style="stop-color:#51a22c;stop-opacity:1"
+         offset="1"
+         id="stop1029" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient1005">
+      <stop
+         style="stop-color:#6628ae;stop-opacity:1;"
+         offset="0"
+         id="stop1001" />
+      <stop
+         style="stop-color:#491d7c;stop-opacity:1"
+         offset="1"
+         id="stop1003" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient993"
+       osb:paint="solid">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="0"
+         id="stop991" />
+    </linearGradient>
+    <filter
+       id="filter"
+       x="0"
+       y="0"
+       color-interpolation-filters="sRGB">
+      <feFlood
+         flood-color="rgb(0,0,0)"
+         flood-opacity=".33"
+         result="flood"
+         id="feFlood833" />
+      <feComposite
+         in="flood"
+         in2="SourceGraphic"
+         operator="in"
+         result="composite1"
+         id="feComposite835" />
+      <feGaussianBlur
+         in="composite1"
+         result="blur"
+         stdDeviation="0.2"
+         id="feGaussianBlur837" />
+      <feOffset
+         dx="0"
+         dy="0.3"
+         result="offset"
+         id="feOffset839" />
+      <feComposite
+         in="SourceGraphic"
+         in2="offset"
+         result="composite2"
+         id="feComposite841" />
+    </filter>
+    <clipPath
+       id="clip">
+      <path
+         id="use844"
+         fill="#56ab2f"
+         d="M 11.939,10 A 4,4 0 0 0 8,14 A 4,4 0 0 0 8,14.061 V 20 L 13.533,17.695 A 4,4 0 0 0 16,14 A 4,4 0 0 0 12,10 A 4,4 0 0 0 11.939,10 Z M 12,12.5 A 1.5,1.5 0 0 1 13.5,14 A 1.5,1.5 0 0 1 12,15.5 A 1.5,1.5 0 0 1 10.5,14 A 1.5,1.5 0 0 1 12,12.5 Z"
+         style="fill:#ffffff;fill-opacity:1" />
+    </clipPath>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1031"
+       id="linearGradient1025"
+       gradientUnits="userSpaceOnUse"
+       x1="265.25"
+       y1="128.53"
+       x2="265.25"
+       y2="308.36"
+       gradientTransform="translate(0,146.34)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1005"
+       id="linearGradient1165"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(-474.8,-85.038)"
+       x1="265.25"
+       y1="128.53"
+       x2="265.25"
+       y2="311.9" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.79826"
+     inkscape:cx="176.22"
+     inkscape:cy="425.71"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer2"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     units="px"
+     lock-margins="true"
+     inkscape:pagecheckerboard="false"
+     inkscape:showpageshadow="false"
+     inkscape:lockguides="false"
+     guidecolor="#ff00ff"
+     guideopacity="0.49804"
+     guidehicolor="#ffb700"
+     guidehiopacity="0.49804"
+     inkscape:snap-tangential="true"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     showguides="false">
+    <inkscape:grid
+       type="xygrid"
+       id="grid10"
+       dotted="false"
+       empspacing="4" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="vector">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:1.25;font-family:'Myriad Arabic';-inkscape-font-specification:'Myriad Arabic';text-align:center;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;direction:rtl;text-anchor:middle;opacity:1;fill:#491d7c;fill-opacity:1;stroke:#ffffff;stroke-width:20;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       x="248.91"
+       y="-171.5"
+       id="text1011"><tspan
+         sodipodi:role="line"
+         x="248.91"
+         y="-171.5"
+         id="tspan1013"
+         style="fill:#000000;fill-opacity:1;stroke:none">هم لیست خرید</tspan><tspan
+         sodipodi:role="line"
+         x="248.91"
+         y="-121.5"
+         id="tspan1017"
+         style="fill:#000000;fill-opacity:1;stroke:none">هم مکان خرید</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:1.25;font-family:'Myriad Arabic';-inkscape-font-specification:'Myriad Arabic';text-align:center;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;direction:rtl;text-anchor:middle;opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:20;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       x="247.15"
+       y="-291.59"
+       id="text1021"><tspan
+         sodipodi:role="line"
+         id="tspan1019"
+         x="247.15"
+         y="-291.59">لیست خرید هوشمند</tspan></text>
+    <rect
+       style="fill:url(#linearGradient1025);fill-opacity:1;stop-color:#000000"
+       id="rect1023"
+       width="320"
+       height="180"
+       x="112"
+       y="274.34"
+       rx="0"
+       ry="0"
+       inkscape:export-xdpi="360"
+       inkscape:export-ydpi="360" />
+    <g
+       id="g1039"
+       transform="matrix(7.4999,0,0,7.4999,88.241,274.38)"
+       style="fill:#ffffff;fill-opacity:1"
+       inkscape:export-xdpi="360"
+       inkscape:export-ydpi="360">
+      <path
+         id="path1033"
+         fill="#56ab2f"
+         d="M 11.939,10 A 4,4 0 0 0 8,14 A 4,4 0 0 0 8,14.061 V 20 L 13.533,17.695 A 4,4 0 0 0 16,14 A 4,4 0 0 0 12,10 A 4,4 0 0 0 11.939,10 Z M 12,12.5 A 1.5,1.5 0 0 1 13.5,14 A 1.5,1.5 0 0 1 12,15.5 A 1.5,1.5 0 0 1 10.5,14 A 1.5,1.5 0 0 1 12,12.5 Z"
+         style="fill:#ffffff;fill-opacity:1" />
+      <path
+         clip-path="url(#clip)"
+         fill="#56ab2f"
+         filter="url(#filter)"
+         d="M 11.94,9.99 C 9.756,9.99 7.999,11.81 8,14 L 13.535,11.679 C 13.939,11.512 14.304,11.278 14.627,10.996 C 13.923,10.377 13.011,9.99 12,9.99 Z"
+         id="path1035"
+         style="fill:#ffffff;fill-opacity:1" />
+      <path
+         fill="#70ae28"
+         d="M 11.939,3.99 C 9.755,3.99 7.999,5.81 8,7.99 V 14 L 13.535,11.68 C 14.983,11.08 16,9.66 16,7.99 C 16,5.78 14.209,3.99 12,3.99 Z M 11.999,6.49 A 1.5,1.5 0 0 1 13.499,7.99 A 1.5,1.5 0 0 1 11.999,9.49 A 1.5,1.5 0 0 1 10.499,7.99 A 1.5,1.5 0 0 1 11.999,6.49 Z"
+         id="path1037"
+         style="fill:#ffffff;fill-opacity:1" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:1.25;font-family:'Myriad Arabic';-inkscape-font-specification:'Myriad Arabic';text-align:center;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;direction:rtl;text-anchor:middle;opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:20;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       x="248.55"
+       y="-430.42"
+       id="text1043"><tspan
+         sodipodi:role="line"
+         id="tspan1041"
+         x="248.55"
+         y="-430.42"
+         style="fill:#000000;fill-opacity:1">خریدت رو خودکار کن!</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:1.25;font-family:'Myriad Arabic';-inkscape-font-specification:'Myriad Arabic';text-align:center;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;direction:rtl;text-anchor:middle;opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:20;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       x="248.04"
+       y="-568.74"
+       id="text1047"><tspan
+         sodipodi:role="line"
+         id="tspan1045"
+         x="248.04"
+         y="-568.74">لیست خریدت یادت رفت؟</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:1.25;font-family:'Myriad Arabic';-inkscape-font-specification:'Myriad Arabic';text-align:center;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;direction:rtl;text-anchor:middle;opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:20;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       x="241.77"
+       y="-740.36"
+       id="text1051"><tspan
+         sodipodi:role="line"
+         id="tspan1049"
+         x="241.77"
+         y="-740.36">لیست خرید مبتنی بر مکان</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;line-height:1.25;font-family:Vazir;-inkscape-font-specification:Vazir;text-align:center;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;direction:rtl;text-anchor:middle;fill:#6628ae;fill-opacity:1;stop-color:#000000"
+       x="327.36"
+       y="345.64"
+       id="text875-3"
+       inkscape:export-xdpi="360"
+       inkscape:export-ydpi="360"><tspan
+         sodipodi:role="line"
+         id="tspan873-3"
+         x="327.36"
+         y="345.64"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;font-family:'Myriad Arabic';-inkscape-font-specification:'Myriad Arabic';fill:#ffffff;fill-opacity:1">لیست خریدت</tspan><tspan
+         sodipodi:role="line"
+         x="327.36"
+         y="396.12"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;font-family:'Myriad Arabic';-inkscape-font-specification:'Myriad Arabic';fill:#ffffff;fill-opacity:1"
+         id="tspan877-1">یادت رفت؟</tspan></text>
+    <rect
+       style="fill:url(#linearGradient1165);fill-opacity:1;stop-color:#000000;font-variation-settings:normal;opacity:1;vector-effect:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-opacity:1"
+       id="rect1169"
+       width="320"
+       height="180"
+       x="112"
+       y="49.343"
+       rx="0"
+       ry="0"
+       inkscape:export-xdpi="360"
+       inkscape:export-ydpi="360" />
+    <g
+       id="g1177"
+       transform="matrix(7.4999,0,0,7.4999,88.241,49.383)"
+       style="fill:#ffffff;fill-opacity:1"
+       inkscape:export-xdpi="360"
+       inkscape:export-ydpi="360">
+      <path
+         id="path1171"
+         fill="#56ab2f"
+         d="M 11.939,10 A 4,4 0 0 0 8,14 A 4,4 0 0 0 8,14.061 V 20 L 13.533,17.695 A 4,4 0 0 0 16,14 A 4,4 0 0 0 12,10 A 4,4 0 0 0 11.939,10 Z M 12,12.5 A 1.5,1.5 0 0 1 13.5,14 A 1.5,1.5 0 0 1 12,15.5 A 1.5,1.5 0 0 1 10.5,14 A 1.5,1.5 0 0 1 12,12.5 Z"
+         style="fill:#ffffff;fill-opacity:1" />
+      <path
+         clip-path="url(#clip)"
+         fill="#56ab2f"
+         filter="url(#filter)"
+         d="M 11.94,9.99 C 9.756,9.99 7.999,11.81 8,14 L 13.535,11.679 C 13.939,11.512 14.304,11.278 14.627,10.996 C 13.923,10.377 13.011,9.99 12,9.99 Z"
+         id="path1173"
+         style="fill:#ffffff;fill-opacity:1" />
+      <path
+         fill="#70ae28"
+         d="M 11.939,3.99 C 9.755,3.99 7.999,5.81 8,7.99 V 14 L 13.535,11.68 C 14.983,11.08 16,9.66 16,7.99 C 16,5.78 14.209,3.99 12,3.99 Z M 11.999,6.49 A 1.5,1.5 0 0 1 13.499,7.99 A 1.5,1.5 0 0 1 11.999,9.49 A 1.5,1.5 0 0 1 10.499,7.99 A 1.5,1.5 0 0 1 11.999,6.49 Z"
+         id="path1175"
+         style="fill:#ffffff;fill-opacity:1" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;line-height:1.25;font-family:Vazir;-inkscape-font-specification:Vazir;text-align:center;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;direction:rtl;text-anchor:middle;fill:#6628ae;fill-opacity:1;stop-color:#000000"
+       x="327.36"
+       y="120.64"
+       id="text1183"
+       inkscape:export-xdpi="360"
+       inkscape:export-ydpi="360"><tspan
+         sodipodi:role="line"
+         x="327.36"
+         y="120.64"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;font-family:'Myriad Arabic';-inkscape-font-specification:'Myriad Arabic';fill:#ffffff;fill-opacity:1"
+         id="tspan1181">خریدت رو</tspan><tspan
+         sodipodi:role="line"
+         x="327.36"
+         y="171.12"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;font-family:'Myriad Arabic';-inkscape-font-specification:'Myriad Arabic';fill:#ffffff;fill-opacity:1"
+         id="tspan1214">خودکار کن</tspan></text>
+  </g>
+  <inkscape:templateinfo>
+    <inkscape:name>alaki</inkscape:name>
+    <inkscape:date>2020-12-14</inkscape:date>
+  </inkscape:templateinfo>
+  <inkscape:templateinfo>
+    <inkscape:name>512×512</inkscape:name>
+    <inkscape:author>Mahdi Hosseinzadeh</inkscape:author>
+    <inkscape:date>2020-12-14</inkscape:date>
+  </inkscape:templateinfo>
+  <inkscape:templateinfo>
+    <inkscape:name>default</inkscape:name>
+    <inkscape:author>Mahdi Hosseinzadeh</inkscape:author>
+    <inkscape:date>2020-12-14</inkscape:date>
+  </inkscape:templateinfo>
+</svg>
