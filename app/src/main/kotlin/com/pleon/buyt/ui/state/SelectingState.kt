@@ -32,7 +32,8 @@ object SelectingState : State() {
         if (itemsFragment.validateSelectedItemsPrice()) {
             if (viewModel.foundStores.size == 0) {
                 viewModel.shouldCompletePurchase = true
-                val createStoreDialog = CreateStoreDialogFragment.newInstance(viewModel.location!!)
+                val probableStoreCategoryIndex = activity.itemsFragment.selectedItems.first().category.ordinal
+                val createStoreDialog = CreateStoreDialogFragment.newInstance(viewModel.location!!, probableStoreCategoryIndex)
                 createStoreDialog.show(supportFragmentManager, "CREATE_STORE_DIALOG")
             } else if (viewModel.foundStores.size == 1) {
                 completeBuy(viewModel.foundStores.first())

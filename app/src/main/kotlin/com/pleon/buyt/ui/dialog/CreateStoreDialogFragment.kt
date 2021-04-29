@@ -28,6 +28,7 @@ class CreateStoreDialogFragment : AppCompatDialogFragment() {
     private lateinit var name_layout: TextInputLayout
     private lateinit var spinner: Spinner
     private lateinit var location: Location
+    private var probableStoreCategoryIndex: Int = 0
 
     interface CreateStoreListener {
         fun onStoreCreated(store: Store)
@@ -54,6 +55,7 @@ class CreateStoreDialogFragment : AppCompatDialogFragment() {
         val customView = requireActivity().layoutInflater.inflate(R.layout.create_store_dialog, null)
 
         location = requireArguments().getParcelable("LOCATION")!!
+        probableStoreCategoryIndex = requireArguments().getInt("PROBABLE_CATEGORY")
 
         spinner = customView.findViewById(R.id.catSpinner)
         name = customView.findViewById(R.id.name)
@@ -74,6 +76,7 @@ class CreateStoreDialogFragment : AppCompatDialogFragment() {
 
         val adapter = CatsSpinnerAdapter(requireContext())
         spinner.adapter = adapter
+        spinner.setSelection(probableStoreCategoryIndex)
 
         dialog = MaterialAlertDialogBuilder(requireActivity(), R.style.JustifiedTextDialogStyle)
                 .setView(customView)
@@ -128,13 +131,11 @@ class CreateStoreDialogFragment : AppCompatDialogFragment() {
     }
 
     companion object {
-        fun newInstance(location: Location?): CreateStoreDialogFragment {
-
-            val fragment = CreateStoreDialogFragment()
+        fun newInstance(location: Location?, probableStoreCategoryIndex: Int = 0): CreateStoreDialogFragment {
             val args = Bundle()
-            fragment.arguments = args
+            val fragment = CreateStoreDialogFragment().apply { arguments = args }
             args.putParcelable("LOCATION", location)
-
+            args.putInt("PROBABLE_CATEGORY", probableStoreCategoryIndex)
             return fragment
         }
     }
