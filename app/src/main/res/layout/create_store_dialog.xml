@@ -1,69 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+  <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/name_layout"
+      style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginTop="16dp"
+      android:layout_marginEnd="16dp"
+      app:counterMaxLength="30"
+      app:errorEnabled="true"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="@string/input_hint_store_name"
+        android:maxLength="30" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/name_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            app:counterMaxLength="30"
-            app:errorEnabled="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+    <requestFocus />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/input_hint_store_name"
-                android:maxLength="30" />
+  </com.google.android.material.textfield.TextInputLayout>
 
-        </com.google.android.material.textfield.TextInputLayout>
+  <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/spinnerContainer"
+      style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:layout_marginBottom="4dp"
+      android:hint="@string/input_hint_store_category"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="@id/name_layout"
+      app:layout_constraintStart_toStartOf="@id/name_layout"
+      app:layout_constraintTop_toBottomOf="@id/name_layout">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/spinnerContainer"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="4dp"
-            android:hint="@string/input_hint_store_category"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/name_layout"
-            app:layout_constraintStart_toStartOf="@id/name_layout"
-            app:layout_constraintTop_toBottomOf="@id/name_layout">
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:editable="false"
+        android:text=" "
+        tools:ignore="Deprecated,HardcodedText" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:editable="false"
-                android:text=" "
-                tools:ignore="Deprecated,HardcodedText" />
+  </com.google.android.material.textfield.TextInputLayout>
 
-        </com.google.android.material.textfield.TextInputLayout>
+  <Spinner
+      android:id="@+id/catSpinner"
+      android:layout_width="0dp"
+      android:layout_height="46dp"
+      android:layout_marginTop="16dp"
+      app:layout_constraintEnd_toEndOf="@id/name_layout"
+      app:layout_constraintStart_toStartOf="@id/name_layout"
+      app:layout_constraintTop_toBottomOf="@id/name_layout" />
 
-        <Spinner
-            android:id="@+id/catSpinner"
-            android:layout_width="0dp"
-            android:layout_height="46dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="6dp"
-            app:layout_constraintEnd_toEndOf="@id/name_layout"
-            app:layout_constraintStart_toStartOf="@id/name_layout"
-            app:layout_constraintTop_toBottomOf="@id/name_layout" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
