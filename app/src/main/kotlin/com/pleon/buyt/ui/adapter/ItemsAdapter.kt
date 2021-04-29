@@ -28,7 +28,10 @@ class ItemsAdapter(private val app: Application) : ListAdapter<Item, ItemHolder>
     object ItemDiffCallback : DiffUtil.ItemCallback<Item>() {
         override fun areItemsTheSame(oldItem: Item, newItem: Item) = oldItem.itemId == newItem.itemId
         override fun areContentsTheSame(oldItem: Item, newItem: Item) = with(newItem) {
-            name == oldItem.name && quantity == oldItem.quantity && description == oldItem.description
+            name == oldItem.name &&
+                    quantity == oldItem.quantity &&
+                    description == oldItem.description &&
+                    isUrgent == oldItem.isUrgent
         }
     }
 
@@ -43,6 +46,12 @@ class ItemsAdapter(private val app: Application) : ListAdapter<Item, ItemHolder>
      * and tell it "when I provide a ViewHolder, its id is unique and will not change."
      */
     override fun setHasStableIds(hasStableIds: Boolean) = super.setHasStableIds(true)
+
+    /**
+     * setHasStableIds() should also be set (in e.g. constructor). This is an optimization hint that you
+     * give to the RecyclerView and tell it "when I provide a ViewHolder, its id is unique and won't change."
+     */
+    override fun getItemId(position: Int) = currentList[position].itemId
 
     /**
      * Gets a reference of the enclosing RecyclerView.
@@ -70,12 +79,6 @@ class ItemsAdapter(private val app: Application) : ListAdapter<Item, ItemHolder>
     override fun onBindViewHolder(holder: ItemHolder, position: Int) {
         holder.bindItem(currentList[position])
     }
-
-    /**
-     * setHasStableIds() should also be set (in e.g. constructor). This is an optimization hint that you
-     * give to the RecyclerView and tell it "when I provide a ViewHolder, its id is unique and won't change."
-     */
-    override fun getItemId(position: Int) = currentList[position].itemId
 
     public override fun getItem(position: Int): Item = super.getItem(position)
 
