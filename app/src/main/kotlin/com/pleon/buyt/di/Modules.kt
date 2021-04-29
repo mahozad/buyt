@@ -42,7 +42,7 @@ val appModule = module {
 val uiModule = module {
     factory { ItemsAdapter(androidApplication()) }
     factory { PurchaseDetailAdapter(androidApplication()) }
-    factory { (fragment: Fragment) -> StoresAdapter(fragment, get()) }
+    factory { (fragment: Fragment) -> StoresAdapter(fragment) }
     factory { (activity: FragmentActivity) -> IntroPageAdapter(activity) }
     factory { (activity: FragmentActivity) -> StatsPagerAdapter(activity) }
     factory { (listener: ItemTouchHelperListener) -> TouchHelperCallback(androidContext(), listener) }

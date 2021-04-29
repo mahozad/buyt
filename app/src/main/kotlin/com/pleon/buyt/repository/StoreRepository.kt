@@ -2,7 +2,7 @@ package com.pleon.buyt.repository
 
 import androidx.lifecycle.LiveData
 import com.pleon.buyt.database.dao.StoreDao
-import com.pleon.buyt.database.dto.DailyCost
+import com.pleon.buyt.database.dto.StoreDetail
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.util.SingleLiveEvent
 import com.pleon.buyt.viewmodel.StoresViewModel.Sort
@@ -12,14 +12,12 @@ import org.jetbrains.anko.uiThread
 
 class StoreRepository(private val storeDao: StoreDao) {
 
-    private val storeStats = SingleLiveEvent<List<DailyCost>>()
+    private val storeStats = SingleLiveEvent<List<StoreDetail>>()
     private val createdStore = SingleLiveEvent<Store>()
 
-    fun getStores(sort: Sort, sortDirection: SortDirection) = storeDao.getAll(sort, sortDirection)
-
-    fun getStoreStats(store: Store, period: Int): LiveData<List<DailyCost>> {
+    fun getStoreDetails(sort: Sort, sortDirection: SortDirection, period: Int): LiveData<List<StoreDetail>> {
         doAsync {
-            val stats = storeDao.getStoreStats(store.storeId, period)
+            val stats = storeDao.getStoreDetails(sort, sortDirection, period)
             uiThread { storeStats.value = stats }
         }
         return storeStats

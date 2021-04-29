@@ -2,9 +2,7 @@ package com.pleon.buyt.viewmodel
 
 import android.app.Application
 import androidx.arch.core.util.Function
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.*
 import androidx.lifecycle.Transformations.switchMap
 import com.pleon.buyt.R
 import com.pleon.buyt.database.dto.StoreDetail
@@ -15,7 +13,7 @@ import com.pleon.buyt.viewmodel.StoresViewModel.Sort.TOTAL_SPENDING
 import com.pleon.buyt.viewmodel.StoresViewModel.SortDirection.ASCENDING
 import com.pleon.buyt.viewmodel.StoresViewModel.SortDirection.DESCENDING
 
-private const val STORE_STATS_PERIOD = 30
+private const val STORE_STATS_PERIOD = 14
 
 class StoresViewModel(app: Application, private val repository: StoreRepository)
     : AndroidViewModel(app) {
@@ -29,30 +27,41 @@ class StoresViewModel(app: Application, private val repository: StoreRepository)
         STORE_NAME(R.string.menu_text_sort_alphabet, R.drawable.ic_alphabet)
     }
 
-    private val sortLiveData = MutableLiveData(TOTAL_SPENDING)
-    val sort get() = sortLiveData.value ?: TOTAL_SPENDING
+    data class SortAndDeletionTrigger(
+            val sort: Sort = TOTAL_SPENDING,
+            // Every time a delete/restore happens increase by one
+            val deletionFlag: Int = 0
+    )
 
-    val stores: LiveData<List<StoreDetail>> = switchMap(sortLiveData, Function { sort ->
+    private val updateTrigger = MutableLiveData(SortAndDeletionTrigger())
+
+    val sort get() = updateTrigger.value?.sort ?: TOTAL_SPENDING
+
+    val stores: LiveData<List<StoreDetail>> = switchMap(updateTrigger, Function {
         // For name sort ascending; for others sort descending
-        val sortDirection = if (sort == STORE_NAME) ASCENDING else DESCENDING
-        return@Function repository.getStores(sort, sortDirection)
+        val sortDirection = if (it.sort == STORE_NAME) ASCENDING else DESCENDING
+        return@Function repository.getStoreDetails(it.sort, sortDirection, STORE_STATS_PERIOD)
     })
 
-    fun getStoreStats(store: Store) = repository.getStoreStats(store, STORE_STATS_PERIOD)
-
     fun toggleSort() {
-        sortLiveData.value = Sort.values()[(sortLiveData.value!!.ordinal + 1) % Sort.values().size]
+        val sort = Sort.values()[(sort.ordinal + 1) % Sort.values().size]
+        val deleteFlag = updateTrigger.value!!.deletionFlag
+        updateTrigger.value = SortAndDeletionTrigger(sort, deleteFlag)
     }
 
     fun flagStoreForDeletion(store: Store) {
         store.isFlaggedForDeletion = true
-        repository.updateStore(store)
+        repository.updateStore(store).get() // .get() to wait for the flag to be inserted
+        val deleteFlag = updateTrigger.value!!.deletionFlag + 1
+        updateTrigger.value = SortAndDeletionTrigger(sort, deleteFlag)
     }
-
-    fun deleteStore(store: Store) = repository.deleteStore(store)
 
     fun restoreDeletedStore(store: Store) {
         store.isFlaggedForDeletion = false
-        repository.updateStore(store)
+        repository.updateStore(store).get() // .get() to wait for the flag to be inserted
+        val deleteFlag = updateTrigger.value!!.deletionFlag + 1
+        updateTrigger.value = SortAndDeletionTrigger(sort, deleteFlag)
     }
+
+    fun deleteStore(store: Store) = repository.deleteStore(store)
 }
