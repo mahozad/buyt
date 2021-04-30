@@ -1,0 +1,9 @@
+https://www.vectary.com/
+https://graphicdesign.stackexchange.com/questions/20597/how-to-achieve-this-3d-card-effect
+
+create box
+select the box
+select dropdown button from color and choose the image
+select UV projection from toolbar
+in the UV projection properties select Plane and Fit object when aligning
+click on Y button
