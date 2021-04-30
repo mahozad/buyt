@@ -56,6 +56,7 @@
 
     <array name="pieChartColors">
         <item>@color/colorPrimary</item>
+        <!-- <item>#E1CF00</item> -->
         <item>#e58e39</item>
         <item>#3193d6</item>
         <item>#d63194</item>
