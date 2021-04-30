@@ -9,8 +9,8 @@ plugins {
 val appId = "com.pleon.buyt"
 val minSDKVersion = 21
 val compileAndTargetSDKVersion = 30
-val versionNumber = 9
-val versionString = "1.4.0" // alpha -> beta -> rc -> final
+val versionNumber = 10
+val versionString = "2.0.0" // alpha -> beta -> rc -> final
 val versionOf = mapOf(
         "appcompat"    to "1.2.0",
         "material"     to "1.3.0",

@@ -1,6 +1,36 @@
 ﻿┌───────────────────────────┐
+├ versionName = 2.0.0       │
+├ versionCode = 10          │
+│ ──────────────────────────┘
+├ Fix the parallax effect inconsistency in LTR layouts
+├ Redesign the application intro
+├ Update some string values
+├ Reorganize style and icon files
+├ Change the item list empty hint
+├ Redesign the brand including logo, colors and animations
+├ Fix the style of the buttons of the Persian date picker
+├ Redesign the about screen
+├ Redesign the splash screen
+├ Change the sort for store names to ascending order
+├ Make some text styles justified
+├ Add, update and improve tests
+├ Update Kotlin and Gradle
+├ Fix item and store card being clipped when swiped
+├ Fix the unit buttons being deselected on second touch
+├ Fix the auto complete popup being obscured by soft keyboard
+├ Add more default item names
+├ Add export purchase data feature for premium users
+├ Add preference to show chart values in logarithmic scale
+├ Fix some incorrect sqlite queries
+├ Merge Debug and Main (Release) application classes
+├ Fix the height of the fullscreen add item fragment for different screen sizes
+├ Update y-axis label format of line charts
+├ Reimplement and fix bugs of the stores screen
+├ Improve the create store dialog
+├───────────────────────────┐
 ├ versionName = 1.4.0       │
 ├ versionCode = 9           │
+├ (unpublished)             │
 │ ──────────────────────────┘
 ├ Redesign icons
 ├ Add automatic (Day/Night) theme
