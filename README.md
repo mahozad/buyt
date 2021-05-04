@@ -13,6 +13,16 @@ foreground
 
 a good android example: https://proandroiddev.com/android-architecture-starring-kotlin-coroutines-jetpack-mvvm-room-paging-retrofit-and-dagger-7749b2bae5f7
 
+## Terms of Service example
+This application is provided by Pleon at no cost, as an Ad-supported app and is intended for use as is.
+        Which1 neither collect nor share your information with anyone; however, the app does use third-party services that may collect your information.
+        The free version of Which1 may contain Ads that link to external entities. By clicking on Ads you will be directed to a website that is not operated by us so
+        we have no control over and assume no responsibility for the content, privacy policies, or practices of any of these sites or services.
+
+        \n\nAnd as Google states in its terms of service: \"Don’t misuse our Services. For example, don’t try to access our Services using a method other than the interface and the instructions that we provide.
+        We may suspend or stop providing our Services to you if you do not comply with our terms or policies or if we are investigating suspected misconduct.\"
+        the use of this application may be illegal in your country.
+
 # Mention in the about screen that some icons are adapted and inspired by other icons found on web
 
 Android has a settings called *Enable preview [something]* in *Settings* -> *Developer Settings*
@@ -24,6 +34,8 @@ To fix the paths so they can be morphed the following options are available:
     which is located in the */icons* directory
     (see this [SO post](https://stackoverflow.com/a/32386837)).
   - Good old [Shape Shifter](https://shapeshifter.design/)
+
+To fix the bug when sort or filter buttons are clicked very fast successively, see [this](https://medium.com/androiddevelopers/coroutines-on-android-part-iii-real-work-2ba8a2ec2f45)
   
 To scale a font down/up do [this](https://www.fonttutorials.com/how-to-scale-glyphs/):
   1. Download [FontForge](https://github.com/fontforge/fontforge)
