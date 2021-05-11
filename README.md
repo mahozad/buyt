@@ -36,11 +36,11 @@ To fix the paths so they can be morphed the following options are available:
   - Good old [Shape Shifter](https://shapeshifter.design/)
 
 To fix the bug when sort or filter buttons are clicked very fast successively, see [this](https://medium.com/androiddevelopers/coroutines-on-android-part-iii-real-work-2ba8a2ec2f45)
-  
+
 To scale a font down/up do [this](https://www.fonttutorials.com/how-to-scale-glyphs/):
   1. Download [FontForge](https://github.com/fontforge/fontforge)
   2. Open the font in FontForge
-  3. Select all the glyphs by pressing CTRL + A
+  3. Select all the glyphs by pressing <kbd>CTRL</kbd> + <kbd>A</kbd>
   4. Select *Elements* -> *Transformations* -> *Transform*
   5. Select *Scale Uniformly...* from the drop down
   6. After scaling, generate the font in desired format
