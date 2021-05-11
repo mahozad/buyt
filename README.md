@@ -47,6 +47,18 @@ To scale a font down/up do [this](https://www.fonttutorials.com/how-to-scale-gly
 
 TODO list:
 
+- [ ] Add a button to store item for editing store name
+- [ ] Add a button to store item for viewing the store on maps (using intents to open on external map apps)
+- [ ] Add a plus botton to stores bottom app bar to open an external map for getting lat and long and then showing create store dialog
+- [ ] Convert the quantity to an editable text fiend and enable the edition when transitioning to buy state.
+- [ ] Add export to PDF to export options
+- [ ] Add backup and restore option to backup all app data to Google Drive (using Google Drive API)
+- [ ] Add option to change the empty hint animated icon of the main screen
+- [ ] Show line chart y-axis labels when using logarithmic scale
+- [ ] Reimplement the pie chart
+  - [ ] Make lines start at the center of the slice (instead of starting at the edge of the slice)
+  - [ ] Make the width of the pie chart consistent across different DPIs
+
 - [x] Add an option to settings to toggle the line chart y axis between regular and logarithmic values
 - [x] if the bottomAppBar is hidden (by scrolling) and then you expand an Item, the fab jumps up
       The bug seems to have nothing to do with the expanding animation and persists even without that animation
