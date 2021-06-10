@@ -7,6 +7,9 @@ import com.pleon.buyt.R
 import com.pleon.buyt.database.dto.PurchaseDetail
 import com.pleon.buyt.util.formatDate
 import com.pleon.buyt.util.formatPrice
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 import org.koin.java.KoinJavaComponent.inject
 
 class PurchaseDetailsCSVSerializer : Serializer<PurchaseDetail> {
@@ -15,19 +18,11 @@ class PurchaseDetailsCSVSerializer : Serializer<PurchaseDetail> {
     override val fileExtension = "csv"
 
     private val application by inject(Application::class.java)
-    private lateinit var updateListener: (Int, String) -> Unit
-    private lateinit var finishListener: () -> Unit
+    override lateinit var updateListener: suspend (Int, String) -> Unit
+    override lateinit var finishListener: suspend () -> Unit
     private val head = "Date,Store,Items\n"
 
-    override fun setUpdateListener(listener: (Int, String) -> Unit) {
-        updateListener = listener
-    }
-
-    override fun setFinishListener(listener: () -> Unit) {
-        finishListener = listener
-    }
-
-    override fun serialize(entities: List<PurchaseDetail>) {
+    override suspend fun serialize(entities: List<PurchaseDetail>) = withContext(Dispatchers.Default){
         val stringBuilder = StringBuilder()
         updateListener(0, head)
         for ((i, purchaseDetail) in entities.withIndex()) {
@@ -36,7 +31,7 @@ class PurchaseDetailsCSVSerializer : Serializer<PurchaseDetail> {
             updateListener(progress, stringBuilder.toString())
             stringBuilder.clear()
         }
-        Thread.sleep(1000)
+        delay(1000)
         finishListener()
     }
 

@@ -1,11 +1,15 @@
 package com.pleon.buyt.ui.fragment
 
 import android.app.Activity
-import android.content.*
+import android.content.ContentResolver
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Bundle
 import android.provider.DocumentsContract
 import androidx.core.app.TaskStackBuilder
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -19,12 +23,13 @@ import com.pleon.buyt.serializer.PurchaseDetailsHTMLSerializer
 import com.pleon.buyt.serializer.PurchaseDetailsXMLSerializer
 import com.pleon.buyt.ui.activity.MainActivity
 import kotlinx.android.synthetic.main.export_data_widget_layout.*
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
-import java.io.*
+import java.io.BufferedWriter
+import java.io.FileWriter
 import java.net.URI
-import java.util.*
 
 const val PREF_LANG = "LANG"
 const val PREF_THEME = "THEME"
@@ -128,30 +133,26 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
             // The result data contains a URI for the document or directory that the user selected.
 
             // This caused an exception in Android 5.1 and also was not necessary
-            // progress_bar.isIndeterminate = true
-            progress_bar.show()
+            // progressBar.isIndeterminate = true
+            progressBar.show()
             resultData?.data?.also { uri ->
-                // NOTE: Do NOT utilize kotlin Closable::use method because we are
-                //  doing our work in another thread (doAsync{}) and so when we want
-                //  to get the file descriptor in there the Closable::use method
-                //  might have finished running and therefor closed the descriptor.
-                doAsync {
+                lifecycleScope.launch(Dispatchers.IO) {
                     val parcelDescriptor = contentResolver.openFileDescriptor(uri, "w")
-                    val purchaseDetails = purchaseDao.getAllPurchaseDetailsSynchronous()
                     val writer = FileWriter(parcelDescriptor!!.fileDescriptor).buffered()
-                    serializer.setUpdateListener { progress, fragment ->
-                        writer.write(fragment)
-                        uiThread { progress_bar?.setProgressCompat(progress, true) }
-                    }
-                    serializer.setFinishListener {
-                        writer.close()
-                        parcelDescriptor.close() // Should be closed here in the async thread
-                        uiThread { progress_bar.hide() }
-                    }
-                    serializer.serialize(purchaseDetails)
+                    writer.use { serialize(writer) }
                 }
             }
         }
+    }
+
+    private suspend fun serialize(writer: BufferedWriter) {
+        val purchaseDetails = purchaseDao.getAllPurchaseDetails()
+        serializer.updateListener = { progress, fragment ->
+            writer.write(fragment)
+            withContext(Dispatchers.Main) { progressBar?.setProgressCompat(progress, true) }
+        }
+        serializer.finishListener = { withContext(Dispatchers.Main) { progressBar.hide() } }
+        serializer.serialize(purchaseDetails)
     }
 
     override fun onSharedPreferenceChanged(prefs: SharedPreferences, key: String) {

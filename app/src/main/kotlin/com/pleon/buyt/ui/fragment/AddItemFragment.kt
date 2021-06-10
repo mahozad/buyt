@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat.*
 import androidx.core.widget.CompoundButtonCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
@@ -33,6 +34,7 @@ import com.pleon.buyt.util.*
 import com.pleon.buyt.viewmodel.AddItemViewModel
 import ir.huri.jcal.JalaliCalendar
 import kotlinx.android.synthetic.main.fragment_add_item.*
+import kotlinx.coroutines.flow.collect
 import org.jetbrains.anko.dip
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
@@ -201,13 +203,16 @@ class AddItemFragment : BaseFragment(), DatePickerDialog.OnDateSetListener,
     }
 
     private fun setupItemNameAutoComplete() {
-        viewModel.itemNameCats.observe(viewLifecycleOwner) { nameCats ->
-            this.nameCats = nameCats
-            val adapter = ArrayAdapter(
+        lifecycleScope.launchWhenStarted {
+            viewModel.itemNameCats.collect { nameCats ->
+                this@AddItemFragment.nameCats = nameCats
+                val adapter = ArrayAdapter(
                     requireContext(),
                     android.R.layout.simple_dropdown_item_1line,
-                    nameCats.keys.toList())
-            name.setAdapter(adapter)
+                    nameCats.keys.toList()
+                )
+                name.setAdapter(adapter)
+            }
         }
     }
 

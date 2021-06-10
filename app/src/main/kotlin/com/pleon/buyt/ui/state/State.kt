@@ -10,6 +10,7 @@ import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
 import com.pleon.buyt.R
 import com.pleon.buyt.model.Store
@@ -55,10 +56,13 @@ abstract class State {
         addMenuItem.isVisible = false
     }
 
-    fun skipFinding() = with(activity) {
+    fun skipFinding(): Unit = with(activity) {
         viewModel.shouldAnimateNavIcon = true
         viewModel.isFindingSkipped = true
-        viewModel.allStores.observe(this) { FindingState.onStoresFound(it) }
+        lifecycleScope.launchWhenStarted {
+            val allStores = viewModel.getAllStores()
+            FindingState.onStoresFound(allStores)
+        }
     }
 
     protected fun shiftToIdleState(fabResId: Int) = with(activity) {

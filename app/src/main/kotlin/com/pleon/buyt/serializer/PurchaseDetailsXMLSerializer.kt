@@ -7,7 +7,9 @@ import com.pleon.buyt.R
 import com.pleon.buyt.database.dto.PurchaseDetail
 import com.pleon.buyt.util.formatDate
 import com.pleon.buyt.util.formatPrice
-import org.koin.java.KoinJavaComponent
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 import org.koin.java.KoinJavaComponent.inject
 
 class PurchaseDetailsXMLSerializer : Serializer<PurchaseDetail> {
@@ -16,32 +18,25 @@ class PurchaseDetailsXMLSerializer : Serializer<PurchaseDetail> {
     override val fileExtension = "xml"
 
     private val application by inject(Application::class.java)
-    private lateinit var updateListener: (Int, String) -> Unit
-    private lateinit var finishListener: () -> Unit
+    override lateinit var updateListener: suspend (Int, String) -> Unit
+    override lateinit var finishListener: suspend () -> Unit
     private val head = "<purchase-details>\n"
     private val tail = "</purchase-details>"
 
-    override fun setUpdateListener(listener: (Int, String) -> Unit) {
-        updateListener = listener
-    }
-
-    override fun setFinishListener(listener: () -> Unit) {
-        finishListener = listener
-    }
-
-    override fun serialize(entities: List<PurchaseDetail>) {
-        val stringBuilder = StringBuilder()
-        updateListener(0, head)
-        for ((i, purchaseDetail) in entities.withIndex()) {
-            stringBuilder.append(purchaseElement(purchaseDetail))
-            val progress = ((i + 1f) / entities.size * 100).toInt()
-            updateListener(progress, stringBuilder.toString())
-            stringBuilder.clear()
+    override suspend fun serialize(entities: List<PurchaseDetail>) =
+        withContext(Dispatchers.Default) {
+            val stringBuilder = StringBuilder()
+            updateListener(0, head)
+            for ((i, purchaseDetail) in entities.withIndex()) {
+                stringBuilder.append(purchaseElement(purchaseDetail))
+                val progress = ((i + 1f) / entities.size * 100).toInt()
+                updateListener(progress, stringBuilder.toString())
+                stringBuilder.clear()
+            }
+            updateListener(100, tail)
+            delay(1000)
+            finishListener()
         }
-        updateListener(100, tail)
-        Thread.sleep(1000)
-        finishListener()
-    }
 
     private fun purchaseElement(purchaseDetail: PurchaseDetail): String {
         val noValue = getString(R.string.no_value)

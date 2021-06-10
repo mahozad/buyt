@@ -1,30 +1,25 @@
 package com.pleon.buyt.database.dao
 
 import androidx.room.*
-import androidx.sqlite.db.SimpleSQLiteQuery
-import androidx.sqlite.db.SupportSQLiteQuery
 import com.pleon.buyt.database.dto.DailyCost
 import com.pleon.buyt.database.dto.StoreDetail
-import com.pleon.buyt.model.Item
-import com.pleon.buyt.model.Purchase
 import com.pleon.buyt.model.Store
-import com.pleon.buyt.viewmodel.StoresViewModel.Sort
-import com.pleon.buyt.viewmodel.StoresViewModel.Sort.*
-import com.pleon.buyt.viewmodel.StoresViewModel.SortDirection
-import com.pleon.buyt.viewmodel.StoresViewModel.SortDirection.DESCENDING
-import org.intellij.lang.annotations.Language
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 
 @Dao
 abstract class StoreDao {
 
-    fun getStoreDetails(sort: Sort, sortDirection: SortDirection, period: Int): List<StoreDetail> {
-        val sqlSortColumn = when (sort) {
+    /*suspend fun getStoreDetails(sort: Sort, period: Int): List<StoreDetail> {
+        val sqlSortColumn = when (sort.criterion) {
             TOTAL_SPENDING -> "totalSpending"
             PURCHASE_COUNT -> "purchaseCount"
             STORE_CATEGORY -> "category"
             STORE_NAME -> "name"
         }
-        val sqlSortDirection = if (sortDirection == DESCENDING) "DESC" else "ASC"
+        val sqlSortDirection = if (sort.direction == DESCENDING) "DESC" else "ASC"
 
         @Language("RoomSql")
         val query = SimpleSQLiteQuery("""
@@ -51,10 +46,35 @@ abstract class StoreDao {
     }
 
     /**
-     * @RawQuery is used because dynamic parameters cannot be used in ORDER BY clauses
+     * The @RawQuery is used because dynamic parameters cannot be used in ORDER BY clauses
      */
     @RawQuery(observedEntities = [Store::class, Purchase::class, Item::class])
-    protected abstract fun getStoreBriefs(query: SupportSQLiteQuery): List<StoreDetail.StoreBrief>
+    protected abstract suspend fun getStoreBriefs(query: SupportSQLiteQuery): List<StoreDetail.StoreBrief>*/
+
+    fun getStoreDetails(period: Int): Flow<List<StoreDetail>> {
+        return getStoreBriefs().map { briefs ->
+            val storeDetails = mutableListOf<StoreDetail>()
+            for (brief in briefs) {
+                val storeId = brief.store.storeId
+                val storeDetail = StoreDetail()
+                storeDetail.brief = brief
+                storeDetail.dailyCosts = getStoreDailyCosts(storeId, period)
+                storeDetail.purchaseSummary = getStorePurchaseSummary(storeId)
+                storeDetails.add(storeDetail)
+            }
+            return@map storeDetails
+        }.flowOn(Dispatchers.IO)
+    }
+
+    @Query("""
+            SELECT Store.*, SUM(cost) AS totalSpending, COUNT(DISTINCT purchaseId) AS purchaseCount
+            FROM Store LEFT JOIN (SELECT purchaseId, storeId, SUM(totalPrice) AS cost
+                                  FROM Item NATURAL JOIN Purchase
+                                  GROUP BY purchaseId) AS ip
+                       ON Store.storeId = ip.storeId
+            WHERE Store.isFlaggedForDeletion = 0
+            GROUP BY Store.storeId""")
+    protected abstract fun getStoreBriefs(): Flow<List<StoreDetail.StoreBrief>>
 
     @Query("""
         WITH RECURSIVE AllDates(date) AS (SELECT DATE('now', 'localtime', -:period || ' days')
@@ -67,7 +87,7 @@ abstract class StoreDao {
                                  WHERE Store.storeId = :storeId AND date BETWEEN STRFTIME('%s', 'now', 'localtime', 'start of day', -:period || ' days') AND STRFTIME('%s', 'now', 'localtime')) AS DailyCosts
         ON AllDates.date = DailyCosts.date
         GROUP BY AllDates.date""")
-    protected abstract fun getStoreDailyCosts(storeId: Long, period: Int): List<DailyCost>
+    protected abstract suspend fun getStoreDailyCosts(storeId: Long, period: Int): List<DailyCost>
 
     @Query("""
         SELECT MAX(totalSpending) AS maxPurchaseCost,
@@ -77,20 +97,20 @@ abstract class StoreDao {
               FROM Item NATURAL JOIN Purchase JOIN Store ON Purchase.storeId = Store.storeId
               WHERE Store.storeId = :storeId
               GROUP BY purchaseId)""")
-    protected abstract fun getStorePurchaseSummary(storeId: Long): StoreDetail.PurchaseSummary
+    protected abstract suspend fun getStorePurchaseSummary(storeId: Long): StoreDetail.PurchaseSummary
 
     @Query("""SELECT * FROM Store""")
-    abstract fun getAllSynchronous(): List<Store>
+    abstract suspend fun getAllStores(): List<Store>
 
     @Query("""SELECT * FROM Store WHERE :sinLat * sinLat + :cosLat * cosLat * (cosLng * :cosLng + sinLng * :sinLng) > :maxDistance""")
-    abstract fun getNearStores(sinLat: Double, cosLat: Double, sinLng: Double, cosLng: Double, maxDistance: Double): List<Store>
+    abstract suspend fun getNearStores(sinLat: Double, cosLat: Double, sinLng: Double, cosLng: Double, maxDistance: Double): List<Store>
 
     @Insert
-    abstract fun insert(store: Store): Long
+    abstract suspend fun insert(store: Store): Long
 
     @Update
-    abstract fun update(store: Store)
+    abstract suspend fun update(store: Store)
 
     @Delete
-    abstract fun delete(store: Store)
+    abstract suspend fun delete(store: Store)
 }

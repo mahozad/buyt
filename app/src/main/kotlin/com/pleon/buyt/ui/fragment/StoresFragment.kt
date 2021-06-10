@@ -6,6 +6,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -21,6 +22,7 @@ import com.pleon.buyt.util.showUndoSnackbar
 import com.pleon.buyt.viewmodel.StoresViewModel
 import kotlinx.android.synthetic.main.fragment_store_list.*
 import kotlinx.android.synthetic.main.snackbar_container.*
+import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -45,9 +47,11 @@ class StoresFragment : BaseFragment(), ItemTouchHelperListener {
     override fun onViewCreated(view: View, savedState: Bundle?) {
         setHasOptionsMenu(true) // for onCreateOptionsMenu() to be called
 
-        viewModel.stores.observe(viewLifecycleOwner) { stores ->
-            adapter.submitList(stores)
-            animateAlpha(emptyHint, if (stores.isEmpty()) 1f else 0f)
+        lifecycleScope.launchWhenStarted {
+            viewModel.stores.collect { stores ->
+                adapter.submitList(stores)
+                animateAlpha(emptyHint, if (stores.isEmpty()) 1f else 0f)
+            }
         }
 
         recyclerView.adapter = adapter
@@ -83,9 +87,9 @@ class StoresFragment : BaseFragment(), ItemTouchHelperListener {
     }
 
     private fun updateSortMenuItemView() {
-        sortMenuItemView.text = getString(R.string.menu_text_sort_prefix, getString(viewModel.sort.nameRes))
+        sortMenuItemView.text = getString(R.string.menu_text_sort_prefix, getString(viewModel.sort.criterion.nameRes))
         sortMenuItemView.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                0, 0, viewModel.sort.imgRes, 0
+                0, 0, viewModel.sort.criterion.imgRes, 0
         )
     }
 
@@ -95,8 +99,8 @@ class StoresFragment : BaseFragment(), ItemTouchHelperListener {
         val store = adapter.getStore(viewHolder.adapterPosition)
         viewModel.flagStoreForDeletion(store)
         showUndoSnackbar(snbContainer, getString(R.string.snackbar_message_store_deleted, store.name),
-                onUndo = { viewModel.restoreDeletedStore(store) },
-                onDismiss = { viewModel.deleteStore(store) }
+                         onUndo = { viewModel.restoreDeletedStore(store) },
+                         onDismiss = { viewModel.deleteStore(store) }
         )
     }
 }

@@ -1,9 +1,5 @@
 package com.pleon.buyt.ui.activity
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -20,7 +16,6 @@ import kotlinx.android.synthetic.main.activity_stats.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import java.util.*
 
 class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
 
@@ -29,22 +24,10 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
     private lateinit var filterMenuItem: MenuItem
     private lateinit var periodMenuItemView: TextView
 
-    // Update the stats when date changes (i.e. time changes from 23:59 to 00:00)
-    private var today = Date()
-    private val timeReceiver = object : BroadcastReceiver() {
-        override fun onReceive(cxt: Context, intent: Intent) {
-            if (Date().date != today.date) {
-                viewModel.triggerUpdate()
-                today = Date()
-            }
-        }
-    }
-
     override fun layout() = R.layout.activity_stats
 
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
-        registerReceiver(timeReceiver, IntentFilter(Intent.ACTION_TIME_TICK))
         viewPager.adapter = adapter
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = if (position == 0) getString(R.string.tab_title_charts) else getString(R.string.tab_title_details)
@@ -69,7 +52,7 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
     private fun updatePeriodMenuItemView() {
         periodMenuItemView.text = getString(R.string.menu_text_period, viewModel.period.length)
         periodMenuItemView.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                0, 0, viewModel.period.imageRes, 0
+            0, 0, viewModel.period.imageRes, 0
         )
         animateIcon(periodMenuItemView.compoundDrawablesRelative[2])
     }
@@ -102,10 +85,5 @@ class StatsActivity : BaseActivity(), SelectDialogFragment.Callback {
     override fun onSelected(index: Int) {
         viewModel.setFilter(index)
         filterMenuItem.setIcon(viewModel.filter.imgRes)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        unregisterReceiver(timeReceiver)
     }
 }

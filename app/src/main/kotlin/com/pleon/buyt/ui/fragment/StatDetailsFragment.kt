@@ -2,6 +2,7 @@ package com.pleon.buyt.ui.fragment
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pleon.buyt.R
@@ -11,6 +12,7 @@ import com.pleon.buyt.ui.adapter.PurchaseDetailAdapter
 import com.pleon.buyt.util.animateAlpha
 import com.pleon.buyt.viewmodel.StatsViewModel
 import kotlinx.android.synthetic.main.fragment_stat_details.*
+import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -25,9 +27,11 @@ class StatDetailsFragment : BaseFragment() {
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(DateHeaderDecoration(recyclerView, adapter))
         recyclerView.addOnScrollListener(recyclerViewScrollListener())
-        viewModel.purchaseDetails.observe(viewLifecycleOwner) { purchaseDetails ->
-            adapter.items = purchaseDetails
-            animateAlpha(emptyHint, if (purchaseDetails.isEmpty()) 1f else 0f, duration = 0)
+        lifecycleScope.launchWhenStarted {
+            viewModel.purchaseDetails.collect { purchaseDetails ->
+                adapter.items = purchaseDetails
+                animateAlpha(emptyHint, if (purchaseDetails.isEmpty()) 1f else 0f, duration = 0)
+            }
         }
     }
 

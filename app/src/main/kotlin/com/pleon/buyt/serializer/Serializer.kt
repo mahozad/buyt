@@ -3,7 +3,7 @@ package com.pleon.buyt.serializer
 interface Serializer<T> {
     val mimeType: String
     val fileExtension: String
-    fun serialize(entities: List<T>)
-    fun setUpdateListener(listener: (progress: Int, fragment: String) -> Unit)
-    fun setFinishListener(listener: () -> Unit)
+    var updateListener: suspend (progress: Int, fragment: String) -> Unit
+    var finishListener: suspend () -> Unit
+    suspend fun serialize(entities: List<T>)
 }

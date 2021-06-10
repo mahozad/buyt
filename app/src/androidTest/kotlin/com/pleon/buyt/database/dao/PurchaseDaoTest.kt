@@ -12,6 +12,7 @@ import com.pleon.buyt.model.Item.Quantity.Unit.UNIT
 import com.pleon.buyt.model.Purchase
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.viewmodel.StatsViewModel.NoFilter
+import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
@@ -20,6 +21,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.*
+import java.util.concurrent.Executors
 
 @ExtendWith(InstantExecutorExtension::class)
 class PurchaseDaoTest {
@@ -31,11 +33,21 @@ class PurchaseDaoTest {
     @BeforeEach
     fun setUp() {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        database = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
+        database = Room
+            .inMemoryDatabaseBuilder(context, AppDatabase::class.java)
+            .setTransactionExecutor(Executors.newSingleThreadExecutor())
+            .build()
         purchaseDao = database.purchaseDao()
         storeDao = database.storeDao()
         itemDao = database.itemDao()
     }
+
+    @Test fun makeSureSqliteReturns0InsteadOfNullPointerExceptionAsSumWhenDatabaseIsEmpty() = runBlocking<Unit> {
+        val stats = purchaseDao.getStats(period = 7, filter = NoFilter)
+
+        Assertions.assertThat(stats.totalPurchaseCost).isEqualTo(0)
+    }
+
 
     @Test
     fun testGetStoreWithMaxPurchaseCount() {

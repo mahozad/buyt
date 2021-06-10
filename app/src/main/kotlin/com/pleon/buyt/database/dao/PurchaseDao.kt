@@ -1,6 +1,5 @@
 package com.pleon.buyt.database.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -22,7 +21,7 @@ private const val PERIOD_AND_FILTER_CLAUSE = "$PERIOD_CLAUSE AND $FILTER_CLAUSE"
 abstract class PurchaseDao {
 
     @Insert
-    abstract fun insert(purchase: Purchase): Long
+    abstract suspend fun insert(purchase: Purchase): Long
 
     /**
      * Annotating a method with @Transaction makes sure that all database operations you’re
@@ -30,7 +29,7 @@ abstract class PurchaseDao {
      * The transaction will fail when an exception is thrown in the method body.
      */
     @Transaction
-    open fun getStats(period: Int, filter: Filter): Stats {
+    open suspend fun getStats(period: Int, filter: Filter): Stats {
         val adjustedPeriod = period - 1 // The queries return one extra day so subtract 1
         val stats = Stats()
 
@@ -39,10 +38,10 @@ abstract class PurchaseDao {
 
         stats.dailyCosts = getDailyCosts(adjustedPeriod, filter.criterion)
         stats.totalPurchaseCount = getTotalPurchaseCount(adjustedPeriod, filter.criterion)
-        stats.totalPurchaseCost = getTotalPurchaseCost(adjustedPeriod, filter.criterion)
-        stats.maxPurchaseCost = getMaxPurchaseCost(adjustedPeriod, filter.criterion)
-        stats.minPurchaseCost = getMinPurchaseCost(adjustedPeriod, filter.criterion)
-        stats.averagePurchaseCost = getAveragePurchaseCost(adjustedPeriod, filter.criterion)
+        stats.totalPurchaseCost = getTotalPurchaseCost(adjustedPeriod, filter.criterion) ?: 0
+        stats.maxPurchaseCost = getMaxPurchaseCost(adjustedPeriod, filter.criterion) ?: 0
+        stats.minPurchaseCost = getMinPurchaseCost(adjustedPeriod, filter.criterion) ?: 0
+        stats.averagePurchaseCost = getAveragePurchaseCost(adjustedPeriod, filter.criterion) ?: 0
         stats.weekdayWithMaxPurchaseCount = getWeekdayWithMaxPurchaseCount(adjustedPeriod, filter.criterion)
         stats.storeWithMaxPurchaseCount = getStoreWithMaxPurchaseCount(adjustedPeriod, filter.criterion)
         stats.mostPurchasedCategories = getMostPurchasedCategories(adjustedPeriod, filter.criterion)
@@ -51,11 +50,22 @@ abstract class PurchaseDao {
         return stats
     }
 
+    /**
+     * The Sqlite functions SUM, AVG, MAX, and MIN return NULL when they do not
+     * get any value to begin with.
+     *
+     * Instead of returning a nullable type, we could have used the Sqlite function
+     * `IFNULL` to make it return 0 rather than `NULL` like so:
+     *
+     * ```SQL
+     * SELECT IFNULL(SUM(totalPrice), 0) FROM Purchase
+     * ```
+     */
     @Query("""SELECT SUM(totalPrice) FROM Purchase NATURAL JOIN Item WHERE $PERIOD_AND_FILTER_CLAUSE""")
-    protected abstract fun getTotalPurchaseCost(period: Int, filter: String): Long
+    protected abstract suspend fun getTotalPurchaseCost(period: Int, filter: String): Long?
 
     @Query("""SELECT COUNT(DISTINCT purchaseId) FROM Purchase NATURAL JOIN Item WHERE $PERIOD_AND_FILTER_CLAUSE""")
-    protected abstract fun getTotalPurchaseCount(period: Int, filter: String): Long
+    protected abstract suspend fun getTotalPurchaseCount(period: Int, filter: String): Long
 
     @Query("""
         SELECT STRFTIME('%w', date, 'unixepoch', 'localtime') AS weekday, SUM(totalPrice) AS sum
@@ -73,7 +83,7 @@ abstract class PurchaseDao {
         GROUP BY weekday
         ORDER BY purchaseCount DESC
         LIMIT 1;""")
-    protected abstract fun getWeekdayWithMaxPurchaseCount(period: Int, filter: String): WeekdayWithMostPurchaseCountDto
+    protected abstract suspend fun getWeekdayWithMaxPurchaseCount(period: Int, filter: String): WeekdayWithMostPurchaseCountDto
 
     @Query("""
         SELECT Store.name, COUNT(DISTINCT Purchase.purchaseId) AS purchaseCount
@@ -82,7 +92,7 @@ abstract class PurchaseDao {
         GROUP BY storeId
         ORDER BY purchaseCount DESC
         LIMIT 1;""")
-    protected abstract fun getStoreWithMaxPurchaseCount(period: Int, filter: String): StoreWithMostPurchaseCountDto
+    protected abstract suspend fun getStoreWithMaxPurchaseCount(period: Int, filter: String): StoreWithMostPurchaseCountDto
 
     @Query("""
         SELECT Item.name, COUNT(Item.name) AS purchaseCount 
@@ -91,28 +101,28 @@ abstract class PurchaseDao {
         GROUP BY Item.name
         ORDER BY purchaseCount DESC
         LIMIT 1;""")
-    protected abstract fun getMostPurchasedItem(period: Int, filter: String): MostPurchasedItemDto
+    protected abstract suspend fun getMostPurchasedItem(period: Int, filter: String): MostPurchasedItemDto
 
     @Query("""
         SELECT MAX(cost) FROM (SELECT SUM(totalPrice) AS cost
                                FROM Purchase NATURAL JOIN Item
                                WHERE $PERIOD_AND_FILTER_CLAUSE
                                GROUP BY purchaseId)""")
-    protected abstract fun getMaxPurchaseCost(period: Int, filter: String): Long
+    protected abstract suspend fun getMaxPurchaseCost(period: Int, filter: String): Long?
 
     @Query("""
         SELECT AVG(cost) FROM (SELECT SUM(totalPrice) AS cost
                                FROM Purchase NATURAL JOIN Item
                                WHERE $PERIOD_AND_FILTER_CLAUSE
                                GROUP BY purchaseId)""")
-    protected abstract fun getAveragePurchaseCost(period: Int, filter: String): Long
+    protected abstract suspend fun getAveragePurchaseCost(period: Int, filter: String): Long?
 
     @Query("""
         SELECT MIN(cost) FROM (SELECT SUM(totalPrice) AS cost
                                FROM Purchase NATURAL JOIN Item
                                WHERE $PERIOD_AND_FILTER_CLAUSE
                                GROUP BY purchaseId)""")
-    protected abstract fun getMinPurchaseCost(period: Int, filter: String): Long
+    protected abstract suspend fun getMinPurchaseCost(period: Int, filter: String): Long?
 
     /**
      * Returns total costs per day that are within the specified period and match the filter.
@@ -141,7 +151,7 @@ abstract class PurchaseDao {
                                  WHERE $PERIOD_AND_FILTER_CLAUSE) AS DailyCosts
         ON AllDates.date = DailyCosts.date
         GROUP BY AllDates.date""")
-    protected abstract fun getDailyCosts(period: Int, filter: String): List<DailyCost>
+    protected abstract suspend fun getDailyCosts(period: Int, filter: String): List<DailyCost>
 
     @Query("""
         SELECT category AS name, SUM(totalPrice) AS value
@@ -149,7 +159,7 @@ abstract class PurchaseDao {
         WHERE $PERIOD_AND_FILTER_CLAUSE
         GROUP BY category
         ORDER BY value DESC""")
-    protected abstract fun getMostPurchasedCategories(period: Int, filter: String): List<CategorySum>
+    protected abstract suspend fun getMostPurchasedCategories(period: Int, filter: String): List<CategorySum>
 
     @Query("""
         SELECT *
@@ -157,21 +167,21 @@ abstract class PurchaseDao {
         WHERE $PERIOD_AND_FILTER_CLAUSE
         GROUP BY purchaseId
         ORDER BY date DESC""")
-    abstract fun getPurchaseDetails(period: Int, filter: String): LiveData<List<PurchaseDetail>>
+    abstract suspend fun getPurchaseDetails(period: Int, filter: String): List<PurchaseDetail>
 
     @Query("""
         SELECT *
         FROM Purchase NATURAL JOIN Item
         GROUP BY purchaseId
         ORDER BY date DESC""")
-    abstract fun getAllPurchaseDetailsSynchronous(): List<PurchaseDetail>
+    abstract suspend fun getAllPurchaseDetails(): List<PurchaseDetail>
 
     @Transaction
-    open fun getPurchaseCountInPeriod(period: Int): Int {
+    open suspend fun getPurchaseCountInPeriod(period: Int): Int {
         val adjustedPeriod = period - 1 // The queries return one extra day so subtract 1
         return getCountInPeriod(adjustedPeriod)
     }
 
     @Query("""SELECT Count(*) FROM Purchase WHERE $PERIOD_CLAUSE""")
-    protected abstract fun getCountInPeriod(period: Int): Int
+    protected abstract suspend fun getCountInPeriod(period: Int): Int
 }

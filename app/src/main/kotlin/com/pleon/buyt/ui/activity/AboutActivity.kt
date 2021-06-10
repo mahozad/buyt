@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.pleon.buyt.BuildConfig
 import com.pleon.buyt.R
@@ -70,11 +71,13 @@ class AboutActivity : BaseActivity() {
 
     private fun onPurchaseResult() = { result: IabResult, info: Purchase ->
         if (result.isSuccess) {
-            isPremium = true
-            val subscription = Subscription(BCrypt.hashpw("PREMIUM", BCrypt.gensalt()))
-            subscriptionRepository.insertSubscription(subscription)
-            UpgradeSuccessDialogFragment().show(supportFragmentManager, "UPG_DIALOG")
-            animateAlpha(upgradePremiumBtn, toAlpha = 0f, duration = 200, startDelay = 300)
+            lifecycleScope.launchWhenStarted {
+                isPremium = true
+                val subscription = Subscription(BCrypt.hashpw("PREMIUM", BCrypt.gensalt()))
+                subscriptionRepository.insertSubscription(subscription)
+                UpgradeSuccessDialogFragment().show(supportFragmentManager, "UPG_DIALOG")
+                animateAlpha(upgradePremiumBtn, toAlpha = 0f, duration = 200, startDelay = 300)
+            }
         }
     }
 

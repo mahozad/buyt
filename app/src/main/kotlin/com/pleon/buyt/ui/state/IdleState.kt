@@ -7,6 +7,7 @@ import android.location.LocationManager
 import android.os.Handler
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.pleon.buyt.R
 import com.pleon.buyt.component.GpsService
 import com.pleon.buyt.isPremium
@@ -27,13 +28,18 @@ object IdleState : State(), KoinComponent {
 
     private val locationMgr: LocationManager by inject()
 
-    override fun onFabClicked() = with(activity) {
-        viewModel.purchaseCountInPeriod.observe(this) { purchaseCount ->
-            if (itemsFragment.isListEmpty) itemsFragment.emphasisEmpty()
-            else if (!isPremium && purchaseCount >= FREE_BUY_LIMIT)
-                UpgradePromptDialogFragment.newInstance(activity.getText(R.string.dialog_message_free_limit_reached))
-                        .show(supportFragmentManager, "UPGRADE_DIALOG")
-            else findLocation()
+    override fun onFabClicked(): Unit = with(activity) {
+        lifecycleScope.launchWhenStarted {
+            val purchaseCount = viewModel.getPurchaseCountInPeriod()
+            if (itemsFragment.isListEmpty) {
+                itemsFragment.emphasisEmpty()
+            } else if (!isPremium && purchaseCount >= FREE_BUY_LIMIT) {
+                UpgradePromptDialogFragment
+                    .newInstance(activity.getText(R.string.dialog_message_free_limit_reached))
+                    .show(supportFragmentManager, "UPGRADE_DIALOG")
+            } else {
+                findLocation()
+            }
         }
     }
 

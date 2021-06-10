@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.Spinner
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.pleon.buyt.R
@@ -97,9 +98,9 @@ class CreateStoreDialogFragment : AppCompatDialogFragment() {
         if (validateFields()) {
             val name = name.text.toString()
             val store = Store(Coordinates(location), name, spinner.selectedItem as Category)
-            // FIXME: "this" is used as the owner because "lifeCycleOwner" threw exception
-            viewModel.addStore(store).observe(this) {
-                createStoreListener?.onStoreCreated(store)
+            lifecycleScope.launchWhenStarted {
+                val insertedStore = viewModel.addStore(store)
+                createStoreListener?.onStoreCreated(insertedStore)
                 dismiss()
             }
         }

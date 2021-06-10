@@ -162,15 +162,17 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${versionOf["lifecycle"]}")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:${versionOf["lifecycle"]}")
     implementation("androidx.lifecycle:lifecycle-common-java8:${versionOf["lifecycle"]}")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:${versionOf["lifecycle"]}")
     implementation("androidx.lifecycle:lifecycle-process:${versionOf["lifecycle"]}")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0")
     implementation("androidx.fragment:fragment-ktx:${versionOf["fragment"]}")
     implementation("androidx.recyclerview:recyclerview:${versionOf["recyclerview"]}")
     implementation("androidx.preference:preference-ktx:${versionOf["preference"]}")
     implementation("androidx.viewpager2:viewpager2:${versionOf["viewpager"]}")
     implementation("io.insert-koin:koin-androidx-viewmodel:${versionOf["koin"]}")
     implementation("androidx.room:room-runtime:${versionOf["room"]}")
+    implementation("androidx.room:room-ktx:${versionOf["room"]}")
     kapt("androidx.room:room-compiler:${versionOf["room"]}")
-
     /* If you're targeting JDK 8, you can use extended versions of the Kotlin standard library
      * which contain additional extension functions for APIs added in new JDK versions.
      * So instead of "kotlin-stdlib", use "kotlin-stdlib-jdk8": */

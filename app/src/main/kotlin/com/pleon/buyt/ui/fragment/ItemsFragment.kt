@@ -3,6 +3,7 @@ package com.pleon.buyt.ui.fragment
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -10,14 +11,19 @@ import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.google.android.material.textfield.TextInputLayout
 import com.pleon.buyt.R
 import com.pleon.buyt.model.Category
+import com.pleon.buyt.model.Item
 import com.pleon.buyt.ui.ItemSpacingDecoration
 import com.pleon.buyt.ui.TouchHelperCallback
 import com.pleon.buyt.ui.TouchHelperCallback.ItemTouchHelperListener
 import com.pleon.buyt.ui.adapter.ItemsAdapter
-import com.pleon.buyt.util.*
+import com.pleon.buyt.util.animateAlpha
+import com.pleon.buyt.util.animateIconInfinitely
+import com.pleon.buyt.util.showSnackbar
+import com.pleon.buyt.util.showUndoSnackbar
 import com.pleon.buyt.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.fragment_item_list.*
 import kotlinx.android.synthetic.main.snackbar_container.*
+import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -42,11 +48,24 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
         // In fragments use getViewLifecycleOwner() as owner argument
-        viewModel.items.observe(viewLifecycleOwner) { items ->
-            adapter.submitList(items)
-            animateAlpha(emptyHint, if (items.isEmpty()) 1f else 0f)
-            listener?.onItemListChanged(items.isEmpty())
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.items.collect { items -> updateItems(items) }
         }
+
+        // OR
+        /* lifecycleScope.launch {
+           lifecycle.repeatOnLifecycle(STARTED) {
+                viewModel.items.collect { items -> updateItems(items) }
+            }
+        }
+        */
+        // OR
+        // this is shorthand for lifecycleScope.launch() and not lifecycleScope.launchWhenStarted()
+        /* viewModel.getItems()
+            .onEach { items -> updateItems(items) }
+            .launchIn(lifecycleScope)
+        */
 
         animateIconInfinitely(emptyHint.drawable, startDelay = 3000, repeatDelay = 2500)
 
@@ -58,6 +77,12 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = GridLayoutManager(context, columns)
         recyclerView.addItemDecoration(ItemSpacingDecoration(columns, isRtl))
+    }
+
+    private fun updateItems(items: List<Item>) {
+        adapter.submitList(items)
+        animateAlpha(emptyHint, if (items.isEmpty()) 1f else 0f)
+        listener?.onItemListChanged(items.isEmpty())
     }
 
     override fun onMoved(oldPosition: Int, newPosition: Int) {

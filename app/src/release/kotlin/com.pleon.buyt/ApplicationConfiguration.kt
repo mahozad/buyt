@@ -2,11 +2,12 @@ package com.pleon.buyt
 
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.ProcessLifecycleOwner
 import com.pleon.buyt.billing.IabHelper
 import com.pleon.buyt.billing.IabResult
 import com.pleon.buyt.billing.Inventory
 import com.pleon.buyt.repository.SubscriptionRepository
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import org.koin.core.KoinApplication
 import org.koin.java.KoinJavaComponent.inject
 import org.mindrot.jbcrypt.BCrypt
@@ -31,12 +32,15 @@ class ApplicationConfiguration {
     }
 
     /**
-     * For more info about saving purchase status locally see [https://stackoverflow.com/q/14231859]
+     * For the coroutine scope see [this post](https://stackoverflow.com/a/63728529)
+     *
+     * For more information about saving purchase status locally see [this post](https://stackoverflow.com/q/14231859)
      */
     fun setupSubscription() {
-        repository
-                .getSubscriptionToken()
-                .observe(ProcessLifecycleOwner.get(), this::checkSubscription)
+        MainScope().launch {
+            val subscriptionToken = repository.getSubscriptionToken()
+            checkSubscription(subscriptionToken)
+        }
     }
 
     private fun checkSubscription(token: String?) {

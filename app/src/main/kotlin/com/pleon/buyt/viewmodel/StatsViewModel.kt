@@ -2,18 +2,16 @@ package com.pleon.buyt.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations.map
-import androidx.lifecycle.Transformations.switchMap
 import com.pleon.buyt.R
-import com.pleon.buyt.database.dto.PurchaseDetail
-import com.pleon.buyt.database.dto.Stats
 import com.pleon.buyt.model.Category
 import com.pleon.buyt.repository.StatsRepository
 import com.pleon.buyt.ui.dialog.SelectDialogFragment.SelectDialogRow
 import com.pleon.buyt.util.formatDate
 import com.pleon.buyt.viewmodel.StatsViewModel.Period.NARROW
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.*
+import java.util.*
 
 class StatsViewModel(private val app: Application, repository: StatsRepository) : AndroidViewModel(app) {
 
@@ -21,7 +19,9 @@ class StatsViewModel(private val app: Application, repository: StatsRepository) 
         NARROW(7, R.drawable.avd_period_wid_nar),
         MEDIUM(15, R.drawable.avd_period_nar_med),
         EXTENDED(30, R.drawable.avd_period_med_ext),
-        WIDE(90, R.drawable.avd_period_ext_wid)
+        WIDE(90, R.drawable.avd_period_ext_wid);
+
+        fun nextPeriod() = values()[(ordinal + 1) % values().size]
     }
 
     interface Filter {
@@ -35,42 +35,49 @@ class StatsViewModel(private val app: Application, repository: StatsRepository) 
         override val imgRes = R.drawable.ic_filter_off
     }
 
-    private val triggerUpdate = MutableLiveData(true)
+    val period get() = periodFlow.value
+    val filter get() = filterFlow.value
+    // Update the stats when date changes (i.e. time changes from 23:59 to 00:00)
+    private val dateFlow = flow {
+        while (true /* OR currentCoroutineContext().isActive */) {
+            emit(Date().date)
+            delay(1000)
+        }
+    }.distinctUntilChanged()
 
-    val stats: LiveData<Stats> = switchMap(triggerUpdate) { repository.getStats(period.length, filter) }
+    /**
+     * StateFlow is a specialized SharedFlow in that it only retains the latest
+     * value (hence the name *State*Flow). In other words, it is appropriate for
+     * when we want to have the latest value or state of something in our app.
+     */
+    private val periodFlow = MutableStateFlow(NARROW)
+    private val filterFlow = MutableStateFlow<Filter>(NoFilter)
 
-    private val rawPurchaseDetails: LiveData<List<PurchaseDetail>> = switchMap(triggerUpdate) {
+    val stats = combine(periodFlow, filterFlow, dateFlow) { period, filter, _ ->
+        repository.getStats(period.length, filter)
+    }
+
+    val purchaseDetails = combine(periodFlow, filterFlow, dateFlow) { period, filter, _ ->
         repository.getPurchaseDetails(period.length, filter)
-    }
-
-    val purchaseDetails: LiveData<List<Any>> = map(rawPurchaseDetails) { details ->
+    }.map { details ->
         details.groupBy { formatDate(it.purchase.date) }.flatMap { listOf(it.key) + it.value }
-    }
+    }.flowOn(Dispatchers.Default)
 
-    val filterList = listOf(SelectDialogRow(app.getString(R.string.no_filter), NoFilter.imgRes)) + Category.values().map {
-        SelectDialogRow(app.getString(it.nameRes), it.imageRes)
-    }
-    var filter: Filter = NoFilter
-        private set
-    var period = NARROW
-        private set
+    val filterList = listOf(SelectDialogRow(app.getString(R.string.no_filter), NoFilter.imgRes)) +
+            Category.values().map { SelectDialogRow(app.getString(it.nameRes), it.imageRes) }
 
     fun togglePeriod() {
-        val currentIndex = Period.valueOf(period.name).ordinal
-        period = Period.values()[(currentIndex + 1) % Period.values().size]
-        triggerUpdate()
+        periodFlow.value = period.nextPeriod()
     }
 
     fun setFilter(index: Int) {
-        filter = getFilterByIndex(index)
-        triggerUpdate()
-    }
-
-    fun triggerUpdate() = triggerUpdate.setValue(true)
-
-    private fun getFilterByIndex(index: Int): Filter {
         val name = filterList[index].name
-        for (cat in Category.values()) if (app.getString(cat.nameRes) == name) return cat
-        return NoFilter
+        var newFilter: Filter = NoFilter
+        for (cat in Category.values()) {
+            if (name == app.getString(cat.nameRes)) {
+                newFilter = cat
+            }
+        }
+        filterFlow.value = newFilter
     }
 }

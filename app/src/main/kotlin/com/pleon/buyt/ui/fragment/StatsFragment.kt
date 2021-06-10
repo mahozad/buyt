@@ -6,6 +6,7 @@ import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import androidx.annotation.ColorInt
 import androidx.core.content.res.ResourcesCompat.getFont
+import androidx.lifecycle.lifecycleScope
 import com.db.chart.animation.Animation
 import com.pleon.buyt.R
 import com.pleon.buyt.database.dto.CategorySum
@@ -19,6 +20,7 @@ import com.pleon.buyt.util.formatPrice
 import com.pleon.buyt.viewmodel.StatsViewModel
 import com.pleon.buyt.viewmodel.StatsViewModel.Period
 import kotlinx.android.synthetic.main.fragment_stats.*
+import kotlinx.coroutines.flow.collect
 import org.jetbrains.anko.defaultSharedPreferences
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import kotlin.math.log10
@@ -28,15 +30,13 @@ private const val PIE_MAX_SLICES = 5
 class StatsFragment : BaseFragment() {
 
     @ColorInt private lateinit var pieSliceColors: IntArray
-    @Volatile private var isStartup = true // Required due to LiveData called twice on startup
     private val viewModel by sharedViewModel<StatsViewModel>()
 
     override fun layout() = R.layout.fragment_stats
 
     override fun onViewCreated(view: View, savedState: Bundle?) {
-        viewModel.stats.observe(viewLifecycleOwner) { stats ->
-            showStats(stats)
-            isStartup = false
+        lifecycleScope.launchWhenStarted {
+            viewModel.stats.collect(::showStats)
         }
         pieSliceColors = resources.getIntArray(R.array.pieChartColors)
         lineChart.setTypeface(getFont(requireContext(), R.font.vazir_wol_v_26_0_2_scaled_uniformly_to_94_percent)!!)
@@ -76,7 +76,7 @@ class StatsFragment : BaseFragment() {
             else -> 8f
         }
         val lineChart = buildLineChart(requireContext(), lineChart, dailyCosts, dotsRadius = dotRadius)
-        if (isStartup) lineChart.show() else lineChart.show(Animation(500))
+        lineChart.show(Animation(500))
     }
 
     private fun showPieChart(categorySums: List<CategorySum>) {
@@ -90,6 +90,6 @@ class StatsFragment : BaseFragment() {
         val other = categorySums.drop(PIE_MAX_SLICES - 1).sumOf(CategorySum::value)
         val value = if (isLogScale) log10(other.toDouble()) else other.toDouble()
         if (other > 0) pieChart.addSlice(Slice(getString(R.string.pie_chart_other), value, pieSliceColors[PIE_MAX_SLICES - 1]))
-        pieChart.startAnim(if (isStartup) 0 else 480)
+        pieChart.startAnim(480)
     }
 }

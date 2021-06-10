@@ -2,7 +2,7 @@ package com.pleon.buyt.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.Transformations.map
+import androidx.lifecycle.viewModelScope
 import com.pleon.buyt.R
 import com.pleon.buyt.database.dto.ItemNameCat
 import com.pleon.buyt.model.Category
@@ -10,13 +10,19 @@ import com.pleon.buyt.model.Category.GROCERY
 import com.pleon.buyt.model.Item
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.repository.AddItemRepository
-import java.io.InputStreamReader
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
 import java.util.*
 
 class AddItemViewModel(app: Application, val repository: AddItemRepository) : AndroidViewModel(app) {
 
     init {
-        repository.getAllStores().observeForever { storeList = it }
+        viewModelScope.launch {
+            storeList = repository.getAllStores()
+        }
     }
 
     val defaultQuantity = 1L
@@ -25,28 +31,33 @@ class AddItemViewModel(app: Application, val repository: AddItemRepository) : An
     var category = GROCERY
     var purchaseDate = Date()
     var store: Store? = null
-    val itemNameCats = map(repository.itemNameCats, this::mergeNameCats)
 
-    private val defaultNameCats by lazy {
-        // FIXME: IO operation; do it on background
-        fun cat(catName: String) = Category.valueOf(catName)
-        InputStreamReader(app.resources.openRawResource(R.raw.item_names))
-                .readLines()
-                .associateBy(
-                        { it.substringBefore(':') },
-                        { cat(it.substringAfter(':')) }
-                )
-    }
+    private val defaultNameCats = flow {
+        fun String.toNameCat() =
+            ItemNameCat(substringBefore(":"), Category.valueOf(substringAfter(":")))
+        app.resources.openRawResource(R.raw.item_names)
+            .reader()
+            .useLines { lines ->
+                emit(lines.map { it.toNameCat() }.toList())
+            }
+    }.flowOn(Dispatchers.IO)
 
-    private fun mergeNameCats(dbNameCats: Array<ItemNameCat>): Map<String, Category> {
-        return defaultNameCats + dbNameCats.associateBy({ it.name }, { it.category })
-    }
+    /**
+     * Could also have written it like this:
+     * ```
+     * val x = flow1.combine(flow2) { f1, f2 -> ... }
+     * ```
+     */
+    val itemNameCats = combine(defaultNameCats, repository.itemNameCats) { default, database ->
+        (default + database).associateBy({ it.name }, { it.category })
+    }.flowOn(Dispatchers.Default)
 
-    fun addItem(item: Item, isBought: Boolean) {
-        if (isBought)
+    fun addItem(item: Item, isBought: Boolean) = viewModelScope.launch {
+        if (isBought) {
             repository.addPurchasedItem(item, store!!, purchaseDate)
-        else
+        } else {
             repository.addItem(item)
+        }
     }
 
     fun resetValues() {

@@ -11,6 +11,7 @@ import com.pleon.buyt.ui.state.IdleState
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import kotlinx.coroutines.flow.flow
 import org.assertj.core.api.Assertions.assertThat
 import org.jetbrains.anko.defaultSharedPreferences
 import org.junit.jupiter.api.BeforeEach
@@ -29,14 +30,13 @@ class MainViewModelTest {
     @MockK lateinit var repository: MainRepository
     lateinit var viewModel: MainViewModel
 
-    @BeforeEach
-    fun setUp() {
+    @BeforeEach fun setUp() {
         val app: Application = getApplicationContext()
         val prefs = app.defaultSharedPreferences
         val itemsLiveData = MutableLiveData<List<Item>>().apply {
             value = emptyList()
         }
-        every { repository.items } returns itemsLiveData
+        every { repository.items } returns flow { emit(emptyList<Item>()) }
         viewModel = MainViewModel(app, repository, prefs, IdleState)
     }
 

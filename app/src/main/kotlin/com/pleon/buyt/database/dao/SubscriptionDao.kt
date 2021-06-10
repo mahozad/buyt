@@ -11,17 +11,17 @@ import com.pleon.buyt.model.Subscription
 abstract class SubscriptionDao {
 
     @Transaction
-    open fun insertSubscription(subscription: Subscription) {
+    open suspend fun insertSubscription(subscription: Subscription) {
         deleteAll()
         insert(subscription)
     }
 
     @Insert(onConflict = REPLACE)
-    protected abstract fun insert(subscription: Subscription)
+    protected abstract suspend fun insert(subscription: Subscription)
 
     @Query("""DELETE FROM Subscription""")
-    protected abstract fun deleteAll()
+    protected abstract suspend fun deleteAll()
 
     @Query("""SELECT token FROM Subscription""")
-    abstract fun getToken(): String
+    abstract suspend fun getToken(): String
 }

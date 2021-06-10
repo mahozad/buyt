@@ -4,6 +4,7 @@ import android.content.Intent
 import android.location.Location
 import android.os.Bundle
 import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_END
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.pleon.buyt.R
@@ -26,11 +27,14 @@ object FindingState : State() {
         activity.stopService(Intent(activity, GpsService::class.java))
     }
 
-    override fun onLocationFound(location: Location) = with(activity) {
+    override fun onLocationFound(location: Location): Unit = with(activity) {
         viewModel.location = location
         if (prefs.getBoolean(PREF_VIBRATE, true)) vibrate(this, 200, 255)
         val here = Coordinates(viewModel.location!!)
-        viewModel.findNearStores(here).observe(this) { onStoresFound(it) }
+        lifecycleScope.launchWhenStarted {
+            val stores = viewModel.findNearStores(here)
+            onStoresFound(stores)
+        }
     }
 
     private fun shiftToSelectingState() = with(activity) {

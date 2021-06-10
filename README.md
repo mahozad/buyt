@@ -13,6 +13,35 @@ foreground
 
 a good android example: https://proandroiddev.com/android-architecture-starring-kotlin-coroutines-jetpack-mvvm-room-paging-retrofit-and-dagger-7749b2bae5f7
 
+# Kotlin Coroutines and Flow
+
+https://developer.android.com/topic/libraries/architecture/coroutines
+https://developer.android.com/kotlin/coroutines/coroutines-best-practices
+https://developer.android.com/training/data-storage/room/async-queries
+https://developer.android.com/codelabs/advanced-kotlin-coroutines#9
+https://developer.android.com/kotlin/flow/test
+https://elizarov.medium.com/shared-flows-broadcast-channels-899b675e805c
+https://medium.com/androiddevelopers/migrating-from-livedata-to-kotlins-flow-379292f419fb
+https://medium.com/androiddevelopers/room-flow-273acffe5b57
+https://medium.com/androiddevelopers/a-safer-way-to-collect-flows-from-android-uis-23080b1f8bda
+https://proandroiddev.com/should-we-choose-kotlins-stateflow-or-sharedflow-to-substitute-for-android-s-livedata-2d69f2bd6fa5
+https://proandroiddev.com/from-rxjava-2-to-kotlin-flow-threading-8618867e1955
+https://proandroiddev.com/kotlin-coroutines-patterns-anti-patterns-f9d12984c68e
+https://proandroiddev.com/kotlin-coroutines-channels-csp-android-db441400965f
+
+## Convert single live event to channel
+https://cesarmorigaki.medium.com/replace-singleliveevent-with-kotlin-channel-flow-b983f095a47a
+
+## Provided scopes
+Coroutines created with scopes `lifecycleScope` and `viewModelScope` do not need to
+be canceled in activity or viewModel onDestroy method. 
+
+## `runBlockingTest` vs `runBlocking` in unit tests 
+Executes a testBody inside an immediate execution dispatcher.
+This is similar to `runBlocking` but it will immediately progress past delays and
+into launch and async blocks. You can use this to write tests that execute in the
+presence of calls to delay without causing your test to take extra time.
+
 ## Terms of Service example
 This application is provided by Pleon at no cost, as an Ad-supported app and is intended for use as is.
         Which1 neither collect nor share your information with anyone; however, the app does use third-party services that may collect your information.
