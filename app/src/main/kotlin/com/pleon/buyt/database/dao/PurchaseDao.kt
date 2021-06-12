@@ -161,13 +161,18 @@ abstract class PurchaseDao {
         ORDER BY value DESC""")
     protected abstract suspend fun getMostPurchasedCategories(period: Int, filter: String): List<CategorySum>
 
+    open suspend fun getPurchaseDetails(period: Int, filter: String): List<PurchaseDetail>{
+        val adjustedPeriod = period - 1 // The queries return one extra day so subtract 1
+        return getDetails(adjustedPeriod, filter)
+    }
+
     @Query("""
         SELECT *
         FROM Purchase NATURAL JOIN Item
         WHERE $PERIOD_AND_FILTER_CLAUSE
         GROUP BY purchaseId
         ORDER BY date DESC""")
-    abstract suspend fun getPurchaseDetails(period: Int, filter: String): List<PurchaseDetail>
+    protected abstract suspend fun getDetails(period: Int, filter: String): List<PurchaseDetail>
 
     @Query("""
         SELECT *
