@@ -22,6 +22,7 @@ import com.pleon.buyt.ui.activity.MainActivity
 import com.pleon.buyt.withTextInputLayoutError
 import com.pleon.buyt.withTextInputLayoutHint
 import de.mannodermaus.junit5.ActivityScenarioExtension
+import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers.*
 import org.junit.jupiter.api.BeforeEach
@@ -275,7 +276,7 @@ class AddItemFragmentTest {
         // Make sure there is at least one store available to choose in the dialog
         val storeName = "Test Store"
         val store = Store(Coordinates(1.0, 2.0), storeName, Category.DRUG)
-        storeDao.insert(store)
+        runBlocking { storeDao.insert(store) }
         Espresso.pressBack() // To ensure store dialog is updated
         onView(withId(R.id.action_add)).perform(click())
 

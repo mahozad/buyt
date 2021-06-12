@@ -9,6 +9,7 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import java.util.concurrent.Executors
 
 @ExtendWith(InstantExecutorExtension::class)
 class StoreDaoTest {
@@ -18,7 +19,10 @@ class StoreDaoTest {
 
     @BeforeEach fun setUp() {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        database = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
+        database = Room
+            .inMemoryDatabaseBuilder(context, AppDatabase::class.java)
+            .setTransactionExecutor(Executors.newSingleThreadExecutor())
+            .build()
         storeDao = database.storeDao()
     }
 

@@ -49,7 +49,8 @@ abstract class ItemDao {
     @Transaction
     open suspend fun insert(item: Item): Long {
         val itemId = insertItem(item)
-        if (!item.isBought) updatePosition(itemId) // no need to update position of purchased item
+        // No need to update position of a purchased item
+        if (!item.isBought) updateItemPosition(itemId)
         return itemId
     }
 
@@ -57,7 +58,7 @@ abstract class ItemDao {
     protected abstract suspend fun insertItem(item: Item): Long
 
     @Query("""UPDATE Item SET position = (SELECT MAX(position) + 1 FROM Item) WHERE itemId = :itemId""")
-    protected abstract suspend fun updatePosition(itemId: Long)
+    protected abstract suspend fun updateItemPosition(itemId: Long)
 
     @Update
     abstract suspend fun updateItem(item: Item)
@@ -71,13 +72,16 @@ abstract class ItemDao {
 
     @Transaction
     open suspend fun delete(item: Item) {
+        updateOtherPositions(item.itemId)
         deleteItem(item)
-        updateOtherPositions(item.position)
     }
 
     @Delete
     protected abstract suspend fun deleteItem(item: Item)
 
-    @Query("""UPDATE Item SET position = position - 1 WHERE position > :itemPosition""")
-    protected abstract suspend fun updateOtherPositions(itemPosition: Int)
+    /**
+     * See [this post](https://stackoverflow.com/a/18095662)
+     */
+    @Query("""UPDATE Item SET position = position - 1 WHERE position > (SELECT position FROM Item WHERE itemId = :itemId)""")
+    protected abstract suspend fun updateOtherPositions(itemId: Long)
 }

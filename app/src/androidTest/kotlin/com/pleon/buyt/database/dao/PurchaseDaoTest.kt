@@ -50,7 +50,7 @@ class PurchaseDaoTest {
 
 
     @Test
-    fun testGetStoreWithMaxPurchaseCount() {
+    fun testGetStoreWithMaxPurchaseCount() = runBlocking<Unit> {
         val item1 = Item("item1", Item.Quantity(1, UNIT), GROCERY, false, isBought = false)
         val item2 = Item("item2", Item.Quantity(1, UNIT), GROCERY, false, isBought = false)
         val item3 = Item("item3", Item.Quantity(1, UNIT), GROCERY, false, isBought = false)
@@ -82,7 +82,7 @@ class PurchaseDaoTest {
     }
 
     @Test
-    fun shouldOnlyCountPurchasesInTheSpecifiedPeriod() {
+    fun shouldOnlyCountPurchasesInTheSpecifiedPeriod() = runBlocking<Unit> {
         val item1 = Item("item1", Item.Quantity(1, UNIT), GROCERY, false, isBought = false)
         val item2 = Item("item2", Item.Quantity(1, UNIT), GROCERY, false, isBought = false)
         val item3 = Item("item3", Item.Quantity(1, UNIT), GROCERY, false, isBought = false)
@@ -116,7 +116,7 @@ class PurchaseDaoTest {
      * Because our single source of truth is Item::Category
      */
     @Test
-    fun shouldOnlyCountPurchasesWithTheSpecifiedItemCategoryAndNotStoreCategory() {
+    fun shouldOnlyCountPurchasesWithTheSpecifiedItemCategoryAndNotStoreCategory() = runBlocking<Unit> {
         val item1 = Item("item1", Item.Quantity(1, UNIT), FRUIT, false, isBought = false)
         val item2 = Item("item2", Item.Quantity(1, UNIT), GROCERY, false, isBought = false)
         val item3 = Item("item3", Item.Quantity(1, UNIT), BREAD, false, isBought = false)
@@ -146,7 +146,7 @@ class PurchaseDaoTest {
         Assertions.assertThat(stats.storeWithMaxPurchaseCount?.purchaseCount).isEqualTo(2)
     }
 
-    @Test fun shouldReturnCorrectWeekdayWithMaxPurchaseCount() {
+    @Test fun shouldReturnCorrectWeekdayWithMaxPurchaseCount() = runBlocking<Unit> {
         val item1 = Item("item1", Item.Quantity(1, UNIT), GROCERY, false, isBought = false)
         val item2 = Item("item2", Item.Quantity(1, UNIT), GROCERY, false, isBought = false)
         val item3 = Item("item3", Item.Quantity(1, UNIT), GROCERY, false, isBought = false)
