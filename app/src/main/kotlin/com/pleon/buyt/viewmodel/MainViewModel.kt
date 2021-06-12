@@ -87,17 +87,16 @@ class MainViewModel(private val app: Application, private val repository: MainRe
         repository.updateItems(items)
     }
 
-    fun flagItemForDeletion(item: Item) {
-        item.isFlaggedForDeletion = true
-        updateItems(listOf(item))
+    fun flagItemForDeletion(item: Item) = toggleItemDeletion(item, shouldDelete = true)
+
+    fun restoreDeletedItem(item: Item) = toggleItemDeletion(item, shouldDelete = false)
+
+    private fun toggleItemDeletion(item: Item, shouldDelete: Boolean) = viewModelScope.launch {
+        item.isFlaggedForDeletion = shouldDelete
+        repository.updateItem(item)
     }
 
     fun deleteItem(item: Item) = viewModelScope.launch { repository.deleteItem(item) }
-
-    fun restoreDeletedItem(item: Item) {
-        item.isFlaggedForDeletion = false
-        updateItems(listOf(item))
-    }
 
     fun shiftToIdleState() {
         state = IdleState
