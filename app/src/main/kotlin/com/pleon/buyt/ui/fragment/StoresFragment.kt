@@ -93,7 +93,7 @@ class StoresFragment : BaseFragment(), ItemTouchHelperListener {
         )
     }
 
-    override fun onMoved(oldPosition: Int, newPosition: Int) = Unit // No action needed
+    override fun onMoved(oldAdapterPosition: Int, newAdapterPosition: Int) = Unit // No action needed
 
     override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
         val store = adapter.getStore(viewHolder.adapterPosition)

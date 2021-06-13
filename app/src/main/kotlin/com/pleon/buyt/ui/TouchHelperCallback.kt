@@ -35,7 +35,7 @@ class TouchHelperCallback(cxt: Context, private var listener: ItemTouchHelperLis
     : ItemTouchHelper.Callback() {
 
     interface ItemTouchHelperListener {
-        fun onMoved(oldPosition: Int, newPosition: Int)
+        fun onMoved(oldAdapterPosition: Int, newAdapterPosition: Int)
         fun onSwiped(viewHolder: ViewHolder, direction: Int)
     }
 

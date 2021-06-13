@@ -85,9 +85,11 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
         listener?.onItemListChanged(items.isEmpty())
     }
 
-    override fun onMoved(oldPosition: Int, newPosition: Int) {
-        adapter.getItem(oldPosition).position = newPosition
-        adapter.getItem(newPosition).position = oldPosition
+    override fun onMoved(oldAdapterPosition: Int, newAdapterPosition: Int) {
+        val position1 = adapter.getItem(oldAdapterPosition).position
+        val position2 = adapter.getItem(newAdapterPosition).position
+        adapter.getItem(newAdapterPosition).position = position1
+        adapter.getItem(oldAdapterPosition).position = position2
         viewModel.updateItems(adapter.currentList)
         // or update items in onStop (causes bugs if before onStop some items are deleted)
     }
