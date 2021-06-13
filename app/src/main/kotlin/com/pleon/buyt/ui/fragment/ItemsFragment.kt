@@ -85,13 +85,20 @@ class ItemsFragment : BaseFragment(), ItemTouchHelperListener {
         listener?.onItemListChanged(items.isEmpty())
     }
 
+    // Test this with Espresso: https://stackoverflow.com/a/35331578
     override fun onMoved(oldAdapterPosition: Int, newAdapterPosition: Int) {
-        val position1 = adapter.getItem(oldAdapterPosition).position
-        val position2 = adapter.getItem(newAdapterPosition).position
-        adapter.getItem(newAdapterPosition).position = position1
-        adapter.getItem(oldAdapterPosition).position = position2
-        viewModel.updateItems(adapter.currentList)
-        // or update items in onStop (causes bugs if before onStop some items are deleted)
+        val item1 = adapter.getItem(oldAdapterPosition)
+        val item2 = adapter.getItem(newAdapterPosition)
+        // Do not allow an urgent item to be replaced be a regular item and vice versa
+        val areCompatible = item1.isUrgent == item2.isUrgent
+        if (areCompatible) {
+            val p1 = item1.position
+            val p2 = item2.position
+            item2.position = p1
+            item1.position = p2
+            // Or update the items in onStop (causes bugs if some items are deleted before onStop)
+            viewModel.updateItems(adapter.currentList)
+        }
     }
 
     override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
