@@ -53,17 +53,17 @@ abstract class StoreDao {
 
     fun getStoreDetails(period: Int): Flow<List<StoreDetail>> {
         return getStoreBriefs().map { briefs ->
-            val storeDetails = mutableListOf<StoreDetail>()
-            for (brief in briefs) {
-                val storeId = brief.store.storeId
-                val storeDetail = StoreDetail()
-                storeDetail.brief = brief
-                storeDetail.dailyCosts = getStoreDailyCosts(storeId, period)
-                storeDetail.purchaseSummary = getStorePurchaseSummary(storeId)
-                storeDetails.add(storeDetail)
-            }
-            return@map storeDetails
+            briefs.map { brief -> createStoreDetail(brief, period) }
         }.flowOn(Dispatchers.IO)
+    }
+
+    private suspend fun createStoreDetail(
+        storeBrief: StoreDetail.StoreBrief,
+        period: Int
+    ) = StoreDetail().apply {
+        brief = storeBrief
+        dailyCosts = getStoreDailyCosts(storeBrief.store.storeId, period)
+        purchaseSummary = getStorePurchaseSummary(storeBrief.store.storeId)
     }
 
     @Query("""
