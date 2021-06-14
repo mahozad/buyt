@@ -191,7 +191,9 @@
     <string name="pref_export_xml" translatable="false">XML</string>
     <string name="pref_export_csv" translatable="false">CSV</string>
     <string name="pref_title_export">Export all purchase data</string>
-    <string name="pref_title_export_disabled">(premium version only)</string>
+    <string name="pref_summary_export_disabled">(premium version only)</string>
+    <string name="pref_summary_backup_disabled">(premium version only)</string>
+    <string name="pref_summary_restore_disabled">(premium version only)</string>
 
     <string name="item_quantity" translatable="false">%d %s</string>
     <string name="tutorial_add_item">Here you can add your items to buy</string>

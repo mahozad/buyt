@@ -34,7 +34,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
 import java.io.BufferedWriter
-import java.io.FileWriter
 import java.net.URI
 import kotlin.system.exitProcess
 
@@ -57,8 +56,8 @@ const val DEFAULT_THEME_NAME = PREF_THEME_DARK
 const val DEFAULT_THEME_STYLE_RES = R.style.DarkTheme
 private const val DEFAULT_EXPORT_FILE_NAME = "buyt-purchase-data"
 private const val DEFAULT_BACKUP_FILE_NAME = "buyt-data"
-private const val CREATE_EXPORT_FILE_REQUEST_CODE = 1
-private const val CREATE_BACKUP_FILE_REQUEST_CODE = 2
+private const val CREATE_EXPORT_REQUEST_CODE = 1
+private const val CREATE_BACKUP_REQUEST_CODE = 2
 private const val RESTORE_BACKUP_REQUEST_CODE = 3
 
 @Suppress("unused")
@@ -106,7 +105,7 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
         val exportPreference = findPreference<Preference>(PREF_EXPORT)
         exportPreference?.apply {
             isEnabled = isPremium
-            if (!isPremium) setSummary(R.string.pref_title_export_disabled)
+            if (!isPremium) setSummary(R.string.pref_summary_export_disabled)
         }
         exportPreference?.setOnPreferenceClickListener {
             serializer = serializers[defaultSerializer] // Reset the serializer
@@ -119,72 +118,64 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
         val backupPreference = findPreference<Preference>(PREF_BACKUP)
         backupPreference?.apply {
             isEnabled = isPremium
-            /*if (!isPremium) setSummary(R.string.pref_title_backup_disabled)*/
+            if (!isPremium) setSummary(R.string.pref_summary_backup_disabled)
         }
         backupPreference?.setOnPreferenceClickListener {
-            showSystemFileSelectionForBackup()
+            val mimeType = "application/vnd.sqlite3"
+            val fileName = "$DEFAULT_BACKUP_FILE_NAME.db"
+            val requestCode = CREATE_BACKUP_REQUEST_CODE
+            showSystemFileCreator(mimeType, fileName, requestCode)
             return@setOnPreferenceClickListener true
         }
     }
 
     private fun setupRestorePreference() {
-        val backupPreference = findPreference<Preference>(PREF_RESTORE)
-        backupPreference?.apply {
+        val restorePreference = findPreference<Preference>(PREF_RESTORE)
+        restorePreference?.apply {
             isEnabled = isPremium
-            /*if (!isPremium) setSummary(R.string.pref_title_backup_disabled)*/
+            if (!isPremium) setSummary(R.string.pref_summary_restore_disabled)
         }
-        backupPreference?.setOnPreferenceClickListener {
-            showSystemFileSelectionForRestore()
+        restorePreference?.setOnPreferenceClickListener {
+            showSystemFilePicker(mimeType = "application/octet-stream")
             return@setOnPreferenceClickListener true
         }
     }
 
     private fun showExportPreferenceDialog() {
         MaterialAlertDialogBuilder(requireContext())
-                .setTitle(R.string.dialog_title_select_export_format)
-                .setNegativeButton(android.R.string.cancel) { _, _ -> /* Dismiss */ }
-                .setPositiveButton(R.string.btn_text_select_export_location) { _, _ ->
-                    showSystemFileSelection()
-                }
-                .setSingleChoiceItems(R.array.pref_export_names, defaultSerializer) { _, i ->
-                    serializer = serializers[i]
-                }
-                .create()
-                .show()
+            .setTitle(R.string.dialog_title_select_export_format)
+            .setNegativeButton(android.R.string.cancel) { _, _ -> /* Dismiss */ }
+            .setPositiveButton(R.string.btn_text_select_export_location) { _, _ ->
+                val mimeType = serializer.mimeType
+                val fileName = "$DEFAULT_EXPORT_FILE_NAME.${serializer.fileExtension}"
+                val requestCode = CREATE_EXPORT_REQUEST_CODE
+                showSystemFileCreator(mimeType, fileName, requestCode)
+            }
+            .setSingleChoiceItems(R.array.pref_export_names, defaultSerializer) { _, i ->
+                serializer = serializers[i]
+            }
+            .create()
+            .show()
     }
 
-    private fun showSystemFileSelection() {
+    private fun showSystemFileCreator(mimeType: String, fileName: String, requestCode: Int) {
         val pickerInitialUri = URI("/")
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+            type = mimeType
             addCategory(Intent.CATEGORY_OPENABLE)
-            type = serializer.mimeType
-            val fileName = "$DEFAULT_EXPORT_FILE_NAME.${serializer.fileExtension}"
             putExtra(Intent.EXTRA_TITLE, fileName)
             // Optionally, specify a URI for the directory that should be opened in
             // the system file picker before your app creates the document.
             putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri)
         }
-        startActivityForResult(intent, CREATE_EXPORT_FILE_REQUEST_CODE)
+        startActivityForResult(intent, requestCode)
     }
 
-    // FIXME: Duplicate of showSystemFileSelection()
-    private fun showSystemFileSelectionForBackup() {
-        val pickerInitialUri = URI("/")
-        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-            addCategory(Intent.CATEGORY_OPENABLE)
-            type = "application/vnd.sqlite3"
-            val fileName = "$DEFAULT_BACKUP_FILE_NAME.db"
-            putExtra(Intent.EXTRA_TITLE, fileName)
-            putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri)
-        }
-        startActivityForResult(intent, CREATE_BACKUP_FILE_REQUEST_CODE)
-    }
-
-    private fun showSystemFileSelectionForRestore() {
+    private fun showSystemFilePicker(mimeType: String) {
         val pickerInitialUri = URI("/")
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
-            type = "application/octet-stream"
+            type = mimeType
             putExtra(Intent.EXTRA_MIME_TYPES, arrayOf(type))
             putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri)
         }
@@ -192,46 +183,56 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
+        // The result data contains a URI for the document or directory that was selected
         super.onActivityResult(requestCode, resultCode, resultData)
-        if (requestCode == CREATE_EXPORT_FILE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            // The result data contains a URI for the document or directory that the user selected.
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                CREATE_EXPORT_REQUEST_CODE -> exportData(resultData)
+                CREATE_BACKUP_REQUEST_CODE -> createBackup(resultData)
+                RESTORE_BACKUP_REQUEST_CODE -> restoreBackup(resultData)
+            }
+        }
+    }
 
-            // This caused an exception in Android 5.1 and also was not necessary
-            // progressBar.isIndeterminate = true
-            progressBar1.show()
-            resultData?.data?.also { uri ->
-                lifecycleScope.launch(Dispatchers.IO) {
-                    val parcelDescriptor = contentResolver.openFileDescriptor(uri, "w")
-                    val writer = FileWriter(parcelDescriptor!!.fileDescriptor).buffered()
-                    writer.use { serialize(writer) }
+    private fun exportData(resultData: Intent?) {
+        // This caused an exception in Android 5.1 and also was not necessary
+        // progressBar.isIndeterminate = true
+        progressBar1.show()
+        resultData?.data?.also { uri ->
+            lifecycleScope.launch(Dispatchers.IO) {
+                contentResolver.openOutputStream(uri)?.bufferedWriter().use {
+                    serialize(it!!)
                 }
             }
-        } else if (requestCode == CREATE_BACKUP_FILE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            resultData?.data?.let { uri ->
-                lifecycleScope.launch(Dispatchers.IO) {
-                    withContext(Dispatchers.Main) { progressBar2.setProgressCompat(100, true) }
-                    databaseDao.flushDatabase()
-                    val database = requireContext().getDatabasePath(DB_NAME)
-                    contentResolver.openOutputStream(uri).use {
-                        database.inputStream().copyTo(it!!)
-                    }
-                    delay(1000) // Show progress bar for a while
-                    withContext(Dispatchers.Main) { progressBar2.hide() }
+        }
+    }
+
+    private fun createBackup(resultData: Intent?) {
+        resultData?.data?.let { uri ->
+            lifecycleScope.launch(Dispatchers.IO) {
+                withContext(Dispatchers.Main) { progressBar2.setProgressCompat(100, true) }
+                val databaseFile = requireContext().getDatabasePath(DB_NAME)
+                databaseDao.flushDatabase()
+                contentResolver.openOutputStream(uri).use {
+                    databaseFile.inputStream().copyTo(it!!)
                 }
+                delay(1000) // Show progress bar for a little while
+                withContext(Dispatchers.Main) { progressBar2.hide() }
             }
-        } else if (requestCode == RESTORE_BACKUP_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            resultData?.data?.let { uri ->
-                lifecycleScope.launch(Dispatchers.IO) {
-                    withContext(Dispatchers.Main) { progressBar3.setProgressCompat(100, true) }
-                    appDatabase.close()
-                    val database = requireContext().getDatabasePath(DB_NAME)
-                    database.outputStream().use {
-                        contentResolver.openInputStream(uri)?.copyTo(it)
-                    }
-                    // delay(1000) // Show progress bar for a while
-                    withContext(Dispatchers.Main) { progressBar3.hide() }
-                    restartTheApp()
+        }
+    }
+
+    private fun restoreBackup(resultData: Intent?) {
+        resultData?.data?.let { uri ->
+            lifecycleScope.launch(Dispatchers.IO) {
+                withContext(Dispatchers.Main) { progressBar3.setProgressCompat(100, true) }
+                appDatabase.close()
+                val databaseFile = requireContext().getDatabasePath(DB_NAME)
+                databaseFile.outputStream().use {
+                    contentResolver.openInputStream(uri)?.copyTo(it)
                 }
+                withContext(Dispatchers.Main) { progressBar3.hide() }
+                restartTheApp()
             }
         }
     }
