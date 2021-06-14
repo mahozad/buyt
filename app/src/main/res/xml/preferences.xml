@@ -46,6 +46,8 @@
         android:icon="@drawable/ic_language"
         app:useSimpleSummaryProvider="true" />
 
+    <!--<PreferenceCategory />-->
+
     <Preference
         app:key="EXPORT"
         app:title="@string/pref_title_export"
@@ -53,9 +55,18 @@
         app:widgetLayout="@layout/export_data_widget_layout"
         android:negativeButtonText="@null" />
 
-        <!--<Preference-->
-        <!--android:icon="@drawable/ic_import"-->
-        <!--android:title="Import app data" />-->
+    <Preference
+        app:key="BACKUP"
+        app:title="@string/pref_title_backup"
+        app:icon="@drawable/ic_backup"
+        app:widgetLayout="@layout/backup_data_widget_layout"/>
+
+    <Preference
+        app:key="RESTORE"
+        app:title="@string/pref_title_restore"
+        app:summary="@string/pref_summary_restore"
+        app:icon="@drawable/ic_restore"
+        app:widgetLayout="@layout/restore_data_widget_layout"/>
 
         <!--<SwitchPreference-->
         <!--android:icon="@drawable/ic_lock"-->

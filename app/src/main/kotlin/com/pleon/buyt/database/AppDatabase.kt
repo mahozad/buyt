@@ -6,10 +6,7 @@ import androidx.room.TypeConverters
 import com.pleon.buyt.database.converter.CategoryConverter
 import com.pleon.buyt.database.converter.DateConverter
 import com.pleon.buyt.database.converter.QuantityUnitConverter
-import com.pleon.buyt.database.dao.ItemDao
-import com.pleon.buyt.database.dao.PurchaseDao
-import com.pleon.buyt.database.dao.StoreDao
-import com.pleon.buyt.database.dao.SubscriptionDao
+import com.pleon.buyt.database.dao.*
 import com.pleon.buyt.model.Item
 import com.pleon.buyt.model.Purchase
 import com.pleon.buyt.model.Store
@@ -38,6 +35,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun storeDao(): StoreDao
 
     abstract fun purchaseDao(): PurchaseDao
+
+    abstract fun databaseDao(): DatabaseDao
 
     abstract fun subscriptionDao(): SubscriptionDao
 }

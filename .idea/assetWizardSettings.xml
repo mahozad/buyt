@@ -379,26 +379,11 @@
                   <entry key="vectorAssetStep">
                     <value>
                       <PersistentState>
-                        <option name="children">
-                          <map>
-                            <entry key="clipartAsset">
-                              <value>
-                                <PersistentState>
-                                  <option name="values">
-                                    <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/toggle/ic_star_black_24dp.xml" />
-                                    </map>
-                                  </option>
-                                </PersistentState>
-                              </value>
-                            </entry>
-                          </map>
-                        </option>
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_logo_pattern2" />
-                            <entry key="sourceFile" value="D:\Android\Buyt\style-guide\7777.svg.2021_04_20_23_10_31.0.svg" />
+                            <entry key="outputName" value="ic_data_backup" />
+                            <entry key="sourceFile" value="D:\Android\Buyt\style-guide\icons\data-backup.svg" />
                           </map>
                         </option>
                       </PersistentState>

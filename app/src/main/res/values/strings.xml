@@ -144,6 +144,9 @@
     <string name="pref_title_theme_disabled">Theme (premium version only)</string>
     <string name="pref_title_vibrate">Vibrate when store found</string>
     <string name="pref_title_log_scale">Show charts in logarithmic scale</string>
+    <string name="pref_title_backup">Backup all app data</string>
+    <string name="pref_title_restore">Restore app data from a backup file</string>
+    <string name="pref_summary_restore">Current data will be lost (requires restart)</string>
     <string name="pref_summary_log_scale">With no label for costs</string>
     <string name="pref_title_search_radius">Stores search distance</string>
     <string name="dialog_title_select_theme">Select theme</string>

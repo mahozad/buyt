@@ -76,5 +76,6 @@ val databaseModule = module {
     single { get<AppDatabase>().itemDao() }
     single { get<AppDatabase>().storeDao() }
     single { get<AppDatabase>().purchaseDao() }
+    single { get<AppDatabase>().databaseDao() }
     single { get<AppDatabase>().subscriptionDao() }
 }
