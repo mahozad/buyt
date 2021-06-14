@@ -53,6 +53,7 @@ class StoresViewModel(app: Application, private val repository: StoreRepository)
      */
     fun toggleSort() {
         val criterion = sort.criterion.nextCriterion()
+        // The direction currently is not used and stores are sorted manually in combine
         val direction = if (criterion == STORE_NAME) ASCENDING else DESCENDING
         sortFlow.value = Sort(criterion, direction)
     }
