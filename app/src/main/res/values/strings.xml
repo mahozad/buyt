@@ -24,7 +24,7 @@
     <string name="snackbar_message_cart_empty">Shopping list is empty</string>
     <string name="snackbar_message_no_item_selected">No item selected</string>
     <string name="snackbar_message_no_store_found">No saved store! Cannot skip.</string>
-    <string name="snackbar_message_start_over">Oops! buyt was force killed. Please start over your buying process if possible.</string>
+    <string name="snackbar_message_start_over">Oops! Buyt was force killed. Please start over your buying process if possible.</string>
     <string name="menu_text_new_store_found">New store</string>
     <string name="menu_text_multiple_stores_found">%1$s stores around here</string>
     <string name="menu_text_multiple_stores_saved">%1$s stores</string>
@@ -44,7 +44,7 @@
     </string>
 
     <string name="dialog_message_location_off">Location is off. Toggle it on
-        (in high precision mode) so you do not have to manually specify the store for each purchase.
+        (in high precision mode) so you won\'t have to manually specify the store for each purchase.
     </string>
 
     <string name="dialog_message_billing_error">Problem setting up in-app billing.
