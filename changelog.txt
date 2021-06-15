@@ -1,4 +1,12 @@
 ﻿┌───────────────────────────┐
+├ versionName = 2.1.0       │
+├ versionCode = 11          │
+│ ──────────────────────────┘
+├ Add option to backup/restore all app data
+├ Fix the bug with purchase details showing one extra start day
+├ Fix some bugs with reordering of items
+├ Improve application code
+├───────────────────────────┐
 ├ versionName = 2.0.0       │
 ├ versionCode = 10          │
 │ ──────────────────────────┘
