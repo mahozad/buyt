@@ -237,6 +237,10 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
         }
     }
 
+    /**
+     * FIXME: This may not work on Android Q and higher. See the following page:
+     *  https://developer.android.com/guide/components/activities/background-starts
+     */
     private fun restartTheApp() {
         val packageManager = requireContext().packageManager
         val intent = packageManager.getLaunchIntentForPackage(requireContext().packageName)
