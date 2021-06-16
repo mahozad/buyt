@@ -184,12 +184,14 @@
 
     <string-array name="pref_export_names">
         <item>@string/pref_export_html</item>
-        <item>@string/pref_export_xml</item>
         <item>@string/pref_export_csv</item>
+        <item>@string/pref_export_json</item>
+        <item>@string/pref_export_xml</item>
     </string-array>
     <string name="pref_export_html" translatable="false">HTML</string>
-    <string name="pref_export_xml" translatable="false">XML</string>
     <string name="pref_export_csv" translatable="false">CSV</string>
+    <string name="pref_export_json" translatable="false">JSON</string>
+    <string name="pref_export_xml" translatable="false">XML</string>
     <string name="pref_title_export">Export all purchase data</string>
     <string name="pref_summary_export_disabled">(premium version only)</string>
     <string name="pref_summary_backup_disabled">(premium version only)</string>

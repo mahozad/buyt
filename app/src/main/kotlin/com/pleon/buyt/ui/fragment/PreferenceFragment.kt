@@ -23,6 +23,7 @@ import com.pleon.buyt.database.dao.PurchaseDao
 import com.pleon.buyt.isPremium
 import com.pleon.buyt.serializer.PurchaseDetailsCSVSerializer
 import com.pleon.buyt.serializer.PurchaseDetailsHTMLSerializer
+import com.pleon.buyt.serializer.PurchaseDetailsJSONSerializer
 import com.pleon.buyt.serializer.PurchaseDetailsXMLSerializer
 import com.pleon.buyt.ui.activity.MainActivity
 import kotlinx.android.synthetic.main.backup_data_widget_layout.*
@@ -67,7 +68,12 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
      * Use this field wherever a context is needed to prevent exceptions.
      */
     private lateinit var activity: Activity
-    private val serializers = listOf(PurchaseDetailsHTMLSerializer(), PurchaseDetailsXMLSerializer(), PurchaseDetailsCSVSerializer())
+    private val serializers = listOf(
+        PurchaseDetailsHTMLSerializer(),
+        PurchaseDetailsCSVSerializer(),
+        PurchaseDetailsJSONSerializer(),
+        PurchaseDetailsXMLSerializer()
+    )
     private val defaultSerializer = 0
     private var serializer = serializers[defaultSerializer]
     private val appDatabase: AppDatabase by inject()
