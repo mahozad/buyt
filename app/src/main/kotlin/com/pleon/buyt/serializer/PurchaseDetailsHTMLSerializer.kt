@@ -23,10 +23,9 @@ class PurchaseDetailsHTMLSerializer : Serializer<PurchaseDetail> {
 
     override val mimeType = "text/html"
     override val fileExtension = "html"
-
-    private val application by inject(Application::class.java)
     override lateinit var updateListener: suspend (Int, String) -> Unit
     override lateinit var finishListener: suspend () -> Unit
+    private val application by inject(Application::class.java)
 
     @Language("HTML")
     private val head = """

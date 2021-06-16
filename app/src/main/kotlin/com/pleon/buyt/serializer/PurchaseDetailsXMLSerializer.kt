@@ -16,10 +16,9 @@ class PurchaseDetailsXMLSerializer : Serializer<PurchaseDetail> {
 
     override val mimeType = "text/xml"
     override val fileExtension = "xml"
-
-    private val application by inject(Application::class.java)
     override lateinit var updateListener: suspend (Int, String) -> Unit
     override lateinit var finishListener: suspend () -> Unit
+    private val application by inject(Application::class.java)
     private val head = "<purchase-details>\n"
     private val tail = "</purchase-details>"
 

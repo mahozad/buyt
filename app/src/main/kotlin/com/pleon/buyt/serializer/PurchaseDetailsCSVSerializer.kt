@@ -16,10 +16,9 @@ class PurchaseDetailsCSVSerializer : Serializer<PurchaseDetail> {
 
     override val mimeType = "text/csv"
     override val fileExtension = "csv"
-
-    private val application by inject(Application::class.java)
     override lateinit var updateListener: suspend (Int, String) -> Unit
     override lateinit var finishListener: suspend () -> Unit
+    private val application by inject(Application::class.java)
     private val head = "Date,Store,Items\n"
 
     override suspend fun serialize(entities: List<PurchaseDetail>) = withContext(Dispatchers.Default){
