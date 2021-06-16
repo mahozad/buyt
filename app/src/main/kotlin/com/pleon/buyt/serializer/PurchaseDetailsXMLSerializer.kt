@@ -34,7 +34,6 @@ class PurchaseDetailsXMLSerializer : Serializer<PurchaseDetail> {
                 stringBuilder.clear()
             }
             updateListener(100, tail)
-            delay(1000)
             finishListener()
         }
 

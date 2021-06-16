@@ -10,12 +10,15 @@ import com.pleon.buyt.model.Store
 import com.pleon.buyt.util.formatDate
 import com.pleon.buyt.util.formatPrice
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import org.intellij.lang.annotations.Language
 import org.koin.java.KoinJavaComponent.inject
-import java.util.*
 
+/**
+ * See https://developer.mozilla.org/en-US/docs/Learn/HTML/Tables/Advanced.
+ * Could also have incremented the "rowspan" of the first row by one
+ * and moved the first item to a standalone <tr> element.
+ */
 class PurchaseDetailsHTMLSerializer : Serializer<PurchaseDetail> {
 
     override val mimeType = "text/html"
@@ -44,12 +47,30 @@ class PurchaseDetailsHTMLSerializer : Serializer<PurchaseDetail> {
                 margin-top: 64px;
                 font-size: 32px;
               }
-              span {
-                margin-inline-start: 16px;
+              table caption div {
+                display: inline-block;
+                padding: 4px 16px;
+                background: rgba(208, 219, 223, 0.6);
+                border-radius: 100px;
+                font-size: 18px;
+                margin: 16px auto;
               }
-              h4 {
-                margin-bottom: 0;
+              table {
+                margin: auto;
+                margin-bottom: 32px;
               }
+              table, th, td {
+                border: 1px solid black;
+                border-collapse: collapse;
+                text-align: center;
+              }
+              th, td {
+                padding: 4px 8px;
+              }
+              th {
+                background: rgba(208, 223, 219, 0.2);
+              }
+              .thick-border {}
             </style>
           </head>
           <body>
@@ -77,57 +98,78 @@ class PurchaseDetailsHTMLSerializer : Serializer<PurchaseDetail> {
         updateListener(0, head)
         createBody(entities)
         updateListener(100, tail)
-        delay(1000)
         finishListener()
     }
 
     private suspend fun createBody(entities: List<PurchaseDetail>) {
         if (entities.isEmpty()) {
-            createEmptyHint()
+            updateListener(100, createEmptyHint())
         }
         val stringBuilder = StringBuilder()
-        for ((i, purchaseDetail) in entities.withIndex()) {
-            stringBuilder
-                    .append(dateElement(purchaseDetail.purchase.date))
-                    .append(storeElement(purchaseDetail.store))
-                    .append(itemsElement(purchaseDetail.item))
-                    .append(horizontalRuleElement())
+        val purchaseDetailsByDate = entities.groupBy { formatDate(it.purchase.date) }
+        purchaseDetailsByDate.onEachIndexed { i, entry ->
+            val date = entry.key
+            val datePurchaseDetails = entry.value
+            stringBuilder.append(tableStart(date))
+            for (purchaseDetail in datePurchaseDetails) {
+                stringBuilder.append(storeAndFirstItem(purchaseDetail.store!!, purchaseDetail.item))
+                stringBuilder.append(remainingItems(purchaseDetail.item.drop(1)))
+            }
+            stringBuilder.append("</table>")
             val progress = ((i + 1f) / entities.size * 100).toInt()
             updateListener(progress, stringBuilder.toString())
             stringBuilder.clear()
         }
     }
 
-    private fun createEmptyHint() {
-        """<div id="empty-hint">${getString(R.string.exported_html_empty_hint)}</div>"""
-    }
-
-    private fun dateElement(date: Date) = "<h3>${formatDate(date)}</h3>"
-
-    private fun storeElement(store: Store?): String {
-        if (store == null) return getString(R.string.no_value)
+    private fun remainingItems(items: List<Item>): String {
         val stringBuilder = StringBuilder()
-        val storeCategory = getString(store.category.nameRes)
-        stringBuilder.append("<h4>${getString(R.string.purchase_detail_store_name)} ${store.name}</h4>")
-        stringBuilder.append("<sub>$storeCategory</sub>")
-        return stringBuilder.toString()
-    }
-
-    private fun itemsElement(items: List<Item>): String {
-        val stringBuilder = StringBuilder()
-        stringBuilder.append("<ul>")
         for (item in items) {
-            stringBuilder.append("<li>")
-            stringBuilder.append("<span>${item.name}</span>")
-            stringBuilder.append("<span>${getString(R.string.item_quantity, item.quantity.value, getString(item.quantity.unit.nameRes))}</span>")
-            stringBuilder.append("<span>${getQuantityString(R.plurals.price_with_suffix, item.totalPrice.toInt(), formatPrice(item.totalPrice))}</span>")
-            stringBuilder.append("</li>")
+            stringBuilder.append("""
+                <tr>
+                 <td>${item.name}</td>
+                 <td>${getString(R.string.item_quantity, item.quantity.value, getString(item.quantity.unit.nameRes))}</td>
+                 <td>${getQuantityString(R.plurals.price_with_suffix, item.totalPrice.toInt(), formatPrice(item.totalPrice))}</td>
+               </tr>"""
+            )
         }
-        stringBuilder.append("</ul>")
         return stringBuilder.toString()
     }
 
-    private fun horizontalRuleElement() = "<hr />"
+    private fun storeAndFirstItem(store: Store, items: List<Item>): String {
+        val storeCategory = getString(store.category.nameRes)
+        val totalCost = items.sumOf { it.totalPrice }
+        val firstItem = items.first()
+        return """
+        <tr class="thick-border">
+          <td rowspan="${items.size}">${store.name}</td>
+          <td rowspan="${items.size}">${storeCategory}</td>
+          <td rowspan="${items.size}">${getQuantityString(R.plurals.price_with_suffix, totalCost.toInt(), formatPrice(totalCost))}</td>
+          <td>${firstItem.name}</td>
+          <td>${getString(R.string.item_quantity, firstItem.quantity.value, getString(firstItem.quantity.unit.nameRes))}</td>
+          <td>${getQuantityString(R.plurals.price_with_suffix, firstItem.totalPrice.toInt(), formatPrice(firstItem.totalPrice))}</td>
+        </tr>
+        """
+    }
+
+    @Language("HTML")
+    private fun tableStart(date: String): String = """
+    <table class="outer-table">
+      <caption><div>$date</div></caption>
+      <tr>
+        <th rowspan="2">${getString(R.string.export_purchase_detail_store_name)}</th>
+        <th rowspan="2">${getString(R.string.export_purchase_detail_store_category)}</th>
+        <th rowspan="2">${getString(R.string.export_purchase_detail_total_cost)}</th>
+        <th colspan="3">${getString(R.string.export_purchase_detail_purchased_items)}</th>
+      </tr>
+      <tr>
+        <th>${getString(R.string.export_purchase_detail_item_name)}</th>
+        <th>${getString(R.string.export_purchase_detail_item_quantity)}</th>
+        <th>${getString(R.string.export_purchase_detail_total_cost)}</th>
+      </tr> 
+    """
+
+    private fun createEmptyHint() = """<div id="empty-hint">${getString(R.string.exported_html_empty_hint)}</div>"""
 
     private fun getString(@StringRes id: Int) = application.getString(id)
     private fun getString(@StringRes id: Int, vararg format: Any) = application.getString(id, *format)

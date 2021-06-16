@@ -171,6 +171,13 @@
     <string name="tab_title_details">ریز خریدها</string>
     <string name="purchase_detail_store_name">نام مغازه:</string>
     <string name="purchase_detail_total_cost">هزینه کل:</string>
+    <string name="export_purchase_detail_store_name">نام مغازه</string>
+    <string name="export_purchase_detail_total_cost">هزینه کل</string>
+    <string name="export_purchase_detail_store_category">دسته‌بندی مغازه</string>
+    <string name="export_purchase_detail_purchased_items">کالاهای خریداری شده</string>
+    <string name="export_purchase_detail_item_name">نام کالا</string>
+    <string name="export_purchase_detail_item_quantity">مقدار</string>
+    <string name="export_purchase_detail_item_cost">قیمت کل</string>
     <string name="map_location_label">مغازه جدید</string>
     <string name="menu_text_sort_totalSpending">مقدار خرید</string>
     <string name="menu_text_sort_purchase_count">تعداد خرید</string>

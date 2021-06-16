@@ -31,7 +31,6 @@ class PurchaseDetailsCSVSerializer : Serializer<PurchaseDetail> {
             updateListener(progress, stringBuilder.toString())
             stringBuilder.clear()
         }
-        delay(1000)
         finishListener()
     }
 
