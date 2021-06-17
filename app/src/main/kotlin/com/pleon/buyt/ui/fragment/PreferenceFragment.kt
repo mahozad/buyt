@@ -20,11 +20,9 @@ import com.pleon.buyt.database.AppDatabase
 import com.pleon.buyt.database.DB_NAME
 import com.pleon.buyt.database.dao.DatabaseDao
 import com.pleon.buyt.database.dao.PurchaseDao
+import com.pleon.buyt.database.dto.PurchaseDetail
 import com.pleon.buyt.isPremium
-import com.pleon.buyt.serializer.PurchaseDetailsCSVSerializer
-import com.pleon.buyt.serializer.PurchaseDetailsHTMLSerializer
-import com.pleon.buyt.serializer.PurchaseDetailsJSONSerializer
-import com.pleon.buyt.serializer.PurchaseDetailsXMLSerializer
+import com.pleon.buyt.serializer.*
 import com.pleon.buyt.ui.activity.MainActivity
 import kotlinx.android.synthetic.main.backup_data_widget_layout.*
 import kotlinx.android.synthetic.main.export_data_widget_layout.*
@@ -68,14 +66,9 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
      * Use this field wherever a context is needed to prevent exceptions.
      */
     private lateinit var activity: Activity
-    private val serializers = listOf(
-        PurchaseDetailsHTMLSerializer(),
-        PurchaseDetailsCSVSerializer(),
-        PurchaseDetailsJSONSerializer(),
-        PurchaseDetailsXMLSerializer()
-    )
+    private lateinit var serializers: List<Serializer<PurchaseDetail>>
+    private lateinit var serializer: Serializer<PurchaseDetail>
     private val defaultSerializer = 0
-    private var serializer = serializers[defaultSerializer]
     private val appDatabase: AppDatabase by inject()
     private val purchaseDao: PurchaseDao by inject()
     private val databaseDao: DatabaseDao by inject()
@@ -152,16 +145,32 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
             .setTitle(R.string.dialog_title_select_export_format)
             .setNegativeButton(android.R.string.cancel) { _, _ -> /* Dismiss */ }
             .setPositiveButton(R.string.btn_text_select_export_location) { _, _ ->
-                val mimeType = serializer.mimeType
-                val fileName = "$DEFAULT_EXPORT_FILE_NAME.${serializer.fileExtension}"
-                val requestCode = CREATE_EXPORT_REQUEST_CODE
-                showSystemFileCreator(mimeType, fileName, requestCode)
+                when (serializer) {
+                    is PurchaseDetailsPDFSerializer -> createPDF()
+                    else -> createOtherFormats()
+                }
             }
             .setSingleChoiceItems(R.array.pref_export_names, defaultSerializer) { _, i ->
                 serializer = serializers[i]
             }
             .create()
             .show()
+    }
+
+    private fun createPDF() = lifecycleScope.launch(Dispatchers.IO) {
+        val purchaseDetails = purchaseDao.getAllPurchaseDetails()
+        serializer.updateListener = { progress, _ ->
+            withContext(Dispatchers.Main) { progressBar1?.setProgressCompat(progress, true) }
+        }
+        serializer.finishListener = { withContext(Dispatchers.Main) { progressBar1.hide() } }
+        serializer.serialize(purchaseDetails)
+    }
+
+    private fun createOtherFormats() {
+        val mimeType = serializer.mimeType
+        val fileName = "$DEFAULT_EXPORT_FILE_NAME.${serializer.fileExtension}"
+        val requestCode = CREATE_EXPORT_REQUEST_CODE
+        showSystemFileCreator(mimeType, fileName, requestCode)
     }
 
     private fun showSystemFileCreator(mimeType: String, fileName: String, requestCode: Int) {
@@ -296,8 +305,17 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
                 .startActivities()
     }
 
-    override fun onAttach(cxt: Context) {
-        super.onAttach(cxt)
-        this.activity = cxt as Activity
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        activity = context as Activity
+        val htmlSerializer = PurchaseDetailsHTMLSerializer(context)
+        serializers = listOf(
+            htmlSerializer,
+            PurchaseDetailsPDFSerializer(context, DEFAULT_EXPORT_FILE_NAME, htmlSerializer),
+            PurchaseDetailsCSVSerializer(),
+            PurchaseDetailsJSONSerializer(),
+            PurchaseDetailsXMLSerializer()
+        )
+        serializer = serializers[defaultSerializer]
     }
 }

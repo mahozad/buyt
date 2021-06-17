@@ -184,11 +184,13 @@
 
     <string-array name="pref_export_names">
         <item>@string/pref_export_html</item>
+        <item>@string/pref_export_pdf</item>
         <item>@string/pref_export_csv</item>
         <item>@string/pref_export_json</item>
         <item>@string/pref_export_xml</item>
     </string-array>
     <string name="pref_export_html" translatable="false">HTML</string>
+    <string name="pref_export_pdf" translatable="false">PDF</string>
     <string name="pref_export_csv" translatable="false">CSV</string>
     <string name="pref_export_json" translatable="false">JSON</string>
     <string name="pref_export_xml" translatable="false">XML</string>
