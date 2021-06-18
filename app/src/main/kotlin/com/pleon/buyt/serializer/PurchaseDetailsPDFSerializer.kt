@@ -24,8 +24,8 @@ class PurchaseDetailsPDFSerializer(
 
     override val mimeType = "application/pdf"
     override val fileExtension = "pdf"
-    override lateinit var updateListener: suspend (Int, String) -> Unit
-    override lateinit var finishListener: suspend () -> Unit
+    override var updateListener: (suspend (Int, String) -> Unit)? = null
+    override var finishListener: (suspend () -> Unit)? = null
     private lateinit var printJob: PrintJob
     private var webViewRef: WebView? = null
 
@@ -54,14 +54,14 @@ class PurchaseDetailsPDFSerializer(
         val htmlBuilder = StringBuilder()
         htmlSerializer.updateListener = { _, fragment ->
             htmlBuilder.append(fragment)
-            updateListener(80, "")
+            updateListener?.invoke(80, "")
         }
         htmlSerializer.finishListener = {
             val html = htmlBuilder.toString()
             withContext(Dispatchers.Main) {
                 webView.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null)
             }
-            finishListener()
+            finishListener?.invoke()
         }
         // Keep a reference to WebView object until you pass the PrintDocumentAdapter to the PrintManager
         webViewRef = webView

@@ -8,7 +8,6 @@ import com.pleon.buyt.database.dto.PurchaseDetail
 import com.pleon.buyt.util.formatDate
 import com.pleon.buyt.util.formatPrice
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import org.koin.java.KoinJavaComponent.inject
 
@@ -16,21 +15,21 @@ class PurchaseDetailsCSVSerializer : Serializer<PurchaseDetail> {
 
     override val mimeType = "text/csv"
     override val fileExtension = "csv"
-    override lateinit var updateListener: suspend (Int, String) -> Unit
-    override lateinit var finishListener: suspend () -> Unit
+    override var updateListener: (suspend (Int, String) -> Unit)? = null
+    override var finishListener: (suspend () -> Unit)? = null
     private val application by inject(Application::class.java)
     private val head = "Date,Store,Items\n"
 
-    override suspend fun serialize(entities: List<PurchaseDetail>) = withContext(Dispatchers.Default){
+    override suspend fun serialize(entities: List<PurchaseDetail>): Unit = withContext(Dispatchers.Default) {
         val stringBuilder = StringBuilder()
-        updateListener(0, head)
+        updateListener?.invoke(0, head)
         for ((i, purchaseDetail) in entities.withIndex()) {
             stringBuilder.append(makeRecord(purchaseDetail))
             val progress = ((i + 1f) / entities.size * 100).toInt()
-            updateListener(progress, stringBuilder.toString())
+            updateListener?.invoke(progress, stringBuilder.toString())
             stringBuilder.clear()
         }
-        finishListener()
+        finishListener?.invoke()
     }
 
     private fun makeRecord(purchaseDetail: PurchaseDetail): String {

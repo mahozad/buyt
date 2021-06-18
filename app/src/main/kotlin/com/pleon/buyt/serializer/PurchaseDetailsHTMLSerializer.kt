@@ -23,8 +23,8 @@ class PurchaseDetailsHTMLSerializer(private val context: Context) : Serializer<P
 
     override val mimeType = "text/html"
     override val fileExtension = "html"
-    override lateinit var updateListener: suspend (Int, String) -> Unit
-    override lateinit var finishListener: suspend () -> Unit
+    override var updateListener: (suspend (Int, String) -> Unit)? = null
+    override var finishListener: (suspend () -> Unit)? = null
     // To keep track of where to insert page break
     private val pageMaxRows = 28
     private var pageCurrentRow = 0
@@ -139,16 +139,16 @@ class PurchaseDetailsHTMLSerializer(private val context: Context) : Serializer<P
         </html>
     """
 
-    override suspend fun serialize(entities: List<PurchaseDetail>) = withContext(Dispatchers.Default) {
-        updateListener(0, head)
+    override suspend fun serialize(entities: List<PurchaseDetail>): Unit = withContext(Dispatchers.Default) {
+        updateListener?.invoke(0, head)
         createBody(entities)
-        updateListener(100, tail)
-        finishListener()
+        updateListener?.invoke(100, tail)
+        finishListener?.invoke()
     }
 
     private suspend fun createBody(entities: List<PurchaseDetail>) {
         if (entities.isEmpty()) {
-            updateListener(100, createEmptyHint())
+            updateListener?.invoke(100, createEmptyHint())
         }
         val stringBuilder = StringBuilder("""<div class="page"><div class="page-counter"></div>""")
         val purchaseDetailsByDate = entities.groupBy { formatDate(it.purchase.date) }
@@ -172,7 +172,7 @@ class PurchaseDetailsHTMLSerializer(private val context: Context) : Serializer<P
             }
             stringBuilder.append("</table>")
             val progress = ((i + 1f) / entities.size * 100).toInt()
-            updateListener(progress, stringBuilder.toString())
+            updateListener?.invoke(progress, stringBuilder.toString())
             stringBuilder.clear()
         }
     }

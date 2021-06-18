@@ -16,25 +16,24 @@ class PurchaseDetailsXMLSerializer : Serializer<PurchaseDetail> {
 
     override val mimeType = "text/xml"
     override val fileExtension = "xml"
-    override lateinit var updateListener: suspend (Int, String) -> Unit
-    override lateinit var finishListener: suspend () -> Unit
+    override var updateListener: (suspend (Int, String) -> Unit)? = null
+    override var finishListener: (suspend () -> Unit)? = null
     private val application by inject(Application::class.java)
     private val head = "<purchase-details>\n"
     private val tail = "</purchase-details>"
 
-    override suspend fun serialize(entities: List<PurchaseDetail>) =
-        withContext(Dispatchers.Default) {
-            val stringBuilder = StringBuilder()
-            updateListener(0, head)
-            for ((i, purchaseDetail) in entities.withIndex()) {
-                stringBuilder.append(purchaseElement(purchaseDetail))
-                val progress = ((i + 1f) / entities.size * 100).toInt()
-                updateListener(progress, stringBuilder.toString())
-                stringBuilder.clear()
-            }
-            updateListener(100, tail)
-            finishListener()
+    override suspend fun serialize(entities: List<PurchaseDetail>): Unit = withContext(Dispatchers.Default) {
+        val stringBuilder = StringBuilder()
+        updateListener?.invoke(0, head)
+        for ((i, purchaseDetail) in entities.withIndex()) {
+            stringBuilder.append(purchaseElement(purchaseDetail))
+            val progress = ((i + 1f) / entities.size * 100).toInt()
+            updateListener?.invoke(progress, stringBuilder.toString())
+            stringBuilder.clear()
         }
+        updateListener?.invoke(100, tail)
+        finishListener?.invoke()
+    }
 
     private fun purchaseElement(purchaseDetail: PurchaseDetail): String {
         val noValue = getString(R.string.no_value)
