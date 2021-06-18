@@ -157,7 +157,13 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
             .show()
     }
 
+    /**
+     * FIXME: The code here is mostly duplicate of [exportData] and [serialize] functions.
+     */
     private fun createPDF() = lifecycleScope.launch(Dispatchers.IO) {
+        // This caused an exception in Android 5.1 and also was not necessary
+        // progressBar.isIndeterminate = true
+        withContext(Dispatchers.Main) { progressBar1.show() }
         val purchaseDetails = purchaseDao.getAllPurchaseDetails()
         serializer.updateListener = { progress, _ ->
             withContext(Dispatchers.Main) { progressBar1?.setProgressCompat(progress, true) }
