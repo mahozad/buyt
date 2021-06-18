@@ -146,7 +146,7 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
             .setNegativeButton(android.R.string.cancel) { _, _ -> /* Dismiss */ }
             .setPositiveButton(R.string.btn_text_select_export_location) { _, _ ->
                 when (serializer) {
-                    is PurchaseDetailsPDFSerializer -> createPDF()
+                    is PDFSerializer -> createPDF()
                     else -> createOtherFormats()
                 }
             }
@@ -308,13 +308,13 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activity = context as Activity
-        val htmlSerializer = PurchaseDetailsHTMLSerializer(context)
+        val htmlSerializer = HTMLSerializer(context)
         serializers = listOf(
             htmlSerializer,
-            PurchaseDetailsPDFSerializer(context, DEFAULT_EXPORT_FILE_NAME, htmlSerializer),
-            PurchaseDetailsCSVSerializer(),
-            PurchaseDetailsJSONSerializer(),
-            PurchaseDetailsXMLSerializer()
+            PDFSerializer(context, DEFAULT_EXPORT_FILE_NAME, htmlSerializer),
+            CSVSerializer(),
+            JSONSerializer(),
+            XMLSerializer()
         )
         serializer = serializers[defaultSerializer]
     }

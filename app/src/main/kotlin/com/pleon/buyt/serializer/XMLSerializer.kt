@@ -12,7 +12,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import org.koin.java.KoinJavaComponent.inject
 
-class PurchaseDetailsXMLSerializer : Serializer<PurchaseDetail> {
+class XMLSerializer : Serializer<PurchaseDetail> {
 
     override val mimeType = "text/xml"
     override val fileExtension = "xml"

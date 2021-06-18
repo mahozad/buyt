@@ -19,7 +19,7 @@ import java.util.*
  * Could also have incremented the "rowspan" of the first row by one
  * and moved the first item to a standalone <tr> element.
  */
-class PurchaseDetailsHTMLSerializer(private val context: Context) : Serializer<PurchaseDetail> {
+class HTMLSerializer(private val context: Context) : Serializer<PurchaseDetail> {
 
     override val mimeType = "text/html"
     override val fileExtension = "html"

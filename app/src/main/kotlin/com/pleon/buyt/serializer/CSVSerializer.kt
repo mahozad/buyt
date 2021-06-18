@@ -11,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.java.KoinJavaComponent.inject
 
-class PurchaseDetailsCSVSerializer : Serializer<PurchaseDetail> {
+class CSVSerializer : Serializer<PurchaseDetail> {
 
     override val mimeType = "text/csv"
     override val fileExtension = "csv"

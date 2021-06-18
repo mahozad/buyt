@@ -16,10 +16,10 @@ import kotlinx.coroutines.withContext
 import java.lang.StringBuilder
 import java.util.*
 
-class PurchaseDetailsPDFSerializer(
+class PDFSerializer(
     private val activity: Activity,
     private val defaultExportFileName: String,
-    private val htmlSerializer: PurchaseDetailsHTMLSerializer
+    private val htmlSerializer: HTMLSerializer
 ) : Serializer<PurchaseDetail> {
 
     override val mimeType = "application/pdf"
