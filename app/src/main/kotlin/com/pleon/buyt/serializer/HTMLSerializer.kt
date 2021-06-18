@@ -15,9 +15,9 @@ import org.intellij.lang.annotations.Language
 import java.util.*
 
 /**
- * See https://developer.mozilla.org/en-US/docs/Learn/HTML/Tables/Advanced.
+ * For creating the tables see [this page](https://developer.mozilla.org/en-US/docs/Learn/HTML/Tables/Advanced).
  * Could also have incremented the "rowspan" of the first row by one
- * and moved the first item to a standalone <tr> element.
+ * and moved the first item to a standalone `<tr>` element.
  */
 class HTMLSerializer(private val context: Context) : Serializer<PurchaseDetail> {
 

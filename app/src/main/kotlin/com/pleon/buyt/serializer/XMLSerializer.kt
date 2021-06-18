@@ -8,7 +8,6 @@ import com.pleon.buyt.database.dto.PurchaseDetail
 import com.pleon.buyt.util.formatDate
 import com.pleon.buyt.util.formatPrice
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import org.koin.java.KoinJavaComponent.inject
 
