@@ -9,6 +9,7 @@ import com.pleon.buyt.model.Item
 import com.pleon.buyt.model.Store
 import com.pleon.buyt.util.formatDate
 import com.pleon.buyt.util.formatPrice
+import com.pleon.buyt.util.getCurrentLocale
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.intellij.lang.annotations.Language
@@ -25,14 +26,14 @@ class HTMLSerializer(private val context: Context) : Serializer<PurchaseDetail> 
     override val fileExtension = "html"
     override var updateListener: (suspend (Int, String) -> Unit)? = null
     override var finishListener: (suspend () -> Unit)? = null
-    // To keep track of where to insert page break
+    // To keep track of where to insert page breaks
     private val pageMaxRows = 28
     private var pageCurrentRow = 0
 
     @Language("HTML")
     private val head = """
         <!DOCTYPE html>
-        <html>
+        <html lang="${getCurrentLocale(context).language}">
           <head>
             <meta charset="UTF-8">
             <title>${getString(R.string.exported_html_title)}</title>
@@ -46,7 +47,7 @@ class HTMLSerializer(private val context: Context) : Serializer<PurchaseDetail> 
                 text-align: center;
               }
               hr {
-                margin: 24px 0;
+                margin: 36px 0 18px;
               }
               #empty-hint {
                 margin-top: 64px;
@@ -88,7 +89,7 @@ class HTMLSerializer(private val context: Context) : Serializer<PurchaseDetail> 
                   position: absolute;
                   color: #121212;
                   font-size: 20px;
-                  top: 28cm;
+                  top: 285mm;
                   left: 50%;
                   transform: translate(-50%, 0);
                   counter-increment: page_counter;
@@ -98,7 +99,7 @@ class HTMLSerializer(private val context: Context) : Serializer<PurchaseDetail> 
                   position: relative;
                   width: 210mm;
                   min-height: 297mm;
-                  padding: 1cm;
+                  padding: 1cm 5mm 5mm;
                   margin: 0;
                   width: initial;
                   min-height: initial;
@@ -175,6 +176,7 @@ class HTMLSerializer(private val context: Context) : Serializer<PurchaseDetail> 
             updateListener?.invoke(progress, stringBuilder.toString())
             stringBuilder.clear()
         }
+        updateListener?.invoke(99, "</div>") // Close the first page element
     }
 
     private fun remainingItems(items: List<Item>): String {
