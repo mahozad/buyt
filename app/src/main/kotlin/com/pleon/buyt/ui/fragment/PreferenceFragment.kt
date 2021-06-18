@@ -316,8 +316,8 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
         activity = context as Activity
         val htmlSerializer = HTMLSerializer(context)
         serializers = listOf(
-            htmlSerializer,
             PDFSerializer(context, DEFAULT_EXPORT_FILE_NAME, htmlSerializer),
+            htmlSerializer,
             CSVSerializer(),
             JSONSerializer(),
             XMLSerializer()
