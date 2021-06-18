@@ -106,6 +106,9 @@ class HTMLSerializer(private val context: Context) : Serializer<PurchaseDetail> 
                   min-height: initial;
                   page-break-after: always;
                 }
+                #empty-hint {
+                  margin-top: 14cm;
+                }
                 #logo-and-title {
                   margin-top: 8cm;
                 }
