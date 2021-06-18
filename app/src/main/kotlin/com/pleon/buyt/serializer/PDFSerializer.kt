@@ -31,6 +31,8 @@ class PDFSerializer(
 
     /**
      * WebView should be created in the main thread, thus the *Dispatchers.Main*.
+     * For more information about printing HTML documents see the
+     * [official guides](https://developer.android.com/training/printing/html-docs).
      *
      * NOTE: Creating a *WebView* instance changes the locale of the app to the
      *  default locale of the system. To see this, with system (phone) language
