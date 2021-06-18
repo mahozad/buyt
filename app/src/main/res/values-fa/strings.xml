@@ -171,6 +171,8 @@
     <string name="tab_title_details">ریز خریدها</string>
     <string name="purchase_detail_store_name">نام مغازه:</string>
     <string name="purchase_detail_total_cost">هزینه کل:</string>
+    <string name="export_html_title">ریز خریدهای بایت</string>
+    <string name="export_html_empty_hint">اطلاعات خریدی موجود نیست</string>
     <string name="export_purchase_detail_store_name">نام مغازه</string>
     <string name="export_purchase_detail_total_cost">هزینه کل</string>
     <string name="export_purchase_detail_store_category">دسته‌بندی مغازه</string>
@@ -214,8 +216,6 @@
     <string name="dialog_message_free_limit_reached">نسخه رایگان برنامه هر هفته حداکثر <big>۵</big> خرید را پشتیبانی می‌کند. در صورت تمایل می‌توانید برنامه را به نسخه کامل ارتقا دهید.</string>
     <string name="stores_empty_hint">مغازه‌ای اضافه نشده است!</string>
     <string name="snackbar_message_list_empty">لیست خرید خالی است</string>
-    <string name="exported_html_title">ریز خریدهای بایت</string>
-    <string name="exported_html_empty_hint">اطلاعات خریدی موجود نیست</string>
     <plurals name="store_detail_purchase_count">
         <item quantity="one">%1$d خرید</item>
         <item quantity="other">%1$d خرید</item>

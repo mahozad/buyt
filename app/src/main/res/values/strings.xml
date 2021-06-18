@@ -226,6 +226,8 @@
     <string name="tab_title_details">Details</string>
     <string name="purchase_detail_store_name">Store name:</string>
     <string name="purchase_detail_total_cost">Total cost:</string>
+    <string name="export_html_title">Buyt purchase details</string>
+    <string name="export_html_empty_hint">No purchase data</string>
     <string name="export_purchase_detail_store_name">Store name</string>
     <string name="export_purchase_detail_store_category">Store category</string>
     <string name="export_purchase_detail_total_cost">Total cost</string>
@@ -274,8 +276,6 @@
     <string name="snackbar_message_list_empty">Shopping list is empty</string>
     <string name="no_value" translatable="false">-</string>
     <string name="btn_text_select_export_location">Select save location…</string>
-    <string name="exported_html_title">Buyt purchase details</string>
-    <string name="exported_html_empty_hint">No purchase data</string>
     <plurals name="store_detail_purchase_count">
         <!-- For zero android will use plural form like 0 books -->
         <item quantity="one">%1$d purchase</item>

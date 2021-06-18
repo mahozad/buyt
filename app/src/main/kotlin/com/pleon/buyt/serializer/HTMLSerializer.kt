@@ -14,11 +14,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.intellij.lang.annotations.Language
 import java.util.*
+import kotlin.collections.Map.Entry
+
+private const val DATE_AND_TABLE_HEADER_ROWS = 5 // Just a rough estimate
+private const val PAGE_MAX_ROWS = 28 // Just a rough estimate
 
 /**
  * For creating the tables see [this page](https://developer.mozilla.org/en-US/docs/Learn/HTML/Tables/Advanced).
- * Could also have incremented the "rowspan" of the first row by one
- * and moved the first item to a standalone `<tr>` element.
  */
 class HTMLSerializer(private val context: Context) : Serializer<PurchaseDetail> {
 
@@ -26,8 +28,7 @@ class HTMLSerializer(private val context: Context) : Serializer<PurchaseDetail> 
     override val fileExtension = "html"
     override var updateListener: (suspend (Int, String) -> Unit)? = null
     override var finishListener: (suspend () -> Unit)? = null
-    // To keep track of where to insert page breaks
-    private val pageMaxRows = 28
+    private val stringBuilder = StringBuilder()
     private var pageCurrentRow = 0
 
     @Language("HTML")
@@ -36,7 +37,7 @@ class HTMLSerializer(private val context: Context) : Serializer<PurchaseDetail> 
         <html lang="${getCurrentLocale(context).language}">
           <head>
             <meta charset="UTF-8">
-            <title>${getString(R.string.exported_html_title)}</title>
+            <title>${getString(R.string.export_html_title)}</title>
             <style>
               * {
                 direction: ${if (isRTL()) "RTL" else "LTR"};
@@ -128,7 +129,7 @@ class HTMLSerializer(private val context: Context) : Serializer<PurchaseDetail> 
                   <path fill="url(#gradient)" d="m14.633 10.988c-0.325 0.285-0.692 0.523-1.098 0.692l-5.535 2.32a4 4 0 0 0 0 0.061v0.609l2.555-1.07a1.5 1.5 0 0 1 1.445-1.1 1.5 1.5 0 0 1 0.727 0.189l0.808-0.339c0.556-0.231 1.046-0.583 1.442-1.022a4 4 0 0 0-0.344-0.34z" />
                   <path fill="#70ae28" d="m11.939 3.99c-2.184 0-3.94 1.83-3.939 4.01v6l5.535-2.32c1.448-0.6 2.465-2.02 2.465-3.69 0-2.21-1.791-4-4-4zm0.06 2.5c0.828 0 1.5 0.6716 1.5 1.5s-0.672 1.5-1.5 1.5-1.5-0.6716-1.5-1.5 0.672-1.5 1.5-1.5z" />
                 </svg>
-                <h1>${getString(R.string.exported_html_title)}</h1>
+                <h1>${getString(R.string.export_html_title)}</h1>
               </div>
             </div>
             <hr />
@@ -141,63 +142,80 @@ class HTMLSerializer(private val context: Context) : Serializer<PurchaseDetail> 
     """
 
     override suspend fun serialize(entities: List<PurchaseDetail>): Unit = withContext(Dispatchers.Default) {
+        resetFields()
         updateListener?.invoke(0, head)
         createBody(entities)
         updateListener?.invoke(100, tail)
         finishListener?.invoke()
     }
 
-    private suspend fun createBody(entities: List<PurchaseDetail>) {
-        if (entities.isEmpty()) {
-            updateListener?.invoke(100, createEmptyHint())
-        }
-        val stringBuilder = StringBuilder("""<div class="page"><div class="page-counter"></div>""")
+    private fun resetFields() {
+        stringBuilder.clear()
+        pageCurrentRow = 0
+    }
+
+    private suspend fun createBody(entities: List<PurchaseDetail>) = when {
+        entities.isEmpty() -> updateListener?.invoke(100, createEmptyHint())
+        else -> createContent(entities)
+    }
+
+    private suspend fun createContent(entities: List<PurchaseDetail>) {
+        stringBuilder.append("""<div class="page"><div class="page-counter"></div>""")
         val purchaseDetailsByDate = entities.groupBy { formatDate(it.purchase.date) }
-        pageCurrentRow = 0 // Reset the variable for a new serialization
         purchaseDetailsByDate.onEachIndexed { i, entry ->
-            val date = entry.key
-            val datePurchaseDetails = entry.value
-            val dateAndTableHeaderRows = 5 // Just a rough estimate
-            val nextTableRows = dateAndTableHeaderRows + datePurchaseDetails.sumOf { it.item.size }
-            pageCurrentRow += nextTableRows
-            val isFirstTable = i == 0
-            if (pageCurrentRow > pageMaxRows && !isFirstTable) {
-                pageCurrentRow = nextTableRows
-                // end previous page and start next page
-                stringBuilder.append("""</div><div class="page"><div class="page-counter"></div>""")
-            }
-            stringBuilder.append(tableStart(date))
-            for (purchaseDetail in datePurchaseDetails) {
-                stringBuilder.append(storeAndFirstItem(purchaseDetail.store!!, purchaseDetail.item))
-                stringBuilder.append(remainingItems(purchaseDetail.item.drop(1)))
-            }
-            stringBuilder.append("</table>")
+            createDatePurchaseDetails(entry, isFirstTable = i == 0)
             val progress = ((i + 1f) / entities.size * 100).toInt()
             updateListener?.invoke(progress, stringBuilder.toString())
             stringBuilder.clear()
         }
-        updateListener?.invoke(99, "</div>") // Close the first page element
+        updateListener?.invoke(95, "</div>") // Close the first page element
     }
 
-    private fun remainingItems(items: List<Item>): String {
-        val stringBuilder = StringBuilder()
-        for (item in items) {
-            stringBuilder.append("""
-                <tr>
-                 <td>${item.name}</td>
-                 <td>${getString(R.string.item_quantity, item.quantity.value, getString(item.quantity.unit.nameRes))}</td>
-                 <td>${getQuantityString(R.plurals.price_with_suffix, item.totalPrice.toInt(), formatPrice(item.totalPrice))}</td>
-               </tr>"""
-            )
+    private fun createDatePurchaseDetails(entry: Entry<String, List<PurchaseDetail>>, isFirstTable: Boolean) {
+        val (date, purchaseDetails) = entry
+        val nextTableRows = DATE_AND_TABLE_HEADER_ROWS + purchaseDetails.sumOf { it.item.size }
+        pageCurrentRow += nextTableRows
+        if (pageCurrentRow > PAGE_MAX_ROWS && !isFirstTable) {
+            endCurrentPageAndStartNextPage(nextTableRows)
         }
-        return stringBuilder.toString()
+        addTable(date, purchaseDetails)
     }
 
-    private fun storeAndFirstItem(store: Store, items: List<Item>): String {
+    private fun endCurrentPageAndStartNextPage(nextTableRows: Int) {
+        pageCurrentRow = nextTableRows
+        stringBuilder.append("""</div><div class="page"><div class="page-counter"></div>""")
+    }
+
+    private fun addTable(date: String, purchaseDetails: List<PurchaseDetail>) {
+        stringBuilder.append(tableStart(date))
+        for (purchaseDetail in purchaseDetails) {
+            addStoreAndFirstItem(purchaseDetail.store!!, purchaseDetail.item)
+            addRemainingItems(purchaseDetail.item.drop(1))
+        }
+        stringBuilder.append("</table>")
+    }
+
+    private fun addRemainingItems(items: List<Item>) {
+        for (item in items) stringBuilder.append(createItem(item))
+    }
+
+    @Language("HTML")
+    private fun createItem(item: Item) = """
+        <tr>
+          <td>${item.name}</td>
+          <td>${getString(R.string.item_quantity, item.quantity.value, getString(item.quantity.unit.nameRes))}</td>
+          <td>${getQuantityString(R.plurals.price_with_suffix, item.totalPrice.toInt(), formatPrice(item.totalPrice))}</td>
+        </tr>"""
+
+    /**
+     * Could also have incremented the `rowspan` of the first row by one
+     * and moved the first item to a standalone `<tr>` element.
+     */
+    private fun addStoreAndFirstItem(store: Store, items: List<Item>) {
         val storeCategory = getString(store.category.nameRes)
         val totalCost = items.sumOf { it.totalPrice }
         val firstItem = items.first()
-        return """
+        stringBuilder.append("""
         <tr>
           <td rowspan="${items.size}">${store.name}</td>
           <td rowspan="${items.size}">${storeCategory}</td>
@@ -206,7 +224,7 @@ class HTMLSerializer(private val context: Context) : Serializer<PurchaseDetail> 
           <td>${getString(R.string.item_quantity, firstItem.quantity.value, getString(firstItem.quantity.unit.nameRes))}</td>
           <td>${getQuantityString(R.plurals.price_with_suffix, firstItem.totalPrice.toInt(), formatPrice(firstItem.totalPrice))}</td>
         </tr>
-        """
+        """)
     }
 
     @Language("HTML")
@@ -226,7 +244,8 @@ class HTMLSerializer(private val context: Context) : Serializer<PurchaseDetail> 
         </tr> 
     """
 
-    private fun createEmptyHint() = """<div id="empty-hint">${getString(R.string.exported_html_empty_hint)}</div>"""
+    @Language("HTML")
+    private fun createEmptyHint() = """<div id="empty-hint">${getString(R.string.export_html_empty_hint)}</div>"""
 
     private fun getString(@StringRes id: Int) = context.getString(id)
     private fun getString(@StringRes id: Int, vararg format: Any) = context.getString(id, *format)
