@@ -42,6 +42,9 @@ class HTMLSerializer(private val context: Context) : Serializer<PurchaseDetail> 
               * {
                 direction: ${if (isRTL()) "RTL" else "LTR"};
               }
+              #logo {
+                 height: 256px;
+              }
               #logo, #empty-hint, h1 {
                 width: 100%;
                 margin: 0 auto;
@@ -110,7 +113,10 @@ class HTMLSerializer(private val context: Context) : Serializer<PurchaseDetail> 
                   margin-top: 14cm;
                 }
                 #logo-and-title {
-                  margin-top: 8cm;
+                  margin-top: 70mm
+                }
+                #logo {
+                   height: 400px;
                 }
                 hr {
                   display: none;
@@ -121,7 +127,7 @@ class HTMLSerializer(private val context: Context) : Serializer<PurchaseDetail> 
           <body>
             <div class="page">
               <div id="logo-and-title">
-                <svg id="logo" version="1.1" width="256px" height="256px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg id="logo" version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <defs>
                     <linearGradient id="gradient" x1="11.403" x2="11.642" y1="12.574" y2="13.145" gradientUnits="userSpaceOnUse">
                       <stop stop-opacity=".3" offset="0" />
