@@ -1,4 +1,11 @@
 ﻿┌───────────────────────────┐
+├ versionName = 2.2.0       │
+├ versionCode = 12          │
+│ ──────────────────────────┘
+├ Add new PDF export option
+├ Add new JSON export option
+├ Improve HTML export output
+├───────────────────────────┐
 ├ versionName = 2.1.0       │
 ├ versionCode = 11          │
 │ ──────────────────────────┘
