@@ -153,14 +153,14 @@ class HTMLSerializer(private val context: Context) : InteractiveSerializer<Purch
     """
 
     override suspend fun serialize(entities: List<PurchaseDetail>): Unit = withContext(Dispatchers.Default) {
-        resetFields()
+        resetState()
         updateListener?.invoke(0, head)
         createBody(entities)
         updateListener?.invoke(100, tail)
         finishListener?.invoke()
     }
 
-    private fun resetFields() {
+    private fun resetState() {
         stringBuilder.clear()
         pageCurrentRow = 0
     }
