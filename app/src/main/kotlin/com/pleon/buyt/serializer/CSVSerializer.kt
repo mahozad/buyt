@@ -21,43 +21,40 @@ class CSVSerializer : InteractiveSerializer<PurchaseDetail> {
     private val head = "Date,Store,Items\n"
 
     override suspend fun serialize(entities: List<PurchaseDetail>): Unit = withContext(Dispatchers.Default) {
-        val stringBuilder = StringBuilder()
         updateListener?.invoke(0, head)
         for ((i, purchaseDetail) in entities.withIndex()) {
-            stringBuilder.append(makeRecord(purchaseDetail))
+            val fragment = makeRecord(purchaseDetail)
             val progress = ((i + 1f) / entities.size * 100).toInt()
-            updateListener?.invoke(progress, stringBuilder.toString())
-            stringBuilder.clear()
+            updateListener?.invoke(progress, fragment)
         }
         finishListener?.invoke()
     }
 
     private fun makeRecord(purchaseDetail: PurchaseDetail): String {
         val noValue = getString(R.string.no_value)
+        val storeCategory = purchaseDetail.store?.category?.nameRes?.let { getString(it) } ?: noValue
         val valueSeparator = ":"
         val itemSeparator = "⬛"
-        val stringBuilder = StringBuilder()
-        val storeCategory = purchaseDetail.store?.category?.nameRes?.let { getString(it) } ?: noValue
-        stringBuilder.append("\"${formatDate(purchaseDetail.purchase.date)}\"")
-        stringBuilder.append(",")
-        stringBuilder.append("\"")
-        stringBuilder.append(purchaseDetail.store?.name ?: noValue)
-        stringBuilder.append(valueSeparator)
-        stringBuilder.append(storeCategory)
-        stringBuilder.append("\"")
-        stringBuilder.append(",")
-        stringBuilder.append("\"")
-        for ((i, item) in purchaseDetail.item.withIndex()) {
-            stringBuilder.append(item.name)
-            stringBuilder.append(valueSeparator)
-            stringBuilder.append(getString(R.string.item_quantity, item.quantity.value, getString(item.quantity.unit.nameRes)))
-            stringBuilder.append(valueSeparator)
-            stringBuilder.append(getQuantityString(R.plurals.price_with_suffix, item.totalPrice.toInt(), formatPrice(item.totalPrice)))
-            if (i < purchaseDetail.item.size - 1) stringBuilder.append(itemSeparator)
+        return buildString {
+            append("\"${formatDate(purchaseDetail.purchase.date)}\"")
+            append(",")
+            append("\"")
+            append(purchaseDetail.store?.name ?: noValue)
+            append(valueSeparator)
+            append(storeCategory)
+            append("\"")
+            append(",")
+            append("\"")
+            for ((i, item) in purchaseDetail.item.withIndex()) {
+                append(item.name)
+                append(valueSeparator)
+                append(getString(R.string.item_quantity, item.quantity.value, getString(item.quantity.unit.nameRes)))
+                append(valueSeparator)
+                append(getQuantityString(R.plurals.price_with_suffix, item.totalPrice.toInt(), formatPrice(item.totalPrice)))
+                if (i < purchaseDetail.item.size - 1) append(itemSeparator)
+            }
+            appendLine("\"")
         }
-        stringBuilder.append("\"")
-        stringBuilder.appendLine()
-        return stringBuilder.toString()
     }
 
     private fun getString(@StringRes id: Int) = application.getString(id)
