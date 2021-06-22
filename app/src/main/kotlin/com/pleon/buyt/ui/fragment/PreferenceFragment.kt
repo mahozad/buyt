@@ -15,6 +15,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.pleon.buyt.R
 import com.pleon.buyt.database.AppDatabase
 import com.pleon.buyt.database.DB_NAME
@@ -28,7 +29,6 @@ import kotlinx.android.synthetic.main.backup_data_widget_layout.*
 import kotlinx.android.synthetic.main.export_data_widget_layout.*
 import kotlinx.android.synthetic.main.restore_data_widget_layout.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
@@ -169,21 +169,26 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
     }
 
     private suspend fun startSerializationProcess(writer: BufferedWriter?) {
-        setUpExportProgressBar()
+        resetProgressBar(progressBar1)
         val purchaseDetails = purchaseDao.getAllPurchaseDetails()
         serializer.updateListener = { progress, fragment ->
             writer?.write(fragment)
             withContext(Dispatchers.Main) { progressBar1?.setProgressCompat(progress, true) }
         }
-        serializer.finishListener = { withContext(Dispatchers.Main) { progressBar1.hide() } }
+        serializer.finishListener = { hideProgressBar(progressBar1) }
         serializer.serialize(purchaseDetails)
     }
 
-    private suspend fun setUpExportProgressBar() = withContext(Dispatchers.Main) {
+    private suspend fun resetProgressBar(progressBar: CircularProgressIndicator) = withContext(Dispatchers.Main) {
         // This caused an exception in Android 5.1 and also was not necessary
         // progressBar.isIndeterminate = true
-        progressBar1.setProgressCompat(0, false)
-        progressBar1.show()
+        progressBar.setProgressCompat(0, false)
+        progressBar.show()
+    }
+
+    private suspend fun hideProgressBar(progressBar: CircularProgressIndicator) = withContext(Dispatchers.Main) {
+        // Used app:minHideDelay="1000" on progress bar layouts so they do not hide too early
+        progressBar.hide()
     }
 
     private fun showSystemFileCreator(mimeType: String, fileName: String, requestCode: Int) {
@@ -235,14 +240,14 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
     private fun createBackup(resultData: Intent?) {
         resultData?.data?.let { uri ->
             lifecycleScope.launch(Dispatchers.IO) {
+                resetProgressBar(progressBar2)
                 withContext(Dispatchers.Main) { progressBar2.setProgressCompat(100, true) }
                 val databaseFile = requireContext().getDatabasePath(DB_NAME)
                 databaseDao.flushDatabase()
                 contentResolver.openOutputStream(uri).use {
                     databaseFile.inputStream().copyTo(it!!)
                 }
-                delay(1000) // Show progress bar for a little while
-                withContext(Dispatchers.Main) { progressBar2.hide() }
+                hideProgressBar(progressBar2)
             }
         }
     }
@@ -250,13 +255,14 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
     private fun restoreBackup(resultData: Intent?) {
         resultData?.data?.let { uri ->
             lifecycleScope.launch(Dispatchers.IO) {
+                resetProgressBar(progressBar2)
                 withContext(Dispatchers.Main) { progressBar3.setProgressCompat(100, true) }
                 appDatabase.close()
                 val databaseFile = requireContext().getDatabasePath(DB_NAME)
                 databaseFile.outputStream().use {
                     contentResolver.openInputStream(uri)?.copyTo(it)
                 }
-                withContext(Dispatchers.Main) { progressBar3.hide() }
+                hideProgressBar(progressBar3)
                 restartTheApp()
             }
         }

@@ -54,9 +54,9 @@ class PDFSerializer(
         }
         // Generate an HTML document on the fly:
         val htmlBuilder = StringBuilder()
-        htmlSerializer.updateListener = { _, fragment ->
+        htmlSerializer.updateListener = { i, fragment ->
             htmlBuilder.append(fragment)
-            updateListener?.invoke(80, "")
+            updateListener?.invoke(i, "")
         }
         htmlSerializer.finishListener = {
             val html = htmlBuilder.toString()
