@@ -22,13 +22,11 @@ class XMLSerializer : InteractiveSerializer<PurchaseDetail> {
     private val tail = "</purchase-details>"
 
     override suspend fun serialize(entities: List<PurchaseDetail>): Unit = withContext(Dispatchers.Default) {
-        val stringBuilder = StringBuilder()
         updateListener?.invoke(0, head)
         for ((i, purchaseDetail) in entities.withIndex()) {
-            stringBuilder.append(purchaseElement(purchaseDetail))
+            val fragment = purchaseElement(purchaseDetail)
             val progress = ((i + 1f) / entities.size * 100).toInt()
-            updateListener?.invoke(progress, stringBuilder.toString())
-            stringBuilder.clear()
+            updateListener?.invoke(progress, fragment)
         }
         updateListener?.invoke(100, tail)
         finishListener?.invoke()
@@ -36,31 +34,31 @@ class XMLSerializer : InteractiveSerializer<PurchaseDetail> {
 
     private fun purchaseElement(purchaseDetail: PurchaseDetail): String {
         val noValue = getString(R.string.no_value)
-        val stringBuilder = StringBuilder()
         val storeCategory = purchaseDetail.store?.category?.nameRes?.let { getString(it) } ?: noValue
-        stringBuilder.append("  <purchase>").appendLine()
-        stringBuilder.append("    <date>${formatDate(purchaseDetail.purchase.date)}</date>").appendLine()
-        stringBuilder.append("    <store>").appendLine()
-        stringBuilder.append("      <store-name>${purchaseDetail.store?.name ?: noValue}</store-name>").appendLine()
-        stringBuilder.append("      <store-category>${storeCategory}</store-category>").appendLine()
-        stringBuilder.append("      <store-location>").appendLine()
-        stringBuilder.append("        <store-location-latitude>${purchaseDetail.store?.location?.latitude ?: noValue}</store-location-latitude>").appendLine()
-        stringBuilder.append("        <store-location-longitude>${purchaseDetail.store?.location?.longitude ?: noValue}</store-location-longitude>").appendLine()
-        stringBuilder.append("      </store-location>").appendLine()
-        stringBuilder.append("    </store>").appendLine()
-        stringBuilder.append("    <items>").appendLine()
-        for (item in purchaseDetail.item) {
-            stringBuilder.append("      <item>").appendLine()
-            stringBuilder.append("        <item-name>${item.name}</item-name>").appendLine()
-            stringBuilder.append("        <item-quantity>${getString(R.string.item_quantity, item.quantity.value, getString(item.quantity.unit.nameRes))}</item-quantity>").appendLine()
-            stringBuilder.append("        <item-description>${item.description ?: noValue}</item-description>").appendLine()
-            stringBuilder.append("        <item-total-cost>${getQuantityString(R.plurals.price_with_suffix, item.totalPrice.toInt(), formatPrice(item.totalPrice))}</item-total-cost>").appendLine()
-            stringBuilder.append("        <item-urgency>${if (item.isUrgent) "!" else noValue}</item-urgency>").appendLine()
-            stringBuilder.append("      </item>").appendLine()
+        return buildString {
+            appendLine("  <purchase>")
+            appendLine("    <date>${formatDate(purchaseDetail.purchase.date)}</date>")
+            appendLine("    <store>")
+            appendLine("      <store-name>${purchaseDetail.store?.name ?: noValue}</store-name>")
+            appendLine("      <store-category>${storeCategory}</store-category>")
+            appendLine("      <store-location>")
+            appendLine("        <store-location-latitude>${purchaseDetail.store?.location?.latitude ?: noValue}</store-location-latitude>")
+            appendLine("        <store-location-longitude>${purchaseDetail.store?.location?.longitude ?: noValue}</store-location-longitude>")
+            appendLine("      </store-location>")
+            appendLine("    </store>")
+            appendLine("    <items>")
+            for (item in purchaseDetail.item) {
+                appendLine("      <item>")
+                appendLine("        <item-name>${item.name}</item-name>")
+                appendLine("        <item-quantity>${getString(R.string.item_quantity, item.quantity.value, getString(item.quantity.unit.nameRes))}</item-quantity>")
+                appendLine("        <item-description>${item.description ?: noValue}</item-description>")
+                appendLine("        <item-total-cost>${getQuantityString(R.plurals.price_with_suffix, item.totalPrice.toInt(), formatPrice(item.totalPrice))}</item-total-cost>")
+                appendLine("        <item-urgency>${if (item.isUrgent) "!" else noValue}</item-urgency>")
+                appendLine("      </item>")
+            }
+            appendLine("    </items>")
+            appendLine("  </purchase>")
         }
-        stringBuilder.append("    </items>").appendLine()
-        stringBuilder.append("  </purchase>").appendLine()
-        return stringBuilder.toString()
     }
 
     private fun getString(@StringRes id: Int) = application.getString(id)
