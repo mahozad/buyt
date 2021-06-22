@@ -11,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.java.KoinJavaComponent.inject
 
-class XMLSerializer : Serializer<PurchaseDetail> {
+class XMLSerializer : InteractiveSerializer<PurchaseDetail> {
 
     override val mimeType = "text/xml"
     override val fileExtension = "xml"

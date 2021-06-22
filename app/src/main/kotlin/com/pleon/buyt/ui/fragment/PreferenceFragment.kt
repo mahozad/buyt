@@ -146,8 +146,8 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
             .setNegativeButton(android.R.string.cancel) { _, _ -> /* Dismiss */ }
             .setPositiveButton(R.string.btn_text_select_export_location) { _, _ ->
                 when (serializer) {
-                    is PDFSerializer -> createPDF()
-                    else -> createOtherFormats()
+                    is StandaloneSerializer -> setUpStandaloneSerializer()
+                    else -> setUpInteractiveSerializer()
                 }
             }
             .setSingleChoiceItems(R.array.pref_export_names, defaultSerializer) { _, i ->
@@ -157,26 +157,33 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
             .show()
     }
 
-    /**
-     * FIXME: The code here is mostly duplicate of [exportData] and [serialize] functions.
-     */
-    private fun createPDF() = lifecycleScope.launch(Dispatchers.IO) {
-        // This caused an exception in Android 5.1 and also was not necessary
-        // progressBar.isIndeterminate = true
-        withContext(Dispatchers.Main) { progressBar1.show() }
+    private fun setUpStandaloneSerializer() = lifecycleScope.launch(Dispatchers.IO) {
+        startSerializationProcess(writer = null)
+    }
+
+    private fun setUpInteractiveSerializer() {
+        val mimeType = serializer.mimeType
+        val fileName = "$DEFAULT_EXPORT_FILE_NAME.${serializer.fileExtension}"
+        val requestCode = CREATE_EXPORT_REQUEST_CODE
+        showSystemFileCreator(mimeType, fileName, requestCode)
+    }
+
+    private suspend fun startSerializationProcess(writer: BufferedWriter?) {
+        setUpExportProgressBar()
         val purchaseDetails = purchaseDao.getAllPurchaseDetails()
-        serializer.updateListener = { progress, _ ->
+        serializer.updateListener = { progress, fragment ->
+            writer?.write(fragment)
             withContext(Dispatchers.Main) { progressBar1?.setProgressCompat(progress, true) }
         }
         serializer.finishListener = { withContext(Dispatchers.Main) { progressBar1.hide() } }
         serializer.serialize(purchaseDetails)
     }
 
-    private fun createOtherFormats() {
-        val mimeType = serializer.mimeType
-        val fileName = "$DEFAULT_EXPORT_FILE_NAME.${serializer.fileExtension}"
-        val requestCode = CREATE_EXPORT_REQUEST_CODE
-        showSystemFileCreator(mimeType, fileName, requestCode)
+    private suspend fun setUpExportProgressBar() = withContext(Dispatchers.Main) {
+        // This caused an exception in Android 5.1 and also was not necessary
+        // progressBar.isIndeterminate = true
+        progressBar1.setProgressCompat(0, false)
+        progressBar1.show()
     }
 
     private fun showSystemFileCreator(mimeType: String, fileName: String, requestCode: Int) {
@@ -216,13 +223,10 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
     }
 
     private fun exportData(resultData: Intent?) {
-        // This caused an exception in Android 5.1 and also was not necessary
-        // progressBar.isIndeterminate = true
-        progressBar1.show()
-        resultData?.data?.also { uri ->
+        resultData?.data?.let { uri ->
             lifecycleScope.launch(Dispatchers.IO) {
                 contentResolver.openOutputStream(uri)?.bufferedWriter().use {
-                    serialize(it!!)
+                    startSerializationProcess(it)
                 }
             }
         }
@@ -279,16 +283,6 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
         Runtime.getRuntime().exit(0)*/
     }
 
-    private suspend fun serialize(writer: BufferedWriter) {
-        val purchaseDetails = purchaseDao.getAllPurchaseDetails()
-        serializer.updateListener = { progress, fragment ->
-            writer.write(fragment)
-            withContext(Dispatchers.Main) { progressBar1?.setProgressCompat(progress, true) }
-        }
-        serializer.finishListener = { withContext(Dispatchers.Main) { progressBar1.hide() } }
-        serializer.serialize(purchaseDetails)
-    }
-
     override fun onSharedPreferenceChanged(prefs: SharedPreferences, key: String) {
         if (key == PREF_THEME || key == PREF_LANG) {
             prefs.edit().putBoolean(PREF_TASK_RECREATED, true).apply()
@@ -314,10 +308,9 @@ class PreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activity = context as Activity
-        val htmlSerializer = HTMLSerializer(context)
         serializers = listOf(
-            PDFSerializer(context, DEFAULT_EXPORT_FILE_NAME, htmlSerializer),
-            htmlSerializer,
+            PDFSerializer(activity, DEFAULT_EXPORT_FILE_NAME, HTMLSerializer(context)),
+            HTMLSerializer(context),
             CSVSerializer(),
             JSONSerializer(),
             XMLSerializer()

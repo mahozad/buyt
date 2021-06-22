@@ -18,9 +18,9 @@ import java.util.*
 
 class PDFSerializer(
     private val activity: Activity,
-    private val defaultExportFileName: String,
+    override val defaultOutputFileName: String,
     private val htmlSerializer: HTMLSerializer
-) : Serializer<PurchaseDetail> {
+) : StandaloneSerializer<PurchaseDetail> {
 
     override val mimeType = "application/pdf"
     override val fileExtension = "pdf"
@@ -82,7 +82,7 @@ class PDFSerializer(
     private fun createWebPrintJob(webView: WebView, activity: Activity) {
         (activity.getSystemService(Context.PRINT_SERVICE) as? PrintManager)?.let { printManager ->
             val jobName = "Buyt Print Document"
-            val defaultDocumentName = "$defaultExportFileName.$fileExtension"
+            val defaultDocumentName = "$defaultOutputFileName.$fileExtension"
             val printAdapter = webView.createPrintDocumentAdapter(defaultDocumentName)
             // Save the job object for later status checking
             printJob = printManager.print(

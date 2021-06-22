@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.java.KoinJavaComponent
 
-class JSONSerializer: Serializer<PurchaseDetail> {
+class JSONSerializer: InteractiveSerializer<PurchaseDetail> {
 
     override val mimeType = "application/json"
     override val fileExtension = "json"
