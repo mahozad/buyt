@@ -20,6 +20,8 @@ private const val DATE_AND_TABLE_HEADER_ROWS = 5 // Just a rough estimate
 private const val PAGE_MAX_ROWS = 28 // Just a rough estimate
 
 /**
+ * Consider using [kotlinx.html](https://github.com/Kotlin/kotlinx.html) library for a more fluent HTML creation.
+ *
  * For creating the tables see [this page](https://developer.mozilla.org/en-US/docs/Learn/HTML/Tables/Advanced).
  */
 class HTMLSerializer(private val context: Context) : Serializer<PurchaseDetail> {
