@@ -1,8 +1,10 @@
 package com.pleon.buyt.serializer
 
+import androidx.test.platform.app.InstrumentationRegistry
 import com.pleon.buyt.database.dto.PurchaseDetail
 import com.pleon.buyt.model.*
 import com.pleon.buyt.util.formatDate
+import com.pleon.buyt.util.setLocale
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions
@@ -13,6 +15,8 @@ class XMLSerializerTest {
 
     // FIXME: Inject the dispatcher to the serializer instead of using delay
     @Test fun shouldProduceCorrectResult() = runBlocking {
+        val context = InstrumentationRegistry.getInstrumentation().context
+        setLocale(context, Locale.ENGLISH)
         val serializer = XMLSerializer()
         val date = Date()
         val purchaseDetails = listOf(
@@ -48,14 +52,14 @@ class XMLSerializerTest {
         <item-name>Apple</item-name>
         <item-quantity>2 kg</item-quantity>
         <item-description>-</item-description>
-        <item-total-cost>0 dollars</item-total-cost>
+        <item-total-price>0 dollars</item-total-price>
         <item-urgency>-</item-urgency>
       </item>
       <item>
         <item-name>Ketchup</item-name>
         <item-quantity>1 unit</item-quantity>
         <item-description>-</item-description>
-        <item-total-cost>0 dollars</item-total-cost>
+        <item-total-price>0 dollars</item-total-price>
         <item-urgency>-</item-urgency>
       </item>
     </items>
@@ -75,7 +79,7 @@ class XMLSerializerTest {
         <item-name>Apple</item-name>
         <item-quantity>1500 g</item-quantity>
         <item-description>-</item-description>
-        <item-total-cost>0 dollars</item-total-cost>
+        <item-total-price>0 dollars</item-total-price>
         <item-urgency>!</item-urgency>
       </item>
     </items>

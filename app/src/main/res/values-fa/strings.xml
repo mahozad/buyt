@@ -175,6 +175,7 @@
     <string name="export_html_empty_hint">اطلاعات خریدی موجود نیست</string>
     <string name="export_purchase_detail_store_name">نام مغازه</string>
     <string name="export_purchase_detail_total_cost">هزینه کل</string>
+    <string name="export_purchase_detail_total_price">قیمت کل</string>
     <string name="export_purchase_detail_store_category">دسته‌بندی مغازه</string>
     <string name="export_purchase_detail_purchased_items">کالاهای خریداری شده</string>
     <string name="export_purchase_detail_item_name">نام کالا</string>

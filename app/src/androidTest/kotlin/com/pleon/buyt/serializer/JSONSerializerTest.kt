@@ -1,7 +1,9 @@
 package com.pleon.buyt.serializer
 
+import androidx.test.platform.app.InstrumentationRegistry
 import com.pleon.buyt.database.dto.PurchaseDetail
 import com.pleon.buyt.model.*
+import com.pleon.buyt.util.setLocale
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
@@ -12,6 +14,8 @@ class JSONSerializerTest {
 
     // FIXME: Inject the dispatcher to the serializer instead of using delay
     @Test fun shouldProduceCorrectResult() = runBlocking {
+        val context = InstrumentationRegistry.getInstrumentation().context
+        setLocale(context, Locale.ENGLISH)
         val serializer = JSONSerializer()
         val date = Date()
         val purchaseDetails = listOf(
@@ -47,14 +51,14 @@ class JSONSerializerTest {
         "name":"Apple",
         "quantity":"2 kg",
         "description":"-",
-        "totalCost":"0 dollars",
+        "totalPrice":"0 dollars",
         "urgency":"-"
       },
       {
         "name":"Ketchup",
         "quantity":"1 unit",
         "description":"-",
-        "totalCost":"0 dollars",
+        "totalPrice":"0 dollars",
         "urgency":"-"
       }
     ]
@@ -74,7 +78,7 @@ class JSONSerializerTest {
         "name":"Apple",
         "quantity":"1500 g",
         "description":"-",
-        "totalCost":"0 dollars",
+        "totalPrice":"0 dollars",
         "urgency":"!"
       }
     ]

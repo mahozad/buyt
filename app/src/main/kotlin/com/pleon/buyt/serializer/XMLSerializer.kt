@@ -52,7 +52,7 @@ class XMLSerializer : InteractiveSerializer<PurchaseDetail> {
                 appendLine("        <item-name>${item.name}</item-name>")
                 appendLine("        <item-quantity>${getString(R.string.item_quantity, item.quantity.value, getString(item.quantity.unit.nameRes))}</item-quantity>")
                 appendLine("        <item-description>${item.description ?: noValue}</item-description>")
-                appendLine("        <item-total-cost>${getQuantityString(R.plurals.price_with_suffix, item.totalPrice.toInt(), formatPrice(item.totalPrice))}</item-total-cost>")
+                appendLine("        <item-total-price>${getQuantityString(R.plurals.price_with_suffix, item.totalPrice.toInt(), formatPrice(item.totalPrice))}</item-total-price>")
                 appendLine("        <item-urgency>${if (item.isUrgent) "!" else noValue}</item-urgency>")
                 appendLine("      </item>")
             }

@@ -3,6 +3,7 @@ package com.pleon.buyt.serializer
 import android.content.Context
 import androidx.annotation.PluralsRes
 import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat.getColor
 import com.pleon.buyt.R
 import com.pleon.buyt.database.dto.PurchaseDetail
 import com.pleon.buyt.model.Item
@@ -10,6 +11,7 @@ import com.pleon.buyt.model.Store
 import com.pleon.buyt.util.formatDate
 import com.pleon.buyt.util.formatPrice
 import com.pleon.buyt.util.getCurrentLocale
+import com.pleon.buyt.util.toHexColor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.intellij.lang.annotations.Language
@@ -39,6 +41,8 @@ class HTMLSerializer(private val context: Context) : InteractiveSerializer<Purch
         <html lang="${getCurrentLocale(context).language}">
           <head>
             <meta charset="UTF-8">
+            <meta name="theme-color" content="${getColor(context, R.color.colorPrimary).toHexColor()}"/>
+            <link rel="icon" sizes="any" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20version%3D%221.1%22%20viewBox%3D%220%200%208%2016%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3Cfilter%20id%3D%22filter%22%20x%3D%220%22%20y%3D%220%22%20color-interpolation-filters%3D%22sRGB%22%3E%0A%20%20%20%20%20%20%3CfeFlood%20flood-color%3D%22rgb%280%2C0%2C0%29%22%20flood-opacity%3D%22.33%22%20result%3D%22flood%22%2F%3E%0A%20%20%20%20%20%20%3CfeComposite%20in%3D%22flood%22%20in2%3D%22SourceGraphic%22%20operator%3D%22in%22%20result%3D%22composite1%22%2F%3E%0A%20%20%20%20%20%20%3CfeGaussianBlur%20in%3D%22composite1%22%20result%3D%22blur%22%20stdDeviation%3D%220.2%22%2F%3E%0A%20%20%20%20%20%20%3CfeOffset%20dx%3D%220%22%20dy%3D%220.3%22%20result%3D%22offset%22%2F%3E%0A%20%20%20%20%20%20%3CfeComposite%20in%3D%22SourceGraphic%22%20in2%3D%22offset%22%20result%3D%22composite2%22%2F%3E%0A%20%20%20%20%3C%2Ffilter%3E%0A%20%20%20%20%3CclipPath%20id%3D%22clip%22%3E%0A%20%20%20%20%20%20%3Cuse%20width%3D%22100%25%22%20height%3D%22100%25%22%20xlink%3Ahref%3D%22%23pin%22%20transform%3D%22translate%288%2C4%29%22%2F%3E%0A%20%20%20%20%3C%2FclipPath%3E%0A%20%20%3C%2Fdefs%3E%0A%20%20%3Cpath%20id%3D%22pin%22%20fill%3D%22%2356ab2f%22%20d%3D%22m3.9391%206.01a4%204%200%200%200-3.939%204%204%204%200%200%200%200%200.061v5.939l5.533-2.305a4%204%200%200%200%202.467-3.695%204%204%200%200%200-4-4%204%204%200%200%200-0.061%200zm0.061%202.5a1.5%201.5%200%200%201%201.5%201.5%201.5%201.5%200%200%201-1.5%201.5%201.5%201.5%200%200%201-1.5-1.5%201.5%201.5%200%200%201%201.5-1.5z%22%2F%3E%0A%20%20%3Cpath%20fill%3D%22%2356ab2f%22%20transform%3D%22translate%28-8%2C-4%29%22%20clip-path%3D%22url%28%23clip%29%22%20filter%3D%22url%28%23filter%29%22%20d%3D%22m11.94%209.99c-2.184%200-3.941%201.82-3.94%204.01l5.535-2.321c0.404-0.167%200.769-0.401%201.092-0.683-0.704-0.619-1.616-1.006-2.627-1.006z%22%2F%3E%0A%20%20%3Cpath%20fill%3D%22%2370ae28%22%20d%3D%22m3.9391%200c-2.184%200-3.94%201.82-3.939%204v6.01l5.535-2.32c1.448-0.6%202.465-2.02%202.465-3.69%200-2.21-1.791-4-4-4zm0.06%202.5a1.5%201.5%200%200%201%201.5%201.5%201.5%201.5%200%200%201-1.5%201.5%201.5%201.5%200%200%201-1.5-1.5%201.5%201.5%200%200%201%201.5-1.5z%22%2F%3E%0A%3C%2Fsvg%3E%0A">
             <title>${getString(R.string.export_html_title)}</title>
             <style>
               * {
@@ -82,6 +86,21 @@ class HTMLSerializer(private val context: Context) : InteractiveSerializer<Purch
               th {
                 background: rgba(208, 223, 219, 0.2);
               }
+              @media screen and (prefers-color-scheme: dark) {
+                * {
+                  background: #242424;
+                  color: #eaeaea; 
+                }
+                table, th, td {
+                  border: 1px solid #ccc;
+                }
+                table caption div {
+                  background: rgba(208, 219, 223, 0.2);
+                }
+                th {
+                  background: rgba(208, 223, 219, 0.15);
+                }
+              }
               /* The following rules are used when printing a PDF */
               @page {
                 size: A4;
@@ -95,7 +114,7 @@ class HTMLSerializer(private val context: Context) : InteractiveSerializer<Purch
                   position: absolute;
                   color: #121212;
                   font-size: 20px;
-                  top: 285mm;
+                  top: 282mm;
                   left: 50%;
                   transform: translate(-50%, 0);
                   counter-increment: page_counter;
@@ -115,10 +134,10 @@ class HTMLSerializer(private val context: Context) : InteractiveSerializer<Purch
                   margin-top: 14cm;
                 }
                 #logo-and-title {
-                  margin-top: 70mm
+                  margin-top: 76mm
                 }
                 #logo {
-                   height: 400px;
+                   height: 360px;
                 }
                 hr {
                   display: none;
@@ -240,7 +259,7 @@ class HTMLSerializer(private val context: Context) : InteractiveSerializer<Purch
 
     @Language("HTML")
     private fun tableStart(date: String): String = """
-      <table class="outer-table">
+      <table>
         <caption><div>$date</div></caption>
         <tr>
           <th rowspan="2">${getString(R.string.export_purchase_detail_store_name)}</th>
@@ -251,7 +270,7 @@ class HTMLSerializer(private val context: Context) : InteractiveSerializer<Purch
         <tr>
           <th>${getString(R.string.export_purchase_detail_item_name)}</th>
           <th>${getString(R.string.export_purchase_detail_item_quantity)}</th>
-          <th>${getString(R.string.export_purchase_detail_total_cost)}</th>
+          <th>${getString(R.string.export_purchase_detail_total_price)}</th>
         </tr> 
     """
 

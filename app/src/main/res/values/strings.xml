@@ -231,6 +231,7 @@
     <string name="export_purchase_detail_store_name">Store name</string>
     <string name="export_purchase_detail_store_category">Store category</string>
     <string name="export_purchase_detail_total_cost">Total cost</string>
+    <string name="export_purchase_detail_total_price">Total price</string>
     <string name="export_purchase_detail_purchased_items">Purchased items</string>
     <string name="export_purchase_detail_item_name">Item name</string>
     <string name="export_purchase_detail_item_quantity">Quantity</string>

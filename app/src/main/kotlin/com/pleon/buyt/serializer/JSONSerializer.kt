@@ -52,7 +52,7 @@ class JSONSerializer: InteractiveSerializer<PurchaseDetail> {
                 appendLine("""        "name":"${item.name}",""")
                 appendLine("""        "quantity":"${getString(R.string.item_quantity, item.quantity.value, getString(item.quantity.unit.nameRes))}",""")
                 appendLine("""        "description":"${item.description ?: noValue}",""")
-                appendLine("""        "totalCost":"${getQuantityString(R.plurals.price_with_suffix, item.totalPrice.toInt(), formatPrice(item.totalPrice))}",""")
+                appendLine("""        "totalPrice":"${getQuantityString(R.plurals.price_with_suffix, item.totalPrice.toInt(), formatPrice(item.totalPrice))}",""")
                 appendLine("""        "urgency":"${if (item.isUrgent) "!" else noValue}"""")
                 appendLine("      }${if (i < purchaseDetail.item.size - 1) "," else ""}")
             }
