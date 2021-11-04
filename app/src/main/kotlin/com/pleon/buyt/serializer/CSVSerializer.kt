@@ -51,7 +51,7 @@ class CSVSerializer : InteractiveSerializer<PurchaseDetail> {
                 append(getString(R.string.item_quantity, item.quantity.value, getString(item.quantity.unit.nameRes)))
                 append(valueSeparator)
                 append(getQuantityString(R.plurals.price_with_suffix, item.totalPrice.toInt(), formatPrice(item.totalPrice)))
-                if (i < purchaseDetail.item.size - 1) append(itemSeparator)
+                if (i < purchaseDetail.item.lastIndex) append(itemSeparator)
             }
             appendLine("\"")
         }

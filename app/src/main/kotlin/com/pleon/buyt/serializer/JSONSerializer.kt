@@ -23,7 +23,7 @@ class JSONSerializer: InteractiveSerializer<PurchaseDetail> {
     override suspend fun serialize(entities: List<PurchaseDetail>): Unit = withContext(Dispatchers.Default) {
         updateListener?.invoke(0, head)
         for ((i, purchaseDetail) in entities.withIndex()) {
-            val isLast = (i == entities.size - 1)
+            val isLast = (i == entities.lastIndex)
             val fragment = purchaseElement(purchaseDetail, isLast)
             val progress = ((i + 1f) / entities.size * 100).toInt()
             updateListener?.invoke(progress, fragment)
@@ -54,7 +54,7 @@ class JSONSerializer: InteractiveSerializer<PurchaseDetail> {
                 appendLine("""        "description":"${item.description ?: noValue}",""")
                 appendLine("""        "totalPrice":"${getQuantityString(R.plurals.price_with_suffix, item.totalPrice.toInt(), formatPrice(item.totalPrice))}",""")
                 appendLine("""        "urgency":"${if (item.isUrgent) "!" else noValue}"""")
-                appendLine("      }${if (i < purchaseDetail.item.size - 1) "," else ""}")
+                appendLine("      }${if (i < purchaseDetail.item.lastIndex) "," else ""}")
             }
             appendLine("    ]")
             appendLine("  }${if (isLast) "" else ","}")
