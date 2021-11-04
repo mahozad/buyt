@@ -13,6 +13,10 @@ foreground
 
 a good android example: https://proandroiddev.com/android-architecture-starring-kotlin-coroutines-jetpack-mvvm-room-paging-retrofit-and-dagger-7749b2bae5f7
 
+FIXME: Sometimes app crashes. (For me once when I tapped on a store in stores screen, the app jumped to main screen).
+The logcat in my phone showed an error *process died fore TOP*
+see [this post](https://stackoverflow.com/q/16052097) and its links.
+
 # Kotlin Coroutines and Flow
 
 https://developer.android.com/topic/libraries/architecture/coroutines
@@ -35,6 +39,9 @@ https://cesarmorigaki.medium.com/replace-singleliveevent-with-kotlin-channel-flo
 ## Provided scopes
 Coroutines created with scopes `lifecycleScope` and `viewModelScope` do not need to
 be canceled in activity or viewModel onDestroy method. 
+
+## A good article about test types in Android
+https://proandroiddev.com/an-effective-testing-strategy-for-android-i-4a269d134acf
 
 ## `runBlockingTest` vs `runBlocking` in unit tests 
 Executes a testBody inside an immediate execution dispatcher.
