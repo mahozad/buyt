@@ -87,7 +87,13 @@ class JSONSerializerTest {
         var result = ""
         serializer.updateListener = { _, fragment -> result += fragment }
         serializer.finishListener = {
-            assertThat(result).isEqualTo(expectedResult)
+            assertThat(result)
+                .withFailMessage(
+                    "Expected: $expectedResult\nBut got: $result.\n" +
+                            "The failure may be due to app/device locale.\n" +
+                            "Try to change the app language or the device locale to EN."
+                )
+                .isEqualTo(expectedResult)
         }
 
         serializer.serialize(purchaseDetails)
