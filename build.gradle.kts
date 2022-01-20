@@ -14,7 +14,7 @@ buildscript {
     }
     dependencies {
         // This dependency version should be the same as the Android Studio version
-        classpath("com.android.tools.build:gradle:4.1.3")
+        classpath("com.android.tools.build:gradle:7.0.4")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
 
         // For JUnit 5
@@ -26,7 +26,7 @@ tasks.wrapper {
     // Add a gradle wrapper script to your source folders (by running the wrapper task).
     // The wrapper script when invoked, downloads the defined gradle version, and executes it.
     // By distributing the wrapper with your project, anyone can work with it without needing to install Gradle beforehand
-    gradleVersion = "7.0"
+    gradleVersion = "7.3.3"
     // Download the full version of the Gradle (with sources and documentation)
     distributionType = Wrapper.DistributionType.ALL
 }
