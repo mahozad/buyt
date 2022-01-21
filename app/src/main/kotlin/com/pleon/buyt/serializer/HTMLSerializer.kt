@@ -58,11 +58,15 @@ class HTMLSerializer(private val context: Context) : InteractiveSerializer<Purch
         // The unofficial woff2 format of Roboto Slab
         val fontLatin = R.raw.roboto_slab_regular.readAsBase64()
         val fontLatinBold = R.raw.roboto_slab_bold.readAsBase64()
+        val svgFavicon = R.raw.favicon.readAsBase64()
+        val fallbackFavicon = R.raw.favicon_fallback.readAsBase64()
         context
             .resources
             .openRawResource(R.raw.template)
             .bufferedReader()
             .lineSequence()
+            .replace("{{ favicon }}", svgFavicon)
+            .replace("{{ fallback-favicon }}", fallbackFavicon)
             .replace("{{ font-persian }}", fontPersian)
             .replace("{{ font-latin }}", fontLatin)
             .replace("{{ font-latin-bold }}", fontLatinBold)
