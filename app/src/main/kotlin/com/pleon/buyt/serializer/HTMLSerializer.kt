@@ -1,6 +1,8 @@
 package com.pleon.buyt.serializer
 
 import android.content.Context
+import android.util.Base64
+import android.util.Base64.NO_WRAP
 import androidx.annotation.PluralsRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat.getColor
@@ -51,17 +53,29 @@ class HTMLSerializer(private val context: Context) : InteractiveSerializer<Purch
     }
 
     private suspend fun generateHead() = withContext(Dispatchers.IO) {
+        // The variable variant of Vazir v30.1.0
+        val fontPersian = R.raw.vazir_variable_v_30_1_0.readAsBase64()
+        // The unofficial woff2 format of Roboto Slab
+        val fontLatin = R.raw.roboto_slab_regular.readAsBase64()
+        val fontLatinBold = R.raw.roboto_slab_bold.readAsBase64()
         context
             .resources
             .openRawResource(R.raw.template)
             .bufferedReader()
             .lineSequence()
+            .replace("{{ font-persian }}", fontPersian)
+            .replace("{{ font-latin }}", fontLatin)
+            .replace("{{ font-latin-bold }}", fontLatinBold)
             .replace("{{ lang }}", getCurrentLocale(context).language)
             .replace("{{ title }}", getString(R.string.export_html_title))
             .replace("{{ direction }}", if (isRTL()) "RTL" else "LTR")
             .replace("{{ theme-color }}", getColor(context, R.color.colorPrimary).toHexColor())
             .replace("{{ counter-language }}", if (Locale.getDefault().language == "fa") ", persian" else "")
             .joinToString("\n")
+    }
+
+    private fun Int.readAsBase64() = context.resources.openRawResource(this).use {
+        Base64.encodeToString(it.readBytes(), NO_WRAP)
     }
 
     private fun Sequence<String>.replace(old: String, new: String) = map { it.replace(old, new) }
