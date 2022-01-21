@@ -39,8 +39,8 @@ class HTMLSerializer(private val context: Context) : InteractiveSerializer<Purch
 
     @Language("HTML")
     private val tail = """
-          </body>
-        </html>
+        </body>
+      </html>
     """
 
     override suspend fun serialize(entities: List<PurchaseDetail>): Unit = withContext(Dispatchers.Default) {

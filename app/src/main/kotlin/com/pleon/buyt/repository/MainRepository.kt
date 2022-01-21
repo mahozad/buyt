@@ -15,9 +15,11 @@ import java.util.*
 // A Repository manages query threads and allows you to use multiple back-ends.
 // In the most common example, the Repository implements the logic for deciding whether
 // to fetch data from a network or use results cached in a local database.
-class MainRepository(private val itemDao: ItemDao,
-                     private val storeDao: StoreDao,
-                     private val purchaseDao: PurchaseDao) {
+class MainRepository(
+    private val itemDao: ItemDao,
+    private val storeDao: StoreDao,
+    private val purchaseDao: PurchaseDao
+) {
 
     val items = itemDao.getAll()
 
