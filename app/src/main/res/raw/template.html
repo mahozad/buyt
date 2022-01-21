@@ -9,11 +9,14 @@
     <title>{{ title }}</title>
     <style>
       @font-face {
-        font-family: "Persian Font";
+        font-family: "Persian font";
         font-weight: 100 900;
         font-stretch: 75% 125%;
         font-style: normal;
-        src: url(data:application/octet-stream;base64,{{ font-persian }});
+        /* See https://stackoverflow.com/q/28235550
+           and https://stackoverflow.com/a/5142316
+        */
+        src: url(data:font/woff2;base64,{{ font-persian }});
         /*
            See https://en.wikipedia.org/wiki/Arabic_script_in_Unicode
            and https://stackoverflow.com/a/32288197
@@ -23,12 +26,12 @@
       }
       @font-face {
         font-family: "Latin font";
-        src: url(data:application/octet-stream;base64,{{ font-latin }});
+        src: url(data:font/woff2;base64,{{ font-latin }});
       }
       @font-face {
         font-family: "Latin font";
         font-weight: bold;
-        src: url(data:application/octet-stream;base64,{{ font-latin-bold }});
+        src: url(data:font/woff2;base64,{{ font-latin-bold }});
       }
       * {
         direction: {{ direction }};
