@@ -34,7 +34,9 @@
         <activity
             android:name=".ui.activity.MainActivity"
             android:launchMode="singleTop" /> <!--adjustPan causes bug when an item is selected, keyboard is shown and then another item is selected-->
-        <activity android:name=".ui.activity.SplashActivity">
+        <activity
+            android:name=".ui.activity.SplashActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
