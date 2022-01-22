@@ -22,7 +22,7 @@ val versionOf = mapOf(
         "preference"   to "1.1.1",
         "viewpager"    to "1.0.0",
         "koin"         to "2.2.2",
-        "room"         to "2.2.6",
+        "room"         to "2.4.1",
         "persiandate"  to "1.2.1",
         "jalalical"    to "1.3.3",
         "stetho"       to "1.6.0",

@@ -5,7 +5,7 @@
  by Gradle itself–not for your application */
 buildscript {
     var kotlinVersion: String by extra
-    kotlinVersion = "1.4.32"
+    kotlinVersion = "1.6.10"
 
     repositories {
         google()

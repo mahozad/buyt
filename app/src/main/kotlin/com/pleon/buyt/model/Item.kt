@@ -2,7 +2,6 @@ package com.pleon.buyt.model
 
 import androidx.room.Embedded
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.pleon.buyt.R
 import java.util.*
@@ -11,7 +10,16 @@ import java.util.*
  * [isFlaggedForDeletion] was added to fix the bug that happened when two items were deleted
  * in row (which caused the first item to appear again)
  */
-@Entity
+@Entity(
+    /* TODO: Uncomment this and migrate the database */
+    // foreignKeys = [
+    //     ForeignKey(
+    //         entity = Purchase::class,
+    //         parentColumns = ["purchaseId"],
+    //         childColumns = ["purchaseId"]
+    //     )
+    // ]
+)
 class Item(val name: String,
            @Embedded val quantity: Quantity,
            var category: Category,
@@ -27,7 +35,6 @@ class Item(val name: String,
 
     @PrimaryKey(autoGenerate = true)
     var itemId: Long = 0
-    @ForeignKey(entity = Purchase::class, parentColumns = ["purchaseId"], childColumns = ["purchaseId"])
     var purchaseId: Long = 0
     var totalPrice: Long = 0
     var description: String? = null
