@@ -51,7 +51,6 @@ android {
     // for sliding tutorial
     buildFeatures.dataBinding = true
 
-    compileSdkVersion(compileAndTargetSDKVersion)
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -75,8 +74,9 @@ android {
         // specifies default settings that will be shared across all different product flavors
 
         applicationId = appId
-        minSdkVersion(minSDKVersion)
-        targetSdkVersion(compileAndTargetSDKVersion)
+        minSdk = minSDKVersion
+        targetSdk = compileAndTargetSDKVersion
+        compileSdk = compileAndTargetSDKVersion
         versionCode = versionNumber
         versionName = versionString
 
@@ -95,7 +95,7 @@ android {
          * This requires a dependency on androidx.test:runner */
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         // Connect JUnit 5 to the runner
-        testInstrumentationRunnerArgument("runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder")
+        testInstrumentationRunnerArguments += "runnerBuilder" to "de.mannodermaus.junit5.AndroidJUnit5Builder"
         // For cleaning up after every test;
         //  requires androidTestUtil("androidx.test:orchestrator:1.3.0");
         //  see testOptions block for required settings
@@ -110,16 +110,18 @@ android {
          * in those libraries whether the rest of your app is translated to the same languages or not.
          * If you'd like to keep only the languages that your app officially supports, you can specify those
          * languages using the resConfig property. Any resources for languages not specified are removed. */
-        resConfigs("en", "fa")
+        resourceConfigurations += setOf("en", "fa")
     }
 
     // Specifically, required for ActivityScenarioExtension in instrumentation tests
     kotlinOptions { jvmTarget = "1.8" }
 
     // JUnit 5 will bundle in files with identical paths; exclude them
-    packagingOptions { exclude("META-INF/LICENSE*") }
+    packagingOptions {
+        resources.excludes += "META-INF/LICENSE*"
+    }
 
-    lintOptions {
+    lint {
         // Disable lint checking for errors
         isCheckReleaseBuilds = false
         // Or, if you prefer, you can continue to check for errors in release builds,
