@@ -196,8 +196,8 @@ dependencies {
 
     // Dependencies for local unit tests (JUnit 5 framework)
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
-    testImplementation("androidx.test:core-ktx:1.3.0")
-    testImplementation("androidx.test.ext:junit-ktx:1.1.2")
+    testImplementation("androidx.test:core-ktx:1.4.0")
+    testImplementation("androidx.test.ext:junit-ktx:1.1.3")
     testImplementation("org.robolectric:robolectric:4.5.1")
     testImplementation("org.assertj:assertj-core:3.19.0")
     testImplementation("io.mockk:mockk:1.11.0")
@@ -206,8 +206,8 @@ dependencies {
     testImplementation("com.google.truth.extensions:truth-java8-extension:1.1.2")
     // Dependencies for instrumented tests
     androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.7.1")
-    androidTestImplementation("androidx.test.ext:junit-ktx:1.1.2")
-    androidTestImplementation("androidx.test:runner:1.3.0")
+    androidTestImplementation("androidx.test.ext:junit-ktx:1.1.3")
+    androidTestImplementation("androidx.test:runner:1.4.0")
     androidTestImplementation("androidx.room:room-testing:${versionOf["room"]}")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.3.0")
