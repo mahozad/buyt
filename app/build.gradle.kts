@@ -8,6 +8,7 @@ plugins {
 
 val appId = "com.pleon.buyt"
 val minSDKVersion = 21
+val databaseSchemaLocation = "$projectDir/schemas"
 val compileAndTargetSDKVersion = 31
 val versionNumber = 12
 val versionString = "2.2.0" // alpha -> beta -> rc -> final
@@ -88,7 +89,7 @@ android {
             annotationProcessorOptions {
                 // Set the location where Room exports database schema info
                 // Effective if `exportSchema = true` in @Database annotation of database class
-                arguments["room.schemaLocation"] = "$projectDir/schemas"
+                arguments["room.schemaLocation"] = databaseSchemaLocation
             }
         }
 
