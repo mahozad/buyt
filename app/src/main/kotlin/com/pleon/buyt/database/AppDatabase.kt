@@ -22,7 +22,10 @@ const val DB_VERSION = 1
         Purchase::class,
         Subscription::class
     ],
-    version = DB_VERSION
+    version = DB_VERSION,
+    // Export database schema info to have the generated SQL code and to keep a history of it
+    // The location of the exported files can be set in the app build script
+    exportSchema = true
 )
 @TypeConverters(
     DateConverter::class,

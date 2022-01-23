@@ -86,7 +86,8 @@ android {
 
         javaCompileOptions {
             annotationProcessorOptions {
-                // Tell Room to export database schema info to keep a history of it
+                // Set the location where Room exports database schema info
+                // Effective if `exportSchema = true` in @Database annotation of database class
                 arguments["room.schemaLocation"] = "$projectDir/schemas"
             }
         }
