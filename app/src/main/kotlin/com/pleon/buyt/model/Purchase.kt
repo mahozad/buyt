@@ -7,7 +7,11 @@ import java.util.*
 @Entity(
     /* TODO: Uncomment this and migrate the database */
     // foreignKeys = [
-    //     ForeignKey(entity = Store::class, parentColumns = ["storeId"], childColumns = ["storeId"])
+    //     ForeignKey(
+    //         entity = Store::class,
+    //         parentColumns = ["storeId"],
+    //         childColumns = ["storeId"]
+    //     )
     // ]
 )
 class Purchase(val date: Date) {
