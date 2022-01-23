@@ -13,16 +13,17 @@ val compileAndTargetSDKVersion = 31
 val versionNumber = 12
 val versionString = "2.2.0" // alpha -> beta -> rc -> final
 val versionOf = mapOf(
-        "appcompat"    to "1.2.0",
-        "material"     to "1.3.0",
-        "lifecycle"    to "2.3.1",
-        "constraint"   to "2.0.4",
-        "fragment"     to "1.3.2",
-        "coordinator"  to "1.1.0",
+        "appcompat"    to "1.4.1",
+        "material"     to "1.4.0",
+        "lifecycle"    to "2.4.0",
+        "constraint"   to "2.1.3",
+        "fragment"     to "1.4.0",
+        "coordinator"  to "1.2.0",
+        "coroutines"   to "1.6.0",
         "recyclerview" to "1.2.0",
         "preference"   to "1.1.1",
         "viewpager"    to "1.0.0",
-        "koin"         to "2.2.2",
+        "koin"         to "2.2.3",
         "room"         to "2.4.1",
         "persiandate"  to "1.2.1",
         "jalalical"    to "1.3.3",
@@ -170,7 +171,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-common-java8:${versionOf["lifecycle"]}")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:${versionOf["lifecycle"]}")
     implementation("androidx.lifecycle:lifecycle-process:${versionOf["lifecycle"]}")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${versionOf["coroutines"]}")
     implementation("androidx.fragment:fragment-ktx:${versionOf["fragment"]}")
     implementation("androidx.recyclerview:recyclerview:${versionOf["recyclerview"]}")
     implementation("androidx.preference:preference-ktx:${versionOf["preference"]}")
@@ -199,28 +200,28 @@ dependencies {
     debugImplementation("com.amitshekhar.android:debug-db:${versionOf["debug-db"]}")
 
     // Dependencies for local unit tests (JUnit 5 framework)
-    testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
     testImplementation("androidx.test:core-ktx:1.4.0")
     testImplementation("androidx.test.ext:junit-ktx:1.1.3")
-    testImplementation("org.robolectric:robolectric:4.5.1")
-    testImplementation("org.assertj:assertj-core:3.19.0")
-    testImplementation("io.mockk:mockk:1.11.0")
+    testImplementation("org.robolectric:robolectric:4.7.3")
+    testImplementation("org.assertj:assertj-core:3.22.0")
+    testImplementation("io.mockk:mockk:1.12.2")
     testImplementation("org.hamcrest:hamcrest-library:2.2")
-    testImplementation("com.google.truth:truth:1.1.2")
-    testImplementation("com.google.truth.extensions:truth-java8-extension:1.1.2")
+    testImplementation("com.google.truth:truth:1.1.3")
+    testImplementation("com.google.truth.extensions:truth-java8-extension:1.1.3")
     // Dependencies for instrumented tests
-    androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.7.1")
+    androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
     androidTestImplementation("androidx.test.ext:junit-ktx:1.1.3")
     androidTestImplementation("androidx.test:runner:1.4.0")
     androidTestImplementation("androidx.room:room-testing:${versionOf["room"]}")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
-    androidTestImplementation("androidx.test.espresso:espresso-intents:3.3.0")
-    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.3.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    androidTestImplementation("androidx.test.espresso:espresso-intents:3.4.0")
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.4.0")
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
-    androidTestImplementation("org.assertj:assertj-core:3.19.0")
-    androidTestImplementation("io.mockk:mockk-android:1.11.0")
-    androidTestImplementation("org.mockito:mockito-android:3.9.0")
-    androidTestImplementation("org.mockito:mockito-junit-jupiter:3.9.0")
-    androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.2.2")
-    androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.2.2")
+    androidTestImplementation("org.assertj:assertj-core:3.22.0")
+    androidTestImplementation("io.mockk:mockk-android:1.12.2")
+    androidTestImplementation("org.mockito:mockito-android:4.2.0")
+    androidTestImplementation("org.mockito:mockito-junit-jupiter:4.2.0")
+    androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.3.0")
+    androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.3.0")
 }

@@ -163,8 +163,8 @@
 
                 <androidx.constraintlayout.widget.Barrier
                     android:id="@+id/barrier"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     app:barrierDirection="end"
                     app:constraint_referenced_ids="textView8,textView5,textView4,textView2,textView12,textView16,textView15"
                     app:layout_constraintEnd_toEndOf="parent" />
@@ -259,8 +259,8 @@
 
                 <androidx.constraintlayout.widget.Barrier
                     android:id="@+id/barrier2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     app:barrierDirection="end"
                     app:constraint_referenced_ids="textView9,textView17,textView20"
                     app:layout_constraintEnd_toEndOf="parent" />
