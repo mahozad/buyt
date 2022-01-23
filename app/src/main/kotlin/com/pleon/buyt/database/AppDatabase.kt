@@ -23,7 +23,10 @@ const val DB_VERSION = 1
         Subscription::class
     ],
     version = DB_VERSION,
-    // Export database schema info to have the generated SQL code and to keep a history of it
+    // Export database schema info to:
+    //  - allow Room to create older versions of the database for testing purposes
+    //  - be able to see the generated SQL code
+    //  - keep a history of schemas
     // The location of the exported files can be set in the app build script
     exportSchema = true
 )
