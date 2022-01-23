@@ -56,8 +56,8 @@ android {
     buildFeatures.dataBinding = true
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     testOptions {
@@ -119,7 +119,7 @@ android {
     }
 
     // Specifically, required for ActivityScenarioExtension in instrumentation tests
-    kotlinOptions { jvmTarget = "1.8" }
+    kotlinOptions { jvmTarget = "11" }
 
     // JUnit 5 will bundle in files with identical paths; exclude them
     packagingOptions {
