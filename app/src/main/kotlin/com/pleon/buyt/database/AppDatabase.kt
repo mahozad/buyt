@@ -16,17 +16,18 @@ const val DB_NAME = "buyt-database.db"
 const val DB_VERSION = 1
 
 @Database(
-        entities = [
-            Item::class,
-            Store::class,
-            Purchase::class,
-            Subscription::class],
-        version = DB_VERSION
+    entities = [
+        Item::class,
+        Store::class,
+        Purchase::class,
+        Subscription::class
+    ],
+    version = DB_VERSION
 )
 @TypeConverters(
-        DateConverter::class,
-        CategoryConverter::class,
-        QuantityUnitConverter::class
+    DateConverter::class,
+    CategoryConverter::class,
+    QuantityUnitConverter::class
 )
 abstract class AppDatabase : RoomDatabase() {
 
