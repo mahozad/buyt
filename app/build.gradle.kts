@@ -47,6 +47,8 @@ android {
         getByName("release").java.srcDirs("src/release/kotlin")
         getByName("test").java.srcDirs("src/test/kotlin")
         getByName("androidTest").java.srcDirs("src/androidTest/kotlin")
+        // Add database schema files to assets, so we can test database migrations
+        getByName("androidTest").assets.srcDirs(databaseSchemaLocation)
     }
 
     // for sliding tutorial
