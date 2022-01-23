@@ -51,7 +51,7 @@ android {
         getByName("androidTest").assets.srcDirs(databaseSchemaLocation)
     }
 
-    // for sliding tutorial
+    // For sliding tutorial
     buildFeatures.dataBinding = true
 
     compileOptions {
