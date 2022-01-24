@@ -26,7 +26,7 @@ val versionOf = mapOf(
         "fragment"     to "1.4.0",
         "coordinator"  to "1.2.0",
         "coroutines"   to "1.6.0",
-        "recyclerview" to "1.2.0",
+        "recyclerview" to "1.2.1",
         "preference"   to "1.1.1",
         "viewpager"    to "1.0.0",
         "koin"         to "2.2.3",
