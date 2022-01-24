@@ -92,7 +92,9 @@ TODO list:
 - [ ] Provide animated images in notification on Android 12 (https://developer.android.com/about/versions/12/features#enriched_image_support_for_notifications)
 - [ ] Migrate from SharedPreferences to [DataStore](https://developer.android.com/topic/libraries/architecture/datastore)
 - [ ] Use the new [LocationRequest.Builder](https://developer.android.com/reference/kotlin/android/location/LocationRequest.Builder) introduced in Android 12
-- [ ] Make tables in HTML export responsive. See [this codepen](https://codepen.io/AllThingsSmitty/pen/MyqmdM).
+- [ ] Make tables in HTML export responsive. See [this codepen](https://codepen.io/AllThingsSmitty/pen/MyqmdM)
+- [ ] Improve the dependencies block in the build script. See [this article](https://proandroiddev.com/avoid-repetitive-dependency-declarations-with-gradle-kotlin-dsl-97c904704727)
+- [ ] Migrate the purchasing code to [Poolaki](https://developers.cafebazaar.ir/fa/guidelines/in-app-billing/implementation/kotlin#)
 - [ ] Add a button to store item for editing store name
 - [ ] Add a button to store item for viewing the store on maps (using intents to open on external map apps)
 - [ ] Add a plus botton to stores bottom app bar to open an external map for getting lat and long and then showing create store dialog
