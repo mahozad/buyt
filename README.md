@@ -17,6 +17,11 @@ FIXME: Sometimes app crashes. (For me once when I tapped on a store in stores sc
 The logcat in my phone showed an error *process died fore TOP*
 see [this post](https://stackoverflow.com/q/16052097) and its links.
 
+## Signing the APK
+The signing information is stored in the file *local.properties* which is not added to VCS.
+The signing info is also available in the *Secrets* section of the GitHub repository.
+Also, the signing info and its key file are available in one my private repositories.
+
 # Kotlin Coroutines and Flow
 
 https://developer.android.com/topic/libraries/architecture/coroutines

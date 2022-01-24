@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -12,6 +14,10 @@ val databaseSchemaLocation = "$projectDir/schemas"
 val compileAndTargetSDKVersion = 31
 val versionNumber = 12
 val versionString = "2.2.0" // alpha -> beta -> rc -> final
+
+// See https://stackoverflow.com/q/60474010
+fun getLocalProperty(key: String) = gradleLocalProperties(rootDir).getProperty(key)
+
 val versionOf = mapOf(
         "appcompat"    to "1.4.1",
         "material"     to "1.4.0",
@@ -35,10 +41,13 @@ android {
 
     signingConfigs {
         create("buyt") {
-            storeFile = file(project.findProperty("signing.storeFilePath") as String? ?: "$rootProject.projectDir/${System.getenv("SIGNING_STORE_FILE_PATH")}")
-            keyAlias = project.findProperty("signing.keyAlias") as String? ?: System.getenv("SIGNING_KEY_ALIAS")
-            keyPassword = project.findProperty("signing.keyPassword") as String? ?: System.getenv("SIGNING_KEY_PASSWORD")
-            storePassword = project.findProperty("signing.storePassword") as String? ?: System.getenv("SIGNING_STORE_PASSWORD")
+            // These are read from the local.properties file which is ignored in VCS.
+            // See README.md for more information.
+            val storePath = "${rootProject.projectDir}/${System.getenv("SIGNING_STORE_FILE_PATH")}"
+            keyAlias = getLocalProperty("signing.keyAlias") ?: System.getenv("SIGNING_KEY_ALIAS")
+            storeFile = file(getLocalProperty("signing.storeFilePath") ?: storePath)
+            keyPassword = getLocalProperty("signing.keyPassword") ?: System.getenv("SIGNING_KEY_PASSWORD")
+            storePassword = getLocalProperty("signing.storePassword") ?: System.getenv("SIGNING_STORE_PASSWORD")
         }
     }
 
