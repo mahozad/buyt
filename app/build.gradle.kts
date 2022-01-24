@@ -48,6 +48,8 @@ android {
             storeFile = file(getLocalProperty("signing.storeFilePath") ?: storePath)
             keyPassword = getLocalProperty("signing.keyPassword") ?: System.getenv("SIGNING_KEY_PASSWORD")
             storePassword = getLocalProperty("signing.storePassword") ?: System.getenv("SIGNING_STORE_PASSWORD")
+            enableV1Signing = true
+            enableV2Signing = true
         }
     }
 
