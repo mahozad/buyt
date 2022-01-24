@@ -88,7 +88,10 @@ To scale a font down/up do [this](https://www.fonttutorials.com/how-to-scale-gly
 
 TODO list:
 
+- [ ] Migrate the splash screen to [Android 12 Splash screens](https://developer.android.com/guide/topics/ui/splash-screen)
+- [ ] Provide animated images in notification on Android 12 (https://developer.android.com/about/versions/12/features#enriched_image_support_for_notifications)
 - [ ] Migrate from SharedPreferences to [DataStore](https://developer.android.com/topic/libraries/architecture/datastore)
+- [ ] Use the new [LocationRequest.Builder](https://developer.android.com/reference/kotlin/android/location/LocationRequest.Builder) introduced in Android 12
 - [ ] Add a button to store item for editing store name
 - [ ] Add a button to store item for viewing the store on maps (using intents to open on external map apps)
 - [ ] Add a plus botton to stores bottom app bar to open an external map for getting lat and long and then showing create store dialog
