@@ -88,6 +88,7 @@ To scale a font down/up do [this](https://www.fonttutorials.com/how-to-scale-gly
 
 TODO list:
 
+- [ ] Migrate from SharedPreferences to [DataStore](https://developer.android.com/topic/libraries/architecture/datastore)
 - [ ] Add a button to store item for editing store name
 - [ ] Add a button to store item for viewing the store on maps (using intents to open on external map apps)
 - [ ] Add a plus botton to stores bottom app bar to open an external map for getting lat and long and then showing create store dialog
