@@ -95,6 +95,7 @@ TODO list:
 - [ ] Make tables in HTML export responsive. See [this codepen](https://codepen.io/AllThingsSmitty/pen/MyqmdM)
 - [ ] Improve the dependencies block in the build script. See [this article](https://proandroiddev.com/avoid-repetitive-dependency-declarations-with-gradle-kotlin-dsl-97c904704727)
 - [ ] Migrate the purchasing code to [Poolaki](https://developers.cafebazaar.ir/fa/guidelines/in-app-billing/implementation/kotlin#)
+- [ ] Add a changelog page (or button) so the user can see the full history and changelog of all versions of the app
 - [ ] Add a button to store item for editing store name
 - [ ] Add a button to store item for viewing the store on maps (using intents to open on external map apps)
 - [ ] Add a plus botton to stores bottom app bar to open an external map for getting lat and long and then showing create store dialog
