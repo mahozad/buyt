@@ -17,6 +17,9 @@ val versionString = "2.2.0" // alpha -> beta -> rc -> final
 
 // See https://stackoverflow.com/q/60474010
 fun getLocalProperty(key: String) = gradleLocalProperties(rootDir).getProperty(key)
+fun String.toFile() = file(this)
+// Could also use System.getenv("VARIABLE_NAME") one by one for each variable
+val environment: Map<String, String> = System.getenv()
 
 val versionOf = mapOf(
         "appcompat"    to "1.4.1",
@@ -43,11 +46,11 @@ android {
         create("buyt") {
             // These are read from the local.properties file which is intentionally ignored in VCS.
             // See README.md for more information.
-            val storePath = "${rootProject.projectDir}/${System.getenv("SIGNING_STORE_FILE_PATH")}"
-            keyAlias = getLocalProperty("signing.keyAlias") ?: System.getenv("SIGNING_KEY_ALIAS")
-            storeFile = file(getLocalProperty("signing.storeFilePath") ?: storePath)
-            keyPassword = getLocalProperty("signing.keyPassword") ?: System.getenv("SIGNING_KEY_PASSWORD")
-            storePassword = getLocalProperty("signing.storePassword") ?: System.getenv("SIGNING_STORE_PASSWORD")
+            val storePath = "${rootProject.projectDir}/${environment["SIGNING_STORE_FILE_PATH"]}"
+            keyAlias = getLocalProperty("signing.keyAlias") ?: environment["SIGNING_KEY_ALIAS"]
+            storeFile = (getLocalProperty("signing.storePath") ?: storePath).toFile()
+            keyPassword = getLocalProperty("signing.keyPassword") ?: environment["SIGNING_KEY_PASSWORD"]
+            storePassword = getLocalProperty("signing.storePassword") ?: environment["SIGNING_STORE_PASSWORD"]
             enableV1Signing = true
             enableV2Signing = true
         }
