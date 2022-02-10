@@ -51,7 +51,7 @@ android {
             // or we could set the env variable absolute path as $GITHUB_WORKSPACE/path/in/repo/to/myTemp.jks
             // and just use environment["SIGNING_STORE_PATH"] here (like now)
             keyAlias = getLocalProperty("signing.keyAlias") ?: environment["SIGNING_KEY_ALIAS"]
-            storeFile = (getLocalProperty("signing.storePath") ?: environment["SIGNING_STORE_PATH"]).toFile()
+            storeFile = (getLocalProperty("signing.storeFile") ?: environment["SIGNING_STORE_FILE"]).toFile()
             keyPassword = getLocalProperty("signing.keyPassword") ?: environment["SIGNING_KEY_PASSWORD"]
             storePassword = getLocalProperty("signing.storePassword") ?: environment["SIGNING_STORE_PASSWORD"]
             enableV1Signing = true
