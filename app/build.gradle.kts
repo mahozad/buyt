@@ -41,7 +41,7 @@ android {
 
     signingConfigs {
         create("buyt") {
-            // These are read from the local.properties file which is ignored in VCS.
+            // These are read from the local.properties file which is intentionally ignored in VCS.
             // See README.md for more information.
             val storePath = "${rootProject.projectDir}/${System.getenv("SIGNING_STORE_FILE_PATH")}"
             keyAlias = getLocalProperty("signing.keyAlias") ?: System.getenv("SIGNING_KEY_ALIAS")
