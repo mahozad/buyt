@@ -26,7 +26,12 @@ class Item(val name: String,
            val isUrgent: Boolean,
            var isBought: Boolean) {
 
-    data class Quantity(val value: Long, val unit: Unit) {
+    data class Quantity(
+        // What happens if we restore from old database file in app (where column name is value)?
+        // TODO: @ColumnInfo(name = "quantity")
+        val value: Long,
+        val unit: Unit
+    ) {
 
         enum class Unit(val nameRes: Int) { UNIT(R.string.qty_unit), KILOGRAM(R.string.qty_kilogram), GRAM(R.string.qty_gram) }
 
