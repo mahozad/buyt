@@ -146,6 +146,11 @@ android {
     }
 
     buildTypes {
+        getByName("debug") {
+            // Change the package name for the debug variant of the app,
+            // so it could be installed along with the release variant (if any)
+            applicationIdSuffix = ".debug"
+        }
         // defines multiple different build types-typically debug and release
         getByName("release") {
             isMinifyEnabled = true
