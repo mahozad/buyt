@@ -18,7 +18,7 @@ val versionString = "2.2.0" // alpha -> beta -> rc -> final
 // See https://stackoverflow.com/q/60474010
 fun getLocalProperty(key: String) = gradleLocalProperties(rootDir).getProperty(key)
 fun String?.toFile() = file(this!!)
-// Could also use System.getenv("VARIABLE_NAME") one by one for each variable
+// Could also use System.getenv("VARIABLE_NAME") to get each variable individually
 val environment: Map<String, String> = System.getenv()
 
 val versionOf = mapOf(
@@ -89,7 +89,7 @@ android {
     }
 
     defaultConfig {
-        // specifies default settings that will be shared across all different product flavors
+        // Specify default settings that will be shared across all different product flavors
 
         applicationId = appId
         minSdk = minSDKVersion
@@ -99,13 +99,13 @@ android {
         versionName = versionString
 
         /* This flag prevents the Android Gradle Plugin from generating PNG versions of
-         * vector assets if minSdkVersion is < 21 */
+         * vector assets if minSdk is < 21 */
         // vectorDrawables.useSupportLibrary = true
 
         javaCompileOptions {
             annotationProcessorOptions {
                 // Set the location where Room exports database schema info
-                // Effective if `exportSchema = true` in @Database annotation of database class
+                // Effective only if `exportSchema = true` in @Database annotation of database class
                 arguments["room.schemaLocation"] = databaseSchemaLocation
             }
         }
@@ -122,17 +122,17 @@ android {
 
         /* The Gradle resource shrinker removes only resources that are not referenced by your app code,
          * which means it will not remove alternative resources for different device configurations.
-         * If necessary, you can use the Android Gradle plugin's resConfigs property to
+         * If necessary, you can use the Android Gradle plugin's resourceConfigurations property to
          * remove alternative resource files that your app does not need.
          * For example, if you are using a library that includes language resources (such as AppCompat or
          * Google Play Services), then your APK includes all translated language strings for the messages
          * in those libraries whether the rest of your app is translated to the same languages or not.
          * If you'd like to keep only the languages that your app officially supports, you can specify those
-         * languages using the resConfig property. Any resources for languages not specified are removed. */
+         * languages using the resourceConfigurations property. Any resources for languages not specified are removed. */
         resourceConfigurations += setOf("en", "fa")
     }
 
-    // Specifically, required for ActivityScenarioExtension in instrumentation tests
+    // This is specifically required for ActivityScenarioExtension in instrumentation tests
     kotlinOptions { jvmTarget = "11" }
 
     // JUnit 5 will bundle in files with identical paths; exclude them
@@ -141,9 +141,9 @@ android {
     }
 
     lint {
-        // Disable lint checking for errors
+        // Enable/Disable lint checking for errors
         isCheckReleaseBuilds = false
-        // Or, if you prefer, you can continue to check for errors in release builds,
+        // Or, if you prefer, you can enable checking for errors in release builds,
         // but continue the build even when errors are found:
         isAbortOnError = false
     }
