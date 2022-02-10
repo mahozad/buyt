@@ -17,7 +17,7 @@ val versionString = "2.2.0" // alpha -> beta -> rc -> final
 
 // See https://stackoverflow.com/q/60474010
 fun getLocalProperty(key: String) = gradleLocalProperties(rootDir).getProperty(key)
-fun String.toFile() = file(this)
+fun String?.toFile() = file(this!!)
 // Could also use System.getenv("VARIABLE_NAME") one by one for each variable
 val environment: Map<String, String> = System.getenv()
 
@@ -43,12 +43,15 @@ val versionOf = mapOf(
 android {
 
     signingConfigs {
-        create("buyt") {
+        create("BuytMainSigningConfig") {
             // These are read from the local.properties file which is intentionally ignored in VCS.
             // See README.md for more information.
-            val storePath = "${rootProject.projectDir}/${environment["SIGNING_STORE_FILE_PATH"]}"
+            // For storeFile we could either set its relative path in repository to the env variable
+            // and use "${rootProject.projectDir}/${environment["SIGNING_STORE_FILE_PATH"]}" here,
+            // or we could set the env variable absolute path as $GITHUB_WORKSPACE/path/in/repo/to/myTemp.jks
+            // and just use environment["SIGNING_STORE_PATH"] here (like now)
             keyAlias = getLocalProperty("signing.keyAlias") ?: environment["SIGNING_KEY_ALIAS"]
-            storeFile = (getLocalProperty("signing.storePath") ?: storePath).toFile()
+            storeFile = (getLocalProperty("signing.storePath") ?: environment["SIGNING_STORE_PATH"]).toFile()
             keyPassword = getLocalProperty("signing.keyPassword") ?: environment["SIGNING_KEY_PASSWORD"]
             storePassword = getLocalProperty("signing.storePassword") ?: environment["SIGNING_STORE_PASSWORD"]
             enableV1Signing = true
@@ -160,7 +163,7 @@ android {
             isShrinkResources = true
             // "proguard-android-optimize.txt" reduces size more than "proguard-android.txt"
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig = signingConfigs.getByName("buyt")
+            signingConfig = signingConfigs["BuytMainSigningConfig"]
         }
     }
 }
