@@ -23,7 +23,7 @@ tasks.wrapper {
     // Add a gradle wrapper script to your source folders (by running the wrapper task).
     // The wrapper script when invoked, downloads the defined gradle version, and executes it.
     // By distributing the wrapper with your project, anyone can work with it without needing to install Gradle beforehand
-    gradleVersion = "7.3.3"
+    gradleVersion = "7.4"
     // Download the full version of the Gradle (with sources and documentation)
     distributionType = Wrapper.DistributionType.ALL
 }
