@@ -22,25 +22,6 @@ fun String?.toFile() = file(this!!)
 // Could also use System.getenv("VARIABLE_NAME") to get each variable individually
 val environment: Map<String, String> = System.getenv()
 
-val versionOf = mapOf(
-        "appcompat"    to "1.4.1",
-        "material"     to "1.4.0",
-        "lifecycle"    to "2.4.0",
-        "constraint"   to "2.1.3",
-        "fragment"     to "1.4.0",
-        "coordinator"  to "1.2.0",
-        "coroutines"   to "1.6.0",
-        "recyclerview" to "1.2.1",
-        "preference"   to "1.1.1",
-        "viewpager"    to "1.0.0",
-        "koin"         to "2.2.3",
-        "room"         to "2.4.1",
-        "persiandate"  to "1.2.1",
-        "jalalical"    to "1.3.3",
-        "stetho"       to "1.6.0",
-        "debug-db"     to "1.0.6"
-)
-
 android {
 
     signingConfigs {
@@ -172,76 +153,75 @@ android {
 
 dependencies {
     implementation(fileTree("libs") { include("*.jar") })
-
+    /* If you're targeting JDK 8, you can use extended versions of the Kotlin standard library
+     * which contain additional extension functions for APIs added in new JDK versions.
+     * So instead of "kotlin-stdlib", use "kotlin-stdlib-jdk8": */
+    implementation(kotlin("stdlib-jdk8", kotlinVersion))
     /* The AndroidX version of support library "com.android.support:appcompat-v7".
      * Support libraries provide capabilities of newer android versions to older devices and also
      * some of them provide new features on their own. They are separated into several libraries so
      * you don't have to add ONE big library (and include unwanted libs) and make your apk huge.
      * The following library for example adds support for ActionBar, AppCompatActivity and
      * some other for devices down to api v7. */
-    implementation(group = "androidx.appcompat", name = "appcompat", version = versionOf["appcompat"])
+    implementation(libs.appcompat)
     /* The AndroidX version of "com.android.support:design"
      * Another support library that adds support for material components such as NavigationDrawer,
      * SnackBar, FAB and Tab for older android versions. */
-    implementation("com.google.android.material:material:${versionOf["material"]}")
-    implementation("androidx.constraintlayout:constraintlayout:${versionOf["constraint"]}")
-    implementation("androidx.coordinatorlayout:coordinatorlayout:${versionOf["coordinator"]}")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${versionOf["lifecycle"]}")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:${versionOf["lifecycle"]}")
-    implementation("androidx.lifecycle:lifecycle-common-java8:${versionOf["lifecycle"]}")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:${versionOf["lifecycle"]}")
-    implementation("androidx.lifecycle:lifecycle-process:${versionOf["lifecycle"]}")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${versionOf["coroutines"]}")
-    implementation("androidx.fragment:fragment-ktx:${versionOf["fragment"]}")
-    implementation("androidx.recyclerview:recyclerview:${versionOf["recyclerview"]}")
-    implementation("androidx.preference:preference-ktx:${versionOf["preference"]}")
-    implementation("androidx.viewpager2:viewpager2:${versionOf["viewpager"]}")
-    implementation("io.insert-koin:koin-androidx-viewmodel:${versionOf["koin"]}")
-    implementation("androidx.room:room-runtime:${versionOf["room"]}")
-    implementation("androidx.room:room-ktx:${versionOf["room"]}")
-    kapt("androidx.room:room-compiler:${versionOf["room"]}")
-    /* If you're targeting JDK 8, you can use extended versions of the Kotlin standard library
-     * which contain additional extension functions for APIs added in new JDK versions.
-     * So instead of "kotlin-stdlib", use "kotlin-stdlib-jdk8": */
-    implementation(kotlin("stdlib-jdk8", kotlinVersion))
+    implementation(libs.material)
+    implementation(libs.lifecycle.viewmodelKtx)
+    implementation(libs.lifecycle.livedataKtx)
+    implementation(libs.lifecycle.commonJava8)
+    implementation(libs.lifecycle.runtimeKtx)
+    implementation(libs.lifecycle.process)
+    implementation(libs.coordinatorLayout)
+    implementation(libs.constraintLayout)
+    implementation(libs.recyclerview)
+    implementation(libs.coroutines)
+    implementation(libs.preference)
+    implementation(libs.viewpager2)
+    implementation(libs.fragment)
+    implementation(libs.koin)
+    implementation(libs.room.ktx)
+    implementation(libs.room.runtime)
+    kapt(libs.room.compiler)
 
-    implementation("com.mohamadamin:persianmaterialdatetimepicker:${versionOf["persiandate"]}")
-    implementation("ir.huri:JalaliCalendar:${versionOf["jalalical"]}")
-    implementation("com.diogobernardino:williamchart:2.5.0")
-    implementation("com.scwang.wave:MultiWaveHeader:1.0.0")
-    implementation("org.mindrot:jbcrypt:0.4")
-    // For using doAsync{} and other features
-    implementation("org.jetbrains.anko:anko-commons:0.10.8")
+    implementation(libs.persianDatepicker)
+    implementation(libs.multiWaveHeader)
+    implementation(libs.jalaliCalendar)
+    implementation(libs.williamChart)
+    implementation(libs.jBcrypt)
+    implementation(libs.anko) // For using doAsync{} and other features
 
     // For inspecting the database and network in Chrome. In Iran, use VPN due to sanctions.
-    debugImplementation("com.facebook.stetho:stetho:${versionOf["stetho"]}")
-    debugImplementation("com.facebook.stetho:stetho-js-rhino:${versionOf["stetho"]}")
+    debugImplementation(libs.stetho)
+    debugImplementation(libs.stetho.jsRhino)
     // Another library for debugging android databases and shared preferences
-    debugImplementation("com.amitshekhar.android:debug-db:${versionOf["debug-db"]}")
+    debugImplementation(libs.debugDB)
 
     // Dependencies for local unit tests (JUnit 5 framework)
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-    testImplementation("androidx.test:core-ktx:1.4.0")
-    testImplementation("androidx.test.ext:junit-ktx:1.1.3")
-    testImplementation("org.robolectric:robolectric:4.7.3")
-    testImplementation("org.assertj:assertj-core:3.22.0")
-    testImplementation("io.mockk:mockk:1.12.2")
-    testImplementation("org.hamcrest:hamcrest-library:2.2")
-    testImplementation("com.google.truth:truth:1.1.3")
-    testImplementation("com.google.truth.extensions:truth-java8-extension:1.1.3")
+    testImplementation(libs.junit5)
+    testImplementation(libs.assertj)
+    testImplementation(libs.hamcrest)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.mockk)
+    testImplementation(libs.truth)
+    testImplementation(libs.truth.java8Extension)
+    testImplementation(libs.androidx.test.junit)
+    testImplementation(libs.androidx.test.core)
+
     // Dependencies for instrumented tests
-    androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
-    androidTestImplementation("androidx.test.ext:junit-ktx:1.1.3")
-    androidTestImplementation("androidx.test:runner:1.4.0")
-    androidTestImplementation("androidx.room:room-testing:${versionOf["room"]}")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
-    androidTestImplementation("androidx.test.espresso:espresso-intents:3.4.0")
-    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.4.0")
-    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
-    androidTestImplementation("org.assertj:assertj-core:3.22.0")
-    androidTestImplementation("io.mockk:mockk-android:1.12.2")
-    androidTestImplementation("org.mockito:mockito-android:4.2.0")
-    androidTestImplementation("org.mockito:mockito-junit-jupiter:4.2.0")
-    androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.3.0")
-    androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.3.0")
+    androidTestImplementation(libs.junit5)
+    androidTestImplementation(libs.assertj)
+    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.espresso.intents)
+    androidTestImplementation(libs.espresso.contrib)
+    androidTestImplementation(libs.androidx.test.junit)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.uiAutomator)
+    androidTestImplementation(libs.room.testing)
+    androidTestImplementation(libs.mockk.android)
+    androidTestImplementation(libs.mockito.junit5)
+    androidTestImplementation(libs.mockito.android)
+    androidTestImplementation(libs.junit5ForAndroid.core)
+    androidTestRuntimeOnly(libs.junit5ForAndroid.runner)
 }
