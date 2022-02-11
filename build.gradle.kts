@@ -4,8 +4,7 @@
 /* The buildscript node is used to indicate the repositories and dependencies that are used
  by Gradle itself–not for your application */
 buildscript {
-    var kotlinVersion: String by extra
-    kotlinVersion = "1.6.10"
+    val kotlinVersion: String by extra("1.6.10")
 
     repositories {
         google()
