@@ -10,6 +10,7 @@ plugins {
 
 val appId = "com.pleon.buyt"
 val minSDKVersion = 21
+val kotlinVersion: String by rootProject.extra
 val databaseSchemaLocation = "$projectDir/schemas"
 val compileAndTargetSDKVersion = 31
 val versionNumber = 12
@@ -202,7 +203,7 @@ dependencies {
     /* If you're targeting JDK 8, you can use extended versions of the Kotlin standard library
      * which contain additional extension functions for APIs added in new JDK versions.
      * So instead of "kotlin-stdlib", use "kotlin-stdlib-jdk8": */
-    implementation(kotlin("stdlib-jdk8"))
+    implementation(kotlin("stdlib-jdk8", kotlinVersion))
 
     implementation("com.mohamadamin:persianmaterialdatetimepicker:${versionOf["persiandate"]}")
     implementation("ir.huri:JalaliCalendar:${versionOf["jalalical"]}")
