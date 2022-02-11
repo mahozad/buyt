@@ -13,10 +13,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        // This dependency version should be the same as the Android Studio version
         classpath("com.android.tools.build:gradle:7.0.4")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-
         // For JUnit 5
         classpath("de.mannodermaus.gradle.plugins:android-junit5:1.8.2.0")
     }
