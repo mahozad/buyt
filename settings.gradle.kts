@@ -3,6 +3,7 @@
 rootProject.name = "Buyt"
 include(":app")
 
+// Configure the repositories that Gradle will use to look for plugins
 pluginManagement {
     repositories {
         gradlePluginPortal()
@@ -14,6 +15,8 @@ pluginManagement {
 
 // Configure dependencies aspects applied to all projects
 dependencyResolutionManagement {
+    // By default, repositories declared by a project will override whatever is declared in settings.
+    // You can change this behavior with the repositoriesMode property.
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
 
     repositories {
