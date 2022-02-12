@@ -3,6 +3,15 @@
 rootProject.name = "Buyt"
 include(":app")
 
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+        jcenter() // REMOVEME: Deprecated
+        google()
+    }
+}
+
 // Configure dependencies aspects applied to all projects
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
