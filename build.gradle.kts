@@ -1,8 +1,7 @@
+// Top-level build file where you can add configuration options common to all subprojects/modules.
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
-/* The buildscript node is used to indicate the repositories and dependencies that are used
- by Gradle itself–not for your application */
+// The buildscript node is used to indicate the repositories and dependencies
+//  that are used by Gradle itself—not for your application
 buildscript {
     val kotlinVersion: String by extra("1.6.10")
 
@@ -14,7 +13,7 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle:7.0.4")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-        // For JUnit 5
+        // For using/running JUnit 5 tests in Android (as it does not support them yet)
         classpath("de.mannodermaus.gradle.plugins:android-junit5:1.8.2.0")
     }
 }

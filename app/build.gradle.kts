@@ -125,8 +125,8 @@ android {
     lint {
         // Enable/Disable lint checking for errors
         isCheckReleaseBuilds = false
-        // Or, if you prefer, you can enable checking for errors in release builds,
-        // but continue the build even when errors are found:
+        // If you prefer, you can enable checking for errors in release builds,
+        //  but continue the build even when errors are found:
         isAbortOnError = false
     }
 
