@@ -3,6 +3,17 @@
 rootProject.name = "Buyt"
 include(":app")
 
+// Configure dependencies aspects applied to all projects
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        jcenter() // REMOVEME: Deprecated
+        mavenCentral()
+        maven("https://jitpack.io")
+    }
+}
+
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {

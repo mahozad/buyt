@@ -27,16 +27,6 @@ tasks.wrapper {
     distributionType = Wrapper.DistributionType.ALL
 }
 
-/* In allprojects block, specify repositories and dependencies used by all sub-projects/modules */
-allprojects {
-    repositories {
-        google()
-        jcenter() // REMOVEME: Deprecated
-        mavenCentral()
-        maven("https://jitpack.io")
-    }
-}
-
 tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
 }
