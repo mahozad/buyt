@@ -166,7 +166,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     app:barrierDirection="end"
-                    app:constraint_referenced_ids="textView8,textView5,textView4,textView2,textView12,textView16,textView15"
+                    app:constraint_referenced_ids="textView2,textView4,textView5,textView8,textView12,textView15,textView16,textView19"
                     app:layout_constraintEnd_toEndOf="parent" />
 
                 <TextView
