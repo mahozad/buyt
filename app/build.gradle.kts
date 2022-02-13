@@ -13,8 +13,8 @@ val minSDKVersion = 21
 val kotlinVersion: String by rootProject.extra
 val databaseSchemaLocation = "$projectDir/schemas"
 val compileAndTargetSDKVersion = 31
-val versionNumber = 12
-val versionString = "2.2.0" // alpha -> beta -> rc -> final
+val versionNumber = 13
+val versionString = "2.3.0" // alpha -> beta -> rc -> final
 
 // See https://stackoverflow.com/q/60474010
 fun getLocalProperty(key: String) = gradleLocalProperties(rootDir).getProperty(key)
