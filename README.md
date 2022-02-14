@@ -1,6 +1,8 @@
 [![Crowdin](https://badges.crowdin.net/buyt/localized.svg)](https://crowdin.com/project/buyt)
 ![Buyt logo](/style-guide/new-logo-2-optimized.svg)
 
+# The repository is hosted on both [GitHub](https://github.com/mahozad/buyt) and [GitLab](https://gitlab.com/mahozad/buyt). Push the commits to both of them. 
+
 ## The name
 
 See https://en.wikipedia.org/wiki/Portmanteau
