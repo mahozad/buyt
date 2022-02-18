@@ -19,6 +19,120 @@ FIXME: Sometimes app crashes. (For me once when I tapped on a store in stores sc
 The logcat in my phone showed an error *process died fore TOP*
 see [this post](https://stackoverflow.com/q/16052097) and its links.
 
+### More Queries for the database
+
+  1. Most purchased item of each store (this query is incomplete)
+    ```sql
+SELECT Store.name AS 'Store name', Item.name AS 'Item name', Count(*) AS 'Purchase count'
+FROM Item JOIN Purchase ON Item.purchaseId = Purchase.purchaseId
+          JOIN Store ON store.storeId = Purchase.storeId
+GROUP BY Store.storeId, Item.name
+ORDER BY Store.storeId, "Purchase count" DESC;
+-- LIMIT 1; -- This shows the first group not the first item of each group
+    ```
+  2. Most constly purchase
+    ```sql
+SELECT 
+		Purchase.purchaseId AS "Purchase id",
+        strftime('%Y-%m-%d %H:%M:%S', Purchase.date, 'unixepoch', 'localtime') AS "Purchase date",
+        Store.name AS "Store name",
+        Item.name AS "Item name",
+        Item.totalPrice AS "Item price"
+        -- Sum(Item.totalPrice) AS "Total cost"
+FROM Item JOIN Purchase ON Item.purchaseId = Purchase.purchaseId
+          JOIN Store ON Store.storeId = Purchase.storeId
+WHERE Purchase.purchaseId = (
+	SELECT Purchase.purchaseId
+  	FROM Item JOIN Purchase ON Item.purchaseId = Purchase.purchaseId
+  	GROUP BY Purchase.purchaseId
+  	ORDER BY Sum(Item.totalPrice) DESC
+   	LIMIT 1
+)
+ORDER BY Item.totalPrice DESC;
+
+-- OR another partial solution
+
+-- SELECT 
+-- 		Purchase.purchaseId,
+--         Purchase.date,
+--         Item.name AS "Item name",
+--         Item.totalPrice AS "Item price",
+--         Sum(Item.totalPrice) AS "Total cost"
+-- FROM Item JOIN Purchase ON Item.purchaseId = Purchase.purchaseId
+-- GROUP BY Purchase.purchaseId
+-- ORDER BY Sum(totalPrice) DESC
+-- LIMIT 1;
+    ```
+
+  3. Purchase with most item variety
+    ```sql
+SELECT 
+		Purchase.purchaseId,
+        strftime('%Y-%m-%d %H:%M:%S', Purchase.date, 'unixepoch', 'localtime') AS "Purchase date",
+        Item.name AS "Item name"
+FROM Purchase JOIN Item ON Purchase.purchaseId = Item.purchaseId
+WHERE Purchase.purchaseId = (
+	SELECT 
+			Purchase.purchaseId
+	FROM Purchase JOIN Item ON Purchase.purchaseId = Item.purchaseId
+	GROUP BY Purchase.purchaseId
+	ORDER BY Count(DISTINCT Item.name) DESC
+);
+
+-- OR to get the count column
+
+SELECT 
+		Purchase.purchaseId,
+        strftime('%Y-%m-%d %H:%M:%S', Purchase.date, 'unixepoch', 'localtime') AS "Purchase date",
+        ItemCount AS "Item types",
+        Item.name AS "Item name"
+FROM Purchase JOIN Item ON Purchase.purchaseId = Item.purchaseId
+			  JOIN (
+					SELECT Purchase.purchaseId AS PMaxId, Count(DISTINCT Item.name) AS ItemCount
+					FROM Purchase JOIN Item ON Purchase.purchaseId = Item.purchaseId
+					GROUP BY Purchase.purchaseId
+					ORDER BY ItemCount DESC
+                	LIMIT 1
+              ) ON Purchase.purchaseId = PMaxId;
+    ```
+
+  4. Date with most purchase count
+    ```sql
+SELECT 
+	strftime('%Y-%m-%d', Purchase.date, 'unixepoch', 'localtime') AS "Date",
+    Count(*) AS "Purchase count"
+--     ,Sum(Item.totalPrice) AS "Total cost"
+FROM Purchase 
+-- JOIN Item ON Purchase.purchaseId = Item.purchaseId
+GROUP BY strftime('%Y-%m-%d', Purchase.date, 'unixepoch', 'localtime')
+ORDER BY Count(*) DESC
+LIMIT 1;
+
+-- Also showing the total cost of all the items in all the purchases of that day
+
+SELECT theDate AS "Date", purchaseCount AS "Purchase count", Sum(Item.totalPrice) AS "Total cost"
+FROM Item JOIN Purchase ON Item.purchaseId = Purchase.purchaseId 
+	      JOIN (
+				SELECT 
+					strftime('%Y-%m-%d', Purchase.date, 'unixepoch', 'localtime') AS theDate,
+   					Count(*) AS purchaseCount
+				FROM Purchase
+				GROUP BY strftime('%Y-%m-%d', Purchase.date, 'unixepoch', 'localtime')
+				ORDER BY Count(*) DESC
+				LIMIT 1
+          ) ON strftime('%Y-%m-%d', Purchase.date, 'unixepoch', 'localtime') = theDate
+;
+    ```
+
+  5. Most purchased items (in regard to occuring in different purchases not item count in each purchase)
+    ```sql
+SELECT Item.name AS "Item name", Count(*) AS "Item count"
+FROM Item
+GROUP BY Item.name
+ORDER BY Count(*) DESC
+LIMIT 10;
+    ```
+
 ## Signing the APK
 The signing information is stored in the file *local.properties* which is not added to VCS.
 The signing info is also available in the *Secrets* section of the GitHub repository.
