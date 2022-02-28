@@ -133,7 +133,34 @@ ORDER BY Count(*) DESC
 LIMIT 10;
     ```
 
+### Bug
+
+This error occured once when I had searched for the store (not skipping), after the 
+store was found, entering price for items and then after hitting done button the app exited:
+
+(got the log in Windows with this command: `adb logcat -t "02-25 10:10:10.000"` which gots all the logs after February 25th 10:10:10)
+
+```log
+02-27 11:54:22.443 13524 13524 E AndroidRuntime: FATAL EXCEPTION: main
+02-27 11:54:22.443 13524 13524 E AndroidRuntime: Process: com.pleon.buyt, PID: 13524
+02-27 11:54:22.443 13524 13524 E AndroidRuntime: java.lang.NullPointerException
+02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at q3.e.d(:13)
+02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at n3.h.onClick(:3)
+02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at android.view.View.performClick(View.java:7259)
+02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at android.view.View.performClickInternal(View.java:7236)
+02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at android.view.View.access$3600(View.java:801)
+02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at android.view.View$PerformClick.run(View.java:27892)
+02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at android.os.Handler.handleCallback(Handler.java:883)
+02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at android.os.Handler.dispatchMessage(Handler.java:100)
+02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at android.os.Looper.loop(Looper.java:214)
+02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at android.app.ActivityThread.main(ActivityThread.java:7356)
+02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at java.lang.reflect.Method.invoke(Native Method)
+02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:491)
+02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:940)
+```
+
 ## Signing the APK
+
 The signing information is stored in the file *local.properties* which is not added to VCS.
 The signing info is also available in the *Secrets* section of the GitHub repository.
 Also, the signing info and its key file are available in one my private repositories.
