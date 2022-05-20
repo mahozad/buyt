@@ -40,7 +40,7 @@ fun buildLineChart(cxt: Context,
             maxValue < 1_000_000_000 -> it.getValue() / 1_000_000
             else -> it.getValue() / 1_000_000_000
         }
-        return@map Pair(label, value)
+        return@map label to value
     }
     @StringRes val formatStringRes = when {
         maxValue < 1_000 -> R.string.currency_format_ones
