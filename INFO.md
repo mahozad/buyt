@@ -57,6 +57,33 @@ To scale a font down/up do [this](https://www.fonttutorials.com/how-to-scale-gly
 5. Select *Scale Uniformly...* from the drop down
 6. After scaling, generate the font in desired format
 
+# Bugs
+- [ ] Sometimes app crashes. (For me once when I tapped on a store in stores screen, the app jumped to main screen).
+  The logcat in my phone showed an error *process died fore TOP*
+  see [this post](https://stackoverflow.com/q/16052097) and its links.
+- [ ] This error occured once when I had searched for the store (not skipping), after the
+  store was found, entering price for items and then after hitting done button the app exited:  
+  (got the log in Windows with this command: `adb logcat -t "02-25 10:10:10.000"` which gots all the logs after February 25th 10:10:10)
+- [ ] To fix the bug when sort or filter buttons are clicked very fast successively, see [this](https://medium.com/androiddevelopers/coroutines-on-android-part-iii-real-work-2ba8a2ec2f45)
+  ```log
+  02-27 11:54:22.443 13524 13524 E AndroidRuntime: FATAL EXCEPTION: main
+  02-27 11:54:22.443 13524 13524 E AndroidRuntime: Process: com.pleon.buyt, PID: 13524
+  02-27 11:54:22.443 13524 13524 E AndroidRuntime: java.lang.NullPointerException
+  02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at q3.e.d(:13)
+  02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at n3.h.onClick(:3)
+  02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at android.view.View.performClick(View.java:7259)
+  02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at android.view.View.performClickInternal(View.java:7236)
+  02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at android.view.View.access$3600(View.java:801)
+  02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at android.view.View$PerformClick.run(View.java:27892)
+  02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at android.os.Handler.handleCallback(Handler.java:883)
+  02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at android.os.Handler.dispatchMessage(Handler.java:100)
+  02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at android.os.Looper.loop(Looper.java:214)
+  02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at android.app.ActivityThread.main(ActivityThread.java:7356)
+  02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at java.lang.reflect.Method.invoke(Native Method)
+  02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:491)
+  02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:940)
+  ```
+
 # TODOs
   - [ ] Use [segmented buttons](https://m3.material.io/components/segmented-buttons/overview) instead of a custom toggle button for item unit
   - [ ] Mention in the about screen that some icons are adapted and inspired by other icons found on web
@@ -151,34 +178,6 @@ To scale a font down/up do [this](https://www.fonttutorials.com/how-to-scale-gly
   - [ ] Do you have multiple tables in your database and find yourself copying the same Insert,
     Update and Delete methods? DAOs support inheritance, so create a BaseDao<T> class, and define
     your generic @Insert,... there. Have each DAO extend the BaseDao and add methods specific to each of them.
-
-
-# Bugs
-- [ ] Sometimes app crashes. (For me once when I tapped on a store in stores screen, the app jumped to main screen).
-The logcat in my phone showed an error *process died fore TOP*
-see [this post](https://stackoverflow.com/q/16052097) and its links.
-- [ ] This error occured once when I had searched for the store (not skipping), after the
-store was found, entering price for items and then after hitting done button the app exited:  
-(got the log in Windows with this command: `adb logcat -t "02-25 10:10:10.000"` which gots all the logs after February 25th 10:10:10)
-- [ ] To fix the bug when sort or filter buttons are clicked very fast successively, see [this](https://medium.com/androiddevelopers/coroutines-on-android-part-iii-real-work-2ba8a2ec2f45)
-```log
-02-27 11:54:22.443 13524 13524 E AndroidRuntime: FATAL EXCEPTION: main
-02-27 11:54:22.443 13524 13524 E AndroidRuntime: Process: com.pleon.buyt, PID: 13524
-02-27 11:54:22.443 13524 13524 E AndroidRuntime: java.lang.NullPointerException
-02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at q3.e.d(:13)
-02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at n3.h.onClick(:3)
-02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at android.view.View.performClick(View.java:7259)
-02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at android.view.View.performClickInternal(View.java:7236)
-02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at android.view.View.access$3600(View.java:801)
-02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at android.view.View$PerformClick.run(View.java:27892)
-02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at android.os.Handler.handleCallback(Handler.java:883)
-02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at android.os.Handler.dispatchMessage(Handler.java:100)
-02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at android.os.Looper.loop(Looper.java:214)
-02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at android.app.ActivityThread.main(ActivityThread.java:7356)
-02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at java.lang.reflect.Method.invoke(Native Method)
-02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:491)
-02-27 11:54:22.443 13524 13524 E AndroidRuntime: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:940)
-```
 
 # More Queries for the database
 1. Most purchased item of each store (this query is incomplete)
