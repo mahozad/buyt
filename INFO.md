@@ -20,6 +20,8 @@
   - trim: no
   - resize: 70%
 
+# [![Crowdin](https://badges.crowdin.net/buyt/localized.svg)](https://crowdin.com/project/buyt) Crowdin translation project
+
 # Signing the APK
 The signing information is stored in the file *local.properties* which is not added to VCS.
 The signing info is also available in the *Secrets* section of the GitHub repository.
