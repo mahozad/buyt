@@ -1,3 +1,5 @@
+# The repository is hosted on both [GitHub](https://github.com/mahozad/buyt) and [GitLab](https://gitlab.com/mahozad/buyt). Push the commits to both of them.
+
 # The name
 - buyt - بایت (از ترکیب دو کلمه‌ی buy it درست شده است)
 - See https://en.wikipedia.org/wiki/Portmanteau
