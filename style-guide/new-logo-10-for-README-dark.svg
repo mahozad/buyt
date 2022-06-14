@@ -1,0 +1,18 @@
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <filter id="filter" x="-.0724" y="-.12" width="1.14" height="1.31" color-interpolation-filters="sRGB">
+      <feFlood flood-color="rgb(0,0,0)" flood-opacity=".33" result="flood"/>
+      <feComposite in="flood" in2="SourceGraphic" operator="in" result="composite1"/>
+      <feGaussianBlur in="composite1" result="blur" stdDeviation="0.2"/>
+      <feOffset dx="0" dy="0.3" result="offset"/>
+      <feComposite in="SourceGraphic" in2="offset" result="composite2"/>
+    </filter>
+    <clipPath id="clip">
+      <use xlink:href="#pin"/>
+    </clipPath>
+  </defs>
+  <circle fill="#333830" cx="12" cy="12" r="10.5"/>
+  <path id="pin" d="m11.9 10a4 4 0 0 0-3.94 4 4 4 0 0 0 0 0.061v5.94l5.53-2.3a4 4 0 0 0 2.47-3.7 4 4 0 0 0-4-4 4 4 0 0 0-0.061 0zm0.061 2.5a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5 1.5 1.5 0 0 1-1.5-1.5 1.5 1.5 0 0 1 1.5-1.5z" fill="#56ab2f"/>
+  <path d="m11.9 9.99c-2.18 0-3.94 1.82-3.94 4.01l5.54-2.32c0.404-0.167 0.769-0.401 1.09-0.683-0.704-0.619-1.62-1.01-2.63-1.01z" clip-path="url(#clip)" fill="#56ab2f" filter="url(#filter)"/>
+  <path d="m11.9 3.99c-2.18 0-3.94 1.82-3.94 4v6.01l5.54-2.32c1.45-0.6 2.46-2.02 2.46-3.69 0-2.21-1.79-4-4-4zm0.06 2.5a1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5 1.5 1.5 0 0 1-1.5-1.5 1.5 1.5 0 0 1 1.5-1.5z" fill="#70ae28"/>
+</svg>
