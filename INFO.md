@@ -85,6 +85,7 @@ To scale a font down/up do [this](https://www.fonttutorials.com/how-to-scale-gly
   ```
 
 # TODOs
+  - [ ] Make an FSM (finite state machine) diagram of Buyt states and add it to repository.
   - [ ] Use [segmented buttons](https://m3.material.io/components/segmented-buttons/overview) instead of a custom toggle button for item unit
   - [ ] Mention in the about screen that some icons are adapted and inspired by other icons found on web
   - [ ] Migrate the splash screen to [Android 12 Splash screens](https://developer.android.com/guide/topics/ui/splash-screen)
@@ -117,7 +118,7 @@ To scale a font down/up do [this](https://www.fonttutorials.com/how-to-scale-gly
   - [ ] Add new categories (icons are already available in */icons/material-icons/*)
   - [x] Use vector illustrations and animated vectors instead of tutorial screenshots and empty hints
   - [x] Write tests for the application
-  - [ ] Rename the package name to ir.mahozad (?)
+  - [ ] Rename the package name to *ir.mahozad* (?)
   - [x] Wrap the text *Already bought* in a button (or a rectangle around it) to indicate it's clickable
   - [ ] When user adds a new item, somehow indicate that the item was added
   - [x] Update the string "کالای ... حذف شد" to "... حذف شد"
